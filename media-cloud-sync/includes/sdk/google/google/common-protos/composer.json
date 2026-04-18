@@ -1,0 +1,32 @@
+{
+    "name": "google\/common-protos",
+    "type": "library",
+    "description": "Google API Common Protos for PHP",
+    "keywords": [
+        "google"
+    ],
+    "homepage": "https:\/\/github.com\/googleapis\/common-protos-php",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.4",
+        "google\/protobuf": "^3.6.1"
+    },
+    "require-dev": {
+        "phpunit\/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dudlewebs\\WPMCS\\Google\\Api\\": "src\/Api",
+            "Dudlewebs\\WPMCS\\Google\\Cloud\\": "src\/Cloud",
+            "Dudlewebs\\WPMCS\\Google\\Iam\\": "src\/Iam",
+            "Dudlewebs\\WPMCS\\Google\\Rpc\\": "src\/Rpc",
+            "Dudlewebs\\WPMCS\\Google\\Type\\": "src\/Type",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Api\\": "metadata\/Api",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Cloud\\": "metadata\/Cloud",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Iam\\": "metadata\/Iam",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Logging\\": "metadata\/Logging",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Rpc\\": "metadata\/Rpc",
+            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Type\\": "metadata\/Type"
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+	"require": {
+		"php": ">=7.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"Dudlewebs\\WPMCS\\": "vendor/"
+		}
+	},
+    "config": {
+        "vendor-dir": "./"
+    }
+}

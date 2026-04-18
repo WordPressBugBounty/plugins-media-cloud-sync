@@ -1,0 +1,989 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: src/components/Buttons/index.jsx:131
+msgid "PURCHASE PREMIUM"
+msgstr ""
+
+#: src/components/Buttons/index.jsx:64
+msgid "Button"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:39
+msgid "Connect to cloud"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:42
+msgid "Get started with syncing your media files to the cloud."
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:54
+msgid "Connected"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:58
+#: src/pages/Configure.jsx:88
+#: src/schema.js:136
+msgid "Configure"
+msgstr ""
+
+#: src/components/DonateSection/index.jsx:10
+msgid ""
+"Dudlewebs is a start up company. We are seeking for donation to improve our "
+"plugin. Any help will be appreciated."
+msgstr ""
+
+#: src/components/DonateSection/index.jsx:15
+msgid "DONATE"
+msgstr ""
+
+#: src/components/DonateSection/index.jsx:8
+msgid "I need you !!"
+msgstr ""
+
+#: src/components/Header/index.jsx:18
+msgid "Dashboard"
+msgstr ""
+
+#: src/components/Header/index.jsx:23
+#: src/schema.js:27
+msgid "Settings"
+msgstr ""
+
+#: src/components/Header/index.jsx:28
+#: src/schema.js:2240
+msgid "Documentation"
+msgstr ""
+
+#: src/components/Header/index.jsx:41
+msgid "Premium Version Coming Soon"
+msgstr ""
+
+#: src/components/Header/index.jsx:95
+msgid "Donate"
+msgstr ""
+
+#: src/components/HeaderPrgressIndicator/index.jsx:124
+msgid "View Details"
+msgstr ""
+
+#: src/components/HeaderPrgressIndicator/index.jsx:46
+msgid "Progress indicator"
+msgstr ""
+
+#: src/components/HeaderPrgressIndicator/index.jsx:87
+#: src/pages/sync/SyncScreen.jsx:275
+msgid "Syncing"
+msgstr ""
+
+#: src/components/JsonReader/index.jsx:46
+msgid "Read JSON from file"
+msgstr ""
+
+#: src/components/Loading/index.jsx:11
+msgid "Media Cloud Sync is loading please wait..."
+msgstr ""
+
+#: src/components/PremiumBanner/index.jsx:15
+msgid "Premium version coming soon Get notified when we launch"
+msgstr ""
+
+#: src/components/PremiumBanner/index.jsx:21
+msgid "COMING SOON"
+msgstr ""
+
+#: src/components/PremiumBanner/index.jsx:9
+msgid "We are building something awesome!"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:110
+msgid "Synced"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:111
+msgid "Total"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:112
+msgid "Pending"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:35
+msgid "Refreshing Counts"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:55
+#: src/pages/MediaSettings.jsx:463
+msgid "Refresh"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:66
+msgid "Progress Graph"
+msgstr ""
+
+#: src/components/Statistics/index.jsx:98
+msgid "out of"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:102
+msgid "ID"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:103
+msgid "Errors"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:105
+msgid "Actions"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:170
+msgid "No errors"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:192
+msgid "Retry"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:201
+#: src/pages/configure/verifyPermissions.jsx:243
+msgid "Loading"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:214
+msgid "No errors found"
+msgstr ""
+
+#: src/components/SyncScreen/InfoBox/index.jsx:16
+msgid ""
+"Your plugin settings are not configured properly. Please ensure Service is "
+"enabled and Copy files to bucket is enabled."
+msgstr ""
+
+#: src/components/SyncScreen/InfoBox/index.jsx:52
+msgid "All your existing media are synced successfully."
+msgstr ""
+
+#: src/components/SyncScreen/InfoBox/index.jsx:65
+msgid ""
+"Sync is paused. You can resume it by clicking the \"Resume\" button or stop "
+"it by clicking the \"Stop\" button."
+msgstr ""
+
+#: src/components/SyncScreen/InfoBox/index.jsx:78
+msgid ""
+"Your sync is running in the background. It may take some time, and regular "
+"site visits help it complete. Your site will stay online, and you can "
+"safely close this window."
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:11
+msgid "Private Media Support"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:14
+msgid "Control your medias from Media Library"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:20
+msgid "Move media from old path to new path"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:26
+msgid "Bucket to Bucket transfer"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:32
+msgid "Copy back media to server"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:37
+msgid "And much more"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:45
+msgid "View All Features"
+msgstr ""
+
+#: src/components/SyncScreen/PremiumCard/index.jsx:8
+msgid "Upgrade To Premium"
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:114
+msgid ""
+"To ensure compatibility with the latest version of Media Cloud Sync, a "
+"database upgrade is necessary."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:119
+msgid ""
+"It is recommended to back up your database before proceeding with the "
+"upgrade."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:125
+msgid "Please click the button below to initiate the upgrade process."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:131
+msgid "Upgrade Database"
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:27
+msgid "Database upgrade completed successfully."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:49
+msgid "Database upgrade started successfully."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:58
+msgid "Failed to start database upgrade."
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:84
+msgid "Database Upgrade Required"
+msgstr ""
+
+#: src/components/UpgradeNotice/index.jsx:93
+msgid ""
+"Database upgrade in progress. Please wait for the process to complete. Do "
+"not close or refresh this page during the upgrade."
+msgstr ""
+
+#: src/components/WelcomeContent/index.jsx:7
+msgid "Hey There,"
+msgstr ""
+
+#: src/components/WelcomeContent/index.jsx:9
+msgid "Welcome to Media Cloud Sync Dashboard"
+msgstr ""
+
+#: src/helper/index.js:56
+msgid "This field is required"
+msgstr ""
+
+#: src/helper/index.js:68
+msgid "Maximum length exceeded"
+msgstr ""
+
+#: src/helper/index.js:85
+msgid "Invalid Format"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:121
+msgid "Saving Provider"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:128
+#: src/pages/Configure.jsx:539
+msgid "Back to Settings"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:135
+msgid "Choose your Media Delivery Provider"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:141
+msgid "Choose your media delivery provider from here"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:220
+msgid "Private Media Supported"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:224
+msgid "Private Media Not Supported"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:240
+msgid "Provider Name"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:245
+msgid "Enter Provider Name"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:261
+msgid "Please enter a provider name"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:278
+msgid "Cancel"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:279
+#: src/pages/Configure.jsx:98
+#: src/schema.js:196
+msgid "Save"
+msgstr ""
+
+#: src/pages/ChooseCDN.jsx:57
+#: src/pages/MediaSettings.jsx:229
+msgid "Please fix the highlighted errors before proceeding"
+msgstr ""
+
+#: src/pages/Configure.jsx:101
+msgid "Configuration"
+msgstr ""
+
+#: src/pages/Configure.jsx:105
+msgid "Save the credentials."
+msgstr ""
+
+#: src/pages/Configure.jsx:123
+msgid "Please enter a service name"
+msgstr ""
+
+#: src/pages/Configure.jsx:218
+msgid "Credentials"
+msgstr ""
+
+#: src/pages/Configure.jsx:543
+msgid "Exit to Dashboard"
+msgstr ""
+
+#: src/pages/Configure.jsx:577
+msgid "documentation"
+msgstr ""
+
+#: src/pages/Configure.jsx:589
+msgid "Verifying"
+msgstr ""
+
+#: src/pages/Configure.jsx:593
+msgid "Verifying your"
+msgstr ""
+
+#: src/pages/Configure.jsx:77
+msgid "Hey, There"
+msgstr ""
+
+#: src/pages/Configure.jsx:78
+msgid "Welcome to Media Cloud Sync"
+msgstr ""
+
+#: src/pages/Configure.jsx:81
+msgid "Configure Cloud Service"
+msgstr ""
+
+#: src/pages/Configure.jsx:82
+msgid "Choose your cloud service to connect to cloud."
+msgstr ""
+
+#: src/pages/Configure.jsx:92
+msgid "Trouble finding the credentials? View our <documentation_link>"
+msgstr ""
+
+#: src/pages/FileManager/FileManager.jsx:9
+#: src/pages/MediaSettings.jsx:329
+#: src/pages/sync/BucketToBucket.jsx:10
+#: src/pages/sync/SyncScreen.jsx:217
+msgid "Back to Dashboard"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:258
+msgid "Saving configuration"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:334
+msgid "Storage Settings"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:396
+msgid "Delivery Settings"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:420
+msgid "Change"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:437
+msgid "Check Status"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:448
+msgid "Fetching..."
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:472
+msgid "Click the button to check the read status of your Provider."
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:478
+msgid "Last checked"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:498
+msgid "Never"
+msgstr ""
+
+#: src/pages/MediaSettings.jsx:535
+msgid "Sync in progress. Please wait until it completes before saving changes."
+msgstr ""
+
+#: src/pages/configure/Footer/index.jsx:13
+#: src/schema.js:195
+msgid "Back"
+msgstr ""
+
+#: src/pages/configure/Footer/index.jsx:14
+#: src/schema.js:188
+msgid "Next"
+msgstr ""
+
+#: src/pages/configure/provider.jsx:147
+msgid "Enter Provider label"
+msgstr ""
+
+#: src/pages/configure/provider.jsx:151
+msgid "Enter label"
+msgstr ""
+
+#: src/pages/configure/saveSettings.jsx:17
+msgid "Successfully connected to"
+msgstr ""
+
+#: src/pages/configure/saveSettings.jsx:22
+msgid "Click Save button to save the configuration"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:136
+msgid "Create New"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:169
+msgid "Choose"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:190
+msgid "Enter"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:195
+msgid "Name"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:67
+msgid "Choose a"
+msgstr ""
+
+#: src/pages/configure/setBucket.jsx:97
+msgid "Choose Existing"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:278
+msgid "Skipped"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:29
+msgid "Adding new"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:32
+msgid "Checking"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:34
+msgid "exists"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:45
+msgid "Checking write permissions"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:59
+msgid "Checking delete permissions"
+msgstr ""
+
+#: src/pages/configure/welcome.jsx:10
+msgid "Media Cloud Sync"
+msgstr ""
+
+#: src/pages/configure/welcome.jsx:12
+msgid ""
+"Media Cloud Sync helps to sync the Wordpress media to cloud services like "
+"Amazon S3, Google  Cloud Storage and Digital Ocean Services "
+msgstr ""
+
+#: src/pages/configure/welcome.jsx:18
+msgid ""
+"Configure your cloud storage by  following steps, click Next to start "
+"configuring"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:283
+msgid "Total Medias"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:296
+msgid "Completed"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:311
+msgid "Failed"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:330
+msgid ""
+"Another sync process is currently in progress. Please make sure that is "
+"finished or stop it before starting a new one."
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:344
+msgid ""
+"WP-Cron is not enabled on your site. Please enable WP-Cron or configure a "
+"server-level cron job to ensure the sync feature operates correctly. "
+"Without an active cron process, the sync will not run even if it is "
+"initiated."
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:379
+msgid "START"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:414
+msgid "STOP"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:449
+msgid "PAUSE"
+msgstr ""
+
+#: src/pages/sync/SyncScreen.jsx:484
+msgid "RESUME"
+msgstr ""
+
+#: src/schema.js:1015
+msgid ""
+"DigitalOcean Spaces is a cost-effective object storage solution designed "
+"for simplicity, scalability, and high availability, ideal for storing and "
+"serving large amounts of unstructured data"
+msgstr ""
+
+#: src/schema.js:103
+msgid "File Manager"
+msgstr ""
+
+#: src/schema.js:104
+msgid "Manage your cloud files directly from here"
+msgstr ""
+
+#: src/schema.js:1109
+msgid "Space"
+msgstr ""
+
+#: src/schema.js:1139
+msgid "Enter Space Name"
+msgstr ""
+
+#: src/schema.js:119
+msgid "Welcome"
+msgstr ""
+
+#: src/schema.js:1198
+msgid ""
+"Enable this option if you need a custom prefix for your bucket path in "
+"Digital Ocean Spaces."
+msgstr ""
+
+#: src/schema.js:1250
+msgid ""
+"Cloudflare R2 is a globally distributed, zero-egress-fee object storage "
+"service designed for high performance, reliability, and massive scalability."
+msgstr ""
+
+#: src/schema.js:126
+msgid "Choose Provider"
+msgstr ""
+
+#: src/schema.js:1262
+msgid "Account ID"
+msgstr ""
+
+#: src/schema.js:1264
+msgid "Enter Account ID"
+msgstr ""
+
+#: src/schema.js:1279
+msgid "Data Jurisdiction / Region"
+msgstr ""
+
+#: src/schema.js:128
+msgid "Select Provider"
+msgstr ""
+
+#: src/schema.js:1283
+msgid "Choose region"
+msgstr ""
+
+#: src/schema.js:1309
+msgid "Enter Access Key"
+msgstr ""
+
+#: src/schema.js:1326
+msgid "Enter Secret Key"
+msgstr ""
+
+#: src/schema.js:1352
+msgid "Choose Bucket"
+msgstr ""
+
+#: src/schema.js:138
+msgid "Configure credentials"
+msgstr ""
+
+#: src/schema.js:1401
+msgid "Upload to the bucket whenever a file is uploaded to the Media Library."
+msgstr ""
+
+#: src/schema.js:1413
+msgid "Remove the server file once it is successfully uploaded to the bucket."
+msgstr ""
+
+#: src/schema.js:1419
+msgid ""
+"<p>This setting removes files from the server once uploaded. If you "
+"deactivate this plugin, files will no longer exist locally. Manual download "
+"via Cloudflare R2 may be required.</p>"
+msgstr ""
+
+#: src/schema.js:1432
+msgid ""
+"Enable this option if you want a custom folder prefix for your uploaded "
+"files."
+msgstr ""
+
+#: src/schema.js:1457
+msgid "Automatically create year/month folders inside your base path."
+msgstr ""
+
+#: src/schema.js:1469
+msgid "Append a timestamp to the file path for versioning."
+msgstr ""
+
+#: src/schema.js:1479
+msgid "S3 Compatible"
+msgstr ""
+
+#: src/schema.js:148
+msgid "Verifying Permissions"
+msgstr ""
+
+#: src/schema.js:1483
+msgid ""
+"An S3-compatible storage service provides scalable, durable, and secure "
+"object storage with an interface and functionality similar to Amazon S3, "
+"enabling seamless integration with existing S3-based tools and applications."
+msgstr ""
+
+#: src/schema.js:1495
+msgid "Storage Endpoint"
+msgstr ""
+
+#: src/schema.js:1500
+msgid "Enter storage endpoint URL"
+msgstr ""
+
+#: src/schema.js:1516
+msgid "Access Key"
+msgstr ""
+
+#: src/schema.js:1518
+msgid "Enter access key"
+msgstr ""
+
+#: src/schema.js:1533
+msgid "Secret Key"
+msgstr ""
+
+#: src/schema.js:1535
+msgid "Enter secret key"
+msgstr ""
+
+#: src/schema.js:1550
+msgid "Region"
+msgstr ""
+
+#: src/schema.js:1552
+msgid "Enter region"
+msgstr ""
+
+#: src/schema.js:1560
+msgid "Bucket"
+msgstr ""
+
+#: src/schema.js:1565
+msgid "Enter Bucket Name"
+msgstr ""
+
+#: src/schema.js:1570
+msgid "Enter bucket name"
+msgstr ""
+
+#: src/schema.js:1591
+msgid "Copy files to bucket"
+msgstr ""
+
+#: src/schema.js:1595
+msgid "Upload to bucket, when ever a file is uploaded to Media Library"
+msgstr ""
+
+#: src/schema.js:1603
+msgid "Remove files from server"
+msgstr ""
+
+#: src/schema.js:1607
+msgid "Use this to remove file from server, Once it is uploaded to bucket"
+msgstr ""
+
+#: src/schema.js:1613
+msgid ""
+"<p>This setting will remove the files from the server once it is uploaded "
+"to the cloud, And it can lead to issues if you deactivate our plugin, So be "
+"careful before enabling this.</p><p>There is no option to copy these files "
+"back to the server in this plugin's free version. Though you can manually "
+"download it from the cloud and upload using FTP.</p>"
+msgstr ""
+
+#: src/schema.js:1622
+msgid "Add Prefix to Bucket Path"
+msgstr ""
+
+#: src/schema.js:1626
+msgid ""
+"Enable this option if you need a custom prefix for your bucket path in "
+"Amazon S3"
+msgstr ""
+
+#: src/schema.js:1639
+msgid "Enter Prefix"
+msgstr ""
+
+#: src/schema.js:1648
+msgid "Year/Month Structure"
+msgstr ""
+
+#: src/schema.js:1652
+msgid ""
+"This will enable year/month directories at the end of your base path. "
+"Otherwise it will be uploaded in to the base path directly."
+msgstr ""
+
+#: src/schema.js:1660
+msgid "Object versioning"
+msgstr ""
+
+#: src/schema.js:1664
+msgid "Append a timestamp to the bucket path."
+msgstr ""
+
+#: src/schema.js:180
+msgid "Verify"
+msgstr ""
+
+#: src/schema.js:1811
+msgid "Amazon S3"
+msgstr ""
+
+#: src/schema.js:1911
+msgid "Google Cloud Storage"
+msgstr ""
+
+#: src/schema.js:2013
+msgid "Digital Ocean Spaces"
+msgstr ""
+
+#: src/schema.js:2034
+msgid ""
+"For media library files that have been copied to the bucket, Enable this "
+"option to serve media from provider, so that they are served from the space "
+"instead of your server."
+msgstr ""
+
+#: src/schema.js:208
+msgid ""
+"Amazon S3 is an object storage service that offers high scalability, "
+"durability, and security for data storage and retrieval across the web."
+msgstr ""
+
+#: src/schema.js:2112
+msgid "Cloudflare R2"
+msgstr ""
+
+#: src/schema.js:2118
+msgid "Provider Console"
+msgstr ""
+
+#: src/schema.js:2123
+msgid "Slow"
+msgstr ""
+
+#: src/schema.js:2132
+msgid ""
+"For media library files that have been copied to the bucket, Enable this "
+"option to serve media from provider, so that they are served from the "
+"storage instead of your server."
+msgstr ""
+
+#: src/schema.js:2144
+msgid ""
+"Serves media from a custom domain that has been pointed to your media "
+"storage. Or public endpoint provided by Cloudflare R2."
+msgstr ""
+
+#: src/schema.js:2236
+msgid "Other"
+msgstr ""
+
+#: src/schema.js:2245
+msgid "Fast"
+msgstr ""
+
+#: src/schema.js:2250
+msgid "Deliver Synced Media"
+msgstr ""
+
+#: src/schema.js:2254
+msgid ""
+"For media library files that have been copied to the bucket, Enable this "
+"option to serve media from provider, so that they are served from the "
+"bucket instead of your server."
+msgstr ""
+
+#: src/schema.js:2259
+msgid "How URL rewriting works"
+msgstr ""
+
+#: src/schema.js:2267
+msgid "Use Custom Domain Name (CNAME)"
+msgstr ""
+
+#: src/schema.js:2271
+msgid ""
+"Serves media from a custom domain that has been pointed to your media "
+"storage."
+msgstr ""
+
+#: src/schema.js:2276
+msgid "How to set a custom domain name"
+msgstr ""
+
+#: src/schema.js:2290
+msgid "Enter Domain"
+msgstr ""
+
+#: src/schema.js:2304
+msgid "Sync Media to Cloud Storage"
+msgstr ""
+
+#: src/schema.js:2311
+msgid "Restore Media to Server"
+msgstr ""
+
+#: src/schema.js:2315
+msgid ""
+"We will check all the media files that are synced to the cloud and restore "
+"any missing files to your server."
+msgstr ""
+
+#: src/schema.js:2322
+msgid "Move Media to New Path"
+msgstr ""
+
+#: src/schema.js:2326
+msgid ""
+"If you have changed the base path or enabled/disables year/month structure, "
+"Use this tool to move all your existing files to the new path in the cloud "
+"storage. We will check all the media files that are synced to the cloud and "
+"move them to the new path if required."
+msgstr ""
+
+#: src/schema.js:28
+msgid "Configure Media Cloud settings"
+msgstr ""
+
+#: src/schema.js:40
+msgid "Sync Media To Cloud"
+msgstr ""
+
+#: src/schema.js:44
+msgid "Sync your existing medias from server to cloud"
+msgstr ""
+
+#: src/schema.js:479
+msgid "Use Transfer Accilaration"
+msgstr ""
+
+#: src/schema.js:490
+msgid "Security"
+msgstr ""
+
+#: src/schema.js:494
+msgid "Block All Public Access"
+msgstr ""
+
+#: src/schema.js:495
+msgid ""
+"Since you are not using Amazon CloundFront for delivery, We recommend you "
+"keep Block All Public Access disabled, unless you have a very good reason "
+"to enable it."
+msgstr ""
+
+#: src/schema.js:504
+msgid "Enforce Object Ownership"
+msgstr ""
+
+#: src/schema.js:508
+msgid ""
+"Since you are not using Amazon CloundFront for delivery, We recommend you "
+"do not enforce Object Ownership, unless you have a very good reason to do "
+"so."
+msgstr ""
+
+#: src/schema.js:57
+msgid "View the Media Cloud Sync Documentation here"
+msgstr ""
+
+#: src/schema.js:618
+msgid ""
+"Google Cloud Storage is a unified object storage service that provides high "
+"scalability, durability, and seamless integration with Google Cloud "
+"services for efficient data management and access."
+msgstr ""
+
+#: src/schema.js:631
+msgid "JSON Config File"
+msgstr ""
+
+#: src/schema.js:636
+msgid "Add JSON Code here"
+msgstr ""
+
+#: src/schema.js:672
+msgid "Bucket Name"
+msgstr ""
+
+#: src/schema.js:71
+msgid "Restore Media To Server"
+msgstr ""
+
+#: src/schema.js:75
+msgid "Restore your deleted media from cloud to server"
+msgstr ""
+
+#: src/schema.js:87
+msgid "Move Media To New Path"
+msgstr ""
+
+#: src/schema.js:91
+msgid "Move your existing media from old path to newly configured path"
+msgstr ""
+
+#: src/schema.js:957
+msgid ""
+"Enable this option if you need a custom prefix for your bucket path in "
+"Google Cloud Storage"
+msgstr ""
