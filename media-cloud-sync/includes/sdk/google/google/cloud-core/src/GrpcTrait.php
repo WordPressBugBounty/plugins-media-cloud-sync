@@ -17,13 +17,11 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
 use Dudlewebs\WPMCS\Google\ApiCore\CredentialsWrapper;
+use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\GrpcRequestWrapper;
 use Dudlewebs\WPMCS\Google\Protobuf\NullValue;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Duration;
 /**
  * Provides shared functionality for gRPC service implementations.
  */
@@ -65,7 +63,7 @@ trait GrpcTrait
      */
     public function send(callable $request, array $args, $whitelisted = \false)
     {
-        $requestOptions = $this->pluckArray(['grpcOptions', 'retries', 'requestTimeout', 'grpcRetryFunction'], $args[count($args) - 1]);
+        $requestOptions = $this->pluckArray(['grpcOptions', 'retries', 'requestTimeout', 'grpcRetryFunction'], $args[\count($args) - 1]);
         try {
             return $this->requestWrapper->send($request, $args, $requestOptions);
         } catch (NotFoundException $e) {
@@ -83,19 +81,19 @@ trait GrpcTrait
      * @param string|null $universeDomain
      * @return array
      */
-    private function getGaxConfig($version, callable $authHttpHandler = null, string $universeDomain = null)
+    private function getGaxConfig($version, ?callable $authHttpHandler = null, ?string $universeDomain = null)
     {
         $config = ['libName' => 'gccl', 'libVersion' => $version, 'transport' => 'grpc'];
         // GAX v0.32.0 introduced the CredentialsWrapper class and a different
         // way to configure credentials. If the class exists, use this new method
         // otherwise default to legacy usage.
-        if (class_exists(CredentialsWrapper::class)) {
+        if (\class_exists(CredentialsWrapper::class)) {
             $config['credentials'] = new CredentialsWrapper(
                 $this->requestWrapper->getCredentialsFetcher(),
                 $authHttpHandler,
                 // If the universe domain hasn't been explicitly set, check the the environment variable,
                 // otherwise assume GDU ("googleapis.com").
-                ($universeDomain ?: getenv('GOOGLE_CLOUD_UNIVERSE_DOMAIN')) ?: GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN
+                ($universeDomain ?: \getenv('GOOGLE_CLOUD_UNIVERSE_DOMAIN')) ?: GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN
             );
         } else {
             $config += ['credentialsLoader' => $this->requestWrapper->getCredentialsFetcher(), 'authHttpHandler' => $authHttpHandler, 'enableCaching' => \false];
@@ -127,7 +125,7 @@ trait GrpcTrait
     }
     private function unpackValue($value)
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new \RuntimeException("Unexpected fields in struct: {$value}");
         }
         foreach ($value as $setField => $setValue) {
@@ -151,13 +149,13 @@ trait GrpcTrait
     }
     private function flattenValue(array $value)
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new \RuntimeException("Unexpected fields in struct: {$value}");
         }
         if (isset($value['nullValue'])) {
             return null;
         }
-        return array_pop($value);
+        return \array_pop($value);
     }
     private function flattenListValue(array $value)
     {
@@ -185,7 +183,7 @@ trait GrpcTrait
      */
     private function formatValueForApi($value)
     {
-        $type = gettype($value);
+        $type = \gettype($value);
         switch ($type) {
             case 'string':
                 return ['string_value' => $value];
@@ -235,9 +233,9 @@ trait GrpcTrait
      */
     private function formatDurationForApi($value)
     {
-        if (is_string($value)) {
-            $d = explode('.', trim($value, 's'));
-            if (count($d) < 2) {
+        if (\is_string($value)) {
+            $d = \explode('.', \trim($value, 's'));
+            if (\count($d) < 2) {
                 $seconds = $d[0];
                 $nanos = 0;
             } else {
@@ -250,6 +248,18 @@ trait GrpcTrait
             $nanos = $d['nanos'];
         }
         return ['seconds' => $seconds, 'nanos' => $nanos];
+    }
+    /**
+     * Format a duration from the API
+     *
+     * @param array $value
+     * @return string
+     */
+    private function formatDurationFromApi($value) : string
+    {
+        $seconds = $value['seconds'];
+        $nanos = \str_pad($value['nanos'], 9, 0, \STR_PAD_LEFT);
+        return "{$seconds}.{$nanos}s";
     }
     /**
      * Construct a gapic client. Allows for tests to intercept.

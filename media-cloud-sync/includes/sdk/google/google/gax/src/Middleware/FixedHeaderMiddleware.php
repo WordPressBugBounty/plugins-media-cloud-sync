@@ -33,9 +33,10 @@
 namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
 
 use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware to add fixed headers to an API call.
+ *
+ * @internal
  */
 class FixedHeaderMiddleware implements MiddlewareInterface
 {

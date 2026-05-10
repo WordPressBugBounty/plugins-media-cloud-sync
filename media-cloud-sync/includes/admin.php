@@ -215,6 +215,7 @@ class Admin {
                     'is_db_upgrade_required' => Upgrade::instance()->is_upgrade_needed(),
                     'is_cron_disabled' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON,
                     'is_pro_active' => defined('WPMCS_PRO_VERSION'),
+                    'license_status' => defined('WPMCS_PRO_VERSION') ? Utils::get_safe_license_data() : [],
                 )
             );
         }

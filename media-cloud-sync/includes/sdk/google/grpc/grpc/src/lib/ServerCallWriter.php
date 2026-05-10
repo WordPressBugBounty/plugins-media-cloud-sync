@@ -54,7 +54,7 @@ class ServerCallWriter
         $this->call_->startBatch($batch);
     }
     ////////////////////////////
-    private function addSendInitialMetadataOpIfNotSent(array &$batch, array $initialMetadata = null)
+    private function addSendInitialMetadataOpIfNotSent(array &$batch, ?array $initialMetadata = null)
     {
         if (!$this->initialMetadataSent_) {
             $batch[OP_SEND_INITIAL_METADATA] = $initialMetadata ?? [];
@@ -65,7 +65,7 @@ class ServerCallWriter
     {
         if ($data) {
             $message_array = ['message' => $data->serializeToString()];
-            if (array_key_exists('flags', $options)) {
+            if (\array_key_exists('flags', $options)) {
                 $message_array['flags'] = $options['flags'];
             }
             $batch[OP_SEND_MESSAGE] = $message_array;

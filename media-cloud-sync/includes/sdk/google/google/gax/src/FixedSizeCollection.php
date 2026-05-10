@@ -58,7 +58,7 @@ class FixedSizeCollection implements IteratorAggregate
         }
         if ($collectionSize < $initialPage->getPageElementCount()) {
             $ipc = $initialPage->getPageElementCount();
-            throw new InvalidArgumentException("collectionSize must be greater than or equal to the number of " . "elements in initialPage. collectionSize: {$collectionSize}, " . "initialPage size: {$ipc}");
+            throw new InvalidArgumentException('collectionSize must be greater than or equal to the number of ' . "elements in initialPage. collectionSize: {$collectionSize}, " . "initialPage size: {$ipc}");
         }
         $this->collectionSize = $collectionSize;
         $this->pageList = FixedSizeCollection::createPageArray($initialPage, $collectionSize);
@@ -119,7 +119,7 @@ class FixedSizeCollection implements IteratorAggregate
     {
         foreach ($this->pageList as $page) {
             foreach ($page as $element) {
-                yield $element;
+                (yield $element);
             }
         }
     }
@@ -133,18 +133,18 @@ class FixedSizeCollection implements IteratorAggregate
     public function iterateCollections()
     {
         $currentCollection = $this;
-        yield $this;
+        (yield $this);
         while ($currentCollection->hasNextCollection()) {
             $currentCollection = $currentCollection->getNextCollection();
-            yield $currentCollection;
+            (yield $currentCollection);
         }
     }
     private function getLastPage()
     {
         $pageList = $this->pageList;
         // Get last element in array...
-        $lastPage = end($pageList);
-        reset($pageList);
+        $lastPage = \end($pageList);
+        \reset($pageList);
         return $lastPage;
     }
     /**
@@ -162,9 +162,9 @@ class FixedSizeCollection implements IteratorAggregate
             $currentPage = $currentPage->getNextPage($remainingCount);
             $rxElementCount = $currentPage->getPageElementCount();
             if ($rxElementCount > $remainingCount) {
-                throw new LengthException("API returned a number of elements " . "exceeding the specified page size limit. page size: " . "{$remainingCount}, elements received: {$rxElementCount}");
+                throw new LengthException('API returned a number of elements ' . 'exceeding the specified page size limit. page size: ' . "{$remainingCount}, elements received: {$rxElementCount}");
             }
-            array_push($pageList, $currentPage);
+            \array_push($pageList, $currentPage);
             $itemCount += $rxElementCount;
         }
         return $pageList;

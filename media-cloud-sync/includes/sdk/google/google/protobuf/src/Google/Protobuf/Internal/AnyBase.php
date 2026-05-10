@@ -22,16 +22,16 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     public function unpack()
     {
         // Get fully qualified name from type url.
-        $url_prifix_len = strlen(GPBUtil::TYPE_URL_PREFIX);
-        if (substr($this->type_url, 0, $url_prifix_len) != GPBUtil::TYPE_URL_PREFIX) {
+        $url_prifix_len = \strlen(GPBUtil::TYPE_URL_PREFIX);
+        if (\substr($this->type_url, 0, $url_prifix_len) != GPBUtil::TYPE_URL_PREFIX) {
             throw new \Exception("Type url needs to be type.googleapis.com/fully-qulified");
         }
-        $fully_qualifed_name = substr($this->type_url, $url_prifix_len);
+        $fully_qualified_name = \substr($this->type_url, $url_prifix_len);
         // Create message according to fully qualified name.
         $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
-        $desc = $pool->getDescriptorByProtoName($fully_qualifed_name);
-        if (is_null($desc)) {
-            throw new \Exception("Class " . $fully_qualifed_name . " hasn't been added to descriptor pool");
+        $desc = $pool->getDescriptorByProtoName($fully_qualified_name);
+        if (\is_null($desc)) {
+            throw new \Exception("Class " . $fully_qualified_name . " hasn't been added to descriptor pool");
         }
         $klass = $desc->getClass();
         $msg = new $klass();
@@ -47,16 +47,16 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     public function pack($msg)
     {
         if (!$msg instanceof Message) {
-            trigger_error("Given parameter is not a message instance.", \E_USER_ERROR);
+            \trigger_error("Given parameter is not a message instance.", \E_USER_ERROR);
             return;
         }
         // Set value using serialized message.
         $this->value = $msg->serializeToString();
         // Set type url.
         $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
-        $desc = $pool->getDescriptorByClassName(get_class($msg));
-        $fully_qualifed_name = $desc->getFullName();
-        $this->type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualifed_name;
+        $desc = $pool->getDescriptorByClassName(\get_class($msg));
+        $fully_qualified_name = $desc->getFullName();
+        $this->type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualified_name;
     }
     /**
      * This method returns whether the type_url in any_message is corresponded
@@ -67,8 +67,8 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     {
         $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
         $desc = $pool->getDescriptorByClassName($klass);
-        $fully_qualifed_name = $desc->getFullName();
-        $type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualifed_name;
+        $fully_qualified_name = $desc->getFullName();
+        $type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualified_name;
         return $this->type_url === $type_url;
     }
 }

@@ -8,14 +8,16 @@ namespace Dudlewebs\WPMCS\Brick\Math\Exception;
  */
 class NumberFormatException extends MathException
 {
+    public static function invalidFormat(string $value) : self
+    {
+        return new self(\sprintf('The given value "%s" does not represent a valid number.', $value));
+    }
     /**
      * @param string $char The failing character.
      *
-     * @return NumberFormatException
-     *
      * @psalm-pure
      */
-    public static function charNotInAlphabet(string $char): self
+    public static function charNotInAlphabet(string $char) : self
     {
         $ord = \ord($char);
         if ($ord < 32 || $ord > 126) {
@@ -26,6 +28,6 @@ class NumberFormatException extends MathException
         } else {
             $char = '"' . $char . '"';
         }
-        return new self(sprintf('Char %s is not a valid character in the given alphabet.', $char));
+        return new self(\sprintf('Char %s is not a valid character in the given alphabet.', $char));
     }
 }

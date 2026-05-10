@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Type;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Represents a textual expression in the Common Expression Language (CEL)
  * syntax. CEL is a C-like expression language. The syntax and semantics of CEL

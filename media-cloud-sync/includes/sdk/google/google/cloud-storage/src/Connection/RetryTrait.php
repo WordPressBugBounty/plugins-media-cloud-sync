@@ -31,7 +31,7 @@ trait RetryTrait
      */
     private static $httpRetryCodes = [
         0,
-        // connetion-refused OR connection-reset gives status code of 0
+        // connection-refused OR connection-reset gives status code of 0
         200,
         // partial download cases
         408,
@@ -46,7 +46,7 @@ trait RetryTrait
      * (Idempotent)
      * @var array
      */
-    private static $idempotentOps = ['bucket_acl.get', 'bucket_acl.list', 'buckets.delete', 'buckets.get', 'buckets.getIamPolicy', 'buckets.insert', 'buckets.list', 'buckets.lockRetentionPolicy', 'buckets.testIamPermissions', 'default_object_acl.get', 'default_object_acl.list', 'hmacKey.delete', 'hmacKey.get', 'hmacKey.list', 'notifications.delete', 'notifications.get', 'notifications.list', 'object_acl.get', 'object_acl.list', 'objects.get', 'objects.list', 'serviceaccount.get'];
+    private static $idempotentOps = ['bucket_acl.get', 'bucket_acl.list', 'buckets.delete', 'buckets.get', 'buckets.getIamPolicy', 'buckets.insert', 'buckets.list', 'buckets.lockRetentionPolicy', 'buckets.testIamPermissions', 'default_object_acl.get', 'default_object_acl.list', 'hmacKey.delete', 'hmacKey.get', 'hmacKey.list', 'notifications.delete', 'notifications.get', 'notifications.list', 'object_acl.get', 'object_acl.list', 'objects.get', 'objects.list', 'serviceaccount.get', 'signBlob.execute'];
     /**
      * The operations which can be retried with specific conditions
      * (Conditionally idempotent)
@@ -97,13 +97,13 @@ trait RetryTrait
         if (isset($args['restRetryFunction'])) {
             return $args['restRetryFunction'];
         }
-        $methodName = sprintf('%s.%s', $resource, $method);
-        $isOpIdempotent = in_array($methodName, self::$idempotentOps);
-        $preconditionNeeded = array_key_exists($methodName, self::$condIdempotentOps);
+        $methodName = \sprintf('%s.%s', $resource, $method);
+        $isOpIdempotent = \in_array($methodName, self::$idempotentOps);
+        $preconditionNeeded = \array_key_exists($methodName, self::$condIdempotentOps);
         $preconditionSupplied = $this->isPreConditionSupplied($methodName, $args);
         $retryStrategy = isset($args['retryStrategy']) ? $args['retryStrategy'] : StorageClient::RETRY_IDEMPOTENT;
-        return function (\Exception $exception) use ($isOpIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy) {
-            return $this->retryDeciderFunction($exception, $isOpIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy);
+        return function (\Exception $exception, $currentAttempt = 0, $maxRetries = null) use($isOpIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy) {
+            return $this->retryDeciderFunction($exception, $isOpIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy, $currentAttempt, $maxRetries);
         };
     }
     /**
@@ -125,7 +125,7 @@ trait RetryTrait
     {
         if (isset(self::$condIdempotentOps[$methodName])) {
             // return true if required precondition are given.
-            return !empty(array_intersect(self::$condIdempotentOps[$methodName], array_keys($args)));
+            return !empty(\array_intersect(self::$condIdempotentOps[$methodName], \array_keys($args)));
         }
         return \false;
     }
@@ -138,11 +138,16 @@ trait RetryTrait
      * @param bool $isIdempotent
      * @param bool $preconditionNeeded
      * @param bool $preconditionSupplied
-     * @param int $maxRetries
+     * @param int|null $maxRetries The maximum number of retries allowed.
+     * Null for no limit.
      * @return bool
      */
-    private function retryDeciderFunction(\Exception $exception, $isIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy)
+    private function retryDeciderFunction(\Exception $exception, $isIdempotent, $preconditionNeeded, $preconditionSupplied, $retryStrategy, $currentAttempt = 0, $maxRetries = null)
     {
+        // If maxRetries is specified, ensure we don't exceed it
+        if ($maxRetries !== null && $currentAttempt >= $maxRetries) {
+            return \false;
+        }
         if ($retryStrategy == StorageClient::RETRY_NEVER) {
             return \false;
         }
@@ -151,7 +156,7 @@ trait RetryTrait
         // with one of the retriable status code and
         // the operation is either idempotent or conditionally
         // idempotent with preconditions supplied.
-        if (in_array($statusCode, self::$httpRetryCodes)) {
+        if (\in_array($statusCode, self::$httpRetryCodes)) {
             if ($retryStrategy == StorageClient::RETRY_ALWAYS) {
                 return \true;
             } elseif ($isIdempotent) {
@@ -168,6 +173,6 @@ trait RetryTrait
      */
     private static function getRetryHeaders($invocationId, $attemptCount)
     {
-        return [sprintf('%s/%s', self::$INVOCATION_ID_HEADER, $invocationId), sprintf('%s/%d', self::$ATTEMPT_COUNT_HEADER, $attemptCount)];
+        return [\sprintf('%s/%s', self::$INVOCATION_ID_HEADER, $invocationId), \sprintf('%s/%d', self::$ATTEMPT_COUNT_HEADER, $attemptCount)];
     }
 }

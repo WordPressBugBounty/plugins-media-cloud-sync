@@ -19,8 +19,9 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
 use Dudlewebs\WPMCS\Google\ApiCore\ArrayTrait;
 use Dudlewebs\WPMCS\Google\ApiCore\Options\CallOptions;
+use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
 use Dudlewebs\WPMCS\Google\Protobuf\NullValue;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Duration;
+use LogicException;
 /**
  * @internal
  * Supplies helper methods to interact with the APIs.
@@ -29,6 +30,7 @@ trait ApiHelperTrait
 {
     use ArrayTrait;
     use TimeTrait;
+    private OptionsValidator $optionsValidator;
     /**
      * Format a struct for the API.
      *
@@ -53,7 +55,7 @@ trait ApiHelperTrait
     }
     private function unpackValue($value)
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new \RuntimeException("Unexpected fields in struct: {$value}");
         }
         foreach ($value as $setField => $setValue) {
@@ -77,13 +79,13 @@ trait ApiHelperTrait
     }
     private function flattenValue(array $value)
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new \RuntimeException("Unexpected fields in struct: {$value}");
         }
         if (isset($value['nullValue'])) {
             return null;
         }
-        return array_pop($value);
+        return \array_pop($value);
     }
     private function flattenListValue(array $value)
     {
@@ -111,7 +113,7 @@ trait ApiHelperTrait
      */
     private function formatValueForApi($value)
     {
-        $type = gettype($value);
+        $type = \gettype($value);
         switch ($type) {
             case 'string':
                 return ['string_value' => $value];
@@ -161,9 +163,9 @@ trait ApiHelperTrait
      */
     private function formatDurationForApi($value)
     {
-        if (is_string($value)) {
-            $d = explode('.', trim($value, 's'));
-            if (count($d) < 2) {
+        if (\is_string($value)) {
+            $d = \explode('.', \trim($value, 's'));
+            if (\count($d) < 2) {
                 $seconds = $d[0];
                 $nanos = 0;
             } else {
@@ -202,8 +204,11 @@ trait ApiHelperTrait
      *
      * @return array The modified array
      */
-    private function convertDataToProtos(array $input, array $map): array
+    private function convertDataToProtos(array $input, array $map) : array
     {
+        if (!isset($this->serializer)) {
+            throw new \LogicException('Serializer must be set to use this function');
+        }
         foreach ($map as $key => $className) {
             if (isset($input[$key])) {
                 $input[$key] = $this->serializer->decodeMessage(new $className(), $input[$key]);
@@ -217,11 +222,26 @@ trait ApiHelperTrait
      * We strictly treat the parameters allowed by `CallOptions` in GAX as the optional params
      * and everything else that is passed is passed to the Proto message constructor.
      */
-    private function splitOptionalArgs(array $input, array $extraAllowedKeys = []): array
+    private function splitOptionalArgs(array $input, array $extraAllowedKeys = []) : array
     {
-        $callOptionFields = array_keys((new CallOptions([]))->toArray());
-        $keys = array_merge($callOptionFields, $extraAllowedKeys);
-        $optionalArgs = $this->pluckArray($keys, $input);
-        return [$input, $optionalArgs];
+        $callOptionFields = \array_keys((new CallOptions([]))->toArray());
+        $keys = \array_merge($callOptionFields, $extraAllowedKeys);
+        $callOptions = $this->pluckArray($keys, $input);
+        return [$input, $callOptions];
+    }
+    /**
+     * Helper method used to validate optons based on the supplied $optionTypes
+     * $optionTypes can be an array of string keys, a protobuf Message classname, or a
+     * the CallOptions classname. Parameters are split and returned in the order
+     * that the options types are provided.
+     *
+     * @throws LogicException
+     */
+    private function validateOptions(array $options, array|Message|string ...$optionTypes) : array
+    {
+        if (!isset($this->optionsValidator)) {
+            $this->optionsValidator = new OptionsValidator();
+        }
+        return $this->optionsValidator->validateOptions($options, ...$optionTypes);
     }
 }

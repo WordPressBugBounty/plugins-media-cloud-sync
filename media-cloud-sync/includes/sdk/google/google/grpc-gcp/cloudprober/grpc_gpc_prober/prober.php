@@ -6,8 +6,8 @@ namespace Dudlewebs\WPMCS;
 require '../vendor/autoload.php';
 // require_once '../Google/Cloud/Firestore/V1beta1/FirestoreClient.php';
 // require_once '../Google/Cloud/Spanner/V1/SpannerClient.php';
-$firestore_probes = require './firestore_probes.php';
-$spanner_probes = require './spanner_probes.php';
+$firestore_probes = (require './firestore_probes.php');
+$spanner_probes = (require './spanner_probes.php');
 require './stackdriver_util.php';
 $_OAUTH_SCOPE = 'https://www.googleapis.com/auth/cloud-platform';
 $_FIRESTORE_TARGET = 'firestore.googleapis.com:443';
@@ -46,12 +46,14 @@ function executeProbes($api)
     if ($api == 'spanner') {
         $client = new SpannerGrpcClient($_SPANNER_TARGET, $opts);
         $probe_functions = $spanner_probes;
-    } else if ($api == 'firestore') {
-        $client = new FirestoreGrpcClient($_FIRESTORE_TARGET, $opts);
-        $probe_functions = $firestore_probes;
     } else {
-        echo 'grpc not implemented for ' . $api;
-        exit(1);
+        if ($api == 'firestore') {
+            $client = new FirestoreGrpcClient($_FIRESTORE_TARGET, $opts);
+            $probe_functions = $firestore_probes;
+        } else {
+            echo 'grpc not implemented for ' . $api;
+            exit(1);
+        }
     }
     $total = \sizeof($probe_functions);
     $success = 0;
@@ -66,7 +68,7 @@ function executeProbes($api)
         }
     }
     if ($success == $total) {
-        $util->setSuccess(\True);
+        $util->setSuccess(\Dudlewebs\WPMCS\True);
     }
     $util->addMetrics($metrics);
     $util->outputMetrics();

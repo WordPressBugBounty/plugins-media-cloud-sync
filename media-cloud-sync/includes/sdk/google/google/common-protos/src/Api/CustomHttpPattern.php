@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * A custom pattern is used for defining custom HTTP verb.
  *

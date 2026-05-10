@@ -12,31 +12,30 @@ declare (strict_types=1);
 namespace Dudlewebs\WPMCS\Monolog\Handler;
 
 use Dudlewebs\WPMCS\Monolog\Processor\ProcessorInterface;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Interface to describe loggers that have processors
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 interface ProcessableHandlerInterface
 {
     /**
      * Adds a processor in the stack.
      *
-     * @psalm-param ProcessorInterface|callable(Record): Record $callback
+     * @phpstan-param ProcessorInterface|(callable(LogRecord): LogRecord) $callback
      *
      * @param  ProcessorInterface|callable $callback
      * @return HandlerInterface            self
      */
-    public function pushProcessor(callable $callback): HandlerInterface;
+    public function pushProcessor(callable $callback) : HandlerInterface;
     /**
      * Removes the processor on top of the stack and returns it.
      *
-     * @psalm-return ProcessorInterface|callable(Record): Record $callback
+     * @phpstan-return ProcessorInterface|(callable(LogRecord): LogRecord) $callback
      *
      * @throws \LogicException             In case the processor stack is empty
      * @return callable|ProcessorInterface
      */
-    public function popProcessor(): callable;
+    public function popProcessor() : callable;
 }

@@ -55,7 +55,7 @@ class ServiceException extends GoogleException
      * @param Exception|null $serviceException
      * @param array $metadata [optional] Exception metadata.
      */
-    public function __construct($message = null, $code = 0, Exception $serviceException = null, array $metadata = [])
+    public function __construct($message = null, $code = 0, ?Exception $serviceException = null, array $metadata = [])
     {
         $this->serviceException = $serviceException;
         $this->metadata = $metadata;
@@ -97,7 +97,7 @@ class ServiceException extends GoogleException
     public function getErrorInfoMetadata()
     {
         // Only calc the metadata if we haven't cached it
-        if (is_null($this->errorInfoMetadata)) {
+        if (\is_null($this->errorInfoMetadata)) {
             // For response originated from the GAPIC layer, the current exception would have
             // an ApiException within itself
             if ($this->getServiceException() instanceof ApiException) {
@@ -117,7 +117,7 @@ class ServiceException extends GoogleException
     public function getReason()
     {
         // Only calc the errorReason if we haven't cached it
-        if (is_null($this->errorReason)) {
+        if (\is_null($this->errorReason)) {
             // For a response originated from the GAPIC layer, the current exception would have
             // an ApiException within itself
             if ($this->getServiceException() instanceof ApiException) {
@@ -136,10 +136,10 @@ class ServiceException extends GoogleException
      */
     public function getRetryDelay()
     {
-        $metadata = array_filter($this->metadata, function ($metadataItem) {
-            return array_key_exists('retryDelay', $metadataItem);
+        $metadata = \array_filter($this->metadata, function ($metadataItem) {
+            return \array_key_exists('retryDelay', $metadataItem);
         });
-        if (count($metadata) === 0) {
+        if (\count($metadata) === 0) {
             return ['seconds' => 0, 'nanos' => 0];
         }
         return $metadata[0]['retryDelay'] + ['seconds' => 0, 'nanos' => 0];
@@ -153,9 +153,9 @@ class ServiceException extends GoogleException
     private function getErrorInfoFromRestException()
     {
         // Only calc errorInfo if it isn't cached
-        if (is_null($this->errorInfo)) {
+        if (\is_null($this->errorInfo)) {
             $this->errorInfo = [];
-            $arr = json_decode($this->getMessage(), \true);
+            $arr = \json_decode($this->getMessage(), \true);
             if (!isset($arr['error']['details'])) {
                 return $this->errorInfo;
             }

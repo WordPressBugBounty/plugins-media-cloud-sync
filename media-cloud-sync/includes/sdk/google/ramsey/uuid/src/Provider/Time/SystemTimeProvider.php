@@ -20,7 +20,7 @@ use function gettimeofday;
  */
 class SystemTimeProvider implements TimeProviderInterface
 {
-    public function getTime(): Time
+    public function getTime() : Time
     {
         $time = gettimeofday();
         return new Time($time['sec'], $time['usec']);

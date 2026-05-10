@@ -22,9 +22,9 @@ use const UUID_TYPE_RANDOM;
  */
 class PeclUuidRandomGenerator implements RandomGeneratorInterface
 {
-    public function generate(int $length): string
+    public function generate(int $length) : string
     {
         $uuid = uuid_create(UUID_TYPE_RANDOM);
-        return uuid_parse($uuid);
+        return (string) uuid_parse($uuid);
     }
 }

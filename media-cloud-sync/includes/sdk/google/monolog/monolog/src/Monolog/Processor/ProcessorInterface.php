@@ -11,20 +11,16 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Processor;
 
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * An optional interface to allow labelling Monolog processors.
  *
  * @author Nicolas Grekas <p@tchwork.com>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 interface ProcessorInterface
 {
     /**
-     * @return array The processed record
-     *
-     * @phpstan-param  Record $record
-     * @phpstan-return Record
+     * @return LogRecord The processed record
      */
-    public function __invoke(array $record);
+    public function __invoke(LogRecord $record);
 }

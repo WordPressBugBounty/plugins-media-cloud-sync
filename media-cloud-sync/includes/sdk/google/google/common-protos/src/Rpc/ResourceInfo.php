@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Describes the resource that is being accessed.
  *
@@ -24,7 +24,7 @@ class ResourceInfo extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     protected $resource_type = '';
     /**
      * The name of the resource being accessed.  For example, a shared calendar
-     * name: "example.com_4fghdhgsrgh&#64;group.calendar.google.com", if the current
+     * name: "example.com_4fghdhgsrgh\@group.calendar.google.com", if the current
      * error is
      * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
      *
@@ -59,7 +59,7 @@ class ResourceInfo extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *           of the resource: e.g. "type.googleapis.com/google.pubsub.v1.Topic".
      *     @type string $resource_name
      *           The name of the resource being accessed.  For example, a shared calendar
-     *           name: "example.com_4fghdhgsrgh&#64;group.calendar.google.com", if the current
+     *           name: "example.com_4fghdhgsrgh\@group.calendar.google.com", if the current
      *           error is
      *           [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
      *     @type string $owner
@@ -106,7 +106,7 @@ class ResourceInfo extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     }
     /**
      * The name of the resource being accessed.  For example, a shared calendar
-     * name: "example.com_4fghdhgsrgh&#64;group.calendar.google.com", if the current
+     * name: "example.com_4fghdhgsrgh\@group.calendar.google.com", if the current
      * error is
      * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
      *
@@ -119,7 +119,7 @@ class ResourceInfo extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     }
     /**
      * The name of the resource being accessed.  For example, a shared calendar
-     * name: "example.com_4fghdhgsrgh&#64;group.calendar.google.com", if the current
+     * name: "example.com_4fghdhgsrgh\@group.calendar.google.com", if the current
      * error is
      * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
      *

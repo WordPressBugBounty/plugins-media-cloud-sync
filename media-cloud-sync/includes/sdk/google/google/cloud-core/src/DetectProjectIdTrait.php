@@ -56,14 +56,14 @@ trait DetectProjectIdTrait
         if ($config['hasEmulator']) {
             return 'emulator-project';
         }
-        if ($config['credentials'] && $config['credentials'] instanceof ProjectIdProviderInterface && $projectId = $config['credentials']->getProjectId()) {
+        if ($config['credentials'] && $config['credentials'] instanceof ProjectIdProviderInterface && ($projectId = $config['credentials']->getProjectId())) {
             return $projectId;
         }
-        if (getenv('GOOGLE_CLOUD_PROJECT')) {
-            return getenv('GOOGLE_CLOUD_PROJECT');
+        if (\getenv('GOOGLE_CLOUD_PROJECT')) {
+            return \getenv('GOOGLE_CLOUD_PROJECT');
         }
-        if (getenv('GCLOUD_PROJECT')) {
-            return getenv('GCLOUD_PROJECT');
+        if (\getenv('GCLOUD_PROJECT')) {
+            return \getenv('GCLOUD_PROJECT');
         }
         $this->throwExceptionIfProjectIdRequired($config);
         return '';

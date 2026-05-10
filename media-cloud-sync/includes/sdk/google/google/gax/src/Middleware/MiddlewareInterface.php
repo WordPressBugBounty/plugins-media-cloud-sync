@@ -32,11 +32,11 @@
  */
 namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
 
+use Dudlewebs\WPMCS\Google\ApiCore\BidiStream;
 use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 use Dudlewebs\WPMCS\Google\ApiCore\ClientStream;
 use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
-use Dudlewebs\WPMCS\Google\ApiCore\BidiStream;
+use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middlewares must take a MiddlewareInterface as their first constructor
  * argument {@see Google\ApiCore\Middleware\ResponseMetadataMiddleware}, which

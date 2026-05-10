@@ -77,7 +77,7 @@ class GeoPoint implements \JsonSerializable
      */
     public function latitude()
     {
-        $this->checkContext('latitude', func_get_args());
+        $this->checkContext('latitude', \func_get_args());
         return $this->latitude;
     }
     /**
@@ -111,7 +111,7 @@ class GeoPoint implements \JsonSerializable
      */
     public function longitude()
     {
-        $this->checkContext('longitude', func_get_args());
+        $this->checkContext('longitude', \func_get_args());
         return $this->longitude;
     }
     /**
@@ -157,8 +157,8 @@ class GeoPoint implements \JsonSerializable
      */
     private function checkContext($method, array $args)
     {
-        if (count($args) > 0) {
-            throw new InvalidArgumentException(sprintf('Calling method %s with arguments is unsupported.', $method));
+        if (\count($args) > 0) {
+            throw new InvalidArgumentException(\sprintf('Calling method %s with arguments is unsupported.', $method));
         }
     }
     /**
@@ -175,8 +175,8 @@ class GeoPoint implements \JsonSerializable
      */
     private function validateValue($value, $type, $allowNull = \false)
     {
-        if (!is_numeric($value) && (!$allowNull || $allowNull && $value !== null)) {
-            throw new InvalidArgumentException(sprintf('Given %s must be a numeric value.', $type));
+        if (!\is_numeric($value) && (!$allowNull || $allowNull && $value !== null)) {
+            throw new InvalidArgumentException(\sprintf('Given %s must be a numeric value.', $type));
         }
         return $allowNull && $value === null ? $value : (float) $value;
     }

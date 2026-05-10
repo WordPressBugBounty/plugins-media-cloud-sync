@@ -16,17 +16,18 @@ namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
  * A `TypedMapInterface` represents a map of elements where key and value are
  * typed.
  *
+ * @template K of array-key
  * @template T
- * @extends MapInterface<T>
+ * @extends MapInterface<K, T>
  */
 interface TypedMapInterface extends MapInterface
 {
     /**
      * Return the type used on the key.
      */
-    public function getKeyType(): string;
+    public function getKeyType() : string;
     /**
      * Return the type forced on the values.
      */
-    public function getValueType(): string;
+    public function getValueType() : string;
 }

@@ -12,23 +12,22 @@ declare (strict_types=1);
 namespace Dudlewebs\WPMCS\Monolog\Formatter;
 
 use Dudlewebs\WPMCS\Elastica\Document;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Format a log message into an Elastica Document
  *
  * @author Jelle Vink <jelle.vink@gmail.com>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 class ElasticaFormatter extends NormalizerFormatter
 {
     /**
      * @var string Elastic search index name
      */
-    protected $index;
+    protected string $index;
     /**
-     * @var ?string Elastic search document type
+     * @var string|null Elastic search document type
      */
-    protected $type;
+    protected string|null $type;
     /**
      * @param string  $index Elastic Search index name
      * @param ?string $type  Elastic Search document type, deprecated as of Elastica 7
@@ -36,26 +35,26 @@ class ElasticaFormatter extends NormalizerFormatter
     public function __construct(string $index, ?string $type)
     {
         // elasticsearch requires a ISO 8601 format date with optional millisecond precision.
-        parent::__construct('Y-m-d\TH:i:s.uP');
+        parent::__construct('Y-m-d\\TH:i:s.uP');
         $this->index = $index;
         $this->type = $type;
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function format(array $record)
+    public function format(LogRecord $record)
     {
         $record = parent::format($record);
         return $this->getDocument($record);
     }
-    public function getIndex(): string
+    public function getIndex() : string
     {
         return $this->index;
     }
     /**
      * @deprecated since Elastica 7 type has no effect
      */
-    public function getType(): string
+    public function getType() : string
     {
         /** @phpstan-ignore-next-line */
         return $this->type;
@@ -63,16 +62,12 @@ class ElasticaFormatter extends NormalizerFormatter
     /**
      * Convert a log message into an Elastica Document
      *
-     * @phpstan-param Record $record
+     * @param mixed[] $record
      */
-    protected function getDocument(array $record): Document
+    protected function getDocument(array $record) : Document
     {
         $document = new Document();
         $document->setData($record);
-        if (method_exists($document, 'setType')) {
-            /** @phpstan-ignore-next-line */
-            $document->setType($this->type);
-        }
         $document->setIndex($this->index);
         return $document;
     }

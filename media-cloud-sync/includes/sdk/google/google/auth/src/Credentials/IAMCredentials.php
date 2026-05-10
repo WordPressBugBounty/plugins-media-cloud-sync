@@ -38,10 +38,10 @@ class IAMCredentials
      */
     public function __construct($selector, $token)
     {
-        if (!is_string($selector)) {
+        if (!\is_string($selector)) {
             throw new \InvalidArgumentException('selector must be a string');
         }
-        if (!is_string($token)) {
+        if (!\is_string($token)) {
             throw new \InvalidArgumentException('token must be a string');
         }
         $this->selector = $selector;
@@ -61,13 +61,13 @@ class IAMCredentials
      *
      * @param array<mixed> $metadata metadata hashmap
      * @param string $unusedAuthUri optional auth uri
-     * @param callable $httpHandler callback which delivers psr7 request
+     * @param callable|null $httpHandler callback which delivers psr7 request
      *        Note: this param is unused here, only included here for
      *        consistency with other credentials class
      *
      * @return array<mixed> updated metadata hashmap
      */
-    public function updateMetadata($metadata, $unusedAuthUri = null, callable $httpHandler = null)
+    public function updateMetadata($metadata, $unusedAuthUri = null, ?callable $httpHandler = null)
     {
         $metadata_copy = $metadata;
         $metadata_copy[self::SELECTOR_KEY] = $this->selector;

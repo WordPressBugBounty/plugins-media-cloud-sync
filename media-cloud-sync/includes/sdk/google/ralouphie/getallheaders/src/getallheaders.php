@@ -2,7 +2,7 @@
 
 namespace Dudlewebs\WPMCS;
 
-if (!\function_exists('getallheaders') && !\function_exists('Dudlewebs\WPMCS\getallheaders')) {
+if (!\function_exists('getallheaders')) {
     /**
      * Get all HTTP header key/values as an associative array for the current request.
      *

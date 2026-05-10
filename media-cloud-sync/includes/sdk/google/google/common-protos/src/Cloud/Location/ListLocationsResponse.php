@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Location;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * The response message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
  *
@@ -32,7 +32,7 @@ class ListLocationsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Me
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type array<\Google\Cloud\Location\Location>|\Google\Protobuf\Internal\RepeatedField $locations
+     *     @type \Google\Cloud\Location\Location[] $locations
      *           A list of locations that matches the specified filter in the request.
      *     @type string $next_page_token
      *           The standard List next-page token.
@@ -47,7 +47,7 @@ class ListLocationsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Me
      * A list of locations that matches the specified filter in the request.
      *
      * Generated from protobuf field <code>repeated .google.cloud.location.Location locations = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Cloud\Location\Location>
      */
     public function getLocations()
     {
@@ -57,7 +57,7 @@ class ListLocationsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Me
      * A list of locations that matches the specified filter in the request.
      *
      * Generated from protobuf field <code>repeated .google.cloud.location.Location locations = 1;</code>
-     * @param array<\Google\Cloud\Location\Location>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Cloud\Location\Location[] $var
      * @return $this
      */
     public function setLocations($var)

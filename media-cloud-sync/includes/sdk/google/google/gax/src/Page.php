@@ -42,7 +42,7 @@ use IteratorAggregate;
  */
 class Page implements IteratorAggregate
 {
-    const FINAL_PAGE_TOKEN = "";
+    const FINAL_PAGE_TOKEN = '';
     private $call;
     private $callable;
     private $options;
@@ -77,7 +77,7 @@ class Page implements IteratorAggregate
      */
     public function hasNextPage()
     {
-        return strcmp($this->getNextPageToken(), Page::FINAL_PAGE_TOKEN) != 0;
+        return \strcmp($this->getNextPageToken(), Page::FINAL_PAGE_TOKEN) != 0;
     }
     /**
      * Returns the next page token from the response.
@@ -98,13 +98,13 @@ class Page implements IteratorAggregate
      * @throws ApiException if the call to fetch the next page fails.
      * @return Page
      */
-    public function getNextPage(int $pageSize = null)
+    public function getNextPage(?int $pageSize = null)
     {
         if (!$this->hasNextPage()) {
             throw new ValidationException('Could not complete getNextPage operation: ' . 'there are no more pages to retrieve.');
         }
         $oldRequest = $this->getRequestObject();
-        $requestClass = get_class($oldRequest);
+        $requestClass = \get_class($oldRequest);
         $newRequest = new $requestClass();
         $newRequest->mergeFrom($oldRequest);
         $requestPageTokenSetMethod = $this->pageStreamingDescriptor->getRequestPageTokenSetMethod();
@@ -129,7 +129,7 @@ class Page implements IteratorAggregate
     public function getPageElementCount()
     {
         $resourcesGetMethod = $this->pageStreamingDescriptor->getResourcesGetMethod();
-        return count($this->getResponseObject()->{$resourcesGetMethod}());
+        return \count($this->getResponseObject()->{$resourcesGetMethod}());
     }
     /**
      * Return an iterator over the elements in the response.
@@ -143,9 +143,9 @@ class Page implements IteratorAggregate
         $items = $this->getResponseObject()->{$resourcesGetMethod}();
         foreach ($items as $key => $element) {
             if ($items instanceof MapField) {
-                yield $key => $element;
+                (yield $key => $element);
             } else {
-                yield $element;
+                (yield $element);
             }
         }
     }
@@ -161,10 +161,10 @@ class Page implements IteratorAggregate
     public function iteratePages()
     {
         $currentPage = $this;
-        yield $this;
+        (yield $this);
         while ($currentPage->hasNextPage()) {
             $currentPage = $currentPage->getNextPage();
-            yield $currentPage;
+            (yield $currentPage);
         }
     }
     /**
@@ -204,16 +204,16 @@ class Page implements IteratorAggregate
     public function expandToFixedSizeCollection($collectionSize)
     {
         if (!$this->pageStreamingDescriptor->requestHasPageSizeField()) {
-            throw new ValidationException("FixedSizeCollection is not supported for this method, because " . "the method does not support an optional argument to set the " . "page size.");
+            throw new ValidationException('FixedSizeCollection is not supported for this method, because ' . 'the method does not support an optional argument to set the ' . 'page size.');
         }
         $request = $this->getRequestObject();
         $pageSizeGetMethod = $this->pageStreamingDescriptor->getRequestPageSizeGetMethod();
         $pageSize = $request->{$pageSizeGetMethod}();
-        if (is_null($pageSize)) {
-            throw new ValidationException("Error while expanding Page to FixedSizeCollection: No page size " . "parameter found. The page size parameter must be set in the API " . "optional arguments array, and must be less than the collectionSize " . "parameter, in order to create a FixedSizeCollection object.");
+        if (\is_null($pageSize)) {
+            throw new ValidationException('Error while expanding Page to FixedSizeCollection: No page size ' . 'parameter found. The page size parameter must be set in the API ' . 'optional arguments array, and must be less than the collectionSize ' . 'parameter, in order to create a FixedSizeCollection object.');
         }
         if ($pageSize > $collectionSize) {
-            throw new ValidationException("Error while expanding Page to FixedSizeCollection: collectionSize " . "parameter is less than the page size optional argument specified in " . "the API call. collectionSize: {$collectionSize}, page size: {$pageSize}");
+            throw new ValidationException('Error while expanding Page to FixedSizeCollection: collectionSize ' . 'parameter is less than the page size optional argument specified in ' . "the API call. collectionSize: {$collectionSize}, page size: {$pageSize}");
         }
         return new FixedSizeCollection($this, $collectionSize);
     }

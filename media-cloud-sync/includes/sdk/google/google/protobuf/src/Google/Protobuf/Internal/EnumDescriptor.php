@@ -53,7 +53,7 @@ class EnumDescriptor
     }
     public function getValueCount()
     {
-        return count($this->value);
+        return \count($this->value);
     }
     public function setClass($klass)
     {

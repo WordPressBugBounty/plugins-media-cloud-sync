@@ -16,33 +16,17 @@ use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\NodeProviderInterface;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\TimeProviderInterface;
 /**
- * TimeGeneratorFactory retrieves a default time generator, based on the
- * environment
+ * TimeGeneratorFactory retrieves a default time generator, based on the environment
  */
 class TimeGeneratorFactory
 {
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-    /**
-     * @var TimeProviderInterface
-     */
-    private $timeProvider;
-    public function __construct(NodeProviderInterface $nodeProvider, TimeConverterInterface $timeConverter, TimeProviderInterface $timeProvider)
+    public function __construct(private NodeProviderInterface $nodeProvider, private TimeConverterInterface $timeConverter, private TimeProviderInterface $timeProvider)
     {
-        $this->nodeProvider = $nodeProvider;
-        $this->timeConverter = $timeConverter;
-        $this->timeProvider = $timeProvider;
     }
     /**
      * Returns a default time generator, based on the current environment
      */
-    public function getGenerator(): TimeGeneratorInterface
+    public function getGenerator() : TimeGeneratorInterface
     {
         return new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
     }

@@ -56,7 +56,7 @@ class RequestParamsHeaderDescriptor
             if ('' !== $headerValue) {
                 $headerValue .= '&';
             }
-            $headerValue .= $key . '=' . urlencode(strval($value));
+            $headerValue .= $key . '=' . \urlencode(\strval($value));
         }
         $this->header = [$headerKey => [$headerValue]];
     }

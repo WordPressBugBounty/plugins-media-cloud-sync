@@ -44,7 +44,7 @@ class AppEngineFlexFormatterV3 extends LineFormatter
      * @param LogRecord $record A record to format
      * @return string The formatted record
      */
-    public function format(LogRecord $record): string
+    public function format(LogRecord $record) : string
     {
         return $this->formatPayload($record, parent::format($record));
     }

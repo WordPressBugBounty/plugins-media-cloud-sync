@@ -13,15 +13,14 @@ declare (strict_types=1);
 namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
 
 /**
- * RandomGeneratorFactory retrieves a default random generator, based on the
- * environment
+ * RandomGeneratorFactory retrieves a default random generator, based on the environment
  */
 class RandomGeneratorFactory
 {
     /**
      * Returns a default random generator, based on the current environment
      */
-    public function getGenerator(): RandomGeneratorInterface
+    public function getGenerator() : RandomGeneratorInterface
     {
         return new RandomBytesGenerator();
     }

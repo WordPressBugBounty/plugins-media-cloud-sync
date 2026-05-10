@@ -56,7 +56,7 @@ class ExponentialBackoff
      *        Ex: One might want to change headers on every retry, this function can
      *        be used to achieve such a functionality.
      */
-    public function __construct($retries = null, callable $retryFunction = null, callable $retryListener = null)
+    public function __construct($retries = null, ?callable $retryFunction = null, ?callable $retryListener = null)
     {
         $this->retries = $retries !== null ? (int) $retries : 3;
         $this->retryFunction = $retryFunction;
@@ -64,7 +64,7 @@ class ExponentialBackoff
         // @todo revisit this approach
         // @codeCoverageIgnoreStart
         $this->delayFunction = static function ($delay) {
-            usleep($delay);
+            \usleep($delay);
         };
         // @codeCoverageIgnoreEnd
     }
@@ -84,10 +84,10 @@ class ExponentialBackoff
         $exception = null;
         while (\true) {
             try {
-                return call_user_func_array($function, $arguments);
+                return \call_user_func_array($function, $arguments);
             } catch (\Exception $exception) {
                 if ($this->retryFunction) {
-                    if (!call_user_func($this->retryFunction, $exception, $retryAttempt)) {
+                    if (!\call_user_func($this->retryFunction, $exception, $retryAttempt)) {
                         throw $exception;
                     }
                 }
@@ -99,7 +99,7 @@ class ExponentialBackoff
                 if ($this->retryListener) {
                     // Developer can modify the $arguments using the retryListener
                     // callback.
-                    call_user_func_array($this->retryListener, [$exception, $retryAttempt, &$arguments]);
+                    \call_user_func_array($this->retryListener, [$exception, $retryAttempt, &$arguments]);
                 }
             }
         }
@@ -134,6 +134,6 @@ class ExponentialBackoff
      */
     public static function calculateDelay($attempt)
     {
-        return min(mt_rand(0, 1000000) + pow(2, $attempt) * 1000000, self::MAX_DELAY_MICROSECONDS);
+        return \min(\mt_rand(0, 1000000) + \pow(2, $attempt) * 1000000, self::MAX_DELAY_MICROSECONDS);
     }
 }

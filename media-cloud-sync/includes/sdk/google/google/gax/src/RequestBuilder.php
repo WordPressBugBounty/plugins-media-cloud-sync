@@ -48,7 +48,7 @@ class RequestBuilder
     use ArrayTrait;
     use UriTrait;
     use ValidationTrait;
-    private $baseUri;
+    protected $baseUri;
     private $restConfig;
     /**
      * @param string $baseUri
@@ -59,7 +59,7 @@ class RequestBuilder
     {
         self::validateFileExists($restConfigPath);
         $this->baseUri = $baseUri;
-        $this->restConfig = require $restConfigPath;
+        $this->restConfig = (require $restConfigPath);
     }
     /**
      * @param string $path
@@ -67,7 +67,7 @@ class RequestBuilder
      */
     public function pathExists(string $path)
     {
-        list($interface, $method) = explode('/', $path);
+        list($interface, $method) = \explode('/', $path);
         return isset($this->restConfig['interfaces'][$interface][$method]);
     }
     /**
@@ -79,7 +79,7 @@ class RequestBuilder
      */
     public function build(string $path, Message $message, array $headers = [])
     {
-        list($interface, $method) = explode('/', $path);
+        list($interface, $method) = \explode('/', $path);
         if (!isset($this->restConfig['interfaces'][$interface][$method])) {
             throw new ValidationException("Failed to build request, as the provided path ({$path}) was not found in the configuration.");
         }
@@ -94,7 +94,7 @@ class RequestBuilder
                 list($body, $queryParams) = $this->constructBodyAndQueryParameters($message, $config);
                 // Request enum fields will be encoded as numbers rather than strings  (in the response).
                 if ($numericEnums) {
-                    $queryParams['$alt'] = "json;enum-encoding=int";
+                    $queryParams['$alt'] = 'json;enum-encoding=int';
                 }
                 $uri = $this->buildUri($pathTemplate, $queryParams);
                 return new Request($config['method'], $uri, ['Content-Type' => 'application/json'] + $headers, $body);
@@ -105,7 +105,7 @@ class RequestBuilder
         foreach ($uriTemplateConfigs as $config) {
             $uriTemplates[] = $config['uriTemplate'];
         }
-        throw new ValidationException("Could not map bindings for {$path} to any Uri template.\n" . "Bindings: " . print_r($bindings, \true) . "UriTemplates: " . print_r($uriTemplates, \true));
+        throw new ValidationException("Could not map bindings for {$path} to any Uri template.\n" . 'Bindings: ' . \print_r($bindings, \true) . 'UriTemplates: ' . \print_r($uriTemplates, \true));
     }
     /**
      * Create a list of all possible configs using the additionalBindings
@@ -136,20 +136,20 @@ class RequestBuilder
         }
         $body = null;
         $queryParams = [];
-        $messageData = json_decode($messageDataJson, \true);
+        $messageData = \json_decode($messageDataJson, \true);
         foreach ($messageData as $name => $value) {
-            if (array_key_exists($name, $config['placeholders'])) {
+            if (\array_key_exists($name, $config['placeholders'])) {
                 continue;
             }
             if (Serializer::toSnakeCase($name) === $config['body']) {
                 if (($bodyMessage = $message->{"get{$name}"}()) instanceof Message) {
                     $body = $bodyMessage->serializeToJsonString();
                 } else {
-                    $body = json_encode($value);
+                    $body = \json_encode($value);
                 }
                 continue;
             }
-            if (is_array($value) && $this->isAssoc($value)) {
+            if (\is_array($value) && $this->isAssoc($value)) {
                 foreach ($value as $key => $value2) {
                     $queryParams[$name . '.' . $key] = $value2;
                 }
@@ -162,14 +162,14 @@ class RequestBuilder
         if (isset($config['queryParams'])) {
             foreach ($config['queryParams'] as $requiredQueryParam) {
                 $requiredQueryParam = Serializer::toCamelCase($requiredQueryParam);
-                if (!array_key_exists($requiredQueryParam, $queryParams)) {
+                if (!\array_key_exists($requiredQueryParam, $queryParams)) {
                     $getter = Serializer::getGetter($requiredQueryParam);
                     $queryParamValue = $message->{$getter}();
                     if ($queryParamValue instanceof Message) {
                         // Decode message for the query parameter.
-                        $queryParamValue = json_decode($queryParamValue->serializeToJsonString(), \true);
+                        $queryParamValue = \json_decode($queryParamValue->serializeToJsonString(), \true);
                     }
-                    if (is_array($queryParamValue)) {
+                    if (\is_array($queryParamValue)) {
                         // If the message has properties, add them as nested querystring values.
                         // NOTE: This only supports nesting at one level of depth.
                         foreach ($queryParamValue as $key => $value) {
@@ -192,8 +192,8 @@ class RequestBuilder
     {
         $bindings = [];
         foreach ($placeholders as $placeholder => $metadata) {
-            $value = array_reduce($metadata['getters'], function (Message $result = null, $getter) {
-                if ($result) {
+            $value = \array_reduce($metadata['getters'], function (?Message $result = null, $getter = null) {
+                if ($result && $getter) {
                     return $result->{$getter}();
                 }
             }, $message);
@@ -223,9 +223,9 @@ class RequestBuilder
      * @param array $queryParams
      * @return UriInterface
      */
-    private function buildUri(string $path, array $queryParams)
+    protected function buildUri(string $path, array $queryParams)
     {
-        $uri = Utils::uriFor(sprintf('https://%s%s', $this->baseUri, $path));
+        $uri = Utils::uriFor(\sprintf('https://%s%s', $this->baseUri, $path));
         if ($queryParams) {
             $uri = $this->buildUriWithQuery($uri, $queryParams);
         }

@@ -61,11 +61,11 @@ class DeletionQueue
     public function add($toDelete)
     {
         if (!$this->acceptAllInputs) {
-            if (!is_callable($toDelete) && !method_exists($toDelete, 'delete')) {
+            if (!\is_callable($toDelete) && !\method_exists($toDelete, 'delete')) {
                 throw new \BadMethodCallException('Deletion Queue requires a callable, or an object with a `delete` method.');
             }
-            if (!is_callable($toDelete)) {
-                $toDelete = function () use ($toDelete) {
+            if (!\is_callable($toDelete)) {
+                $toDelete = function () use($toDelete) {
                     $toDelete->delete();
                 };
             }
@@ -81,16 +81,16 @@ class DeletionQueue
      * @experimental
      * @internal
      */
-    public function process(callable $action = null)
+    public function process(?callable $action = null)
     {
         if ($action) {
             $action($this->queue);
         } else {
             $backoff = new ExponentialBackoff(8);
             foreach ($this->queue as $item) {
-                $backoff->execute(function () use ($item) {
+                $backoff->execute(function () use($item) {
                     try {
-                        call_user_func($item);
+                        \call_user_func($item);
                     } catch (NotFoundException $e) {
                     } catch (ApiException $apiException) {
                         if ($apiException->getStatus() !== 'NOT_FOUND') {

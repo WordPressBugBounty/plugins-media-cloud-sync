@@ -125,7 +125,7 @@ function read($client, &$metrics)
     $readRequest->setTable('users');
     $readRequest->setColumns(['username', 'firstname', 'lastname']);
     $keyset = new Google\Cloud\Spanner\V1\KeySet();
-    $keyset->setAll(\True);
+    $keyset->setAll(\Dudlewebs\WPMCS\True);
     $readRequest->setKeySet($keyset);
     $result_set = $client->Read($readRequest);
     $lantency = (microtime_float() - $time_start) * 1000;
@@ -229,7 +229,7 @@ function partition($client, &$metrics)
     $ptn_read_request->setTable('users');
     $ptn_read_request->setTransaction($txn_selector);
     $keyset = new Google\Cloud\Spanner\V1\KeySet();
-    $keyset->setAll(\True);
+    $keyset->setAll(\Dudlewebs\WPMCS\True);
     $ptn_read_request->setKeySet($keyset);
     $ptn_read_request->setColumns(['username', 'firstname', 'lastname']);
     $time_start = microtime_float();

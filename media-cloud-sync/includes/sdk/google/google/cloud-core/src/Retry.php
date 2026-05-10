@@ -47,7 +47,7 @@ class Retry
      * @param callable $retryFunction [optional] returns bool for whether or not
      *        to retry.
      */
-    public function __construct($retries, callable $delayFunction, callable $retryFunction = null)
+    public function __construct($retries, callable $delayFunction, ?callable $retryFunction = null)
     {
         $this->retries = $retries !== null ? (int) $retries : 3;
         $this->delayFunction = $delayFunction;
@@ -68,19 +68,19 @@ class Retry
         $continue = \true;
         do {
             try {
-                $res = call_user_func_array($function, $arguments);
+                $res = \call_user_func_array($function, $arguments);
                 $continue = \false;
                 return $res;
             } catch (\Exception $exception) {
                 if ($this->retryFunction) {
-                    if (!call_user_func($this->retryFunction, $exception, $retryAttempt)) {
+                    if (!\call_user_func($this->retryFunction, $exception, $retryAttempt)) {
                         throw $exception;
                     }
                 }
                 if ($retryAttempt < $this->retries) {
                     $delay = $delayFunction($exception);
                     $delay += ['seconds' => 0, 'nanos' => 0];
-                    time_nanosleep($delay['seconds'], $delay['nanos']);
+                    \time_nanosleep($delay['seconds'], $delay['nanos']);
                     $retryAttempt++;
                 } else {
                     $continue = \false;

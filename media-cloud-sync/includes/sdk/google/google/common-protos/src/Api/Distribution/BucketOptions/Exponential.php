@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api\Distribution\BucketOptions;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Specifies an exponential sequence of buckets that have a width that is
  * proportional to the value of the lower bound. Each bucket represents a

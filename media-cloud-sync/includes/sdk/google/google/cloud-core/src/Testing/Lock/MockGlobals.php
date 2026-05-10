@@ -29,7 +29,7 @@ function flock($handle, $type)
 function fopen($file, $mode)
 {
     $val = MockValues::$fopenReturnValue;
-    if (is_callable($val)) {
+    if (\is_callable($val)) {
         return $val($file, $mode);
     }
     return $val;
@@ -45,7 +45,7 @@ function sem_release($id)
 function sem_get($key)
 {
     $val = MockValues::$sem_getReturnValue;
-    if (is_callable($val)) {
+    if (\is_callable($val)) {
         return $val($key);
     }
     return $val;

@@ -43,7 +43,7 @@ class AppEngineFlexHandlerFactory
      */
     public static function build($level = Logger::INFO, $bubble = \true, $filePermission = 0640, $useLocking = \false, $stream = null)
     {
-        $version = defined('Dudlewebs\WPMCS\Monolog\Logger::API') ? Logger::API : 1;
+        $version = \defined('Monolog\\Logger::API') ? Logger::API : 1;
         switch ($version) {
             case 1:
                 return new AppEngineFlexHandler($level, $bubble, $filePermission, $useLocking, $stream);

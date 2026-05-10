@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Generated advice about this change, used for providing more
  * information about how a change will affect the existing service.

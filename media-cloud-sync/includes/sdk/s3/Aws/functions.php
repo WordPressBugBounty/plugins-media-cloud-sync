@@ -2,9 +2,8 @@
 
 namespace Dudlewebs\WPMCS\s3\Aws;
 
-use Dudlewebs\WPMCS\s3\GuzzleHttp\Client;
+use Dudlewebs\WPMCS\s3\GuzzleHttp\Utils;
 use Dudlewebs\WPMCS\s3\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\s3\GuzzleHttp\ClientInterface;
 use Dudlewebs\WPMCS\s3\GuzzleHttp\Promise\FulfilledPromise;
 //-----------------------------------------------------------------------------
 // Functional functions
@@ -249,16 +248,7 @@ function describe_type($input)
  */
 function default_http_handler()
 {
-    $version = guzzle_major_version();
-    // If Guzzle 6 or 7 installed
-    if ($version === 6 || $version === 7) {
-        return new \Dudlewebs\WPMCS\s3\Aws\Handler\GuzzleV6\GuzzleHandler();
-    }
-    // If Guzzle 5 installed
-    if ($version === 5) {
-        return new \Dudlewebs\WPMCS\s3\Aws\Handler\GuzzleV5\GuzzleHandler();
-    }
-    throw new \RuntimeException('Unknown Guzzle version: ' . $version);
+    return new \Dudlewebs\WPMCS\s3\Aws\Handler\Guzzle\GuzzleHandler();
 }
 /**
  * Gets the default user agent string depending on the Guzzle version
@@ -267,42 +257,7 @@ function default_http_handler()
  */
 function default_user_agent()
 {
-    $version = guzzle_major_version();
-    // If Guzzle 6 or 7 installed
-    if ($version === 6 || $version === 7) {
-        return \Dudlewebs\WPMCS\s3\GuzzleHttp\default_user_agent();
-    }
-    // If Guzzle 5 installed
-    if ($version === 5) {
-        return \Dudlewebs\WPMCS\s3\GuzzleHttp\Client::getDefaultUserAgent();
-    }
-    throw new \RuntimeException('Unknown Guzzle version: ' . $version);
-}
-/**
- * Get the major version of guzzle that is installed.
- *
- * @internal This function is internal and should not be used outside aws/aws-sdk-php.
- * @return int
- * @throws \RuntimeException
- */
-function guzzle_major_version()
-{
-    static $cache = null;
-    if (null !== $cache) {
-        return $cache;
-    }
-    if (\defined('Dudlewebs\\WPMCS\\s3\\GuzzleHttp\\ClientInterface::VERSION')) {
-        $version = (string) ClientInterface::VERSION;
-        if ($version[0] === '6') {
-            return $cache = 6;
-        }
-        if ($version[0] === '5') {
-            return $cache = 5;
-        }
-    } elseif (\defined('Dudlewebs\\WPMCS\\s3\\GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
-        return $cache = ClientInterface::MAJOR_VERSION;
-    }
-    throw new \RuntimeException('Unable to determine what Guzzle version is installed.');
+    return Utils::defaultUserAgent();
 }
 /**
  * Serialize a request for a command but do not send it.
@@ -519,4 +474,18 @@ function is_fips_pseudo_region($region)
 function strip_fips_pseudo_regions($region)
 {
     return \str_replace(['fips-', '-fips'], ['', ''], $region);
+}
+/**
+ * Checks if an array is associative
+ *
+ * @param array $array
+ *
+ * @return bool
+ */
+function is_associative(array $array) : bool
+{
+    if (empty($array)) {
+        return \false;
+    }
+    return !\array_is_list($array);
 }

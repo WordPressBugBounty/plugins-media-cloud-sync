@@ -41,18 +41,25 @@ class StreamableUploader extends ResumableUploader
         if ($writeSize === 0) {
             return [];
         }
+        $isFinalRequest = $writeSize === null;
         // find or create the resumeUri
         $resumeUri = $this->getResumeUri();
-        if ($writeSize) {
+        if ($writeSize !== null) {
             $rangeEnd = $this->rangeStart + $writeSize - 1;
             $data = $this->data->read($writeSize);
         } else {
             $rangeEnd = '*';
             $data = $this->data->getContents();
-            $writeSize = strlen($data);
+            $writeSize = \strlen($data);
         }
         // do the streaming write
         $headers = ['Content-Length' => $writeSize, 'Content-Type' => $this->contentType, 'Content-Range' => "bytes {$this->rangeStart}-{$rangeEnd}/*"];
+        $customHeaders = $this->requestOptions['restOptions']['headers'] ?? [];
+        // Only include X-Goog-Hash if this is the final request
+        if (!$isFinalRequest) {
+            unset($customHeaders['X-Goog-Hash']);
+        }
+        $headers = \array_merge($headers, $customHeaders);
         $request = new Request('PUT', $resumeUri, $headers, $data);
         try {
             $response = $this->requestWrapper->send($request, $this->requestOptions);
@@ -61,7 +68,7 @@ class StreamableUploader extends ResumableUploader
         }
         // reset the buffer with the remaining contents
         $this->rangeStart += $writeSize;
-        return json_decode($response->getBody(), \true);
+        return \json_decode($response->getBody(), \true);
     }
     /**
      * Currently only the MultiPartUploader supports async.

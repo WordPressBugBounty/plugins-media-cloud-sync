@@ -34,6 +34,7 @@ namespace Dudlewebs\WPMCS\Google\ApiCore\Testing;
 
 use Dudlewebs\WPMCS\Google\ApiCore\Transport\GrpcTransport;
 use Grpc\ChannelCredentials;
+use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
 /**
  * @internal
  */
@@ -44,11 +45,11 @@ class MockGrpcTransport extends GrpcTransport
     /**
      * @param mixed $mockCall
      */
-    public function __construct($mockCall = null)
+    public function __construct($mockCall = null, ?LoggerInterface $logger = null)
     {
         $this->mockCall = $mockCall;
         $opts = ['credentials' => ChannelCredentials::createSsl()];
-        parent::__construct('', $opts);
+        parent::__construct('', $opts, logger: $logger);
     }
     /**
      * @param string $method

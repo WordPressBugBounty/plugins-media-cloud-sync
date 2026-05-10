@@ -30,4 +30,4 @@ class OperationsClient extends OperationsGapicClient
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see OperationsGapicClient} class.
 }
-class_alias('Dudlewebs\WPMCS\Google\LongRunning\OperationsClient', 'Dudlewebs\WPMCS\Google\ApiCore\LongRunning\OperationsClient');
+\class_alias('Dudlewebs\\WPMCS\\Google\\LongRunning\\OperationsClient', 'Dudlewebs\\WPMCS\\Google\\ApiCore\\LongRunning\\OperationsClient');

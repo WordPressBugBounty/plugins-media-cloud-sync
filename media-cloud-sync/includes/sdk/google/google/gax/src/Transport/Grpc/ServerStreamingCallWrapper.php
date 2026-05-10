@@ -65,7 +65,7 @@ class ServerStreamingCallWrapper implements ServerStreamingCallInterface
     public function responses()
     {
         foreach ($this->stream->responses() as $response) {
-            yield $response;
+            (yield $response);
         }
     }
     /**

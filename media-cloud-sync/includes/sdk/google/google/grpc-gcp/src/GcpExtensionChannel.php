@@ -47,7 +47,7 @@ class GcpExtensionChannel
      */
     public function __construct($hostname = null, $opts = array())
     {
-        if ($hostname == null || !is_array($opts)) {
+        if ($hostname == null || !\is_array($opts)) {
             throw new \InvalidArgumentException("Expected hostname is empty");
         }
         $this->max_size = 10;
@@ -96,7 +96,7 @@ class GcpExtensionChannel
      */
     public function bind($channel_ref, $affinity_key)
     {
-        if (!array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
+        if (!\array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
             $this->affinity_key_to_channel_ref[$affinity_key] = $channel_ref;
         }
         $channel_ref->affinityRefIncr();
@@ -112,7 +112,7 @@ class GcpExtensionChannel
     public function unbind($affinity_key)
     {
         $channel_ref = null;
-        if (array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
+        if (\array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
             $channel_ref = $this->affinity_key_to_channel_ref[$affinity_key];
             $channel_ref->affinityRefDecr();
         }
@@ -133,16 +133,16 @@ class GcpExtensionChannel
     public function getChannelRef($affinity_key = null)
     {
         if ($affinity_key) {
-            if (array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
+            if (\array_key_exists($affinity_key, $this->affinity_key_to_channel_ref)) {
                 return $this->affinity_key_to_channel_ref[$affinity_key];
             }
             return $this->getChannelRef();
         }
-        usort($this->channel_refs, array($this, 'cmp_by_active_stream_ref'));
-        if (count($this->channel_refs) > 0 && $this->channel_refs[0]->getActiveStreamRef() < $this->max_concurrent_streams_low_watermark) {
+        \usort($this->channel_refs, array($this, 'cmp_by_active_stream_ref'));
+        if (\count($this->channel_refs) > 0 && $this->channel_refs[0]->getActiveStreamRef() < $this->max_concurrent_streams_low_watermark) {
             return $this->channel_refs[0];
         }
-        $num_channel_refs = count($this->channel_refs);
+        $num_channel_refs = \count($this->channel_refs);
         if ($num_channel_refs < $this->max_size) {
             // grpc_target_persist_bound stands for how many channels can be persisted for
             // the same target in the C extension. It is possible that the user use the pure
@@ -156,9 +156,9 @@ class GcpExtensionChannel
             if (!isset($this->options['grpc_target_persist_bound']) || $this->options['grpc_target_persist_bound'] < $this->max_size) {
                 $this->options['grpc_target_persist_bound'] = $this->max_size;
             }
-            $cur_opts = array_merge($this->options, ['grpc_gcp_channel_id' => $num_channel_refs]);
+            $cur_opts = \array_merge($this->options, ['grpc_gcp_channel_id' => $num_channel_refs]);
             $channel_ref = new ChannelRef($this->target, $num_channel_refs, $cur_opts);
-            array_unshift($this->channel_refs, $channel_ref);
+            \array_unshift($this->channel_refs, $channel_ref);
         }
         return $this->channel_refs[0];
     }
@@ -227,7 +227,7 @@ class GcpExtensionChannel
      */
     public function watchConnectivityState($last_state, $deadline_obj = null)
     {
-        if ($deadline_obj == null || !is_a($deadline_obj, '\Grpc\Timeval')) {
+        if ($deadline_obj == null || !\is_a($deadline_obj, '\\Grpc\\Timeval')) {
             throw new \InvalidArgumentException("");
         }
         // Since getRealChannel is creating a PHP Channel object. However in gRPC, when a Channel

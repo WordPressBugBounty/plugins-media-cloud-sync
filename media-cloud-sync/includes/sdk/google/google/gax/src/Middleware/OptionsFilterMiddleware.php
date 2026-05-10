@@ -34,9 +34,10 @@ namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
 
 use Dudlewebs\WPMCS\Google\ApiCore\ArrayTrait;
 use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
 * Middleware which filters the $options array.
+*
+* @internal
 */
 class OptionsFilterMiddleware implements MiddlewareInterface
 {

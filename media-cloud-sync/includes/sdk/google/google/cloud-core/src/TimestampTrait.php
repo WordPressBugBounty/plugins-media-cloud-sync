@@ -17,7 +17,6 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Timestamp;
 /**
  * Helper methods to work on Google\Cloud\Core\Timestamp.
  * @internal
@@ -37,7 +36,7 @@ trait TimestampTrait
     {
         if (isset($args['readTime'])) {
             if (!$args['readTime'] instanceof Timestamp) {
-                throw new \InvalidArgumentException(sprintf('`$options.readTime` must be an instance of %s', Timestamp::class));
+                throw new \InvalidArgumentException(\sprintf('`$options.readTime` must be an instance of %s', Timestamp::class));
             }
             $args['readTime'] = $args['readTime']->formatForApi();
         }

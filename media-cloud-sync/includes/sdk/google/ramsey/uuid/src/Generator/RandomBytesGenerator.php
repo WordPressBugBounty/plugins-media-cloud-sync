@@ -15,8 +15,7 @@ namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\RandomSourceException;
 use Throwable;
 /**
- * RandomBytesGenerator generates strings of random binary data using the
- * built-in `random_bytes()` PHP function
+ * RandomBytesGenerator generates strings of random binary data using the built-in `random_bytes()` PHP function
  *
  * @link http://php.net/random_bytes random_bytes()
  */
@@ -27,10 +26,10 @@ class RandomBytesGenerator implements RandomGeneratorInterface
      *
      * @inheritDoc
      */
-    public function generate(int $length): string
+    public function generate(int $length) : string
     {
         try {
-            return random_bytes($length);
+            return \random_bytes($length);
         } catch (Throwable $exception) {
             throw new RandomSourceException($exception->getMessage(), (int) $exception->getCode(), $exception);
         }

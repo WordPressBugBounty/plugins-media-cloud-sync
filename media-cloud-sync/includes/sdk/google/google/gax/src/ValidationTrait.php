@@ -58,7 +58,7 @@ trait ValidationTrait
     private static function validateImpl($arr, $requiredKeys, $allowNull)
     {
         foreach ($requiredKeys as $requiredKey) {
-            $valid = array_key_exists($requiredKey, $arr) && ($allowNull || !is_null($arr[$requiredKey]));
+            $valid = \array_key_exists($requiredKey, $arr) && ($allowNull || !\is_null($arr[$requiredKey]));
             if (!$valid) {
                 throw new ValidationException("Missing required argument {$requiredKey}");
             }
@@ -71,7 +71,7 @@ trait ValidationTrait
      */
     private static function validateFileExists(string $filePath)
     {
-        if (!file_exists($filePath)) {
+        if (!\file_exists($filePath)) {
             throw new ValidationException("Could not find specified file: {$filePath}");
         }
     }

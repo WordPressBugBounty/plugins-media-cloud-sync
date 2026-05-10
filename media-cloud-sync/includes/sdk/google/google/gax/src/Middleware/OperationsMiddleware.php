@@ -35,9 +35,10 @@ namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
 use Dudlewebs\WPMCS\Google\ApiCore\Call;
 use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware which wraps the response in an OperationResponse object.
+ *
+ * @internal
  */
 class OperationsMiddleware implements MiddlewareInterface
 {
@@ -57,7 +58,7 @@ class OperationsMiddleware implements MiddlewareInterface
         return $next($call, $options)->then(function (Message $response) {
             $options = $this->descriptor + ['lastProtoResponse' => $response];
             $operationNameMethod = $options['operationNameMethod'] ?? 'getName';
-            $operationName = call_user_func([$response, $operationNameMethod]);
+            $operationName = \call_user_func([$response, $operationNameMethod]);
             return new OperationResponse($operationName, $this->operationsClient, $options);
         });
     }

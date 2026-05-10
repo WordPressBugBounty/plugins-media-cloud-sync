@@ -49,7 +49,7 @@ class JWK
      *
      * @uses parseKey
      */
-    public static function parseKeySet(array $jwks, string $defaultAlg = null): array
+    public static function parseKeySet(#[\SensitiveParameter] array $jwks, ?string $defaultAlg = null) : array
     {
         $keys = [];
         if (!isset($jwks['keys'])) {
@@ -84,7 +84,7 @@ class JWK
      *
      * @uses createPemFromModulusAndExponent
      */
-    public static function parseKey(array $jwk, string $defaultAlg = null): ?Key
+    public static function parseKey(#[\SensitiveParameter] array $jwk, ?string $defaultAlg = null) : ?Key
     {
         if (empty($jwk)) {
             throw new InvalidArgumentException('JWK must not be empty');
@@ -149,6 +149,11 @@ class JWK
                 // This library works internally with EdDSA keys (Ed25519) encoded in standard base64.
                 $publicKey = JWT::convertBase64urlToBase64($jwk['x']);
                 return new Key($publicKey, $jwk['alg']);
+            case 'oct':
+                if (!isset($jwk['k'])) {
+                    throw new UnexpectedValueException('k not set');
+                }
+                return new Key(JWT::urlsafeB64Decode($jwk['k']), $jwk['alg']);
             default:
                 break;
         }
@@ -163,10 +168,10 @@ class JWK
      *
      * @return  string
      */
-    private static function createPemFromCrvAndXYCoordinates(string $crv, string $x, string $y): string
+    private static function createPemFromCrvAndXYCoordinates(string $crv, string $x, string $y) : string
     {
         $pem = self::encodeDER(self::ASN1_SEQUENCE, self::encodeDER(self::ASN1_SEQUENCE, self::encodeDER(self::ASN1_OBJECT_IDENTIFIER, self::encodeOID(self::OID)) . self::encodeDER(self::ASN1_OBJECT_IDENTIFIER, self::encodeOID(self::EC_CURVES[$crv]))) . self::encodeDER(self::ASN1_BIT_STRING, \chr(0x0) . \chr(0x4) . JWT::urlsafeB64Decode($x) . JWT::urlsafeB64Decode($y)));
-        return sprintf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", wordwrap(base64_encode($pem), 64, "\n", \true));
+        return \sprintf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", \wordwrap(\base64_encode($pem), 64, "\n", \true));
     }
     /**
      * Create a public key represented in PEM format from RSA modulus and exponent information
@@ -178,10 +183,18 @@ class JWK
      *
      * @uses encodeLength
      */
-    private static function createPemFromModulusAndExponent(string $n, string $e): string
+    private static function createPemFromModulusAndExponent(string $n, string $e) : string
     {
         $mod = JWT::urlsafeB64Decode($n);
         $exp = JWT::urlsafeB64Decode($e);
+        // Correct encoding for ASN1, as ints are represented as unsigned in jwk
+        // but signed in ASN1. Prepending null byte makes it unsigned.
+        if (\strlen($mod) > 0 && \ord($mod[0]) >= 128) {
+            $mod = \chr(0) . $mod;
+        }
+        if (\strlen($exp) > 0 && \ord($exp[0]) >= 128) {
+            $exp = \chr(0) . $exp;
+        }
         $modulus = \pack('Ca*a*', 2, self::encodeLength(\strlen($mod)), $mod);
         $publicExponent = \pack('Ca*a*', 2, self::encodeLength(\strlen($exp)), $exp);
         $rsaPublicKey = \pack('Ca*a*a*', 48, self::encodeLength(\strlen($modulus) + \strlen($publicExponent)), $modulus, $publicExponent);
@@ -202,7 +215,7 @@ class JWK
      * @param int $length
      * @return string
      */
-    private static function encodeLength(int $length): string
+    private static function encodeLength(int $length) : string
     {
         if ($length <= 0x7f) {
             return \chr($length);
@@ -218,7 +231,7 @@ class JWK
      * @param   string  $value the value to encode
      * @return  string  the encoded object
      */
-    private static function encodeDER(int $type, string $value): string
+    private static function encodeDER(int $type, string $value) : string
     {
         $tag_header = 0;
         if ($type === self::ASN1_SEQUENCE) {
@@ -236,12 +249,12 @@ class JWK
      * @param   string $oid the OID string
      * @return  string the binary DER-encoded OID
      */
-    private static function encodeOID(string $oid): string
+    private static function encodeOID(string $oid) : string
     {
-        $octets = explode('.', $oid);
+        $octets = \explode('.', $oid);
         // Get the first octet
-        $first = (int) array_shift($octets);
-        $second = (int) array_shift($octets);
+        $first = (int) \array_shift($octets);
+        $second = (int) \array_shift($octets);
         $oid = \chr($first * 40 + $second);
         // Iterate over subsequent octets
         foreach ($octets as $octet) {
@@ -256,8 +269,8 @@ class JWK
             }
             $bin[0] = $bin[0] & \chr(0x7f);
             // Convert to big endian if necessary
-            if (pack('V', 65534) == pack('L', 65534)) {
-                $oid .= strrev($bin);
+            if (\pack('V', 65534) == \pack('L', 65534)) {
+                $oid .= \strrev($bin);
             } else {
                 $oid .= $bin;
             }

@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Settings for Go client libraries.
  *
@@ -21,6 +21,19 @@ class GoSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     protected $common = null;
     /**
+     * Map of service names to renamed services. Keys are the package relative
+     * service names and values are the name to be used for the service client
+     * and call options.
+     * Example:
+     *     publishing:
+     *       go_settings:
+     *         renamed_services:
+     *           Publisher: TopicAdmin
+     *
+     * Generated from protobuf field <code>map<string, string> renamed_services = 2;</code>
+     */
+    private $renamed_services;
+    /**
      * Constructor.
      *
      * @param array $data {
@@ -28,6 +41,15 @@ class GoSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *
      *     @type \Google\Api\CommonLanguageSettings $common
      *           Some settings.
+     *     @type array|\Google\Protobuf\Internal\MapField $renamed_services
+     *           Map of service names to renamed services. Keys are the package relative
+     *           service names and values are the name to be used for the service client
+     *           and call options.
+     *           Example:
+     *               publishing:
+     *                 go_settings:
+     *                   renamed_services:
+     *                     Publisher: TopicAdmin
      * }
      */
     public function __construct($data = NULL)
@@ -64,6 +86,43 @@ class GoSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Dudlewebs\WPMCS\Google\Api\CommonLanguageSettings::class);
         $this->common = $var;
+        return $this;
+    }
+    /**
+     * Map of service names to renamed services. Keys are the package relative
+     * service names and values are the name to be used for the service client
+     * and call options.
+     * Example:
+     *     publishing:
+     *       go_settings:
+     *         renamed_services:
+     *           Publisher: TopicAdmin
+     *
+     * Generated from protobuf field <code>map<string, string> renamed_services = 2;</code>
+     * @return \Google\Protobuf\Internal\MapField
+     */
+    public function getRenamedServices()
+    {
+        return $this->renamed_services;
+    }
+    /**
+     * Map of service names to renamed services. Keys are the package relative
+     * service names and values are the name to be used for the service client
+     * and call options.
+     * Example:
+     *     publishing:
+     *       go_settings:
+     *         renamed_services:
+     *           Publisher: TopicAdmin
+     *
+     * Generated from protobuf field <code>map<string, string> renamed_services = 2;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
+     */
+    public function setRenamedServices($var)
+    {
+        $arr = GPBUtil::checkMapField($var, \Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType::STRING, \Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType::STRING);
+        $this->renamed_services = $arr;
         return $this;
     }
 }

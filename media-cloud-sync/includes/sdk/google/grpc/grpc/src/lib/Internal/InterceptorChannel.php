@@ -33,7 +33,7 @@ class InterceptorChannel extends \Grpc\Channel
      */
     public function __construct($channel, $interceptor)
     {
-        if (!is_a($channel, 'Grpc\Channel') && !is_a($channel, 'Dudlewebs\WPMCS\Grpc\Internal\InterceptorChannel')) {
+        if (!\is_a($channel, 'Grpc\\Channel') && !\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
             throw new \Exception('The channel argument is not a Channel object ' . 'or an InterceptorChannel object created by ' . 'Interceptor::intercept($channel, Interceptor|Interceptor[] $interceptors)');
         }
         $this->interceptor = $interceptor;

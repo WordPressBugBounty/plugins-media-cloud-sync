@@ -6,13 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = $vendorDir;
 
 return array(
-    'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php81\\' => array($vendorDir . '/symfony/polyfill-php81'),
-    'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Dudlewebs\\WPMCS\\Rize\\' => array($vendorDir . '/rize/uri-template/src/Rize'),
     'Dudlewebs\\WPMCS\\Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
     'Dudlewebs\\WPMCS\\Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
-    'Dudlewebs\\WPMCS\\Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+    'Dudlewebs\\WPMCS\\Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Dudlewebs\\WPMCS\\Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Dudlewebs\\WPMCS\\Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
     'Dudlewebs\\WPMCS\\Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
@@ -45,5 +42,5 @@ return array(
     'Dudlewebs\\WPMCS\\GPBMetadata\\ApiCore\\' => array($vendorDir . '/google/gax/metadata/ApiCore'),
     'Dudlewebs\\WPMCS\\Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Dudlewebs\\WPMCS\\Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
-    'Dudlewebs\\WPMCS\\' => array($vendorDir . '/vendor'),
+    'Dudlewebs\\WPMCS\\' => array($vendorDir . ''),
 );

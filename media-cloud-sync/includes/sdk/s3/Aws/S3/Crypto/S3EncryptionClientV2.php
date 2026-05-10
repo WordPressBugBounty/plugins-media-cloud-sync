@@ -5,6 +5,7 @@ namespace Dudlewebs\WPMCS\s3\Aws\S3\Crypto;
 use Dudlewebs\WPMCS\s3\Aws\Crypto\DecryptionTraitV2;
 use Dudlewebs\WPMCS\s3\Aws\Exception\CryptoException;
 use Dudlewebs\WPMCS\s3\Aws\HashingStream;
+use Dudlewebs\WPMCS\s3\Aws\MetricsBuilder;
 use Dudlewebs\WPMCS\s3\Aws\PhpHash;
 use Dudlewebs\WPMCS\s3\Aws\Crypto\AbstractCryptoClientV2;
 use Dudlewebs\WPMCS\s3\Aws\Crypto\EncryptionTraitV2;
@@ -100,10 +101,10 @@ class S3EncryptionClientV2 extends AbstractCryptoClientV2
      */
     public function __construct(S3Client $client, $instructionFileSuffix = null)
     {
-        $this->appendUserAgent($client, 'feat/s3-encrypt/' . self::CRYPTO_VERSION);
         $this->client = $client;
         $this->instructionFileSuffix = $instructionFileSuffix;
         $this->legacyWarningCount = 0;
+        MetricsBuilder::appendMetricsCaptureMiddleware($this->client->getHandlerList(), MetricsBuilder::S3_CRYPTO_V2);
     }
     private static function getDefaultStrategy()
     {

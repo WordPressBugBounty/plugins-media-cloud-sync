@@ -27,7 +27,7 @@ class MessageBuilderContext
     {
         $field = new FieldDescriptor();
         $field->setName($name);
-        $camel_name = implode('', array_map('ucwords', explode('_', $name)));
+        $camel_name = \implode('', \array_map('ucwords', \explode('_', $name)));
         $field->setGetter('get' . $camel_name);
         $field->setSetter('set' . $camel_name);
         $field->setType($type);

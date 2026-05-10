@@ -15,48 +15,41 @@ namespace Dudlewebs\WPMCS\Ramsey\Uuid\Codec;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
 use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use function bin2hex;
 use function hex2bin;
 use function implode;
+use function sprintf;
 use function str_replace;
 use function strlen;
 use function substr;
 /**
- * StringCodec encodes and decodes RFC 4122 UUIDs
+ * StringCodec encodes and decodes RFC 9562 (formerly RFC 4122) UUIDs
  *
- * @link http://tools.ietf.org/html/rfc4122
- *
- * @psalm-immutable
+ * @immutable
  */
 class StringCodec implements CodecInterface
 {
-    /**
-     * @var UuidBuilderInterface
-     */
-    private $builder;
     /**
      * Constructs a StringCodec
      *
      * @param UuidBuilderInterface $builder The builder to use when encoding UUIDs
      */
-    public function __construct(UuidBuilderInterface $builder)
+    public function __construct(private UuidBuilderInterface $builder)
     {
-        $this->builder = $builder;
     }
-    public function encode(UuidInterface $uuid): string
+    public function encode(UuidInterface $uuid) : string
     {
-        /** @var FieldsInterface $fields */
-        $fields = $uuid->getFields();
-        return $fields->getTimeLow()->toString() . '-' . $fields->getTimeMid()->toString() . '-' . $fields->getTimeHiAndVersion()->toString() . '-' . $fields->getClockSeqHiAndReserved()->toString() . $fields->getClockSeqLow()->toString() . '-' . $fields->getNode()->toString();
+        /** @phpstan-ignore possiblyImpure.methodCall */
+        $hex = bin2hex($uuid->getFields()->getBytes());
+        /** @var non-empty-string */
+        return sprintf('%08s-%04s-%04s-%04s-%012s', substr($hex, 0, 8), substr($hex, 8, 4), substr($hex, 12, 4), substr($hex, 16, 4), substr($hex, 20));
     }
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
-    public function encodeBinary(UuidInterface $uuid): string
+    public function encodeBinary(UuidInterface $uuid) : string
     {
         /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
         return $uuid->getFields()->getBytes();
@@ -66,11 +59,12 @@ class StringCodec implements CodecInterface
      *
      * @inheritDoc
      */
-    public function decode(string $encodedUuid): UuidInterface
+    public function decode(string $encodedUuid) : UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->builder->build($this, $this->getBytes($encodedUuid));
     }
-    public function decodeBytes(string $bytes): UuidInterface
+    public function decodeBytes(string $bytes) : UuidInterface
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
@@ -80,14 +74,14 @@ class StringCodec implements CodecInterface
     /**
      * Returns the UUID builder
      */
-    protected function getBuilder(): UuidBuilderInterface
+    protected function getBuilder() : UuidBuilderInterface
     {
         return $this->builder;
     }
     /**
      * Returns a byte string of the UUID
      */
-    protected function getBytes(string $encodedUuid): string
+    protected function getBytes(string $encodedUuid) : string
     {
         $parsedUuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}', '-'], '', $encodedUuid);
         $components = [substr($parsedUuid, 0, 8), substr($parsedUuid, 8, 4), substr($parsedUuid, 12, 4), substr($parsedUuid, 16, 4), substr($parsedUuid, 20)];

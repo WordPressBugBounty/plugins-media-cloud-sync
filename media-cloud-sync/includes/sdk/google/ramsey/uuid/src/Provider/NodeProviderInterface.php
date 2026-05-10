@@ -23,5 +23,5 @@ interface NodeProviderInterface
      *
      * @return Hexadecimal The node ID as a hexadecimal string
      */
-    public function getNode(): Hexadecimal;
+    public function getNode() : Hexadecimal;
 }

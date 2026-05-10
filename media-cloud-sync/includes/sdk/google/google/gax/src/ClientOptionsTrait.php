@@ -32,11 +32,16 @@
  */
 namespace Dudlewebs\WPMCS\Google\ApiCore;
 
+use Dudlewebs\WPMCS\Google\ApiCore\Options\ClientOptions;
+use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
 use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
 use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
 use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
 use Dudlewebs\WPMCS\Grpc\Gcp\ApiConfig;
 use Dudlewebs\WPMCS\Grpc\Gcp\Config;
+use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\Psr\Log\LogLevel;
 /**
  * Common functions used to work with various clients.
  *
@@ -59,7 +64,7 @@ trait ClientOptionsTrait
     private static function initGrpcGcpConfig(string $hostName, string $confPath)
     {
         $apiConfig = new ApiConfig();
-        $apiConfig->mergeFromJsonString(file_get_contents($confPath));
+        $apiConfig->mergeFromJsonString(\file_get_contents($confPath));
         $config = new Config($hostName, $apiConfig);
         return $config;
     }
@@ -74,37 +79,73 @@ trait ClientOptionsTrait
     {
         return [];
     }
-    private function buildClientOptions(array $options)
+    /**
+     * Resolve client options based on the client's default
+     * ({@see ClientOptionsTrait::getClientDefault}) and the default for all
+     * Google APIs.
+     *
+     * 1. Set default client option values
+     * 2. Set default logger (and log user-supplied configuration options)
+     * 3. Set default transport configuration
+     * 4. Call "modifyClientOptions" (for backwards compatibility)
+     * 5. Use "defaultScopes" when custom endpoint is supplied
+     * 6. Load mTLS from the environment if configured
+     * 7. Resolve endpoint based on universe domain template when possible
+     * 8. Load sysvshm grpc config when possible
+     */
+    private function buildClientOptions(array|ClientOptions $options)
     {
+        if ($options instanceof ClientOptions) {
+            $options = $options->toArray();
+        }
         // Build $defaultOptions starting from top level
         // variables, then going into deeper nesting, so that
         // we will not encounter missing keys
         $defaultOptions = self::getClientDefaults();
-        $defaultOptions += ['disableRetries' => \false, 'credentials' => null, 'credentialsConfig' => [], 'transport' => null, 'transportConfig' => [], 'gapicVersion' => self::getGapicVersion($options), 'libName' => null, 'libVersion' => null, 'apiEndpoint' => null, 'clientCertSource' => null, 'universeDomain' => null];
+        $defaultOptions += ['disableRetries' => \false, 'credentials' => null, 'credentialsConfig' => [], 'transport' => null, 'transportConfig' => [], 'gapicVersion' => self::getGapicVersion($options), 'libName' => null, 'libVersion' => null, 'apiEndpoint' => null, 'clientCertSource' => null, 'universeDomain' => null, 'logger' => null];
         $supportedTransports = $this->supportedTransports();
         foreach ($supportedTransports as $transportName) {
-            if (!array_key_exists($transportName, $defaultOptions['transportConfig'])) {
+            if (!\array_key_exists($transportName, $defaultOptions['transportConfig'])) {
                 $defaultOptions['transportConfig'][$transportName] = [];
             }
         }
-        if (in_array('grpc', $supportedTransports)) {
+        if (\in_array('grpc', $supportedTransports)) {
             $defaultOptions['transportConfig']['grpc'] = ['stubOpts' => ['grpc.service_config_disable_resolution' => 1]];
         }
         // Keep track of the API Endpoint
         $apiEndpoint = $options['apiEndpoint'] ?? null;
+        // Keep track of the original user supplied options for logging the configuration
+        $clientSuppliedOptions = $options;
         // Merge defaults into $options starting from top level
         // variables, then going into deeper nesting, so that
         // we will not encounter missing keys
         $options += $defaultOptions;
+        // If logger is explicitly set to false, logging is disabled
+        if (\is_null($options['logger'])) {
+            $options['logger'] = ApplicationDefaultCredentials::getDefaultLogger();
+        }
+        if ($options['logger'] !== null && $options['logger'] !== \false && !$options['logger'] instanceof LoggerInterface) {
+            throw new ValidationException('The "logger" option in the options array should be PSR-3 LoggerInterface compatible');
+        }
+        // Log the user supplied configuration.
+        $this->logConfiguration($options['logger'], $clientSuppliedOptions);
+        if (isset($options['logger'])) {
+            $options['credentialsConfig']['authHttpHandler'] = HttpHandlerFactory::build(logger: $options['logger']);
+        }
         $options['credentialsConfig'] += $defaultOptions['credentialsConfig'];
         $options['transportConfig'] += $defaultOptions['transportConfig'];
         // @phpstan-ignore-line
         if (isset($options['transportConfig']['grpc'])) {
             $options['transportConfig']['grpc'] += $defaultOptions['transportConfig']['grpc'];
             $options['transportConfig']['grpc']['stubOpts'] += $defaultOptions['transportConfig']['grpc']['stubOpts'];
+            $options['transportConfig']['grpc']['logger'] = $options['logger'] ?? null;
         }
         if (isset($options['transportConfig']['rest'])) {
             $options['transportConfig']['rest'] += $defaultOptions['transportConfig']['rest'];
+            $options['transportConfig']['rest']['logger'] = $options['logger'] ?? null;
+        }
+        if (isset($options['transportConfig']['grpc-fallback'])) {
+            $options['transportConfig']['grpc-fallback']['logger'] = $options['logger'] ?? null;
         }
         // These calls do not apply to "New Surface" clients.
         if ($this->isBackwardsCompatibilityMode()) {
@@ -133,8 +174,8 @@ trait ClientOptionsTrait
         // "GOOGLE_API_USE_CLIENT_CERTIFICATE" is true, and the cert source is available
         if (empty($options['clientCertSource']) && CredentialsLoader::shouldLoadClientCertSource()) {
             if ($defaultCertSource = CredentialsLoader::getDefaultClientCertSource()) {
-                $options['clientCertSource'] = function () use ($defaultCertSource) {
-                    $cert = call_user_func($defaultCertSource);
+                $options['clientCertSource'] = function () use($defaultCertSource) {
+                    $cert = \call_user_func($defaultCertSource);
                     // the key and the cert are returned in one string
                     return [$cert, $cert];
                 };
@@ -142,29 +183,29 @@ trait ClientOptionsTrait
         }
         // mTLS: If no apiEndpoint has been supplied by the user, and either
         // GOOGLE_API_USE_MTLS_ENDPOINT tells us to, or mTLS is available, use the mTLS endpoint.
-        if (is_null($apiEndpoint) && $this->shouldUseMtlsEndpoint($options)) {
+        if (\is_null($apiEndpoint) && $this->shouldUseMtlsEndpoint($options)) {
             $apiEndpoint = self::determineMtlsEndpoint($options['apiEndpoint']);
         }
         // If the user has not supplied a universe domain, use the environment variable if set.
         // Otherwise, use the default ("googleapis.com").
-        $options['universeDomain'] ??= getenv('GOOGLE_CLOUD_UNIVERSE_DOMAIN') ?: GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN;
+        $options['universeDomain'] ??= \getenv('GOOGLE_CLOUD_UNIVERSE_DOMAIN') ?: GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN;
         // mTLS: It is not valid to configure mTLS outside of "googleapis.com" (yet)
         if (isset($options['clientCertSource']) && $options['universeDomain'] !== GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN) {
             throw new ValidationException('mTLS is not supported outside the "googleapis.com" universe');
         }
-        if (is_null($apiEndpoint)) {
-            if (defined('self::SERVICE_ADDRESS_TEMPLATE')) {
+        if (\is_null($apiEndpoint)) {
+            if (\defined('self::SERVICE_ADDRESS_TEMPLATE')) {
                 // Derive the endpoint from the service address template and the universe domain
-                $apiEndpoint = str_replace('UNIVERSE_DOMAIN', $options['universeDomain'], self::SERVICE_ADDRESS_TEMPLATE);
+                $apiEndpoint = \str_replace('UNIVERSE_DOMAIN', $options['universeDomain'], self::SERVICE_ADDRESS_TEMPLATE);
             } else {
                 // For older clients, the service address template does not exist. Use the default
                 // endpoint instead.
                 $apiEndpoint = $defaultOptions['apiEndpoint'];
             }
         }
-        if (extension_loaded('sysvshm') && isset($options['gcpApiConfigPath']) && file_exists($options['gcpApiConfigPath']) && !empty($apiEndpoint)) {
+        if (\extension_loaded('sysvshm') && isset($options['gcpApiConfigPath']) && \file_exists($options['gcpApiConfigPath']) && !empty($apiEndpoint)) {
             $grpcGcpConfig = self::initGrpcGcpConfig($apiEndpoint, $options['gcpApiConfigPath']);
-            if (!array_key_exists('stubOpts', $options['transportConfig']['grpc'])) {
+            if (!\array_key_exists('stubOpts', $options['transportConfig']['grpc'])) {
                 $options['transportConfig']['grpc']['stubOpts'] = [];
             }
             $options['transportConfig']['grpc']['stubOpts'] += ['grpc_call_invoker' => $grpcGcpConfig->callInvoker()];
@@ -174,7 +215,7 @@ trait ClientOptionsTrait
     }
     private function shouldUseMtlsEndpoint(array $options)
     {
-        $mtlsEndpointEnvVar = getenv('GOOGLE_API_USE_MTLS_ENDPOINT');
+        $mtlsEndpointEnvVar = \getenv('GOOGLE_API_USE_MTLS_ENDPOINT');
         if ('always' === $mtlsEndpointEnvVar) {
             return \true;
         }
@@ -186,12 +227,12 @@ trait ClientOptionsTrait
     }
     private static function determineMtlsEndpoint(string $apiEndpoint)
     {
-        $parts = explode('.', $apiEndpoint);
-        if (count($parts) < 3) {
+        $parts = \explode('.', $apiEndpoint);
+        if (\count($parts) < 3) {
             return $apiEndpoint;
             // invalid endpoint!
         }
-        return sprintf('%s.mtls.%s', array_shift($parts), implode('.', $parts));
+        return \sprintf('%s.mtls.%s', \array_shift($parts), \implode('.', $parts));
     }
     /**
      * @param mixed $credentials
@@ -201,18 +242,21 @@ trait ClientOptionsTrait
      */
     private function createCredentialsWrapper($credentials, array $credentialsConfig, string $universeDomain)
     {
-        if (is_null($credentials)) {
+        if (\is_null($credentials)) {
+            // If the user has explicitly set the apiKey option, use Api Key credentials
             return CredentialsWrapper::build($credentialsConfig, $universeDomain);
-        } elseif (is_string($credentials) || is_array($credentials)) {
+        }
+        if (\is_string($credentials) || \is_array($credentials)) {
             return CredentialsWrapper::build(['keyFile' => $credentials] + $credentialsConfig, $universeDomain);
-        } elseif ($credentials instanceof FetchAuthTokenInterface) {
+        }
+        if ($credentials instanceof FetchAuthTokenInterface) {
             $authHttpHandler = $credentialsConfig['authHttpHandler'] ?? null;
             return new CredentialsWrapper($credentials, $authHttpHandler, $universeDomain);
-        } elseif ($credentials instanceof CredentialsWrapper) {
-            return $credentials;
-        } else {
-            throw new ValidationException('Unexpected value in $auth option, got: ' . print_r($credentials, \true));
         }
+        if ($credentials instanceof CredentialsWrapper) {
+            return $credentials;
+        }
+        throw new ValidationException(\sprintf('Unexpected value in $auth option, got: %s', \print_r($credentials, \true)));
     }
     /**
      * This defaults to all three transports, which One-Platform supports.
@@ -240,8 +284,24 @@ trait ClientOptionsTrait
     /**
      * @internal
      */
-    private function isBackwardsCompatibilityMode(): bool
+    private function isBackwardsCompatibilityMode() : bool
     {
         return \false;
+    }
+    /**
+     * @param null|false|LoggerInterface $logger
+     * @param string $options
+     */
+    private function logConfiguration(null|false|LoggerInterface $logger, array $options) : void
+    {
+        if (!$logger) {
+            return;
+        }
+        $configurationLog = ['timestamp' => \date(\DATE_RFC3339), 'severity' => \strtoupper(LogLevel::DEBUG), 'processId' => \getmypid(), 'jsonPayload' => [
+            'serviceName' => self::SERVICE_NAME,
+            // @phpstan-ignore-line
+            'clientConfiguration' => $options,
+        ]];
+        $logger->debug(\json_encode($configurationLog));
     }
 }

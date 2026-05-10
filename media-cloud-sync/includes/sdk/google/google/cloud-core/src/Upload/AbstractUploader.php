@@ -85,11 +85,11 @@ abstract class AbstractUploader
         $this->uri = $uri;
         $this->metadata = $options['metadata'] ?? [];
         $this->chunkSize = $options['chunkSize'] ?? null;
-        $this->requestOptions = array_intersect_key($options, ['restOptions' => null, 'retries' => null, 'requestTimeout' => null, 'restRetryFunction' => null, 'restRetryListener' => null]);
+        $this->requestOptions = \array_intersect_key($options, ['restOptions' => null, 'retries' => null, 'requestTimeout' => null, 'restRetryFunction' => null, 'restRetryListener' => null]);
         $this->contentType = $options['contentType'] ?? 'application/octet-stream';
     }
     /**
      * @return array
      */
-    abstract public function upload();
+    public abstract function upload();
 }

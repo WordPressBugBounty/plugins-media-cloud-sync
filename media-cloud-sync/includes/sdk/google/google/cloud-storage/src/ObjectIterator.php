@@ -22,6 +22,8 @@ use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\ItemIteratorTrait;
  * ObjectIterator
  *
  * Iterates over a set of {@see StorageObject} items.
+ *
+ * @implements \Iterator<int, StorageObject>
  */
 class ObjectIterator implements \Iterator
 {
@@ -34,6 +36,6 @@ class ObjectIterator implements \Iterator
      */
     public function prefixes()
     {
-        return method_exists($this->pageIterator, 'prefixes') ? $this->pageIterator->prefixes() : [];
+        return \method_exists($this->pageIterator, 'prefixes') ? $this->pageIterator->prefixes() : [];
     }
 }

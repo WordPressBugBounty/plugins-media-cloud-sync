@@ -31,11 +31,15 @@ trait EmulatorTrait
     private function emulatorGapicConfig($emulatorHost)
     {
         // Strip the URL scheme from the input, if it was provided.
-        if ($scheme = parse_url($emulatorHost, \PHP_URL_SCHEME)) {
+        if ($scheme = \parse_url($emulatorHost, \PHP_URL_SCHEME)) {
             $search = $scheme . '://';
-            $emulatorHost = str_replace($search, '', $emulatorHost);
+            $emulatorHost = \str_replace($search, '', $emulatorHost);
         }
-        return ['apiEndpoint' => $emulatorHost, 'transportConfig' => ['grpc' => ['stubOpts' => ['credentials' => \Grpc\ChannelCredentials::createInsecure()]]], 'credentials' => new InsecureCredentialsWrapper()];
+        $config = ['apiEndpoint' => $emulatorHost, 'credentials' => new InsecureCredentialsWrapper()];
+        if (\class_exists('Grpc\\ChannelCredentials')) {
+            $config['transportConfig'] = ['grpc' => ['stubOpts' => ['credentials' => \Grpc\ChannelCredentials::createInsecure()]]];
+        }
+        return $config;
     }
     /**
      * Retrieve a valid base uri for a service emulator.
@@ -45,8 +49,8 @@ trait EmulatorTrait
      */
     private function emulatorBaseUri($emulatorHost)
     {
-        $emulatorUriComponents = parse_url($emulatorHost);
-        $emulatorUriComponents = array_merge(['scheme' => 'http', 'port' => ''], $emulatorUriComponents);
+        $emulatorUriComponents = \parse_url($emulatorHost);
+        $emulatorUriComponents = \array_merge(['scheme' => 'http', 'port' => ''], $emulatorUriComponents);
         $baseUri = "{$emulatorUriComponents['scheme']}://{$emulatorUriComponents['host']}";
         $baseUri .= $emulatorUriComponents['port'] ? ":{$emulatorUriComponents['port']}/" : '/';
         return $baseUri;

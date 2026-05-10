@@ -17,6 +17,8 @@
  */
 namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
 
+use COM;
+use com_exception;
 use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
 use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
 use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
@@ -87,7 +89,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
     /**
      * The metadata path of the project ID.
      */
-    const UNIVERSE_DOMAIN_URI_PATH = 'v1/universe/universe_domain';
+    const UNIVERSE_DOMAIN_URI_PATH = 'v1/universe/universe-domain';
     /**
      * The header whose presence indicates GCE presence.
      */
@@ -96,6 +98,19 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      * The Linux file which contains the product name.
      */
     private const GKE_PRODUCT_NAME_FILE = '/sys/class/dmi/id/product_name';
+    /**
+     * The Windows Registry key path to the product name
+     */
+    private const WINDOWS_REGISTRY_KEY_PATH = 'HKEY_LOCAL_MACHINE\\SYSTEM\\HardwareConfig\\Current\\';
+    /**
+     * The Windows registry key name for the product name
+     */
+    private const WINDOWS_REGISTRY_KEY_NAME = 'SystemProductName';
+    /**
+     * The Name of the product expected from the windows registry
+     */
+    private const PRODUCT_NAME = 'Google';
+    private const CRED_TYPE = 'mds';
     /**
      * Note: the explicit `timeout` and `tries` below is a workaround. The underlying
      * issue is that resolving an unknown host on some networks will take
@@ -155,7 +170,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      */
     private ?string $universeDomain;
     /**
-     * @param Iam $iam [optional] An IAM instance.
+     * @param Iam|null $iam [optional] An IAM instance.
      * @param string|string[] $scope [optional] the scope of the access request,
      *        expressed either as an array or as a space-delimited string.
      * @param string $targetAudience [optional] The audience for the ID token.
@@ -163,10 +178,10 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      *   charges associated with the request.
      * @param string $serviceAccountIdentity [optional] Specify a service
      *   account identity name to use instead of "default".
-     * @param string $universeDomain [optional] Specify a universe domain to use
+     * @param string|null $universeDomain [optional] Specify a universe domain to use
      *   instead of fetching one from the metadata server.
      */
-    public function __construct(Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null, $serviceAccountIdentity = null, string $universeDomain = null)
+    public function __construct(?Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null, $serviceAccountIdentity = null, ?string $universeDomain = null)
     {
         $this->iam = $iam;
         if ($scope && $targetAudience) {
@@ -174,10 +189,10 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
         }
         $tokenUri = self::getTokenUri($serviceAccountIdentity);
         if ($scope) {
-            if (is_string($scope)) {
-                $scope = explode(' ', $scope);
+            if (\is_string($scope)) {
+                $scope = \explode(' ', $scope);
             }
-            $scope = implode(',', $scope);
+            $scope = \implode(',', $scope);
             $tokenUri = $tokenUri . '?scopes=' . $scope;
         } elseif ($targetAudience) {
             $tokenUri = self::getIdTokenUri($serviceAccountIdentity);
@@ -201,7 +216,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::TOKEN_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -217,7 +232,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::CLIENT_ID_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -233,7 +248,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::ID_TOKEN_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -265,17 +280,17 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      */
     public static function onAppEngineFlexible()
     {
-        return substr((string) getenv('GAE_INSTANCE'), 0, 4) === 'aef-';
+        return \substr((string) \getenv('GAE_INSTANCE'), 0, 4) === 'aef-';
     }
     /**
      * Determines if this a GCE instance, by accessing the expected metadata
      * host.
      * If $httpHandler is not specified a the default HttpHandler is used.
      *
-     * @param callable $httpHandler callback which delivers psr7 request
+     * @param callable|null $httpHandler callback which delivers psr7 request
      * @return bool True if this a GCEInstance, false otherwise
      */
-    public static function onGce(callable $httpHandler = null)
+    public static function onGce(?callable $httpHandler = null)
     {
         $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         $checkUri = 'http://' . self::METADATA_IP;
@@ -289,7 +304,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
                 // could lead to false negatives in the event that we are on GCE, but
                 // the metadata resolution was particularly slow. The latter case is
                 // "unlikely".
-                $resp = $httpHandler(new Request('GET', $checkUri, [self::FLAVOR_HEADER => 'Google']), ['timeout' => self::COMPUTE_PING_CONNECTION_TIMEOUT_S]);
+                $resp = $httpHandler(new Request('GET', $checkUri, [self::FLAVOR_HEADER => 'Google', self::$metricMetadataKey => self::getMetricsHeader('', 'mds')]), ['timeout' => self::COMPUTE_PING_CONNECTION_TIMEOUT_S]);
                 return $resp->getHeaderLine(self::FLAVOR_HEADER) == 'Google';
             } catch (ClientException $e) {
             } catch (ServerException $e) {
@@ -297,20 +312,37 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
             } catch (ConnectException $e) {
             }
         }
-        if (\PHP_OS === 'Windows') {
-            // @TODO: implement GCE residency detection on Windows
-            return \false;
+        if (\PHP_OS === 'Windows' || \PHP_OS === 'WINNT') {
+            return self::detectResidencyWindows(self::WINDOWS_REGISTRY_KEY_PATH . self::WINDOWS_REGISTRY_KEY_NAME);
         }
         // Detect GCE residency on Linux
         return self::detectResidencyLinux(self::GKE_PRODUCT_NAME_FILE);
     }
-    private static function detectResidencyLinux(string $productNameFile): bool
+    private static function detectResidencyLinux(string $productNameFile) : bool
     {
-        if (file_exists($productNameFile)) {
-            $productName = trim((string) file_get_contents($productNameFile));
-            return 0 === strpos($productName, 'Google');
+        if (\file_exists($productNameFile)) {
+            $productName = \trim((string) \file_get_contents($productNameFile));
+            return 0 === \strpos($productName, self::PRODUCT_NAME);
         }
         return \false;
+    }
+    private static function detectResidencyWindows(string $registryProductKey) : bool
+    {
+        if (!\class_exists(COM::class)) {
+            // the COM extension must be installed and enabled to detect Windows residency
+            // see https://www.php.net/manual/en/book.com.php
+            return \false;
+        }
+        $shell = new COM('WScript.Shell');
+        $productName = null;
+        try {
+            $productName = $shell->regRead($registryProductKey);
+        } catch (com_exception) {
+            // This means that we tried to read a key that doesn't exist on the registry
+            // which might mean that it is a windows instance that is not on GCE
+            return \false;
+        }
+        return 0 === \strpos($productName, self::PRODUCT_NAME);
     }
     /**
      * Implements FetchAuthTokenInterface#fetchAuthToken.
@@ -318,7 +350,9 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      * Fetches the auth tokens from the GCE metadata host if it is available.
      * If $httpHandler is not specified a the default HttpHandler is used.
      *
-     * @param callable $httpHandler callback which delivers psr7 request
+     * @param callable|null $httpHandler callback which delivers psr7 request
+     * @param array<mixed> $headers [optional] Headers to be inserted
+     *     into the token endpoint request present.
      *
      * @return array<mixed> {
      *     A set of auth related metadata, based on the token type.
@@ -330,7 +364,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      * }
      * @throws \Exception
      */
-    public function fetchAuthToken(callable $httpHandler = null)
+    public function fetchAuthToken(?callable $httpHandler = null, array $headers = [])
     {
         $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         if (!$this->hasCheckedOnGce) {
@@ -341,24 +375,28 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
             return [];
             // return an empty array with no access token
         }
-        $response = $this->getFromMetadata($httpHandler, $this->tokenUri);
+        $response = $this->getFromMetadata($httpHandler, $this->tokenUri, $this->applyTokenEndpointMetrics($headers, $this->targetAudience ? 'it' : 'at'));
         if ($this->targetAudience) {
             return $this->lastReceivedToken = ['id_token' => $response];
         }
-        if (null === $json = json_decode($response, \true)) {
+        if (null === ($json = \json_decode($response, \true))) {
             throw new \Exception('Invalid JSON response');
         }
-        $json['expires_at'] = time() + $json['expires_in'];
+        $json['expires_at'] = \time() + $json['expires_in'];
         // store this so we can retrieve it later
         $this->lastReceivedToken = $json;
         return $json;
     }
     /**
+     * Returns the Cache Key for the credential token.
+     * The format for the cache key is:
+     * TokenURI
+     *
      * @return string
      */
     public function getCacheKey()
     {
-        return self::cacheKey;
+        return $this->tokenUri;
     }
     /**
      * @return array<mixed>|null
@@ -366,7 +404,7 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
     public function getLastReceivedToken()
     {
         if ($this->lastReceivedToken) {
-            if (array_key_exists('id_token', $this->lastReceivedToken)) {
+            if (\array_key_exists('id_token', $this->lastReceivedToken)) {
                 return $this->lastReceivedToken;
             }
             return ['access_token' => $this->lastReceivedToken['access_token'], 'expires_at' => $this->lastReceivedToken['expires_at']];
@@ -378,10 +416,10 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      *
      * Subsequent calls will return a cached value.
      *
-     * @param callable $httpHandler callback which delivers psr7 request
+     * @param callable|null $httpHandler callback which delivers psr7 request
      * @return string
      */
-    public function getClientName(callable $httpHandler = null)
+    public function getClientName(?callable $httpHandler = null)
     {
         if ($this->clientName) {
             return $this->clientName;
@@ -402,10 +440,10 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      *
      * Returns null if called outside GCE.
      *
-     * @param callable $httpHandler Callback which delivers psr7 request
+     * @param callable|null $httpHandler Callback which delivers psr7 request
      * @return string|null
      */
-    public function getProjectId(callable $httpHandler = null)
+    public function getProjectId(?callable $httpHandler = null)
     {
         if ($this->projectId) {
             return $this->projectId;
@@ -424,10 +462,10 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
     /**
      * Fetch the default universe domain from the metadata server.
      *
-     * @param callable $httpHandler Callback which delivers psr7 request
+     * @param callable|null $httpHandler Callback which delivers psr7 request
      * @return string
      */
-    public function getUniverseDomain(callable $httpHandler = null): string
+    public function getUniverseDomain(?callable $httpHandler = null) : string
     {
         if (null !== $this->universeDomain) {
             return $this->universeDomain;
@@ -460,11 +498,14 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
      *
      * @param callable $httpHandler An HTTP Handler to deliver PSR7 requests.
      * @param string $uri The metadata URI.
+     * @param array<mixed> $headers [optional] If present, add these headers to the token
+     *        endpoint request.
+     *
      * @return string
      */
-    private function getFromMetadata(callable $httpHandler, $uri)
+    private function getFromMetadata(callable $httpHandler, $uri, array $headers = [])
     {
-        $resp = $httpHandler(new Request('GET', $uri, [self::FLAVOR_HEADER => 'Google']));
+        $resp = $httpHandler(new Request('GET', $uri, [self::FLAVOR_HEADER => 'Google'] + $headers));
         return (string) $resp->getBody();
     }
     /**
@@ -489,5 +530,9 @@ class GCECredentials extends CredentialsLoader implements SignBlobInterface, Pro
         $this->hasCheckedOnGce = \true;
         // Set isOnGce
         $this->isOnGce = $isOnGce;
+    }
+    protected function getCredType() : string
+    {
+        return self::CRED_TYPE;
     }
 }

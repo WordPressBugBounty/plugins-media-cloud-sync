@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc\PreconditionFailure;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * A message type used to describe a single precondition failure.
  *

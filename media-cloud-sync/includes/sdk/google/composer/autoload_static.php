@@ -10,18 +10,12 @@ class ComposerStaticInit27552009b83b40e557cfcb9647b15f68
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'D' => 
+        'D' =>
         array (
-            'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php81\\' => 39,
-            'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php80\\' => 39,
-            'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Ctype\\' => 39,
             'Dudlewebs\\WPMCS\\Rize\\' => 21,
             'Dudlewebs\\WPMCS\\Ramsey\\Uuid\\' => 28,
             'Dudlewebs\\WPMCS\\Ramsey\\Collection\\' => 34,
@@ -63,184 +57,165 @@ class ComposerStaticInit27552009b83b40e557cfcb9647b15f68
     );
 
     public static $prefixDirsPsr4 = array (
-        'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php81\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php81',
-        ),
-        'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'Dudlewebs\\WPMCS\\Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Dudlewebs\\WPMCS\\Rize\\' => 
+        'Dudlewebs\\WPMCS\\Rize\\' =>
         array (
             0 => __DIR__ . '/..' . '/rize/uri-template/src/Rize',
         ),
-        'Dudlewebs\\WPMCS\\Ramsey\\Uuid\\' => 
+        'Dudlewebs\\WPMCS\\Ramsey\\Uuid\\' =>
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
         ),
-        'Dudlewebs\\WPMCS\\Ramsey\\Collection\\' => 
+        'Dudlewebs\\WPMCS\\Ramsey\\Collection\\' =>
         array (
             0 => __DIR__ . '/..' . '/ramsey/collection/src',
         ),
-        'Dudlewebs\\WPMCS\\Psr\\Log\\' => 
+        'Dudlewebs\\WPMCS\\Psr\\Log\\' =>
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Dudlewebs\\WPMCS\\Psr\\Http\\Message\\' => 
+        'Dudlewebs\\WPMCS\\Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Dudlewebs\\WPMCS\\Psr\\Http\\Client\\' => 
+        'Dudlewebs\\WPMCS\\Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Dudlewebs\\WPMCS\\Psr\\Cache\\' => 
+        'Dudlewebs\\WPMCS\\Psr\\Cache\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
-        'Dudlewebs\\WPMCS\\Monolog\\' => 
+        'Dudlewebs\\WPMCS\\Monolog\\' =>
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Dudlewebs\\WPMCS\\GuzzleHttp\\Psr7\\' => 
+        'Dudlewebs\\WPMCS\\GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'Dudlewebs\\WPMCS\\GuzzleHttp\\Promise\\' => 
+        'Dudlewebs\\WPMCS\\GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'Dudlewebs\\WPMCS\\GuzzleHttp\\' => 
+        'Dudlewebs\\WPMCS\\GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Dudlewebs\\WPMCS\\Grpc\\Gcp\\' => 
+        'Dudlewebs\\WPMCS\\Grpc\\Gcp\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/grpc-gcp/src',
         ),
-        'Dudlewebs\\WPMCS\\Grpc\\' => 
+        'Dudlewebs\\WPMCS\\Grpc\\' =>
         array (
             0 => __DIR__ . '/..' . '/grpc/grpc/src/lib',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Type\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Type\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Type',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Rpc\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Rpc\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Rpc',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Protobuf\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Protobuf\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/protobuf/src/Google/Protobuf',
         ),
-        'Dudlewebs\\WPMCS\\Google\\LongRunning\\' => 
+        'Dudlewebs\\WPMCS\\Google\\LongRunning\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/longrunning/src/LongRunning',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Iam\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Iam\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Iam',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Cloud\\Storage\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Cloud\\Storage\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/cloud-storage/src',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Cloud\\Core\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Cloud\\Core\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/cloud-core/src',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Cloud\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Cloud\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Cloud',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Auth\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Auth\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/auth/src',
         ),
-        'Dudlewebs\\WPMCS\\Google\\Api\\' => 
+        'Dudlewebs\\WPMCS\\Google\\Api\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Api',
         ),
-        'Dudlewebs\\WPMCS\\Google\\ApiCore\\LongRunning\\' => 
+        'Dudlewebs\\WPMCS\\Google\\ApiCore\\LongRunning\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/longrunning/src/ApiCore/LongRunning',
         ),
-        'Dudlewebs\\WPMCS\\Google\\ApiCore\\' => 
+        'Dudlewebs\\WPMCS\\Google\\ApiCore\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/gax/src',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Type\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Type\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Type',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Rpc\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Rpc\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Rpc',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Protobuf\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Protobuf\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/protobuf/src/GPBMetadata/Google/Protobuf',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Longrunning\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Longrunning\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/longrunning/metadata/Longrunning',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Logging\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Logging\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Logging',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Iam\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Iam\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Iam',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Cloud\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Cloud\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Cloud',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Api\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Api\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/metadata/Api',
         ),
-        'Dudlewebs\\WPMCS\\GPBMetadata\\ApiCore\\' => 
+        'Dudlewebs\\WPMCS\\GPBMetadata\\ApiCore\\' =>
         array (
             0 => __DIR__ . '/..' . '/google/gax/metadata/ApiCore',
         ),
-        'Dudlewebs\\WPMCS\\Firebase\\JWT\\' => 
+        'Dudlewebs\\WPMCS\\Firebase\\JWT\\' =>
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Dudlewebs\\WPMCS\\Brick\\Math\\' => 
+        'Dudlewebs\\WPMCS\\Brick\\Math\\' =>
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
-        'Dudlewebs\\WPMCS\\' => 
+        'Dudlewebs\\WPMCS\\' =>
         array (
-            0 => __DIR__ . '/..' . '/vendor',
+            0 => '/Users/rahulk/Documents/Projects/Own Projects/Dudlewebs/Plugins/Media Cloud Sync/customised-sdks/google/build',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Dudlewebs\\WPMCS\\Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'Dudlewebs\\WPMCS\\CURLStringFile' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
         'Dudlewebs\\WPMCS\\GPBMetadata\\GrpcGcp' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/GPBMetadata/GrpcGcp.php',
         'Dudlewebs\\WPMCS\\Grpc\\Gcp\\AffinityConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/AffinityConfig.php',
         'Dudlewebs\\WPMCS\\Grpc\\Gcp\\AffinityConfig_Command' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/AffinityConfig_Command.php',
         'Dudlewebs\\WPMCS\\Grpc\\Gcp\\ApiConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/ApiConfig.php',
         'Dudlewebs\\WPMCS\\Grpc\\Gcp\\ChannelPoolConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/ChannelPoolConfig.php',
         'Dudlewebs\\WPMCS\\Grpc\\Gcp\\MethodConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/MethodConfig.php',
-        'Dudlewebs\\WPMCS\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Dudlewebs\\WPMCS\\ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
-        'Dudlewebs\\WPMCS\\Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'Dudlewebs\\WPMCS\\UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'Dudlewebs\\WPMCS\\ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

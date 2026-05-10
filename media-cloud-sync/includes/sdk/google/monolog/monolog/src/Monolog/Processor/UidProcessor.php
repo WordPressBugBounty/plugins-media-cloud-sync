@@ -12,6 +12,7 @@ declare (strict_types=1);
 namespace Dudlewebs\WPMCS\Monolog\Processor;
 
 use Dudlewebs\WPMCS\Monolog\ResettableInterface;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Adds a unique identifier into records
  *
@@ -19,8 +20,11 @@ use Dudlewebs\WPMCS\Monolog\ResettableInterface;
  */
 class UidProcessor implements ProcessorInterface, ResettableInterface
 {
-    /** @var string */
-    private $uid;
+    /** @var non-empty-string */
+    private string $uid;
+    /**
+     * @param int<1, 32> $length
+     */
     public function __construct(int $length = 7)
     {
         if ($length > 32 || $length < 1) {
@@ -29,23 +33,27 @@ class UidProcessor implements ProcessorInterface, ResettableInterface
         $this->uid = $this->generateUid($length);
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record) : LogRecord
     {
-        $record['extra']['uid'] = $this->uid;
+        $record->extra['uid'] = $this->uid;
         return $record;
     }
-    public function getUid(): string
+    public function getUid() : string
     {
         return $this->uid;
     }
-    public function reset()
+    public function reset() : void
     {
-        $this->uid = $this->generateUid(strlen($this->uid));
+        $this->uid = $this->generateUid(\strlen($this->uid));
     }
-    private function generateUid(int $length): string
+    /**
+     * @param  positive-int     $length
+     * @return non-empty-string
+     */
+    private function generateUid(int $length) : string
     {
-        return substr(bin2hex(random_bytes((int) ceil($length / 2))), 0, $length);
+        return \substr(\bin2hex(\random_bytes((int) \ceil($length / 2))), 0, $length);
     }
 }

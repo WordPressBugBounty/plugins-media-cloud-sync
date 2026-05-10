@@ -17,25 +17,28 @@
  */
 namespace Dudlewebs\WPMCS\Google\Auth\HttpHandler;
 
+use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
 use Dudlewebs\WPMCS\GuzzleHttp\BodySummarizer;
 use Dudlewebs\WPMCS\GuzzleHttp\Client;
 use Dudlewebs\WPMCS\GuzzleHttp\ClientInterface;
 use Dudlewebs\WPMCS\GuzzleHttp\HandlerStack;
 use Dudlewebs\WPMCS\GuzzleHttp\Middleware;
+use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
 class HttpHandlerFactory
 {
     /**
      * Builds out a default http handler for the installed version of guzzle.
      *
-     * @param ClientInterface $client
+     * @param ClientInterface|null $client
+     * @param null|false|LoggerInterface $logger
      * @return Guzzle6HttpHandler|Guzzle7HttpHandler
      * @throws \Exception
      */
-    public static function build(ClientInterface $client = null)
+    public static function build(?ClientInterface $client = null, null|false|LoggerInterface $logger = null)
     {
-        if (is_null($client)) {
+        if (\is_null($client)) {
             $stack = null;
-            if (class_exists(BodySummarizer::class)) {
+            if (\class_exists(BodySummarizer::class)) {
                 // double the # of characters before truncation by default
                 $bodySummarizer = new BodySummarizer(240);
                 $stack = HandlerStack::create();
@@ -44,17 +47,18 @@ class HttpHandlerFactory
             }
             $client = new Client(['handler' => $stack]);
         }
+        $logger = $logger === \false ? null : $logger ?? ApplicationDefaultCredentials::getDefaultLogger();
         $version = null;
-        if (defined('Dudlewebs\WPMCS\GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
+        if (\defined('GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
             $version = ClientInterface::MAJOR_VERSION;
-        } elseif (defined('Dudlewebs\WPMCS\GuzzleHttp\ClientInterface::VERSION')) {
-            $version = (int) substr(ClientInterface::VERSION, 0, 1);
+        } elseif (\defined('GuzzleHttp\\ClientInterface::VERSION')) {
+            $version = (int) \substr(ClientInterface::VERSION, 0, 1);
         }
         switch ($version) {
             case 6:
-                return new Guzzle6HttpHandler($client);
+                return new Guzzle6HttpHandler($client, $logger);
             case 7:
-                return new Guzzle7HttpHandler($client);
+                return new Guzzle7HttpHandler($client, $logger);
             default:
                 throw new \Exception('Version not supported');
         }

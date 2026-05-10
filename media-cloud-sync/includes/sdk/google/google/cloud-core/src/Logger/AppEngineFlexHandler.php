@@ -43,7 +43,7 @@ class AppEngineFlexHandler extends StreamHandler
     public function __construct($level = Logger::INFO, $bubble = \true, $filePermission = 0640, $useLocking = \false, $stream = null)
     {
         if ($stream === null) {
-            $pid = getmypid();
+            $pid = \getmypid();
             $stream = "file:///var/log/app_engine/app.{$pid}.json";
         }
         parent::__construct($stream, $level, $bubble, $filePermission, $useLocking);

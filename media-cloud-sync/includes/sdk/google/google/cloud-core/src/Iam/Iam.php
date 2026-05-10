@@ -34,7 +34,7 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\Iam;
  *
  * use Google\Cloud\Spanner\SpannerClient;
  *
- * $spanner = new SpannerClient();
+ * $spanner = new SpannerClient(['projectId' => 'my-project']);
  * $instance = $spanner->instance('my-new-instance');
  *
  * $iam = $instance->iam();
@@ -134,7 +134,7 @@ class Iam
         if ($policy instanceof PolicyBuilder) {
             $policy = $policy->result();
         }
-        if (!is_array($policy)) {
+        if (!\is_array($policy)) {
             throw new \InvalidArgumentException('Given policy data must be an array or an instance of PolicyBuilder.');
         }
         $request = [];

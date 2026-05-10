@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api\Distribution\BucketOptions;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Specifies a set of buckets with arbitrary widths.
  * There are `size(bounds) + 1` (= N) buckets. Bucket `i` has the following
@@ -33,7 +33,7 @@ class Explicit extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type array<float>|\Google\Protobuf\Internal\RepeatedField $bounds
+     *     @type float[] $bounds
      *           The values must be monotonically increasing.
      * }
      */
@@ -46,7 +46,7 @@ class Explicit extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * The values must be monotonically increasing.
      *
      * Generated from protobuf field <code>repeated double bounds = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<float>
      */
     public function getBounds()
     {
@@ -56,7 +56,7 @@ class Explicit extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * The values must be monotonically increasing.
      *
      * Generated from protobuf field <code>repeated double bounds = 1;</code>
-     * @param array<float>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param float[] $var
      * @return $this
      */
     public function setBounds($var)

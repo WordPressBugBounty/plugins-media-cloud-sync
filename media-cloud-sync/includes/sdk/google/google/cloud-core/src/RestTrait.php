@@ -79,9 +79,9 @@ trait RestTrait
     public function send($resource, $method, array $options = [], $whitelisted = \false)
     {
         $options += ['prettyPrint' => \false];
-        $requestOptions = $this->pluckArray(['restOptions', 'retries', 'retryHeaders', 'requestTimeout', 'restRetryFunction', 'restRetryListener'], $options);
+        $requestOptions = $this->pluckArray(['restOptions', 'retries', 'retryHeaders', 'requestTimeout', 'restRetryFunction', 'restRetryListener', 'restDelayFunction', 'restCalcDelayFunction'], $options);
         try {
-            return json_decode($this->requestWrapper->send($this->requestBuilder->build($resource, $method, $options), $requestOptions)->getBody(), \true);
+            return \json_decode($this->requestWrapper->send($this->requestBuilder->build($resource, $method, $options), $requestOptions)->getBody(), \true);
         } catch (NotFoundException $e) {
             if ($whitelisted) {
                 throw $this->modifyWhitelistedError($e);
@@ -97,15 +97,15 @@ trait RestTrait
      * @param string $apiEndpointTemplate
      * @return string
      */
-    private function getApiEndpoint($default, array $config, string $apiEndpointTemplate = null)
+    private function getApiEndpoint($default, array $config, ?string $apiEndpointTemplate = null)
     {
         // If the $default parameter is provided, or the user has set an "apiEndoint" config option,
         // fall back to the previous behavior.
         if ($res = $config['apiEndpoint'] ?? $default) {
-            if (substr($res, -1) !== '/') {
+            if (\substr($res, -1) !== '/') {
                 $res = $res . '/';
             }
-            if (strpos($res, '//') === \false) {
+            if (\strpos($res, '//') === \false) {
                 $res = 'https://' . $res;
             }
             return $res;
@@ -117,8 +117,8 @@ trait RestTrait
         if (!isset($config['universeDomain'])) {
             throw new UnexpectedValueException('The "universeDomain" config value must be set to use the default API endpoint template.');
         }
-        $apiEndpoint = str_replace('UNIVERSE_DOMAIN', $config['universeDomain'], $apiEndpointTemplate);
+        $apiEndpoint = \str_replace('UNIVERSE_DOMAIN', $config['universeDomain'], $apiEndpointTemplate);
         // Preserve the behavior of guaranteeing a trailing "/"
-        return $apiEndpoint . (substr($apiEndpoint, -1) !== '/' ? '/' : '');
+        return $apiEndpoint . (\substr($apiEndpoint, -1) !== '/' ? '/' : '');
     }
 }

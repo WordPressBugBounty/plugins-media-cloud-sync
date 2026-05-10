@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\LongRunning;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * This resource represents a long-running operation that is the result of a
  * network API call.
@@ -63,7 +63,7 @@ class Operation extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *     @type \Google\Rpc\Status $error
      *           The error result of the operation in case of failure or cancellation.
      *     @type \Google\Protobuf\Any $response
-     *           The normal response of the operation in case of success.  If the original
+     *           The normal, successful response of the operation.  If the original
      *           method returns no data on success, such as `Delete`, the response is
      *           `google.protobuf.Empty`.  If the original method is standard
      *           `Get`/`Create`/`Update`, the response should be the resource.  For other
@@ -197,7 +197,7 @@ class Operation extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
         return $this;
     }
     /**
-     * The normal response of the operation in case of success.  If the original
+     * The normal, successful response of the operation.  If the original
      * method returns no data on success, such as `Delete`, the response is
      * `google.protobuf.Empty`.  If the original method is standard
      * `Get`/`Create`/`Update`, the response should be the resource.  For other
@@ -218,7 +218,7 @@ class Operation extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
         return $this->hasOneof(5);
     }
     /**
-     * The normal response of the operation in case of success.  If the original
+     * The normal, successful response of the operation.  If the original
      * method returns no data on success, such as `Delete`, the response is
      * `google.protobuf.Empty`.  If the original method is standard
      * `Get`/`Create`/`Update`, the response should be the resource.  For other

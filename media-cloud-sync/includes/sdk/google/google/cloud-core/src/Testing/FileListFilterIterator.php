@@ -59,27 +59,27 @@ class FileListFilterIterator extends \FilterIterator
     {
         /** @var \SplFileInfo */
         $file = parent::current();
-        $path = '/' . trim(str_replace($this->projectRootPath, '', realpath($file->getPathName())), '/');
-        if (!in_array($file->getExtension(), $this->fileTypes)) {
+        $path = '/' . \trim(\str_replace($this->projectRootPath, '', \realpath($file->getPathName())), '/');
+        if (!\in_array($file->getExtension(), $this->fileTypes)) {
             return \false;
         }
         foreach ($this->excludes as $exclude) {
             if ($exclude instanceof RegexFileFilter) {
                 $pattern = $exclude->regex;
-                if (preg_match($pattern, $path) === 1) {
+                if (\preg_match($pattern, $path) === 1) {
                     return \false;
                 }
                 continue;
             }
-            if (strpos($exclude, '/') !== 0 && strpos($path, $exclude) !== \false) {
+            if (\strpos($exclude, '/') !== 0 && \strpos($path, $exclude) !== \false) {
                 return \false;
             }
-            if (strpos($path, $exclude) === 0) {
+            if (\strpos($path, $exclude) === 0) {
                 return \false;
             }
         }
         foreach ($this->testPaths as $testPath) {
-            if (strpos($path, $testPath) !== \false) {
+            if (\strpos($path, $testPath) !== \false) {
                 return \false;
             }
         }

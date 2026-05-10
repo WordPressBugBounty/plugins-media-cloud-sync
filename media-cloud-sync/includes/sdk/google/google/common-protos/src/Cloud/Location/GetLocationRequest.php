@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Location;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * The request message for [Locations.GetLocation][google.cloud.location.Locations.GetLocation].
  *

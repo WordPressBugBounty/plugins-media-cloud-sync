@@ -18,8 +18,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
 
 use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\AbstractUploader;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\StreamDecoratorTrait;
 use Dudlewebs\WPMCS\GuzzleHttp\Psr7\BufferStream;
+use Dudlewebs\WPMCS\GuzzleHttp\Psr7\StreamDecoratorTrait;
 use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
 /**
  * A Stream implementation that uploads in chunks to a provided uploader when
@@ -43,12 +43,12 @@ class WriteStream implements StreamInterface
      *            upload data
      * }
      */
-    public function __construct(AbstractUploader $uploader = null, $options = [])
+    public function __construct(?AbstractUploader $uploader = null, $options = [])
     {
         if ($uploader) {
             $this->setUploader($uploader);
         }
-        if (array_key_exists('chunkSize', $options)) {
+        if (\array_key_exists('chunkSize', $options)) {
             $this->chunkSize = $options['chunkSize'];
         }
         $this->stream = new BufferStream($this->chunkSize);
@@ -56,7 +56,7 @@ class WriteStream implements StreamInterface
     /**
      * Close the stream. Uploads any remaining data.
      */
-    public function close(): void
+    public function close() : void
     {
         if ($this->uploader && $this->hasWritten) {
             $this->uploader->upload();
@@ -70,10 +70,10 @@ class WriteStream implements StreamInterface
      * @return int The number of bytes written
      * @throws \RuntimeException
      */
-    public function write($data): int
+    public function write($data) : int
     {
         if (!isset($this->uploader)) {
-            throw new \RuntimeException("No uploader set.");
+            throw new \RuntimeException('No uploader set.');
         }
         // Ensure we have a resume uri here because we need to create the streaming
         // upload before we have data (size of 0).
@@ -82,7 +82,7 @@ class WriteStream implements StreamInterface
         if (!$this->stream->write($data)) {
             $this->uploader->upload($this->getChunkedWriteSize());
         }
-        return strlen($data);
+        return \strlen($data);
     }
     /**
      * Set the uploader for this class. You may need to set this after initialization
@@ -90,12 +90,12 @@ class WriteStream implements StreamInterface
      *
      * @param AbstractUploader $uploader The new uploader to use.
      */
-    public function setUploader($uploader): void
+    public function setUploader($uploader) : void
     {
         $this->uploader = $uploader;
     }
-    private function getChunkedWriteSize(): int
+    private function getChunkedWriteSize() : int
     {
-        return (int) floor($this->getSize() / $this->chunkSize) * $this->chunkSize;
+        return (int) \floor($this->getSize() / $this->chunkSize) * $this->chunkSize;
     }
 }

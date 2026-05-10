@@ -11,12 +11,14 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Handler;
 
+use Dudlewebs\WPMCS\MongoDB\Client;
+use Dudlewebs\WPMCS\MongoDB\Collection;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Manager;
-use Dudlewebs\WPMCS\MongoDB\Client;
-use Dudlewebs\WPMCS\Monolog\Logger;
+use Dudlewebs\WPMCS\Monolog\Level;
 use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
 use Dudlewebs\WPMCS\Monolog\Formatter\MongoDBFormatter;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Logs to a MongoDB database.
  *
@@ -32,12 +34,9 @@ use Dudlewebs\WPMCS\Monolog\Formatter\MongoDBFormatter;
  */
 class MongoDBHandler extends AbstractProcessingHandler
 {
-    /** @var \MongoDB\Collection */
-    private $collection;
-    /** @var Client|Manager */
-    private $manager;
-    /** @var string */
-    private $namespace;
+    private Collection $collection;
+    private Client|Manager $manager;
+    private string|null $namespace = null;
     /**
      * Constructor.
      *
@@ -45,34 +44,31 @@ class MongoDBHandler extends AbstractProcessingHandler
      * @param string         $database   Database name
      * @param string         $collection Collection name
      */
-    public function __construct($mongodb, string $database, string $collection, $level = Logger::DEBUG, bool $bubble = \true)
+    public function __construct(Client|Manager $mongodb, string $database, string $collection, int|string|Level $level = Level::Debug, bool $bubble = \true)
     {
-        if (!($mongodb instanceof Client || $mongodb instanceof Manager)) {
-            throw new \InvalidArgumentException('MongoDB\Client or MongoDB\Driver\Manager instance required');
-        }
         if ($mongodb instanceof Client) {
-            $this->collection = $mongodb->selectCollection($database, $collection);
+            $this->collection = \method_exists($mongodb, 'getCollection') ? $mongodb->getCollection($database, $collection) : $mongodb->selectCollection($database, $collection);
         } else {
             $this->manager = $mongodb;
             $this->namespace = $database . '.' . $collection;
         }
         parent::__construct($level, $bubble);
     }
-    protected function write(array $record): void
+    protected function write(LogRecord $record) : void
     {
         if (isset($this->collection)) {
-            $this->collection->insertOne($record['formatted']);
+            $this->collection->insertOne($record->formatted);
         }
         if (isset($this->manager, $this->namespace)) {
             $bulk = new BulkWrite();
-            $bulk->insert($record["formatted"]);
+            $bulk->insert($record->formatted);
             $this->manager->executeBulkWrite($this->namespace, $bulk);
         }
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function getDefaultFormatter(): FormatterInterface
+    protected function getDefaultFormatter() : FormatterInterface
     {
         return new MongoDBFormatter();
     }

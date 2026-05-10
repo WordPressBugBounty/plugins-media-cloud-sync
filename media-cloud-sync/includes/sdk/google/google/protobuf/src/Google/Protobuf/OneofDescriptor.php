@@ -34,7 +34,7 @@ class OneofDescriptor
      */
     public function getField($index)
     {
-        if (is_null($this->internal_desc->getFields()) || !isset($this->internal_desc->getFields()[$index])) {
+        if (\is_null($this->internal_desc->getFields()) || !isset($this->internal_desc->getFields()[$index])) {
             return null;
         }
         return $this->getPublicDescriptor($this->internal_desc->getFields()[$index]);
@@ -44,7 +44,7 @@ class OneofDescriptor
      */
     public function getFieldCount()
     {
-        return count($this->internal_desc->getFields());
+        return \count($this->internal_desc->getFields());
     }
     public function isSynthetic()
     {

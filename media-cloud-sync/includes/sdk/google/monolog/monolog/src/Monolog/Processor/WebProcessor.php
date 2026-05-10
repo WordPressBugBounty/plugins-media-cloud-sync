@@ -11,6 +11,8 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Processor;
 
+use ArrayAccess;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Injects url/method and remote IP of the current web request in all records
  *
@@ -19,9 +21,9 @@ namespace Dudlewebs\WPMCS\Monolog\Processor;
 class WebProcessor implements ProcessorInterface
 {
     /**
-     * @var array<string, mixed>|\ArrayAccess<string, mixed>
+     * @var array<string, mixed>|ArrayAccess<string, mixed>
      */
-    protected $serverData;
+    protected array|ArrayAccess $serverData;
     /**
      * Default fields
      *
@@ -29,19 +31,17 @@ class WebProcessor implements ProcessorInterface
      *
      * @var array<string, string>
      */
-    protected $extraFields = ['url' => 'REQUEST_URI', 'ip' => 'REMOTE_ADDR', 'http_method' => 'REQUEST_METHOD', 'server' => 'SERVER_NAME', 'referrer' => 'HTTP_REFERER', 'user_agent' => 'HTTP_USER_AGENT'];
+    protected array $extraFields = ['url' => 'REQUEST_URI', 'ip' => 'REMOTE_ADDR', 'http_method' => 'REQUEST_METHOD', 'server' => 'SERVER_NAME', 'referrer' => 'HTTP_REFERER', 'user_agent' => 'HTTP_USER_AGENT'];
     /**
-     * @param array<string, mixed>|\ArrayAccess<string, mixed>|null $serverData  Array or object w/ ArrayAccess that provides access to the $_SERVER data
-     * @param array<string, string>|array<string>|null              $extraFields Field names and the related key inside $serverData to be added (or just a list of field names to use the default configured $serverData mapping). If not provided it defaults to: [url, ip, http_method, server, referrer] + unique_id if present in server data
+     * @param array<string, mixed>|ArrayAccess<string, mixed>|null $serverData  Array or object w/ ArrayAccess that provides access to the $_SERVER data
+     * @param array<string, string>|array<string>|null             $extraFields Field names and the related key inside $serverData to be added (or just a list of field names to use the default configured $serverData mapping). If not provided it defaults to: [url, ip, http_method, server, referrer] + unique_id if present in server data
      */
-    public function __construct($serverData = null, ?array $extraFields = null)
+    public function __construct(array|ArrayAccess|null $serverData = null, array|null $extraFields = null)
     {
         if (null === $serverData) {
             $this->serverData =& $_SERVER;
-        } elseif (is_array($serverData) || $serverData instanceof \ArrayAccess) {
-            $this->serverData = $serverData;
         } else {
-            throw new \UnexpectedValueException('$serverData must be an array or object implementing ArrayAccess.');
+            $this->serverData = $serverData;
         }
         $defaultEnabled = ['url', 'ip', 'http_method', 'server', 'referrer'];
         if (isset($this->serverData['UNIQUE_ID'])) {
@@ -52,8 +52,8 @@ class WebProcessor implements ProcessorInterface
             $extraFields = $defaultEnabled;
         }
         if (isset($extraFields[0])) {
-            foreach (array_keys($this->extraFields) as $fieldName) {
-                if (!in_array($fieldName, $extraFields)) {
+            foreach (\array_keys($this->extraFields) as $fieldName) {
+                if (!\in_array($fieldName, $extraFields, \true)) {
                     unset($this->extraFields[$fieldName]);
                 }
             }
@@ -62,19 +62,22 @@ class WebProcessor implements ProcessorInterface
         }
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record) : LogRecord
     {
         // skip processing if for some reason request data
         // is not present (CLI or wonky SAPIs)
         if (!isset($this->serverData['REQUEST_URI'])) {
             return $record;
         }
-        $record['extra'] = $this->appendExtraFields($record['extra']);
+        $record->extra = $this->appendExtraFields($record->extra);
         return $record;
     }
-    public function addExtraField(string $extraName, string $serverName): self
+    /**
+     * @return $this
+     */
+    public function addExtraField(string $extraName, string $serverName) : self
     {
         $this->extraFields[$extraName] = $serverName;
         return $this;
@@ -83,7 +86,7 @@ class WebProcessor implements ProcessorInterface
      * @param  mixed[] $extra
      * @return mixed[]
      */
-    private function appendExtraFields(array $extra): array
+    private function appendExtraFields(array $extra) : array
     {
         foreach ($this->extraFields as $extraName => $serverName) {
             $extra[$extraName] = $this->serverData[$serverName] ?? null;

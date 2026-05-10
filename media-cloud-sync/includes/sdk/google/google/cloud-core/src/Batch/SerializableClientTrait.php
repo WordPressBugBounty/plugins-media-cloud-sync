@@ -83,7 +83,10 @@ trait SerializableClientTrait
      */
     private function getDefaultClosureSerializer()
     {
-        if (class_exists(SerializableClosure::class)) {
+        if (\function_exists('Dudlewebs\\WPMCS\\Opis\\Closure\\serialize')) {
+            return new OpisClosureSerializerV4();
+        }
+        if (\class_exists(SerializableClosure::class)) {
             return new OpisClosureSerializer();
         }
     }

@@ -101,9 +101,9 @@ trait PageIteratorTrait
             return \true;
         }];
         $this->callOptions = $callOptions;
-        $this->resultTokenPath = explode('.', $this->config['resultTokenKey']);
-        $this->nextResultTokenPath = explode('.', $this->config['nextResultTokenKey']);
-        $this->itemsPath = explode('.', $this->config['itemsKey']);
+        $this->resultTokenPath = \explode('.', $this->config['resultTokenKey']);
+        $this->nextResultTokenPath = \explode('.', $this->config['nextResultTokenKey']);
+        $this->itemsPath = \explode('.', $this->config['itemsKey']);
         $this->initialResultToken = $this->nextResultToken();
     }
     /**
@@ -213,7 +213,7 @@ trait PageIteratorTrait
                 $items[$key] = $resultMapper($item);
                 $this->itemCount++;
                 if ($this->config['resultLimit'] && $this->config['resultLimit'] <= $this->itemCount) {
-                    $items = array_slice($items, 0, $key + 1);
+                    $items = \array_slice($items, 0, $key + 1);
                     $shouldContinue = \false;
                     break;
                 }

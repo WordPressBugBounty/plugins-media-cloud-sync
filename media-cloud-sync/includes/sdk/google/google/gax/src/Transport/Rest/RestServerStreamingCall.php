@@ -111,13 +111,13 @@ class RestServerStreamingCall implements ServerStreamingCallInterface
      */
     public function responses()
     {
-        if (is_null($this->response)) {
+        if (\is_null($this->response)) {
             throw new \Exception('Stream has not been started.');
         }
         // Decode the stream and yield responses as they are read.
         $this->decoder = new JsonStreamDecoder($this->response->getBody(), $this->decodeType, $this->decoderOptions);
         foreach ($this->decoder->decode() as $message) {
-            yield $message;
+            (yield $message);
         }
     }
     /**
@@ -136,7 +136,7 @@ class RestServerStreamingCall implements ServerStreamingCallInterface
      */
     public function getMetadata()
     {
-        return is_null($this->response) ? null : $this->response->getHeaders();
+        return \is_null($this->response) ? null : $this->response->getHeaders();
     }
     /**
      * The Rest transport does not support trailing metadata. This is a
@@ -158,7 +158,7 @@ class RestServerStreamingCall implements ServerStreamingCallInterface
      */
     public function cancel()
     {
-        if (!is_null($this->decoder)) {
+        if (!\is_null($this->decoder)) {
             $this->decoder->close();
         }
     }

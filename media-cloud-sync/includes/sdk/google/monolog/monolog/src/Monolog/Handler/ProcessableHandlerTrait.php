@@ -13,52 +13,45 @@ namespace Dudlewebs\WPMCS\Monolog\Handler;
 
 use Dudlewebs\WPMCS\Monolog\ResettableInterface;
 use Dudlewebs\WPMCS\Monolog\Processor\ProcessorInterface;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * Helper trait for implementing ProcessableInterface
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 trait ProcessableHandlerTrait
 {
     /**
      * @var callable[]
-     * @phpstan-var array<ProcessorInterface|callable(Record): Record>
+     * @phpstan-var array<(callable(LogRecord): LogRecord)|ProcessorInterface>
      */
-    protected $processors = [];
+    protected array $processors = [];
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function pushProcessor(callable $callback): HandlerInterface
+    public function pushProcessor(callable $callback) : HandlerInterface
     {
-        array_unshift($this->processors, $callback);
+        \array_unshift($this->processors, $callback);
         return $this;
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function popProcessor(): callable
+    public function popProcessor() : callable
     {
-        if (!$this->processors) {
+        if (\count($this->processors) === 0) {
             throw new \LogicException('You tried to pop from an empty processor stack.');
         }
-        return array_shift($this->processors);
+        return \array_shift($this->processors);
     }
-    /**
-     * Processes a record.
-     *
-     * @phpstan-param  Record $record
-     * @phpstan-return Record
-     */
-    protected function processRecord(array $record): array
+    protected function processRecord(LogRecord $record) : LogRecord
     {
         foreach ($this->processors as $processor) {
             $record = $processor($record);
         }
         return $record;
     }
-    protected function resetProcessors(): void
+    protected function resetProcessors() : void
     {
         foreach ($this->processors as $processor) {
             if ($processor instanceof ResettableInterface) {

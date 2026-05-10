@@ -19,6 +19,7 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning;
 
 /**
  * Represent and interact with a Long Running Operation.
+ * @template T
  */
 class LongRunningOperation
 {
@@ -160,7 +161,7 @@ class LongRunningOperation
      * ```
      *
      * @param array $options [optional] Configuration options.
-     * @return mixed|null
+     * @return T|mixed|null
      */
     public function result(array $options = [])
     {
@@ -226,10 +227,10 @@ class LongRunningOperation
         $res = $this->connection->get(['name' => $this->name] + $options);
         $this->result = null;
         $this->error = null;
-        if (isset($res['done']) && $res['done']) {
+        if ($res['done'] ?? \false && isset($res['metadata']['typeUrl'])) {
             $type = $res['metadata']['typeUrl'];
             $this->result = $this->executeDoneCallback($type, $res['response']);
-            $this->error = isset($res['error']) ? $res['error'] : null;
+            $this->error = $res['error'] ?? null;
         }
         return $this->info = $res;
     }
@@ -261,11 +262,11 @@ class LongRunningOperation
         $pollingIntervalMicros = $options['pollingIntervalSeconds'] * 1000000;
         $maxPollingDuration = $options['maxPollingDurationSeconds'];
         $hasMaxPollingDuration = $maxPollingDuration > 0.0;
-        $endTime = microtime(\true) + $maxPollingDuration;
+        $endTime = \microtime(\true) + $maxPollingDuration;
         do {
-            usleep($pollingIntervalMicros);
+            \usleep($pollingIntervalMicros);
             $this->reload($options);
-        } while (!$this->done() && (!$hasMaxPollingDuration || microtime(\true) < $endTime));
+        } while (!$this->done() && (!$hasMaxPollingDuration || \microtime(\true) < $endTime));
         return $this->result;
     }
     /**
@@ -308,24 +309,24 @@ class LongRunningOperation
      */
     private function executeDoneCallback($type, $response)
     {
-        if (is_null($response)) {
+        if (\is_null($response)) {
             return null;
         }
-        $callables = array_filter($this->callablesMap, function ($callable) use ($type) {
+        $callables = \array_filter($this->callablesMap, function ($callable) use($type) {
             return $callable['typeUrl'] === $type;
         });
-        if (count($callables) === 0) {
+        if (\count($callables) === 0) {
             return $response;
         }
-        $callable = current($callables);
+        $callable = \current($callables);
         $fn = $callable['callable'];
-        return call_user_func($fn, $response);
+        return \call_user_func($fn, $response);
     }
     /**
      * @access private
      */
     public function __debugInfo()
     {
-        return ['connection' => get_class($this->connection), 'name' => $this->name, 'callablesMap' => array_keys($this->callablesMap), 'info' => $this->info];
+        return ['connection' => \get_class($this->connection), 'name' => $this->name, 'callablesMap' => \array_keys($this->callablesMap), 'info' => $this->info];
     }
 }

@@ -59,7 +59,7 @@ class ProtobufMessageComparator extends Comparator
      *                           fails. Contains information about the
      *                           specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = \FALSE, $ignoreCase = \FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = \false, $ignoreCase = \false)
     {
         if ($expected->serializeToString() !== $actual->serializeToString()) {
             throw new ComparisonFailure($expected, $actual, $this->exporter->shortenedExport($expected), $this->exporter->shortenedExport($actual), \false, 'Given 2 Message objects are not the same');

@@ -44,7 +44,7 @@ trait GrpcSupportTrait
      */
     private static function getGrpcDependencyStatus()
     {
-        return extension_loaded('grpc');
+        return \extension_loaded('grpc');
     }
     /**
      * @throws ValidationException

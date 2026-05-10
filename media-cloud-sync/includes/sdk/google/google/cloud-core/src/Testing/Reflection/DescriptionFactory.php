@@ -78,7 +78,7 @@ class DescriptionFactory extends BaseDescriptionFactory
     /**
      * Returns the parsed text of this description.
      */
-    public function create(string $contents, ?TypeContext $context = null): Description
+    public function create(string $contents, ?TypeContext $context = null) : Description
     {
         $tokens = $this->lex($contents);
         $count = count($tokens);
@@ -105,18 +105,19 @@ class DescriptionFactory extends BaseDescriptionFactory
      *
      * @return string[] A series of tokens of which the description text is composed.
      */
-    private function lex(string $contents): array
+    private function lex(string $contents) : array
     {
         $contents = $this->removeSuperfluousStartingWhitespace($contents);
         // performance optimalization; if there is no inline tag, don't bother splitting it up.
         if (strpos($contents, '{@') === \false) {
             return [$contents];
         }
-        return Utils::pregSplit('/\{
-                # "{@}" is not a valid inline tag. This ensures that we do not treat it as one, but treat it literally.
-                (?!@\})
+        return Utils::pregSplit('/\\{
+                # "{@}" and "{@*}" are not a valid inline tags. This ensures that we do not treat them as one, but treat
+                # them literally.
+                (?!(?:@\\}|@\\*\\}) )
                 # We want to capture the whole tag line, but without the inline tag delimiters.
-                (\@
+                (\\@
                     # Match everything up to the next delimiter.
                     [^{}]*
                     # Nested inline tag content should not be captured, or it will appear in the result separately.
@@ -125,17 +126,17 @@ class DescriptionFactory extends BaseDescriptionFactory
                         (?:
                             # Because we did not catch the tag delimiters earlier, we must be explicit with them here.
                             # Notice that this also matches "{}", as a way to later introduce it as an escape sequence.
-                            \{(?1)?\}
+                            \\{(?1)?\\}
                             |
                             # Make sure we match hanging "{".
-                            \{
+                            \\{
                         )
                         # Match content after the nested inline tag.
                         [^{}]*
                     )* # If there are more inline tags, match them as well. We use "*" since there may not be any
                        # nested inline tags.
                 )
-            \}/Sux', $contents, 0, PREG_SPLIT_DELIM_CAPTURE);
+            \\}/Sux', $contents, 0, PREG_SPLIT_DELIM_CAPTURE);
     }
     /**
      * Removes the superfluous from a multi-line description.
@@ -151,7 +152,7 @@ class DescriptionFactory extends BaseDescriptionFactory
      * If we do not normalize the indentation then we have superfluous whitespace on the second and subsequent
      * lines and this may cause rendering issues when, for example, using a Markdown converter.
      */
-    private function removeSuperfluousStartingWhitespace(string $contents): string
+    private function removeSuperfluousStartingWhitespace(string $contents) : string
     {
         $lines = explode("\n", $contents);
         // if there is only one line then we don't have lines with superfluous whitespace and

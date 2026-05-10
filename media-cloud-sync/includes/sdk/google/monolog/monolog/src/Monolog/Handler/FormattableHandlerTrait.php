@@ -20,24 +20,21 @@ use Dudlewebs\WPMCS\Monolog\Formatter\LineFormatter;
  */
 trait FormattableHandlerTrait
 {
+    protected FormatterInterface|null $formatter = null;
     /**
-     * @var ?FormatterInterface
+     * @inheritDoc
      */
-    protected $formatter;
-    /**
-     * {@inheritDoc}
-     */
-    public function setFormatter(FormatterInterface $formatter): HandlerInterface
+    public function setFormatter(FormatterInterface $formatter) : HandlerInterface
     {
         $this->formatter = $formatter;
         return $this;
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getFormatter(): FormatterInterface
+    public function getFormatter() : FormatterInterface
     {
-        if (!$this->formatter) {
+        if (null === $this->formatter) {
             $this->formatter = $this->getDefaultFormatter();
         }
         return $this->formatter;
@@ -47,7 +44,7 @@ trait FormattableHandlerTrait
      *
      * Overwrite this if the LineFormatter is not a good default for your handler.
      */
-    protected function getDefaultFormatter(): FormatterInterface
+    protected function getDefaultFormatter() : FormatterInterface
     {
         return new LineFormatter();
     }

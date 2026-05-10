@@ -17,28 +17,25 @@ use Dudlewebs\WPMCS\Ramsey\Uuid\Math\BrickMathCalculator;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Time;
 /**
- * Previously used to integrate moontoast/math as a bignum arithmetic library,
- * BigNumberTimeConverter is deprecated in favor of GenericTimeConverter
+ * Previously used to integrate moontoast/math as a bignum arithmetic library, BigNumberTimeConverter is deprecated in
+ * favor of GenericTimeConverter
  *
- * @deprecated Transition to {@see GenericTimeConverter}.
+ * @deprecated Please transition to {@see GenericTimeConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class BigNumberTimeConverter implements TimeConverterInterface
 {
-    /**
-     * @var TimeConverterInterface
-     */
-    private $converter;
+    private TimeConverterInterface $converter;
     public function __construct()
     {
         $this->converter = new GenericTimeConverter(new BrickMathCalculator());
     }
-    public function calculateTime(string $seconds, string $microseconds): Hexadecimal
+    public function calculateTime(string $seconds, string $microseconds) : Hexadecimal
     {
         return $this->converter->calculateTime($seconds, $microseconds);
     }
-    public function convertTime(Hexadecimal $uuidTimestamp): Time
+    public function convertTime(Hexadecimal $uuidTimestamp) : Time
     {
         return $this->converter->convertTime($uuidTimestamp);
     }

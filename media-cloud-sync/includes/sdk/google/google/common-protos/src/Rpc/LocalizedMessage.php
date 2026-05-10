@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Provides a localized error message that is safe to return to the user
  * which can be attached to an RPC error.

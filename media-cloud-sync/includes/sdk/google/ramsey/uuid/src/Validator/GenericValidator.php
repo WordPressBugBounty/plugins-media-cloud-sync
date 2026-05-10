@@ -18,26 +18,26 @@ use function str_replace;
 /**
  * GenericValidator validates strings as UUIDs of any variant
  *
- * @psalm-immutable
+ * @immutable
  */
 final class GenericValidator implements ValidatorInterface
 {
     /**
      * Regular expression pattern for matching a UUID of any variant.
      */
-    private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
+    private const VALID_PATTERN = '\\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\\z';
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
-    public function getPattern(): string
+    public function getPattern() : string
     {
         return self::VALID_PATTERN;
     }
-    public function validate(string $uuid): bool
+    public function validate(string $uuid) : bool
     {
+        /** @phpstan-ignore possiblyImpure.functionCall */
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
+        /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }

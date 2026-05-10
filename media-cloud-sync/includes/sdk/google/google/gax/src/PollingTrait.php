@@ -66,7 +66,7 @@ trait PollingTrait
             if ($pollCallable()) {
                 return \true;
             }
-            $currentPollDelayMillis = (int) min([$currentPollDelayMillis * $pollDelayMultiplier, $maxPollDelayMillis]);
+            $currentPollDelayMillis = (int) \min([$currentPollDelayMillis * $pollDelayMultiplier, $maxPollDelayMillis]);
         }
     }
     /**
@@ -76,7 +76,7 @@ trait PollingTrait
      */
     protected function getCurrentTimeMillis()
     {
-        return microtime(\true) * 1000.0;
+        return \microtime(\true) * 1000.0;
     }
     /**
      * Protected to allow overriding for tests
@@ -85,6 +85,6 @@ trait PollingTrait
      */
     protected function sleepMillis(int $millis)
     {
-        usleep($millis * 1000);
+        \usleep($millis * 1000);
     }
 }

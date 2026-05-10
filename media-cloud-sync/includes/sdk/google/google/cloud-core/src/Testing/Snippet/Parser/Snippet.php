@@ -126,22 +126,22 @@ class Snippet implements \JsonSerializable
     public function invoke($returnVar = null)
     {
         $content = $this->config['content'];
-        $return = $returnVar ? sprintf('return %s;', $this->createReturnVar($returnVar)) : '';
+        $return = $returnVar ? \sprintf('return %s;', $this->createReturnVar($returnVar)) : '';
         $use = [];
         foreach ($this->use as $class) {
             $use[] = 'use ' . $class . ';';
         }
         if (!empty($use)) {
-            $content = implode("\n", $use) . $content;
+            $content = \implode("\n", $use) . $content;
         }
-        $cb = function ($return) use ($content) {
-            extract($this->locals);
+        $cb = function ($return) use($content) {
+            \extract($this->locals);
             try {
-                ob_start();
+                \ob_start();
                 $res = eval($content . "\n\n" . $return);
-                $out = ob_get_clean();
+                $out = \ob_get_clean();
             } catch (\Exception $e) {
-                ob_end_clean();
+                \ob_end_clean();
                 throw $e;
             }
             return new InvokeResult($res, $out);
@@ -158,6 +158,18 @@ class Snippet implements \JsonSerializable
     public function addLocal($name, $value)
     {
         $this->locals[$name] = $value;
+    }
+    /**
+     * Add a local variables to make available in the snippet execution scope.
+     *
+     * @param array<string, mixed> $locals
+     * @return void
+     */
+    public function addLocals(array $locals)
+    {
+        foreach ($locals as $name => $value) {
+            $this->addLocal($name, $value);
+        }
     }
     /**
      * Add a `use` statement for a class.
@@ -186,9 +198,9 @@ class Snippet implements \JsonSerializable
      */
     public function setLine($line, $content)
     {
-        $snippet = explode("\n", $this->config['content']);
+        $snippet = \explode("\n", $this->config['content']);
         $snippet[$line] = $content;
-        $this->config['content'] = implode("\n", $snippet);
+        $this->config['content'] = \implode("\n", $snippet);
     }
     /**
      * Inject new code after a given line.
@@ -207,9 +219,9 @@ class Snippet implements \JsonSerializable
      */
     public function insertAfterLine($line, $content)
     {
-        $snippet = explode("\n", $this->config['content']);
-        array_splice($snippet, $line + 1, 0, $content);
-        $this->config['content'] = implode("\n", $snippet);
+        $snippet = \explode("\n", $this->config['content']);
+        \array_splice($snippet, $line + 1, 0, $content);
+        $this->config['content'] = \implode("\n", $snippet);
     }
     /**
      * Replace a string in the snippet with a new one.
@@ -228,7 +240,7 @@ class Snippet implements \JsonSerializable
      */
     public function replace($old, $new)
     {
-        $this->config['content'] = str_replace($old, $new, $this->config['content']);
+        $this->config['content'] = \str_replace($old, $new, $this->config['content']);
     }
     /**
      * Find something with a regex and replace it.
@@ -247,7 +259,7 @@ class Snippet implements \JsonSerializable
      */
     public function regexReplace($pattern, $new)
     {
-        $this->config['content'] = preg_replace($pattern, $new, $this->config['content']);
+        $this->config['content'] = \preg_replace($pattern, $new, $this->config['content']);
     }
     /**
      * Serialize to json
@@ -261,11 +273,11 @@ class Snippet implements \JsonSerializable
     }
     private function createReturnVar($returnVar)
     {
-        if (is_array($returnVar)) {
+        if (\is_array($returnVar)) {
             foreach ($returnVar as $index => $var) {
                 $returnVar[$index] = '$' . $var;
             }
-            return '[' . implode(',', $returnVar) . ']';
+            return '[' . \implode(',', $returnVar) . ']';
         }
         return '$' . $returnVar;
     }

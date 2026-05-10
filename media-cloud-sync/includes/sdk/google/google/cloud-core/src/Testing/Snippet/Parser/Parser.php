@@ -35,7 +35,7 @@ use Dudlewebs\WPMCS\phpDocumentor\Reflection\DocBlock;
  */
 class Parser
 {
-    const SNIPPET_NAME_REGEX = '/\/\/\s?\[snippet\=(\w{0,})\]/';
+    const SNIPPET_NAME_REGEX = '/\\/\\/\\s?\\[snippet\\=(\\w{0,})\\]/';
     private $reflection;
     public function __construct()
     {
@@ -60,13 +60,13 @@ class Parser
     {
         $class = new ReflectionClass($class);
         $examples = $this->examplesFromClass($class);
-        $result = array_filter($examples, function ($example) use ($index) {
+        $result = \array_filter($examples, function ($example) use($index) {
             return $example->index() == $index;
         });
         if (empty($result)) {
-            throw new \Exception(sprintf('Given snippet index %d does not exist for class %s', $index, $class->getName()));
+            throw new \Exception(\sprintf('Given snippet index %d does not exist for class %s', $index, $class->getName()));
         }
-        return current($result);
+        return \current($result);
     }
     /**
      * Get a snippet from a method.
@@ -94,13 +94,13 @@ class Parser
     public function methodExample($class, $method, $index = 0)
     {
         $examples = $this->examplesFromMethod($class, $method);
-        $result = array_filter($examples, function ($example) use ($index) {
+        $result = \array_filter($examples, function ($example) use($index) {
             return $example->index() === $index;
         });
         if (empty($result)) {
-            throw new \Exception(sprintf('Given snippet index %d does not exist for method %s::%s', $index, $class, $method));
+            throw new \Exception(\sprintf('Given snippet index %d does not exist for method %s::%s', $index, $class, $method));
         }
-        return current($result);
+        return \current($result);
     }
     /**
      * Retrieve all examples from a class Doc Block.
@@ -125,7 +125,7 @@ class Parser
         $doc = $this->reflection->createDocBlock($class);
         $magic = [];
         if ($doc->getTags()) {
-            $magicMethods = array_filter($doc->getTags(), function ($tag) {
+            $magicMethods = \array_filter($doc->getTags(), function ($tag) {
                 return $tag->getName() === 'method';
             });
             $methods = $this->buildMagicMethods($magicMethods, $class->getName());
@@ -190,7 +190,7 @@ class Parser
             if ($method->getDeclaringClass()->name !== $class->getName()) {
                 continue;
             }
-            $snippets = array_merge($snippets, $this->examplesFromMethod($class, $method));
+            $snippets = \array_merge($snippets, $this->examplesFromMethod($class, $method));
         }
         return $snippets;
     }
@@ -206,8 +206,8 @@ class Parser
     {
         $text = $this->reflection->getDocBlockText($docBlock);
         $parts = [];
-        if (strpos($text, 'Example:' . \PHP_EOL . '```') !== \false) {
-            $parts = explode('Example:' . \PHP_EOL, $text);
+        if (\strpos($text, 'Example:' . \PHP_EOL . '```') !== \false) {
+            $parts = \explode('Example:' . \PHP_EOL, $text);
         } else {
             return [];
         }
@@ -229,7 +229,7 @@ class Parser
             $res[$identifier] = $snippet;
             $index++;
         }
-        $res = array_merge($res, $magicMethods);
+        $res = \array_merge($res, $magicMethods);
         return $res;
     }
     /**
@@ -241,12 +241,12 @@ class Parser
      */
     public function createIdentifier($fqn, $indexOrName)
     {
-        return sha1($fqn . $indexOrName);
+        return \sha1($fqn . $indexOrName);
     }
     private function extractSnippetName($content)
     {
         $matches = [];
-        if (!preg_match(self::SNIPPET_NAME_REGEX, $content, $matches)) {
+        if (!\preg_match(self::SNIPPET_NAME_REGEX, $content, $matches)) {
             return null;
         }
         return $matches[1];
@@ -256,10 +256,10 @@ class Parser
         $res = [];
         foreach ($magicMethods as $method) {
             $description = $method->getDescription();
-            if (is_null($description)) {
+            if (\is_null($description)) {
                 continue;
             }
-            $class = substr($method->getDescription(), 1, -1);
+            $class = \substr($method->getDescription(), 1, -1);
             $doc = $this->reflection->createDocBlock($class);
             $res[] = ['name' => $method->getMethodName(), 'doc' => $doc];
         }

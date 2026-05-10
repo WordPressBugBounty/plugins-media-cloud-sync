@@ -30,7 +30,6 @@ use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\StreamableUploader;
 use Dudlewebs\WPMCS\Google\Cloud\PubSub\Topic;
 use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
 use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\IamBucket;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\SigningHelper;
 use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 use Dudlewebs\WPMCS\GuzzleHttp\Psr7\MimeType;
 use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
@@ -54,7 +53,7 @@ class Bucket
     use EncryptionTrait;
     const NOTIFICATION_TEMPLATE = '//pubsub.googleapis.com/%s';
     const TOPIC_TEMPLATE = 'projects/%s/topics/%s';
-    const TOPIC_REGEX = '/projects\/[^\/]*\/topics\/(.*)/';
+    const TOPIC_REGEX = '/projects\\/[^\\/]*\\/topics\\/(.*)/';
     /**
      * @var Acl ACL for the bucket.
      */
@@ -228,10 +227,8 @@ class Bucket
      *           are `true`, `false`, `md5` and `crc32`. If true, either md5 or
      *           crc32c will be chosen based on your platform. If false, no
      *           validation hash will be sent. Choose either `md5` or `crc32` to
-     *           force a hash method regardless of performance implications. In
-     *           PHP versions earlier than 7.4, performance will be very
-     *           adversely impacted by using crc32c unless you install the
-     *           `crc32c` PHP extension. **Defaults to** `true`.
+     *           force a hash method regardless of performance implications.
+     *           **Defaults to** `true`.
      *     @type int $chunkSize If provided the upload will be done in chunks.
      *           The size must be in multiples of 262144 bytes. With chunking
      *           you have increased reliability at the risk of higher overhead.
@@ -331,10 +328,8 @@ class Bucket
      *           are `true`, `false`, `md5` and `crc32`. If true, either md5 or
      *           crc32c will be chosen based on your platform. If false, no
      *           validation hash will be sent. Choose either `md5` or `crc32` to
-     *           force a hash method regardless of performance implications. In
-     *           PHP versions earlier than 7.4, performance will be very
-     *           adversely impacted by using crc32c unless you install the
-     *           `crc32c` PHP extension. **Defaults to** `true`.ß
+     *           force a hash method regardless of performance implications.
+     *           **Defaults to** `true`.
      *     @type string $predefinedAcl Predefined ACL to apply to the object.
      *           Acceptable values include, `"authenticatedRead"`,
      *           `"bucketOwnerFullControl"`, `"bucketOwnerRead"`, `"private"`,
@@ -368,7 +363,7 @@ class Bucket
         $encryptionKey = $options['encryptionKey'] ?? null;
         $encryptionKeySHA256 = $options['encryptionKeySHA256'] ?? null;
         $promise = $this->connection->insertObject($this->formatEncryptionHeaders($options) + $this->identity + ['data' => $data, 'resumable' => \false])->uploadAsync();
-        return $promise->then(function (array $response) use ($encryptionKey, $encryptionKeySHA256) {
+        return $promise->then(function (array $response) use($encryptionKey, $encryptionKeySHA256) {
             return new StorageObject($this->connection, $response['name'], $this->identity['bucket'], $response['generation'], $response, $encryptionKey, $encryptionKeySHA256);
         });
     }
@@ -526,6 +521,9 @@ class Bucket
      *           from the `encryptionKey` on your behalf if not provided, but
      *           for best performance it is recommended to pass in a cached
      *           version of the already calculated SHA.
+     *     @type boolean $softDeleted If true, returns the metadata of the
+     *           soft-deleted object. If true, generation must also be specified,
+     *           and alt=media cannot be specified.
      * }
      * @return StorageObject
      */
@@ -534,7 +532,45 @@ class Bucket
         $generation = $options['generation'] ?? null;
         $encryptionKey = $options['encryptionKey'] ?? null;
         $encryptionKeySHA256 = $options['encryptionKeySHA256'] ?? null;
-        return new StorageObject($this->connection, $name, $this->identity['bucket'], $generation, array_filter(['requesterProjectId' => $this->identity['userProject']]), $encryptionKey, $encryptionKeySHA256);
+        return new StorageObject($this->connection, $name, $this->identity['bucket'], $generation, \array_filter(['requesterProjectId' => $this->identity['userProject']]), $encryptionKey, $encryptionKeySHA256);
+    }
+    /**
+     * Restores an object.
+     *
+     * Example:
+     * ```
+     * $object = $bucket->restore('file.txt');
+     * ```
+     *
+     * @param string $name The name of the object to restore.
+     * @param string $generation Request a specific generation of the object.
+     * @param array $options [optional] {
+     *     Configuration Options.
+     *
+     *     @type string $restoreToken Must be specified when getting a soft-deleted object from
+     *           an HNS-enabled bucket that has a name and generation conflict with another object in the same bucket.
+     *     @type string $ifGenerationMatch Makes the operation conditional on whether
+     *           the object's current generation matches the given value.
+     *     @type string $ifGenerationNotMatch Makes the operation conditional on whether
+     *           the object's current generation matches the given value.
+     *     @type string $ifMetagenerationMatch If set, only restores
+     *           if its metageneration matches this value.
+     *     @type string $ifMetagenerationNotMatch If set, only restores
+     *           if its metageneration does not match this value.
+     * }
+     * @return StorageObject
+     */
+    public function restore($name, $generation, array $options = [])
+    {
+        $res = $this->connection->restoreObject(['bucket' => $this->identity['bucket'], 'generation' => $generation, 'object' => $name] + $options);
+        return new StorageObject(
+            $this->connection,
+            $name,
+            $this->identity['bucket'],
+            $res['generation'],
+            // restored object will have a new generation
+            $res + \array_filter(['requesterProjectId' => $this->identity['userProject']])
+        );
     }
     /**
      * Fetches all objects in the bucket.
@@ -583,13 +619,13 @@ class Bucket
      *           value must be UTF-8 encoded. See:
      *           https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-object-glob
      * }
-     * @return ObjectIterator<StorageObject>
+     * @return ObjectIterator
      */
     public function objects(array $options = [])
     {
         $resultLimit = $this->pluck('resultLimit', $options, \false);
         return new ObjectIterator(new ObjectPageIterator(function (array $object) {
-            return new StorageObject($this->connection, $object['name'], $this->identity['bucket'], isset($object['generation']) ? $object['generation'] : null, $object + array_filter(['requesterProjectId' => $this->identity['userProject']]));
+            return new StorageObject($this->connection, $object['name'], $this->identity['bucket'], isset($object['generation']) ? $object['generation'] : null, $object + \array_filter(['requesterProjectId' => $this->identity['userProject']]));
         }, [$this->connection, 'listObjects'], $options + $this->identity, ['resultLimit' => $resultLimit]));
     }
     /**
@@ -742,6 +778,7 @@ class Bucket
     public function notifications(array $options = [])
     {
         $resultLimit = $this->pluck('resultLimit', $options, \false);
+        /** @var ItemIterator<Notification> */
         return new ItemIterator(new PageIterator(function (array $notification) {
             return new Notification($this->connection, $notification['id'], $this->identity['bucket'], $notification + ['requesterProjectId' => $this->identity['userProject']]);
         }, [$this->connection, 'listNotifications'], $options + $this->identity, ['resultLimit' => $resultLimit]));
@@ -934,17 +971,17 @@ class Bucket
      */
     public function compose(array $sourceObjects, $name, array $options = [])
     {
-        if (count($sourceObjects) < 2) {
+        if (\count($sourceObjects) < 2) {
             throw new \InvalidArgumentException('Must provide at least two objects to compose.');
         }
-        $options += ['destinationBucket' => $this->name(), 'destinationObject' => $name, 'destinationPredefinedAcl' => isset($options['predefinedAcl']) ? $options['predefinedAcl'] : null, 'destination' => isset($options['metadata']) ? $options['metadata'] : null, 'userProject' => $this->identity['userProject'], 'sourceObjects' => array_map(function ($sourceObject) {
+        $options += ['destinationBucket' => $this->name(), 'destinationObject' => $name, 'destinationPredefinedAcl' => isset($options['predefinedAcl']) ? $options['predefinedAcl'] : null, 'destination' => isset($options['metadata']) ? $options['metadata'] : null, 'userProject' => $this->identity['userProject'], 'sourceObjects' => \array_map(function ($sourceObject) {
             $name = null;
             $generation = null;
             if ($sourceObject instanceof StorageObject) {
                 $name = $sourceObject->name();
                 $generation = $sourceObject->identity()['generation'] ?? null;
             }
-            return array_filter(['name' => $name ?: $sourceObject, 'generation' => $generation]);
+            return \array_filter(['name' => $name ?: $sourceObject, 'generation' => $generation]);
         }, $sourceObjects)];
         if (!isset($options['destination']['contentType'])) {
             $options['destination']['contentType'] = MimeType::fromFilename($name);
@@ -954,8 +991,8 @@ class Bucket
         }
         unset($options['metadata']);
         unset($options['predefinedAcl']);
-        $response = $this->connection->composeObject(array_filter($options));
-        return new StorageObject($this->connection, $response['name'], $this->identity['bucket'], $response['generation'], $response + array_filter(['requesterProjectId' => $this->identity['userProject']]));
+        $response = $this->connection->composeObject(\array_filter($options));
+        return new StorageObject($this->connection, $response['name'], $this->identity['bucket'], $response['generation'], $response + \array_filter(['requesterProjectId' => $this->identity['userProject']]));
     }
     /**
      * Retrieves the bucket's details. If no bucket data is cached a network
@@ -972,6 +1009,9 @@ class Bucket
      * @param array $options [optional] {
      *     Configuration options.
      *
+     *     @type string $generation If present, selects a specific soft-deleted
+     *           version of this bucket instead of the live version.
+     *           This parameter is required if softDeleted is set to true.
      *     @type string $ifMetagenerationMatch Makes the return of the bucket
      *           metadata conditional on whether the bucket's current
      *           metageneration matches the given value.
@@ -980,6 +1020,8 @@ class Bucket
      *           metageneration does not match the given value.
      *     @type string $projection Determines which properties to return. May
      *           be either `"full"` or `"noAcl"`.
+     *     @type bool $softDeleted If true, returns the soft-deleted bucket.
+     *           This parameter is required if generation is specified.
      * }
      * @return array
      */
@@ -1002,6 +1044,9 @@ class Bucket
      * @param array $options [optional] {
      *     Configuration options.
      *
+     *     @type string $generation If present, selects a specific soft-deleted
+     *           version of this bucket instead of the live version.
+     *           This parameter is required if softDeleted is set to true.
      *     @type string $ifMetagenerationMatch Makes the return of the bucket
      *           metadata conditional on whether the bucket's current
      *           metageneration matches the given value.
@@ -1010,6 +1055,8 @@ class Bucket
      *           metageneration does not match the given value.
      *     @type string $projection Determines which properties to return. May
      *           be either `"full"` or `"noAcl"`.
+     *     @type bool $softDeleted If true, returns the soft-deleted bucket.
+     *           This parameter is required if generation is specified.
      * }
      * @return array
      */
@@ -1271,14 +1318,50 @@ class Bucket
      *           space, and line breaks will be replaced by an empty string.
      *           V2 Signed URLs may not provide `x-goog-encryption-key` or
      *           `x-goog-encryption-key-sha256` headers.
-     *     @type array $keyFile Keyfile data to use in place of the keyfile with
-     *           which the client was constructed. If `$options.keyFilePath` is
-     *           set, this option is ignored.
-     *     @type string $keyFilePath A path to a valid keyfile to use in place
-     *           of the keyfile with which the client was constructed.
-     *     @type string|array $scopes One or more authentication scopes to be
-     *           used with a key file. This option is ignored unless
-     *           `$options.keyFile` or `$options.keyFilePath` is set.
+     *     @type FetchAuthTokenInterface $credentialsFetcher A credentials
+     *           fetcher instance.
+     *     @type array $keyFile [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+     *     @type string $keyFilePath [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
      *     @type array $queryParams Additional query parameters to be included
      *           as part of the signed URL query string. For allowed values,
      *           see [Reference Headers](https://cloud.google.com/storage/docs/xml-api/reference-headers#query).
@@ -1295,7 +1378,7 @@ class Bucket
     {
         // May be overridden for testing.
         $signingHelper = $this->pluck('helper', $options, \false) ?: SigningHelper::getHelper();
-        $resource = sprintf('/%s', $this->identity['bucket']);
+        $resource = \sprintf('/%s', $this->identity['bucket']);
         return $signingHelper->sign($this->connection, $expires, $resource, null, $options);
     }
     /**
@@ -1352,12 +1435,50 @@ class Bucket
      *           `x-ignore` prefix), given as key/value pairs.
      *     @type bool $forceOpenssl If true, OpenSSL will be used regardless of
      *           whether phpseclib is available. **Defaults to** `false`.
-     *     @type array $keyFile Keyfile data to use in place of the keyfile with
-     *           which the client was constructed. If `$options.keyFilePath` is
-     *           set, this option is ignored.
-     *     @type string $keyFilePath A path to a valid Keyfile to use in place
-     *           of the keyfile with which the client was constructed.
-     *     @type string $scheme Either `http` or `https`. Only used if a custom
+     *     @type FetchAuthTokenInterface $credentialsFetcher A credentials
+     *           fetcher instance.
+     *     @type array $keyFile [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+     *     @type string $keyFilePath [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
      *           hostname is provided via `$options.bucketBoundHostname`. If a
      *           custom bucketBoundHostname is provided, **defaults to** `http`.
      *           In all other cases, **defaults to** `https`.
@@ -1375,7 +1496,7 @@ class Bucket
     {
         // May be overridden for testing.
         $signingHelper = $this->pluck('helper', $options, \false) ?: SigningHelper::getHelper();
-        $resource = sprintf('/%s/%s', $this->identity['bucket'], $objectName);
+        $resource = \sprintf('/%s/%s', $this->identity['bucket'], $objectName);
         return $signingHelper->v4PostPolicy($this->connection, $expires, $resource, $options);
     }
     /**
@@ -1386,7 +1507,7 @@ class Bucket
      */
     private function isObjectNameRequired($data)
     {
-        return is_string($data) || is_null($data);
+        return \is_string($data) || \is_null($data);
     }
     /**
      * Return a topic name in its fully qualified format.
@@ -1399,17 +1520,17 @@ class Bucket
     private function getFormattedTopic($topic)
     {
         if ($topic instanceof Topic) {
-            return sprintf(self::NOTIFICATION_TEMPLATE, $topic->name());
+            return \sprintf(self::NOTIFICATION_TEMPLATE, $topic->name());
         }
-        if (!is_string($topic)) {
-            throw new \InvalidArgumentException('$topic may only be a string or instance of Google\Cloud\PubSub\Topic');
+        if (!\is_string($topic)) {
+            throw new \InvalidArgumentException('Dudlewebs\\WPMCS\\$topic may only be a string or instance of Google\\Cloud\\PubSub\\Topic');
         }
-        if (preg_match('/projects\/[^\/]*\/topics\/(.*)/', $topic) === 1) {
-            return sprintf(self::NOTIFICATION_TEMPLATE, $topic);
+        if (\preg_match('/projects\\/[^\\/]*\\/topics\\/(.*)/', $topic) === 1) {
+            return \sprintf(self::NOTIFICATION_TEMPLATE, $topic);
         }
         if (!$this->projectId) {
             throw new GoogleException('No project ID was provided, ' . 'and we were unable to detect a default project ID.');
         }
-        return sprintf(self::NOTIFICATION_TEMPLATE, sprintf(self::TOPIC_TEMPLATE, $this->projectId, $topic));
+        return \sprintf(self::NOTIFICATION_TEMPLATE, \sprintf(self::TOPIC_TEMPLATE, $this->projectId, $topic));
     }
 }

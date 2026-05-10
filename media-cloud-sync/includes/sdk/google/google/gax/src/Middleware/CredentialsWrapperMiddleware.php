@@ -34,16 +34,19 @@ namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
 
 use Dudlewebs\WPMCS\Google\ApiCore\Call;
 use Dudlewebs\WPMCS\Google\ApiCore\CredentialsWrapper;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\Google\ApiCore\HeaderCredentialsInterface;
 /**
 * Middleware which adds a CredentialsWrapper object to the call options.
+*
+* @internal
 */
 class CredentialsWrapperMiddleware implements MiddlewareInterface
 {
     /** @var callable */
     private $nextHandler;
-    private CredentialsWrapper $credentialsWrapper;
-    public function __construct(callable $nextHandler, CredentialsWrapper $credentialsWrapper)
+    /** @var HeaderCredentialsInterface */
+    private HeaderCredentialsInterface $credentialsWrapper;
+    public function __construct(callable $nextHandler, HeaderCredentialsInterface $credentialsWrapper)
     {
         $this->nextHandler = $nextHandler;
         $this->credentialsWrapper = $credentialsWrapper;

@@ -54,10 +54,10 @@ class GPBWire
             case GPBType::MESSAGE:
                 return self::WIRETYPE_LENGTH_DELIMITED;
             case GPBType::GROUP:
-                user_error("Unsupported type.");
+                \user_error("Unsupported type.");
                 return 0;
             default:
-                user_error("Unsupported type.");
+                \user_error("Unsupported type.");
                 return 0;
         }
     }
@@ -105,10 +105,10 @@ class GPBWire
     public static function zigZagEncode64($int64)
     {
         if (\PHP_INT_SIZE == 4) {
-            if (bccomp($int64, 0) >= 0) {
-                return bcmul($int64, 2);
+            if (\bccomp($int64, 0) >= 0) {
+                return \bcmul($int64, 2);
             } else {
-                return bcsub(bcmul(bcsub(0, $int64), 2), 1);
+                return \bcsub(\bcmul(\bcsub(0, $int64), 2), 1);
             }
         } else {
             return (int) $int64 << 1 ^ (int) $int64 >> 63;
@@ -117,10 +117,10 @@ class GPBWire
     public static function zigZagDecode64($uint64)
     {
         if (\PHP_INT_SIZE == 4) {
-            if (bcmod($uint64, 2) == 0) {
-                return bcdiv($uint64, 2, 0);
+            if (\bcmod($uint64, 2) == 0) {
+                return \bcdiv($uint64, 2, 0);
             } else {
-                return bcsub(0, bcdiv(bcadd($uint64, 1), 2, 0));
+                return \bcsub(0, \bcdiv(\bcadd($uint64, 1), 2, 0));
             }
         } else {
             return $uint64 >> 1 & 0x7fffffffffffffff ^ -($uint64 & 1);
@@ -133,8 +133,8 @@ class GPBWire
     public static function readInt64(&$input, &$value)
     {
         $success = $input->readVarint64($value);
-        if (\PHP_INT_SIZE == 4 && bccomp($value, "9223372036854775807") > 0) {
-            $value = bcsub($value, "18446744073709551616");
+        if (\PHP_INT_SIZE == 4 && \bccomp($value, "9223372036854775807") > 0) {
+            $value = \bcsub($value, "18446744073709551616");
         }
         return $success;
     }
@@ -183,8 +183,8 @@ class GPBWire
     public static function readSfixed64(&$input, &$value)
     {
         $success = $input->readLittleEndian64($value);
-        if (\PHP_INT_SIZE == 4 && bccomp($value, "9223372036854775807") > 0) {
-            $value = bcsub($value, "18446744073709551616");
+        if (\PHP_INT_SIZE == 4 && \bccomp($value, "9223372036854775807") > 0) {
+            $value = \bcsub($value, "18446744073709551616");
         }
         return $success;
     }
@@ -194,7 +194,7 @@ class GPBWire
         if (!$input->readRaw(4, $data)) {
             return \false;
         }
-        $value = unpack('g', $data)[1];
+        $value = \unpack('g', $data)[1];
         return \true;
     }
     public static function readDouble(&$input, &$value)
@@ -203,7 +203,7 @@ class GPBWire
         if (!$input->readRaw(8, $data)) {
             return \false;
         }
-        $value = unpack('e', $data)[1];
+        $value = \unpack('e', $data)[1];
         return \true;
     }
     public static function readBool(&$input, &$value)
@@ -293,12 +293,12 @@ class GPBWire
     }
     public static function writeFloat(&$output, $value)
     {
-        $data = pack("g", $value);
+        $data = \pack("g", $value);
         return $output->writeRaw($data, 4);
     }
     public static function writeDouble(&$output, $value)
     {
-        $data = pack("e", $value);
+        $data = \pack("e", $value);
         return $output->writeRaw($data, 8);
     }
     public static function writeString(&$output, $value)
@@ -307,7 +307,7 @@ class GPBWire
     }
     public static function writeBytes(&$output, $value)
     {
-        $size = strlen($value);
+        $size = \strlen($value);
         if (!$output->writeVarint32($size, \true)) {
             return \false;
         }
@@ -366,31 +366,31 @@ class GPBWire
     public static function varint64Size($value)
     {
         if (\PHP_INT_SIZE == 4) {
-            if (bccomp($value, 0) < 0 || bccomp($value, "9223372036854775807") > 0) {
+            if (\bccomp($value, 0) < 0 || \bccomp($value, "9223372036854775807") > 0) {
                 return 10;
             }
-            if (bccomp($value, 1 << 7) < 0) {
+            if (\bccomp($value, 1 << 7) < 0) {
                 return 1;
             }
-            if (bccomp($value, 1 << 14) < 0) {
+            if (\bccomp($value, 1 << 14) < 0) {
                 return 2;
             }
-            if (bccomp($value, 1 << 21) < 0) {
+            if (\bccomp($value, 1 << 21) < 0) {
                 return 3;
             }
-            if (bccomp($value, 1 << 28) < 0) {
+            if (\bccomp($value, 1 << 28) < 0) {
                 return 4;
             }
-            if (bccomp($value, '34359738368') < 0) {
+            if (\bccomp($value, '34359738368') < 0) {
                 return 5;
             }
-            if (bccomp($value, '4398046511104') < 0) {
+            if (\bccomp($value, '4398046511104') < 0) {
                 return 6;
             }
-            if (bccomp($value, '562949953421312') < 0) {
+            if (\bccomp($value, '562949953421312') < 0) {
                 return 7;
             }
-            if (bccomp($value, '72057594037927936') < 0) {
+            if (\bccomp($value, '72057594037927936') < 0) {
                 return 8;
             }
             return 9;
@@ -526,7 +526,7 @@ class GPBWire
                 }
                 break;
             default:
-                user_error("Unsupported type.");
+                \user_error("Unsupported type.");
                 return \false;
         }
         return \true;

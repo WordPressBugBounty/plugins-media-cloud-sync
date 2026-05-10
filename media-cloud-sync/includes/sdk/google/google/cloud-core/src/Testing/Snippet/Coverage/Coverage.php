@@ -91,7 +91,7 @@ class Coverage
      */
     public function uncovered()
     {
-        return array_diff_key($this->snippets, array_flip($this->covered));
+        return \array_diff_key($this->snippets, \array_flip($this->covered));
     }
     /**
      * @param string|int $identifier
@@ -102,6 +102,6 @@ class Coverage
      */
     public function cache($identifier)
     {
-        return array_key_exists($identifier, $this->snippets) ? $this->snippets[$identifier] : null;
+        return \array_key_exists($identifier, $this->snippets) ? $this->snippets[$identifier] : null;
     }
 }

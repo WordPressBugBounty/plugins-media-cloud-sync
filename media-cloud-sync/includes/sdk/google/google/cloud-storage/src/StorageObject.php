@@ -157,7 +157,7 @@ class StorageObject
      */
     public function delete(array $options = [])
     {
-        $this->connection->deleteObject($options + array_filter($this->identity));
+        $this->connection->deleteObject($options + \array_filter($this->identity));
     }
     /**
      * Update the object. Upon receiving a result the local object's data will
@@ -222,7 +222,7 @@ class StorageObject
         if (isset($options['predefinedAcl'])) {
             $options['acl'] = null;
         }
-        return $this->info = $this->connection->patchObject($options + array_filter($this->identity));
+        return $this->info = $this->connection->patchObject($options + \array_filter($this->identity));
     }
     /**
      * Copy the object to a destination bucket.
@@ -422,6 +422,65 @@ class StorageObject
         return new StorageObject($this->connection, $response['resource']['name'], $response['resource']['bucket'], $response['resource']['generation'], $response['resource'] + ['requesterProjectId' => $this->identity['userProject']], $destinationKey, $destinationKeySHA256);
     }
     /**
+     * Move an object within a bucket.
+     *
+     * This method copies data using multiple requests so large objects can be
+     * copied with a normal length timeout per request rather than one very long
+     * timeout for a single request.
+     *
+     * Example:
+     * ```
+     * // Provide your destination object as a string.
+     * $moveObject = $object->move('newObject.txt');
+     * ```
+     *
+     * @see https://cloud.google.com/storage/docs/json_api/v1/objects/move Objects move API documentation.
+     *
+     * @param string $destinationObject The destination object.
+     * @param array $options [optional]
+     *     Configuration options.
+     *
+     *     @type string $ifGenerationMatch Makes the operation conditional on
+     *           whether the destination object's current generation matches the
+     *           given value.
+     *     @type string $ifGenerationNotMatch Makes the operation conditional on
+     *           whether the destination object's current generation does not
+     *           match the given value.
+     *     @type string $ifMetagenerationMatch Makes the operation conditional
+     *           on whether the destination object's current metageneration
+     *           matches the given value.
+     *     @type string $ifMetagenerationNotMatch Makes the operation
+     *           conditional on whether the destination object's current
+     *           metageneration does not match the given value.
+     *     @type string $ifSourceGenerationMatch Makes the operation conditional
+     *           on whether the source object's current generation matches the
+     *           given value.
+     *     @type string $ifSourceGenerationNotMatch Makes the operation
+     *           conditional on whether the source object's current generation
+     *           does not match the given value.
+     *     @type string $ifSourceMetagenerationMatch Makes the operation
+     *           conditional on whether the source object's current
+     *           metageneration matches the given value.
+     *     @type string $ifSourceMetagenerationNotMatch Makes the operation
+     *           conditional on whether the source object's current
+     *           metageneration does not match the given value.
+     *
+     * @return StorageObject
+     * @throws \InvalidArgumentException
+     */
+    public function move($destinationObject, array $options = [])
+    {
+        if (!\is_string($destinationObject)) {
+            throw new \InvalidArgumentException('$destinationObject must be a string.');
+        }
+        $options['bucket'] = $this->identity['bucket'];
+        $options['sourceObject'] = $this->identity['object'];
+        $options['destinationObject'] = $destinationObject;
+        $options['userProject'] = $this->identity['userProject'];
+        $response = $this->connection->moveObject($options);
+        return new StorageObject($this->connection, $response['name'], $response['bucket'], $response['generation'], $response + ['requesterProjectId' => $this->identity['userProject']]);
+    }
+    /**
      * Renames the object.
      *
      * Please note that there is no atomic rename provided by the Storage API.
@@ -485,7 +544,7 @@ class StorageObject
         $destinationBucket = $options['destinationBucket'] ?? $this->identity['bucket'];
         unset($options['destinationBucket']);
         $copiedObject = $this->copy($destinationBucket, ['name' => $name] + $options);
-        $this->delete(array_intersect_key($options, ['restOptions' => null, 'retries' => null]));
+        $this->delete(\array_intersect_key($options, ['restOptions' => null, 'retries' => null]));
         $this->info = [];
         return $copiedObject;
     }
@@ -554,7 +613,7 @@ class StorageObject
     public function downloadToFile($path, array $options = [])
     {
         $source = $this->downloadAsStream($options);
-        $destination = Utils::streamFor(fopen($path, 'w'));
+        $destination = Utils::streamFor(\fopen($path, 'w'));
         Utils::copyToStream($source, $destination);
         $destination->seek(0);
         return $destination;
@@ -610,7 +669,7 @@ class StorageObject
      */
     public function downloadAsStream(array $options = [])
     {
-        return $this->connection->downloadObject($this->formatEncryptionHeaders($options + $this->encryptionData + array_filter($this->identity)));
+        return $this->connection->downloadObject($this->formatEncryptionHeaders($options + $this->encryptionData + \array_filter($this->identity)));
     }
     /**
      * Asynchronously download an object as a stream.
@@ -671,7 +730,7 @@ class StorageObject
      */
     public function downloadAsStreamAsync(array $options = [])
     {
-        return $this->connection->downloadObjectAsync($this->formatEncryptionHeaders($options + $this->encryptionData + array_filter($this->identity)));
+        return $this->connection->downloadObjectAsync($this->formatEncryptionHeaders($options + $this->encryptionData + \array_filter($this->identity)));
     }
     /**
      * Create a Signed URL for this object.
@@ -766,11 +825,50 @@ class StorageObject
      *           space, and line breaks will be replaced by an empty string.
      *           V2 Signed URLs may not provide `x-goog-encryption-key` or
      *           `x-goog-encryption-key-sha256` headers.
-     *     @type array $keyFile Keyfile data to use in place of the keyfile with
-     *           which the client was constructed. If `$options.keyFilePath` is
-     *           set, this option is ignored.
-     *     @type string $keyFilePath A path to a valid Keyfile to use in place
-     *           of the keyfile with which the client was constructed.
+     *     @type FetchAuthTokenInterface $credentialsFetcher A credentials
+     *           fetcher instance.
+     *     @type array $keyFile [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+     *     @type string $keyFilePath [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
      *     @type string $method One of `GET`, `PUT` or `DELETE`.
      *           **Defaults to** `GET`.
      *     @type string $responseDisposition The
@@ -809,7 +907,7 @@ class StorageObject
     {
         // May be overridden for testing.
         $signingHelper = $this->pluck('helper', $options, \false) ?: SigningHelper::getHelper();
-        $resource = sprintf('/%s/%s', $this->identity['bucket'], $this->identity['object']);
+        $resource = \sprintf('/%s/%s', $this->identity['bucket'], $this->identity['object']);
         return $signingHelper->sign($this->connection, $expires, $resource, $this->identity['generation'], $options);
     }
     /**
@@ -870,11 +968,50 @@ class StorageObject
      *           space, and line breaks will be replaced by an empty string.
      *           V2 Signed URLs may not provide `x-goog-encryption-key` or
      *           `x-goog-encryption-key-sha256` headers.
-     *     @type array $keyFile Keyfile data to use in place of the keyfile with
-     *           which the client was constructed. If `$options.keyFilePath` is
-     *           set, this option is ignored.
-     *     @type string $keyFilePath A path to a valid Keyfile to use in place
-     *           of the keyfile with which the client was constructed.
+     *     @type FetchAuthTokenInterface $credentialsFetcher A credentials
+     *           fetcher instance.
+     *     @type array $keyFile [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+     *     @type string $keyFilePath [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
      *     @type string $responseDisposition The
      *           [`response-content-disposition`](http://www.iana.org/assignments/cont-disp/cont-disp.xhtml)
      *           parameter of the signed url.
@@ -953,12 +1090,50 @@ class StorageObject
      *           space, and line breaks will be replaced by an empty string.
      *           V2 Signed URLs may not provide `x-goog-encryption-key` or
      *           `x-goog-encryption-key-sha256` headers.
-     *     @type array $keyFile Keyfile data to use in place of the keyfile with
-     *           which the client was constructed. If `$options.keyFilePath` is
-     *           set, this option is ignored.
-     *     @type string $keyFilePath A path to a valid Keyfile to use in place
-     *           of the keyfile with which the client was constructed.
-     *     @type string $origin Value of CORS header
+     *     @type FetchAuthTokenInterface $credentialsFetcher A credentials
+     *           fetcher instance.
+     *     @type array $keyFile [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+     *     @type string $keyFilePath [DEPRECATED]
+     *           This option is being deprecated because of a potential security risk.
+     *           This option does not validate the credential configuration. The security
+     *           risk occurs when a credential configuration is accepted from a source
+     *           that is not under your control and used without validation on your side.
+     *           If you know that you will be loading credential configurations of a
+     *           specific type, it is recommended to create the credentials directly and
+     *           configure them using the `credentialsFetcher` option instead.
+     *           ```
+     *           use Google\Auth\Credentials\ServiceAccountCredentials;
+     *           $credentialsFetcher = new ServiceAccountCredentials($scopes, $json);
+     *           ```
+     *           This will ensure that an unexpected credential type with potential for
+     *           malicious intent is not loaded unintentionally. You might still have to do
+     *           validation for certain credential types.
+     *           If you are loading your credential configuration from an untrusted source and have
+     *           not mitigated the risks (e.g. by validating the configuration yourself), make
+     *           these changes as soon as possible to prevent security risks to your environment.
+     *           Regardless of the method used, it is always your responsibility to validate
+     *           configurations received from external sources.
+     *           @see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
      *           "Access-Control-Allow-Origin". **Defaults to** `"*"`.
      *     @type string|array $scopes One or more authentication scopes to be
      *           used with a key file. This option is ignored unless
@@ -1069,7 +1244,7 @@ class StorageObject
      */
     public function reload(array $options = [])
     {
-        return $this->info = $this->connection->getObject($this->formatEncryptionHeaders($options + $this->encryptionData + array_filter($this->identity)));
+        return $this->info = $this->connection->getObject($this->formatEncryptionHeaders($options + $this->encryptionData + \array_filter($this->identity)));
     }
     /**
      * Retrieves the object's name.
@@ -1112,7 +1287,7 @@ class StorageObject
      */
     public function gcsUri()
     {
-        return sprintf('gs://%s/%s', $this->identity['bucket'], $this->identity['object']);
+        return \sprintf('gs://%s/%s', $this->identity['bucket'], $this->identity['object']);
     }
     /**
      * Formats a destination based request, such as copy or rewrite.
@@ -1123,13 +1298,13 @@ class StorageObject
      */
     private function formatDestinationRequest($destination, array $options)
     {
-        if (!is_string($destination) && !$destination instanceof Bucket) {
+        if (!\is_string($destination) && !$destination instanceof Bucket) {
             throw new \InvalidArgumentException('$destination must be either a string or an instance of Bucket.');
         }
         $destAcl = $options['predefinedAcl'] ?? null;
         $destObject = $options['name'] ?? $this->identity['object'];
         unset($options['name']);
         unset($options['predefinedAcl']);
-        return array_filter(['destinationBucket' => $destination instanceof Bucket ? $destination->name() : $destination, 'destinationObject' => $destObject, 'destinationPredefinedAcl' => $destAcl, 'sourceBucket' => $this->identity['bucket'], 'sourceObject' => $this->identity['object'], 'sourceGeneration' => $this->identity['generation'], 'userProject' => $this->identity['userProject']]) + $this->formatEncryptionHeaders($options + $this->encryptionData);
+        return \array_filter(['destinationBucket' => $destination instanceof Bucket ? $destination->name() : $destination, 'destinationObject' => $destObject, 'destinationPredefinedAcl' => $destAcl, 'sourceBucket' => $this->identity['bucket'], 'sourceObject' => $this->identity['object'], 'sourceGeneration' => $this->identity['generation'], 'userProject' => $this->identity['userProject']]) + $this->formatEncryptionHeaders($options + $this->encryptionData);
     }
 }

@@ -57,7 +57,7 @@ class KeyManager
      */
     public function setLocation($location)
     {
-        $this->location = strtolower($location);
+        $this->location = \strtolower($location);
     }
     /**
      * Get the project data.
@@ -70,8 +70,8 @@ class KeyManager
     {
         $projectId = $projectId ?: $this->projectId;
         $uri = 'https://cloudresourcemanager.googleapis.com/v1/projects/%s';
-        $res = $this->requestWrapper->send(new Request('GET', sprintf($uri, $projectId)));
-        return json_decode($res->getBody(), \true);
+        $res = $this->requestWrapper->send(new Request('GET', \sprintf($uri, $projectId)));
+        return \json_decode($res->getBody(), \true);
     }
     /**
      * A helper to get KMS keys and set correct permissions.
@@ -95,7 +95,7 @@ class KeyManager
     private function buildKeyRing($keyRingId)
     {
         try {
-            $this->requestWrapper->send(new Request('POST', sprintf('https://cloudkms.googleapis.com/v1/projects/%s/locations/%s/keyRings?keyRingId=%s', $this->projectId, $this->location, $keyRingId)));
+            $this->requestWrapper->send(new Request('POST', \sprintf('https://cloudkms.googleapis.com/v1/projects/%s/locations/%s/keyRings?keyRingId=%s', $this->projectId, $this->location, $keyRingId)));
         } catch (ConflictException $ex) {
             // If it already exists, great!
         }
@@ -110,14 +110,14 @@ class KeyManager
         $name = null;
         try {
             $uri = 'https://cloudkms.googleapis.com/v1/projects/%s/locations/%s/keyRings/%s/cryptoKeys?cryptoKeyId=%s';
-            $response = $this->requestWrapper->send(new Request('POST', sprintf($uri, $this->projectId, $this->location, $keyRingId, $cryptoKeyId), [], json_encode(['purpose' => 'ENCRYPT_DECRYPT'])));
-            $name = json_decode((string) $response->getBody(), \true)['name'];
+            $response = $this->requestWrapper->send(new Request('POST', \sprintf($uri, $this->projectId, $this->location, $keyRingId, $cryptoKeyId), [], \json_encode(['purpose' => 'ENCRYPT_DECRYPT'])));
+            $name = \json_decode((string) $response->getBody(), \true)['name'];
         } catch (ConflictException $ex) {
-            $name = sprintf('projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s', $this->projectId, $this->location, $keyRingId, $cryptoKeyId);
+            $name = \sprintf('projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s', $this->projectId, $this->location, $keyRingId, $cryptoKeyId);
         }
         $policy = ['policy' => ['bindings' => [['role' => 'roles/cloudkms.cryptoKeyEncrypterDecrypter', 'members' => ["serviceAccount:" . $this->serviceAccountEmail]]]]];
         $uri = 'https://cloudkms.googleapis.com/v1/projects/%s/locations/' . '%s/keyRings/%s/cryptoKeys/%s:setIamPolicy';
-        $this->requestWrapper->send(new Request('POST', sprintf($uri, $this->projectId, $this->location, $keyRingId, $cryptoKeyId), [], json_encode($policy)));
+        $this->requestWrapper->send(new Request('POST', \sprintf($uri, $this->projectId, $this->location, $keyRingId, $cryptoKeyId), [], \json_encode($policy)));
         return $name;
     }
 }

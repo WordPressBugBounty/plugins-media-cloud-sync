@@ -13,15 +13,14 @@ declare (strict_types=1);
 namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
 
 /**
- * NameGeneratorFactory retrieves a default name generator, based on the
- * environment
+ * NameGeneratorFactory retrieves a default name generator, based on the environment
  */
 class NameGeneratorFactory
 {
     /**
      * Returns a default name generator, based on the current environment
      */
-    public function getGenerator(): NameGeneratorInterface
+    public function getGenerator() : NameGeneratorInterface
     {
         return new DefaultNameGenerator();
     }

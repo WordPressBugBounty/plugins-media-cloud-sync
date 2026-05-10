@@ -73,7 +73,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *
      *     @type string $name
      *     @type int|string $number
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $repeated_field
+     *     @type string[]|\Google\Protobuf\RepeatedField $repeated_field
      *     @type \Google\ApiCore\Testing\MockRequestBody $nested_message
      *     @type \Google\Protobuf\BytesValue $bytes_value
      *     @type \Google\Protobuf\Duration $duration_value
@@ -89,7 +89,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *     @type string $field_3
      * }
      */
-    public function __construct($data = NULL)
+    public function __construct($data = null)
     {
         \Dudlewebs\WPMCS\GPBMetadata\ApiCore\Testing\Mocks::initOnce();
         parent::__construct($data);
@@ -109,7 +109,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, \true);
         $this->name = $var;
         return $this;
     }
@@ -134,7 +134,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     }
     /**
      * Generated from protobuf field <code>repeated string repeated_field = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return \Google\Protobuf\RepeatedField
      */
     public function getRepeatedField()
     {
@@ -142,7 +142,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     }
     /**
      * Generated from protobuf field <code>repeated string repeated_field = 3;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[]|\Google\Protobuf\RepeatedField $var
      * @return $this
      */
     public function setRepeatedField($var)
@@ -201,7 +201,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function getBytesValueUnwrapped()
     {
-        return $this->readWrapperValue("bytes_value");
+        return $this->readWrapperValue('bytes_value');
     }
     /**
      * Generated from protobuf field <code>.google.protobuf.BytesValue bytes_value = 5;</code>
@@ -222,7 +222,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setBytesValueUnwrapped($var)
     {
-        $this->writeWrapperValue("bytes_value", $var);
+        $this->writeWrapperValue('bytes_value', $var);
         return $this;
     }
     /**
@@ -302,7 +302,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function getInt64ValueUnwrapped()
     {
-        return $this->readWrapperValue("int64_value");
+        return $this->readWrapperValue('int64_value');
     }
     /**
      * Generated from protobuf field <code>.google.protobuf.Int64Value int64_value = 8;</code>
@@ -323,7 +323,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setInt64ValueUnwrapped($var)
     {
-        $this->writeWrapperValue("int64_value", $var);
+        $this->writeWrapperValue('int64_value', $var);
         return $this;
     }
     /**
@@ -376,7 +376,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function getStringValueUnwrapped()
     {
-        return $this->readWrapperValue("string_value");
+        return $this->readWrapperValue('string_value');
     }
     /**
      * Generated from protobuf field <code>.google.protobuf.StringValue string_value = 10;</code>
@@ -397,7 +397,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setStringValueUnwrapped($var)
     {
-        $this->writeWrapperValue("string_value", $var);
+        $this->writeWrapperValue('string_value', $var);
         return $this;
     }
     /**
@@ -500,7 +500,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setField1($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, \true);
         $this->writeOneof(14, $var);
         return $this;
     }
@@ -523,7 +523,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setField2($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, \true);
         $this->writeOneof(15, $var);
         return $this;
     }
@@ -546,7 +546,7 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function setField3($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkString($var, \true);
         $this->writeOneof(16, $var);
         return $this;
     }
@@ -555,6 +555,6 @@ class MockRequestBody extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function getOneofField()
     {
-        return $this->whichOneof("oneof_field");
+        return $this->whichOneof('oneof_field');
     }
 }

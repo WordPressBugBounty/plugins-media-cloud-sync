@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Type;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Represents a time interval, encoded as a Timestamp start (inclusive) and a
  * Timestamp end (exclusive).

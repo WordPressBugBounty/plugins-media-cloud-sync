@@ -17,14 +17,14 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
-use Dudlewebs\WPMCS\Google\Rpc\Code;
-use Dudlewebs\WPMCS\Google\ApiCore\PagedListResponse;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Rpc\RetryInfo;
+use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\Google\ApiCore\PagedListResponse;
+use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
+use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
 use Dudlewebs\WPMCS\Google\Rpc\BadRequest;
+use Dudlewebs\WPMCS\Google\Rpc\Code;
+use Dudlewebs\WPMCS\Google\Rpc\RetryInfo;
 /**
  * @internal
  * Encapsulates shared functionality of classes that need to send
@@ -70,7 +70,7 @@ trait RequestProcessorTrait
         try {
             foreach ($response->readAll() as $count => $result) {
                 $res = $this->serializer->encodeMessage($result);
-                yield $res;
+                (yield $res);
             }
         } catch (\Exception $ex) {
             throw $this->convertToGoogleException($ex);
@@ -82,7 +82,7 @@ trait RequestProcessorTrait
      * @param \Exception $ex
      * @return ServiceException
      */
-    private function convertToGoogleException(\Exception $ex): ServiceException
+    private function convertToGoogleException(\Exception $ex) : ServiceException
     {
         switch ($ex->getCode()) {
             case Code::INVALID_ARGUMENT:
@@ -115,7 +115,7 @@ trait RequestProcessorTrait
                 break;
         }
         $metadata = [];
-        if (method_exists($ex, 'getMetadata') && $ex->getMetadata()) {
+        if (\method_exists($ex, 'getMetadata') && $ex->getMetadata()) {
             foreach ($ex->getMetadata() as $type => $binaryValue) {
                 if (!isset($this->metadataTypes[$type])) {
                     continue;

@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Required information for every language.
  *
@@ -29,6 +29,13 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      */
     private $destinations;
     /**
+     * Configuration for which RPCs should be generated in the GAPIC client.
+     * Note: This field should not be used in most cases.
+     *
+     * Generated from protobuf field <code>.google.api.SelectiveGapicGeneration selective_gapic_generation = 3;</code>
+     */
+    protected $selective_gapic_generation = null;
+    /**
      * Constructor.
      *
      * @param array $data {
@@ -37,8 +44,11 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      *     @type string $reference_docs_uri
      *           Link to automatically generated reference documentation.  Example:
      *           https://cloud.google.com/nodejs/docs/reference/asset/latest
-     *     @type array<int>|\Google\Protobuf\Internal\RepeatedField $destinations
+     *     @type int[] $destinations
      *           The destination where API teams want this client library to be published.
+     *     @type \Google\Api\SelectiveGapicGeneration $selective_gapic_generation
+     *           Configuration for which RPCs should be generated in the GAPIC client.
+     *           Note: This field should not be used in most cases.
      * }
      */
     public function __construct($data = NULL)
@@ -56,7 +66,9 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      */
     public function getReferenceDocsUri()
     {
-        @trigger_error('reference_docs_uri is deprecated.', \E_USER_DEPRECATED);
+        if ($this->reference_docs_uri !== '') {
+            @\trigger_error('reference_docs_uri is deprecated.', \E_USER_DEPRECATED);
+        }
         return $this->reference_docs_uri;
     }
     /**
@@ -70,7 +82,7 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      */
     public function setReferenceDocsUri($var)
     {
-        @trigger_error('reference_docs_uri is deprecated.', \E_USER_DEPRECATED);
+        @\trigger_error('reference_docs_uri is deprecated.', \E_USER_DEPRECATED);
         GPBUtil::checkString($var, True);
         $this->reference_docs_uri = $var;
         return $this;
@@ -79,7 +91,7 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      * The destination where API teams want this client library to be published.
      *
      * Generated from protobuf field <code>repeated .google.api.ClientLibraryDestination destinations = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<int>
      */
     public function getDestinations()
     {
@@ -89,13 +101,46 @@ class CommonLanguageSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      * The destination where API teams want this client library to be published.
      *
      * Generated from protobuf field <code>repeated .google.api.ClientLibraryDestination destinations = 2;</code>
-     * @param array<int>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[] $var
      * @return $this
      */
     public function setDestinations($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType::ENUM, \Dudlewebs\WPMCS\Google\Api\ClientLibraryDestination::class);
         $this->destinations = $arr;
+        return $this;
+    }
+    /**
+     * Configuration for which RPCs should be generated in the GAPIC client.
+     * Note: This field should not be used in most cases.
+     *
+     * Generated from protobuf field <code>.google.api.SelectiveGapicGeneration selective_gapic_generation = 3;</code>
+     * @return \Google\Api\SelectiveGapicGeneration|null
+     */
+    public function getSelectiveGapicGeneration()
+    {
+        return $this->selective_gapic_generation;
+    }
+    public function hasSelectiveGapicGeneration()
+    {
+        return isset($this->selective_gapic_generation);
+    }
+    public function clearSelectiveGapicGeneration()
+    {
+        unset($this->selective_gapic_generation);
+    }
+    /**
+     * Configuration for which RPCs should be generated in the GAPIC client.
+     * Note: This field should not be used in most cases.
+     *
+     * Generated from protobuf field <code>.google.api.SelectiveGapicGeneration selective_gapic_generation = 3;</code>
+     * @param \Google\Api\SelectiveGapicGeneration $var
+     * @return $this
+     */
+    public function setSelectiveGapicGeneration($var)
+    {
+        GPBUtil::checkMessage($var, \Dudlewebs\WPMCS\Google\Api\SelectiveGapicGeneration::class);
+        $this->selective_gapic_generation = $var;
         return $this;
     }
 }

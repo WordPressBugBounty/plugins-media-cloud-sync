@@ -5,10 +5,10 @@ Contributors: dudlewebs
 Donate link: https://dudlewebs.com/donate
 Tags: sync, cloud, offload, media, aws
 License: GPLv2 or later
-Requires PHP: 7.4
+Requires PHP: 8.1
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -141,6 +141,10 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.3.9 =
+* Compatibility: Updated AWS SDK.
+* Compatibility: Updated Google Cloud SDK.
+* Compatibility: Pro Version Licensing support.
 = 1.3.8 =
 * Bug Fix: Critical error when file type not supported.
 * Bug Fix: Removed file type check from media library.

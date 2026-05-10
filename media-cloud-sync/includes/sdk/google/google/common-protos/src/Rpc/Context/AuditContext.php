@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc\Context;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * `AuditContext` provides information that is needed for audit logging.
  *

@@ -88,11 +88,11 @@ class JsonStreamDecoder
     {
         try {
             foreach ($this->_decode() as $response) {
-                yield $response;
+                (yield $response);
             }
         } catch (RuntimeException $re) {
             $msg = $re->getMessage();
-            $streamClosedException = strpos($msg, 'Stream is detached') !== \false || strpos($msg, 'Unexpected stream close') !== \false;
+            $streamClosedException = \strpos($msg, 'Stream is detached') !== \false || \strpos($msg, 'Unexpected stream close') !== \false;
             // Only throw the exception if close() was not called and it was not
             // a closing-related exception.
             if (!$this->closeCalled || !$streamClosedException) {
@@ -119,7 +119,7 @@ class JsonStreamDecoder
                 break;
             }
             // Parse the freshly read data available in $chunk.
-            $chunkLength = strlen($chunk);
+            $chunkLength = \strlen($chunk);
             while ($cursor < $chunkLength) {
                 // Access the next byte for processing.
                 $b = $chunk[$cursor];
@@ -172,12 +172,12 @@ class JsonStreamDecoder
                     $length = $end - $start;
                     /** @var \Google\Protobuf\Internal\Message $return */
                     $return = new $decodeType();
-                    $return->mergeFromJsonString(substr($chunk, $start, $length), $this->ignoreUnknown);
-                    yield $return;
+                    $return->mergeFromJsonString(\substr($chunk, $start, $length), $this->ignoreUnknown);
+                    (yield $return);
                     // Dump the part of the chunk used for parsing the message
                     // and use the remaining for the next message.
                     $remaining = $chunkLength - $length;
-                    $chunk = substr($chunk, $end, $remaining);
+                    $chunk = \substr($chunk, $end, $remaining);
                     // Reset all indices and exit chunk processing.
                     $start = 0;
                     $end = 0;

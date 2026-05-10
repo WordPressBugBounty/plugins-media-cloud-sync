@@ -34,7 +34,7 @@ class HttpHandlerReader implements ReaderInterface
      * @param callable $httpHandler [optional] An HTTP Handler capable of
      *        accepting PSR7 requests and returning PSR7 responses.
      */
-    public function __construct(callable $httpHandler = null)
+    public function __construct(?callable $httpHandler = null)
     {
         $this->httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
     }
@@ -46,7 +46,7 @@ class HttpHandlerReader implements ReaderInterface
      */
     public function read($path)
     {
-        $url = sprintf('http://%s/computeMetadata/v1/%s', GCECredentials::METADATA_IP, $path);
+        $url = \sprintf('http://%s/computeMetadata/v1/%s', GCECredentials::METADATA_IP, $path);
         $request = new Request('GET', $url, [GCECredentials::FLAVOR_HEADER => 'Google']);
         $handler = $this->httpHandler;
         $res = $handler($request);

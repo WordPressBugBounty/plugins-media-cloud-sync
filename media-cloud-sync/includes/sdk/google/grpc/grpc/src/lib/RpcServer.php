@@ -45,11 +45,11 @@ class RpcServer extends Server
     public function handle($service)
     {
         $methodDescriptors = $service->getMethodDescriptors();
-        $exist_methods = array_intersect_key($this->paths_map, $methodDescriptors);
+        $exist_methods = \array_intersect_key($this->paths_map, $methodDescriptors);
         if (!empty($exist_methods)) {
-            fwrite(\STDERR, "WARNING: " . 'override already registered methods: ' . implode(', ', array_keys($exist_methods)) . \PHP_EOL);
+            \fwrite(\STDERR, "WARNING: " . 'override already registered methods: ' . \implode(', ', \array_keys($exist_methods)) . \PHP_EOL);
         }
-        $this->paths_map = array_merge($this->paths_map, $methodDescriptors);
+        $this->paths_map = \array_merge($this->paths_map, $methodDescriptors);
         return $this->paths_map;
     }
     public function run()
@@ -62,7 +62,7 @@ class RpcServer extends Server
                 $full_path = $event->method;
                 $context = new ServerContext($event);
                 $server_writer = new ServerCallWriter($event->call, $context);
-                if (!array_key_exists($full_path, $this->paths_map)) {
+                if (!\array_key_exists($full_path, $this->paths_map)) {
                     $context->setStatus(Status::unimplemented());
                     $server_writer->finish();
                     continue;
@@ -76,7 +76,7 @@ class RpcServer extends Server
                     $server_writer->finish();
                 }
             } catch (\Exception $e) {
-                fwrite(\STDERR, "ERROR: " . $e->getMessage() . \PHP_EOL);
+                \fwrite(\STDERR, "ERROR: " . $e->getMessage() . \PHP_EOL);
                 exit(1);
             }
         }
@@ -87,19 +87,19 @@ class RpcServer extends Server
         switch ($method_desc->call_type) {
             case MethodDescriptor::UNARY_CALL:
                 $request = $server_reader->read();
-                $response = call_user_func(array($method_desc->service, $method_desc->method_name), $request ?? new $method_desc->request_type(), $context);
+                $response = \call_user_func(array($method_desc->service, $method_desc->method_name), $request ?? new $method_desc->request_type(), $context);
                 $server_writer->finish($response);
                 break;
             case MethodDescriptor::SERVER_STREAMING_CALL:
                 $request = $server_reader->read();
-                call_user_func(array($method_desc->service, $method_desc->method_name), $request ?? new $method_desc->request_type(), $server_writer, $context);
+                \call_user_func(array($method_desc->service, $method_desc->method_name), $request ?? new $method_desc->request_type(), $server_writer, $context);
                 break;
             case MethodDescriptor::CLIENT_STREAMING_CALL:
-                $response = call_user_func(array($method_desc->service, $method_desc->method_name), $server_reader, $context);
+                $response = \call_user_func(array($method_desc->service, $method_desc->method_name), $server_reader, $context);
                 $server_writer->finish($response);
                 break;
             case MethodDescriptor::BIDI_STREAMING_CALL:
-                call_user_func(array($method_desc->service, $method_desc->method_name), $server_reader, $server_writer, $context);
+                \call_user_func(array($method_desc->service, $method_desc->method_name), $server_reader, $server_writer, $context);
                 break;
             default:
                 throw new \Exception();

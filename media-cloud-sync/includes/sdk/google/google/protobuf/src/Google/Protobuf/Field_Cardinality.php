@@ -13,5 +13,5 @@ if (\false) {
     {
     }
 }
-class_exists(Field\Cardinality::class);
-@trigger_error('Google\Protobuf\Field_Cardinality is deprecated and will be removed in the next major release. Use Google\Protobuf\Field\Cardinality instead', \E_USER_DEPRECATED);
+\class_exists(Field\Cardinality::class);
+@\trigger_error('Google\\Protobuf\\Field_Cardinality is deprecated and will be removed in the next major release. Use Google\\Protobuf\\Field\\Cardinality instead', \E_USER_DEPRECATED);

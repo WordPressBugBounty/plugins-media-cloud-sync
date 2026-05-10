@@ -44,7 +44,7 @@ abstract class AbstractCall
      */
     public function __construct(Channel $channel, $method, $deserialize, array $options = [])
     {
-        if (array_key_exists('timeout', $options) && is_numeric($timeout = $options['timeout'])) {
+        if (\array_key_exists('timeout', $options) && \is_numeric($timeout = $options['timeout'])) {
             $now = Timeval::now();
             $delta = new Timeval($timeout);
             $deadline = $now->add($delta);
@@ -55,7 +55,7 @@ abstract class AbstractCall
         $this->deserialize = $deserialize;
         $this->metadata = null;
         $this->trailing_metadata = null;
-        if (array_key_exists('call_credentials_callback', $options) && is_callable($call_credentials_callback = $options['call_credentials_callback'])) {
+        if (\array_key_exists('call_credentials_callback', $options) && \is_callable($call_credentials_callback = $options['call_credentials_callback'])) {
             $call_credentials = CallCredentials::createFromPlugin($call_credentials_callback);
             $this->call->setCredentials($call_credentials);
         }

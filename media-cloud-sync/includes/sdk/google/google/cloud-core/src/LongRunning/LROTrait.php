@@ -19,7 +19,6 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning;
 
 use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\ItemIterator;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\PageIterator;
-use Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning\LongRunningConnectionInterface;
 /**
  * Provide Long Running Operation support to Google Cloud PHP Clients.
  *
@@ -89,7 +88,7 @@ trait LROTrait
      */
     public function longRunningOperations(array $options = [])
     {
-        if (is_null($this->lroResource)) {
+        if (\is_null($this->lroResource)) {
             throw new \BadMethodCallException('This service does list support listing operations.');
         }
         $resultLimit = $this->pluck('resultLimit', $options, \false) ?: 0;

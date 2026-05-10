@@ -5,18 +5,17 @@
 namespace Dudlewebs\WPMCS\Google\LongRunning;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * A message representing the message types used by a long-running operation.
  * Example:
- *   rpc LongRunningRecognize(LongRunningRecognizeRequest)
- *       returns (google.longrunning.Operation) {
- *     option (google.longrunning.operation_info) = {
- *       response_type: "LongRunningRecognizeResponse"
- *       metadata_type: "LongRunningRecognizeMetadata"
- *     };
- *   }
+ *     rpc Export(ExportRequest) returns (google.longrunning.Operation) {
+ *       option (google.longrunning.operation_info) = {
+ *         response_type: "ExportResponse"
+ *         metadata_type: "ExportMetadata"
+ *       };
+ *     }
  *
  * Generated from protobuf message <code>google.longrunning.OperationInfo</code>
  */

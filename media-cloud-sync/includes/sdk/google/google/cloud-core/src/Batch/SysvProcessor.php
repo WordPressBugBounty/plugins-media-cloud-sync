@@ -43,20 +43,20 @@ class SysvProcessor implements ProcessItemInterface
      */
     public function submit($item, $idNum)
     {
-        if (!array_key_exists($idNum, $this->sysvQs)) {
-            $this->sysvQs[$idNum] = msg_get_queue($this->getSysvKey($idNum));
+        if (!\array_key_exists($idNum, $this->sysvQs)) {
+            $this->sysvQs[$idNum] = \msg_get_queue($this->getSysvKey($idNum));
         }
-        $result = @msg_send($this->sysvQs[$idNum], self::$typeDirect, $item, \true, \false);
+        $result = @\msg_send($this->sysvQs[$idNum], self::$typeDirect, $item, \true, \false);
         if ($result === \false) {
             // Try to put the content in a temp file and send the filename.
-            $tempFile = tempnam(sys_get_temp_dir(), 'Item');
-            $result = file_put_contents($tempFile, serialize($item));
+            $tempFile = \tempnam(\sys_get_temp_dir(), 'Item');
+            $result = \file_put_contents($tempFile, \serialize($item));
             if ($result === \false) {
                 throw new \RuntimeException("Failed to write to {$tempFile} while submiting the item");
             }
-            $result = @msg_send($this->sysvQs[$idNum], self::$typeFile, $tempFile, \true, \false);
+            $result = @\msg_send($this->sysvQs[$idNum], self::$typeFile, $tempFile, \true, \false);
             if ($result === \false) {
-                @unlink($tempFile);
+                @\unlink($tempFile);
                 throw new QueueOverflowException();
             }
         }

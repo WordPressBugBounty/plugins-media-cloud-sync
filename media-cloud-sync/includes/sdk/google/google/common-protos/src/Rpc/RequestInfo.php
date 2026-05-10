@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Contains metadata about the request that clients can attach when filing a bug
  * or providing other forms of feedback.

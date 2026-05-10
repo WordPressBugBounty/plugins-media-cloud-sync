@@ -37,9 +37,10 @@ use Dudlewebs\WPMCS\Google\ApiCore\Page;
 use Dudlewebs\WPMCS\Google\ApiCore\PagedListResponse;
 use Dudlewebs\WPMCS\Google\ApiCore\PageStreamingDescriptor;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
 * Middleware which wraps the response in an PagedListResponses object.
+*
+* @internal
 */
 class PagedMiddleware implements MiddlewareInterface
 {
@@ -59,7 +60,7 @@ class PagedMiddleware implements MiddlewareInterface
     {
         $next = $this->nextHandler;
         $descriptor = $this->descriptor;
-        return $next($call, $options)->then(function (Message $response) use ($call, $next, $options, $descriptor) {
+        return $next($call, $options)->then(function (Message $response) use($call, $next, $options, $descriptor) {
             $page = new Page($call, $options, $next, $descriptor, $response);
             return new PagedListResponse($page);
         });

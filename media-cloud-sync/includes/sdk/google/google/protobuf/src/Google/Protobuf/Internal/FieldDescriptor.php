@@ -85,6 +85,10 @@ class FieldDescriptor
     {
         return $this->label;
     }
+    public function isRequired()
+    {
+        return $this->label === GPBLabel::REQUIRED;
+    }
     public function isRepeated()
     {
         return $this->label === GPBLabel::REPEATED;
@@ -139,7 +143,7 @@ class FieldDescriptor
     }
     public function getRealContainingOneof()
     {
-        return !is_null($this->containing_oneof) && !$this->containing_oneof->isSynthetic() ? $this->containing_oneof : null;
+        return !\is_null($this->containing_oneof) && !$this->containing_oneof->isSynthetic() ? $this->containing_oneof : null;
     }
     public function isPackable()
     {
@@ -147,7 +151,7 @@ class FieldDescriptor
     }
     public function isMap()
     {
-        return $this->getType() == GPBType::MESSAGE && !is_null($this->getMessageType()->getOptions()) && $this->getMessageType()->getOptions()->getMapEntry();
+        return $this->getType() == GPBType::MESSAGE && !\is_null($this->getMessageType()->getOptions()) && $this->getMessageType()->getOptions()->getMapEntry();
     }
     public function isTimestamp()
     {
@@ -157,7 +161,7 @@ class FieldDescriptor
     {
         if ($this->getType() == GPBType::MESSAGE) {
             $class = $this->getMessageType()->getClass();
-            return in_array($class, ["Google\\Protobuf\\DoubleValue", "Google\\Protobuf\\FloatValue", "Google\\Protobuf\\Int64Value", "Google\\Protobuf\\UInt64Value", "Google\\Protobuf\\Int32Value", "Google\\Protobuf\\UInt32Value", "Google\\Protobuf\\BoolValue", "Google\\Protobuf\\StringValue", "Google\\Protobuf\\BytesValue"]);
+            return \in_array($class, ["Google\\Protobuf\\DoubleValue", "Google\\Protobuf\\FloatValue", "Google\\Protobuf\\Int64Value", "Google\\Protobuf\\UInt64Value", "Google\\Protobuf\\Int32Value", "Google\\Protobuf\\UInt32Value", "Google\\Protobuf\\BoolValue", "Google\\Protobuf\\StringValue", "Google\\Protobuf\\BytesValue"]);
         }
         return \false;
     }
@@ -200,13 +204,13 @@ class FieldDescriptor
             $json_name = $proto->getJsonName();
         } else {
             $proto_name = $proto->getName();
-            $json_name = implode('', array_map('ucwords', explode('_', $proto_name)));
-            if ($proto_name[0] !== "_" && !ctype_upper($proto_name[0])) {
-                $json_name = lcfirst($json_name);
+            $json_name = \implode('', \array_map('ucwords', \explode('_', $proto_name)));
+            if ($proto_name[0] !== "_" && !\ctype_upper($proto_name[0])) {
+                $json_name = \lcfirst($json_name);
             }
         }
         $field->setJsonName($json_name);
-        $camel_name = implode('', array_map('ucwords', explode('_', $proto->getName())));
+        $camel_name = \implode('', \array_map('ucwords', \explode('_', $proto->getName())));
         $field->setGetter('get' . $camel_name);
         $field->setSetter('set' . $camel_name);
         $field->setType($proto->getType());

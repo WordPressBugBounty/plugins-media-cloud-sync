@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Iam\V1;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Response message for `TestIamPermissions` method.
  *
@@ -27,7 +27,7 @@ class TestIamPermissionsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Intern
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type array<string>|\Google\Protobuf\Internal\RepeatedField $permissions
+     *     @type string[] $permissions
      *           A subset of `TestPermissionsRequest.permissions` that the caller is
      *           allowed.
      * }
@@ -42,7 +42,7 @@ class TestIamPermissionsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Intern
      * allowed.
      *
      * Generated from protobuf field <code>repeated string permissions = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getPermissions()
     {
@@ -53,7 +53,7 @@ class TestIamPermissionsResponse extends \Dudlewebs\WPMCS\Google\Protobuf\Intern
      * allowed.
      *
      * Generated from protobuf field <code>repeated string permissions = 1;</code>
-     * @param array<string>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setPermissions($var)

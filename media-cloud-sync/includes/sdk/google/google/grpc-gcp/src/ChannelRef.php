@@ -57,7 +57,7 @@ class ChannelRef
         // it will reuse the underline grpc channel in C extension without creating a
         // new connection.
         // 'credentials' in the array $opts will be unset during creating the channel.
-        if (!array_key_exists('credentials', $this->opts)) {
+        if (!\array_key_exists('credentials', $this->opts)) {
             $this->opts['credentials'] = $credentials;
         }
         $real_channel = new \Grpc\Channel($this->target, $this->opts);

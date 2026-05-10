@@ -47,7 +47,7 @@ class MapFieldIter implements \Iterator
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        reset($this->container);
+        \reset($this->container);
     }
     /**
      * Return the element at the current position.
@@ -58,7 +58,7 @@ class MapFieldIter implements \Iterator
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return current($this->container);
+        return \current($this->container);
     }
     /**
      * Return the current key.
@@ -69,7 +69,7 @@ class MapFieldIter implements \Iterator
     #[\ReturnTypeWillChange]
     public function key()
     {
-        $key = key($this->container);
+        $key = \key($this->container);
         switch ($this->key_type) {
             case GPBType::INT64:
             case GPBType::UINT64:
@@ -82,10 +82,10 @@ class MapFieldIter implements \Iterator
             // Intentionally fall through
             case GPBType::STRING:
                 // PHP associative array stores int string as int for key.
-                return strval($key);
+                return \strval($key);
             case GPBType::BOOL:
                 // PHP associative array stores bool as integer for key.
-                return boolval($key);
+                return \boolval($key);
             default:
                 return $key;
         }
@@ -99,15 +99,15 @@ class MapFieldIter implements \Iterator
     #[\ReturnTypeWillChange]
     public function next()
     {
-        next($this->container);
+        \next($this->container);
     }
     /**
      * Check whether there are more elements to iterate.
      *
      * @return bool True if there are more elements to iterate.
      */
-    public function valid(): bool
+    public function valid() : bool
     {
-        return key($this->container) !== null;
+        return \key($this->container) !== null;
     }
 }

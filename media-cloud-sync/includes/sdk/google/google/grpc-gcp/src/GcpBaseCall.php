@@ -120,10 +120,10 @@ abstract class GcpBaseCall
     {
         if ($this->_affinity) {
             $names = $this->_affinity['affinityKey'];
-            $names_arr = explode(".", $names);
+            $names_arr = \explode(".", $names);
             foreach ($names_arr as $name) {
-                $getAttrMethod = 'get' . ucfirst($name);
-                $proto = call_user_func_array(array($proto, $getAttrMethod), array());
+                $getAttrMethod = 'get' . \ucfirst($name);
+                $proto = \call_user_func_array(array($proto, $getAttrMethod), array());
             }
             return $proto;
         }

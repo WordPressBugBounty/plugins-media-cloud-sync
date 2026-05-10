@@ -84,11 +84,11 @@ class PageStreamingDescriptor
     }
     private static function getMethod(string $field)
     {
-        return 'get' . ucfirst($field);
+        return 'get' . \ucfirst($field);
     }
     private static function setMethod(string $field)
     {
-        return 'set' . ucfirst($field);
+        return 'set' . \ucfirst($field);
     }
     /**
      * @return string The page token get method on the request object
@@ -109,7 +109,7 @@ class PageStreamingDescriptor
      */
     public function requestHasPageSizeField()
     {
-        return array_key_exists('requestPageSizeGetMethod', $this->descriptor);
+        return \array_key_exists('requestPageSizeGetMethod', $this->descriptor);
     }
     /**
      * @return string The page token get method on the response object

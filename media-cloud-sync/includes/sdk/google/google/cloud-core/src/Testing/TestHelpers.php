@@ -22,6 +22,7 @@ use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Container;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Coverage\Coverage;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Coverage\Scanner;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Parser\Parser;
+use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Fixtures;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\System\SystemTestCase;
 /**
  * Class TestHelpers is used to hold static functions required for testing
@@ -47,14 +48,14 @@ class TestHelpers
         if (empty($props)) {
             $props = ['connection'];
         }
-        $tpl = 'class %s extends %s {private $___props = \'%s\'; use \Google\Cloud\Core\Testing\StubTrait; }';
-        $props = json_encode($props);
-        $name = 'Stub' . sha1($extends . $props);
-        if (!class_exists($name)) {
-            eval(sprintf($tpl, $name, $extends, $props));
+        $tpl = 'class %s extends %s {private $___props = \'%s\'; use \\Google\\Cloud\\Core\\Testing\\StubTrait; }';
+        $props = \json_encode($props);
+        $name = 'Stub' . \sha1($extends . $props);
+        if (!\class_exists($name)) {
+            eval(\sprintf($tpl, $name, $extends, $props));
         }
         $reflection = new \ReflectionClass($name);
-        return $reflection->newInstanceArgs(array_values($args));
+        return $reflection->newInstanceArgs(\array_values($args));
     }
     /**
      * Get a trait implementation.
@@ -73,14 +74,14 @@ class TestHelpers
         }
         $tpl = 'class %s {
             use %s;
-            use \Google\Cloud\Core\Testing\StubTrait;
+            use \\Google\\Cloud\\Core\\Testing\\StubTrait;
             private $___props = \'%s\';
             %s
             public function call($fn, array $args = []) { return call_user_func_array([$this, $fn], $args); }
         }';
-        $name = 'Trait' . sha1($trait . json_encode($props));
-        if (!class_exists($name)) {
-            eval(sprintf($tpl, $name, $trait, json_encode($props), implode("\n", $properties)));
+        $name = 'Trait' . \sha1($trait . \json_encode($props));
+        if (!\class_exists($name)) {
+            eval(\sprintf($tpl, $name, $trait, \json_encode($props), \implode("\n", $properties)));
         }
         return new $name();
     }
@@ -93,9 +94,9 @@ class TestHelpers
      */
     public static function snippetBootstrap()
     {
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . \Dudlewebs\WPMCS\Google\Cloud\Core\Testing\Snippet\Fixtures::KEYFILE_STUB_FIXTURE());
+        \putenv('GOOGLE_APPLICATION_CREDENTIALS=' . Fixtures::KEYFILE_STUB_FIXTURE());
         $parser = new Parser();
-        $scanner = new Scanner($parser, self::projectRoot(), ['/vendor/', '/dev/', new RegexFileFilter('/\w{0,}\/vendor\//'), new RegexFileFilter('/\w{0,}\/V\d{1,}\w{0,}\//')]);
+        $scanner = new Scanner($parser, self::projectRoot(), ['/vendor/', '/dev/', new RegexFileFilter('/\\w{0,}\\/vendor\\//'), new RegexFileFilter('/\\w{0,}\\/V\\d{1,}\\w{0,}\\//'), 'LongRunning/']);
         $coverage = new Coverage($scanner);
         $coverage->buildListToCover();
         Container::$coverage = $coverage;
@@ -110,7 +111,7 @@ class TestHelpers
      */
     public static function perfBootstrap()
     {
-        $bootstraps = glob(self::projectRoot() . '/*tests/Perf/bootstrap.php');
+        $bootstraps = \glob(self::projectRoot() . '/*tests/Perf/bootstrap.php');
         foreach ($bootstraps as $bootstrap) {
             require_once $bootstrap;
         }
@@ -125,14 +126,14 @@ class TestHelpers
      */
     public static function requireKeyfile($env)
     {
-        $env = is_array($env) ? $env : [$env];
+        $env = \is_array($env) ? $env : [$env];
         foreach ($env as $var) {
-            if (!getenv($var)) {
-                throw new \RuntimeException(sprintf('Please set the \'%s\' env var to run the tests', $var));
+            if (!\getenv($var)) {
+                throw new \RuntimeException(\sprintf('Please set the \'%s\' env var to run the tests', $var));
             }
-            $path = getenv($var);
-            if (!file_exists($path)) {
-                throw new \RuntimeException(sprintf('The path \`%s\` specified in environment variable `%s` does not exist.', $path, $var));
+            $path = \getenv($var);
+            if (!\file_exists($path)) {
+                throw new \RuntimeException(\sprintf('The path \\`%s\\` specified in environment variable `%s` does not exist.', $path, $var));
             }
         }
     }
@@ -153,7 +154,7 @@ class TestHelpers
         SystemTestCase::setupQueue();
         // also set up the generated system tests
         self::generatedSystemTestBootstrap();
-        $bootstraps = glob(self::projectRoot() . '/*tests/System/bootstrap.php');
+        $bootstraps = \glob(self::projectRoot() . '/*tests/System/bootstrap.php');
         foreach ($bootstraps as $bootstrap) {
             require_once $bootstrap;
         }
@@ -172,11 +173,14 @@ class TestHelpers
     {
         // For generated system tests, we need to set GOOGLE_APPLICATION_CREDENTIALS
         // and PROJECT_ID to appropriate values
-        $keyFilePath = getenv('GOOGLE_CLOUD_PHP_TESTS_KEY_PATH');
-        putenv("GOOGLE_APPLICATION_CREDENTIALS={$keyFilePath}");
-        $keyFileData = json_decode(file_get_contents($keyFilePath), \true);
-        putenv('PROJECT_ID=' . $keyFileData['project_id']);
-        putenv('GOOGLE_PROJECT_ID=' . $keyFileData['project_id']);
+        $keyFilePath = \getenv('GOOGLE_CLOUD_PHP_TESTS_KEY_PATH');
+        if (empty($keyFilePath)) {
+            exit('GOOGLE_CLOUD_PHP_TESTS_KEY_PATH must be set to run system tests.');
+        }
+        \putenv("GOOGLE_APPLICATION_CREDENTIALS={$keyFilePath}");
+        $keyFileData = \json_decode(\file_get_contents($keyFilePath), \true);
+        \putenv('PROJECT_ID=' . $keyFileData['project_id']);
+        \putenv('GOOGLE_PROJECT_ID=' . $keyFileData['project_id']);
     }
     /**
      * Add cleanup function for system tests.
@@ -191,10 +195,10 @@ class TestHelpers
      */
     public static function systemTestShutdown(callable $shutdown)
     {
-        $pid = getmypid();
-        register_shutdown_function(function () use ($pid, $shutdown) {
+        $pid = \getmypid();
+        \register_shutdown_function(function () use($pid, $shutdown) {
             // Skip flushing deletion queue if exiting a forked process.
-            if ($pid !== getmypid()) {
+            if ($pid !== \getmypid()) {
                 return;
             }
             $shutdown();
@@ -209,8 +213,8 @@ class TestHelpers
      */
     public static function getPrivateProperty($class, $property)
     {
-        $className = get_class($class);
-        $c = \Closure::bind(function ($class) use ($property) {
+        $className = \get_class($class);
+        $c = \Closure::bind(function ($class) use($property) {
             return $class->{$property};
         }, null, $className);
         return $c($class);
@@ -228,7 +232,7 @@ class TestHelpers
         static $projectRoot;
         if (!$projectRoot) {
             $ref = new \ReflectionClass(\Dudlewebs\WPMCS\Composer\Autoload\ClassLoader::class);
-            $projectRoot = dirname(dirname(dirname($ref->getFileName())));
+            $projectRoot = \dirname(\dirname(\dirname($ref->getFileName())));
         }
         return $projectRoot;
     }

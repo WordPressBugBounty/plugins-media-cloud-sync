@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Iam\V1;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * One delta entry for AuditConfig. Each individual change (only one
  * exempted_member in each entry) to a AuditConfig will be a separate entry.

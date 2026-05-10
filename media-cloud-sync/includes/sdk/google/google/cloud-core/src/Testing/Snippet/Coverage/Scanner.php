@@ -52,7 +52,7 @@ class Scanner implements ScannerInterface
     public function __construct(Parser $parser, $basePath, array $exclude = [])
     {
         $this->parser = $parser;
-        if (is_string($basePath)) {
+        if (\is_string($basePath)) {
             $basePath = [$basePath];
         }
         $this->basePath = $basePath;
@@ -74,7 +74,7 @@ class Scanner implements ScannerInterface
             $iterator = new \RecursiveIteratorIterator($directoryIterator);
             $fileList = new FileListFilterIterator($path, $iterator, ['php'], ['/tests/'], $this->exclude);
             foreach ($fileList as $item) {
-                array_push($files, realPath($item->getPathName()));
+                \array_push($files, \realPath($item->getPathName()));
             }
         }
         return $files;
@@ -82,7 +82,7 @@ class Scanner implements ScannerInterface
     private function checkExclude($className, array $exclude)
     {
         foreach ($exclude as $pattern) {
-            if (preg_match($pattern, $className)) {
+            if (\preg_match($pattern, $className)) {
                 return \true;
             }
         }
@@ -124,9 +124,9 @@ class Scanner implements ScannerInterface
         $snippets = [];
         foreach ($classes as $class) {
             try {
-                $snippets = array_merge($snippets, $this->parser->allExamples(new \ReflectionClass($class)));
+                $snippets = \array_merge($snippets, $this->parser->allExamples(new \ReflectionClass($class)));
             } catch (\ReflectionException $e) {
-                throw new \RuntimeException(sprintf("Error in class %s: %s", $class, $e->getMessage()));
+                throw new \RuntimeException(\sprintf("Error in class %s: %s", $class, $e->getMessage()));
             }
         }
         return $snippets;

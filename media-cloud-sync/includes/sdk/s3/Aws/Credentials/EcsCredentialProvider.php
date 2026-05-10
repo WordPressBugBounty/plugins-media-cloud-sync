@@ -2,6 +2,7 @@
 
 namespace Dudlewebs\WPMCS\s3\Aws\Credentials;
 
+use Dudlewebs\WPMCS\s3\Aws\Arn\Arn;
 use Dudlewebs\WPMCS\s3\Aws\Exception\CredentialsException;
 use Dudlewebs\WPMCS\s3\GuzzleHttp\Exception\ConnectException;
 use Dudlewebs\WPMCS\s3\GuzzleHttp\Exception\GuzzleException;
@@ -67,7 +68,15 @@ class EcsCredentialProvider
                 while ($credentials === null) {
                     $credentials = (yield $client($request, ['timeout' => $this->timeout, 'proxy' => '', 'headers' => $headers])->then(function (ResponseInterface $response) {
                         $result = $this->decodeResult((string) $response->getBody());
-                        return new Credentials($result['AccessKeyId'], $result['SecretAccessKey'], $result['Token'], \strtotime($result['Expiration']), $result['AccountId'] ?? null);
+                        if (!isset($result['AccountId']) && isset($result['RoleArn'])) {
+                            try {
+                                $parsedArn = new Arn($result['RoleArn']);
+                                $result['AccountId'] = $parsedArn->getAccountId();
+                            } catch (\Exception $e) {
+                                // AccountId will be null
+                            }
+                        }
+                        return new Credentials($result['AccessKeyId'], $result['SecretAccessKey'], $result['Token'], \strtotime($result['Expiration']), $result['AccountId'] ?? null, CredentialSources::ECS);
                     })->otherwise(function ($reason) {
                         $reason = \is_array($reason) ? $reason['exception'] : $reason;
                         $isRetryable = $reason instanceof ConnectException;

@@ -5,10 +5,11 @@
 namespace Dudlewebs\WPMCS\Google\LongRunning;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
- * The request message for [Operations.GetOperation][google.longrunning.Operations.GetOperation].
+ * The request message for
+ * [Operations.GetOperation][google.longrunning.Operations.GetOperation].
  *
  * Generated from protobuf message <code>google.longrunning.GetOperationRequest</code>
  */
@@ -27,7 +28,7 @@ class GetOperationRequest extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Mess
      *
      * @experimental
      */
-    public static function build(string $name): self
+    public static function build(string $name) : self
     {
         return (new self())->setName($name);
     }

@@ -11,7 +11,7 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Logger;
+use Dudlewebs\WPMCS\Monolog\Level;
 use Dudlewebs\WPMCS\Monolog\Formatter\LineFormatter;
 /**
  * NativeMailerHandler uses the mail() function to send the emails
@@ -25,60 +25,57 @@ class NativeMailerHandler extends MailHandler
      * The email addresses to which the message will be sent
      * @var string[]
      */
-    protected $to;
+    protected array $to;
     /**
      * The subject of the email
-     * @var string
      */
-    protected $subject;
+    protected string $subject;
     /**
      * Optional headers for the message
      * @var string[]
      */
-    protected $headers = [];
+    protected array $headers = [];
     /**
      * Optional parameters for the message
      * @var string[]
      */
-    protected $parameters = [];
+    protected array $parameters = [];
     /**
      * The wordwrap length for the message
-     * @var int
      */
-    protected $maxColumnWidth;
+    protected int $maxColumnWidth;
     /**
      * The Content-type for the message
-     * @var string|null
      */
-    protected $contentType;
+    protected string|null $contentType = null;
     /**
      * The encoding for the message
-     * @var string
      */
-    protected $encoding = 'utf-8';
+    protected string $encoding = 'utf-8';
     /**
      * @param string|string[] $to             The receiver of the mail
      * @param string          $subject        The subject of the mail
      * @param string          $from           The sender of the mail
      * @param int             $maxColumnWidth The maximum column width that the message lines will have
      */
-    public function __construct($to, string $subject, string $from, $level = Logger::ERROR, bool $bubble = \true, int $maxColumnWidth = 70)
+    public function __construct(string|array $to, string $subject, string $from, int|string|Level $level = Level::Error, bool $bubble = \true, int $maxColumnWidth = 70)
     {
         parent::__construct($level, $bubble);
         $this->to = (array) $to;
         $this->subject = $subject;
-        $this->addHeader(sprintf('From: %s', $from));
+        $this->addHeader(\sprintf('From: %s', $from));
         $this->maxColumnWidth = $maxColumnWidth;
     }
     /**
      * Add headers to the message
      *
-     * @param string|string[] $headers Custom added headers
+     * @param  string|string[] $headers Custom added headers
+     * @return $this
      */
-    public function addHeader($headers): self
+    public function addHeader($headers) : self
     {
         foreach ((array) $headers as $header) {
-            if (strpos($header, "\n") !== \false || strpos($header, "\r") !== \false) {
+            if (\strpos($header, "\n") !== \false || \strpos($header, "\r") !== \false) {
                 throw new \InvalidArgumentException('Headers can not contain newline characters for security reasons');
             }
             $this->headers[] = $header;
@@ -88,62 +85,68 @@ class NativeMailerHandler extends MailHandler
     /**
      * Add parameters to the message
      *
-     * @param string|string[] $parameters Custom added parameters
+     * @param  string|string[] $parameters Custom added parameters
+     * @return $this
      */
-    public function addParameter($parameters): self
+    public function addParameter($parameters) : self
     {
-        $this->parameters = array_merge($this->parameters, (array) $parameters);
+        $this->parameters = \array_merge($this->parameters, (array) $parameters);
         return $this;
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function send(string $content, array $records): void
+    protected function send(string $content, array $records) : void
     {
-        $contentType = $this->getContentType() ?: ($this->isHtmlBody($content) ? 'text/html' : 'text/plain');
+        $contentType = $this->getContentType() ?? ($this->isHtmlBody($content) ? 'text/html' : 'text/plain');
         if ($contentType !== 'text/html') {
-            $content = wordwrap($content, $this->maxColumnWidth);
+            $content = \wordwrap($content, $this->maxColumnWidth);
         }
-        $headers = ltrim(implode("\r\n", $this->headers) . "\r\n", "\r\n");
+        $headers = \ltrim(\implode("\r\n", $this->headers) . "\r\n", "\r\n");
         $headers .= 'Content-type: ' . $contentType . '; charset=' . $this->getEncoding() . "\r\n";
-        if ($contentType === 'text/html' && \false === strpos($headers, 'MIME-Version:')) {
+        if ($contentType === 'text/html' && \false === \strpos($headers, 'MIME-Version:')) {
             $headers .= 'MIME-Version: 1.0' . "\r\n";
         }
-        $subject = $this->subject;
-        if ($records) {
-            $subjectFormatter = new LineFormatter($this->subject);
-            $subject = $subjectFormatter->format($this->getHighestRecord($records));
-        }
-        $parameters = implode(' ', $this->parameters);
+        $subjectFormatter = new LineFormatter($this->subject);
+        $subject = $subjectFormatter->format($this->getHighestRecord($records));
+        $parameters = \implode(' ', $this->parameters);
         foreach ($this->to as $to) {
-            mail($to, $subject, $content, $headers, $parameters);
+            $this->mail($to, $subject, $content, $headers, $parameters);
         }
     }
-    public function getContentType(): ?string
+    public function getContentType() : ?string
     {
         return $this->contentType;
     }
-    public function getEncoding(): string
+    public function getEncoding() : string
     {
         return $this->encoding;
     }
     /**
-     * @param string $contentType The content type of the email - Defaults to text/plain. Use text/html for HTML messages.
+     * @param  string $contentType The content type of the email - Defaults to text/plain. Use text/html for HTML messages.
+     * @return $this
      */
-    public function setContentType(string $contentType): self
+    public function setContentType(string $contentType) : self
     {
-        if (strpos($contentType, "\n") !== \false || strpos($contentType, "\r") !== \false) {
+        if (\strpos($contentType, "\n") !== \false || \strpos($contentType, "\r") !== \false) {
             throw new \InvalidArgumentException('The content type can not contain newline characters to prevent email header injection');
         }
         $this->contentType = $contentType;
         return $this;
     }
-    public function setEncoding(string $encoding): self
+    /**
+     * @return $this
+     */
+    public function setEncoding(string $encoding) : self
     {
-        if (strpos($encoding, "\n") !== \false || strpos($encoding, "\r") !== \false) {
+        if (\strpos($encoding, "\n") !== \false || \strpos($encoding, "\r") !== \false) {
             throw new \InvalidArgumentException('The encoding can not contain newline characters to prevent email header injection');
         }
         $this->encoding = $encoding;
         return $this;
+    }
+    protected function mail(string $to, string $subject, string $content, string $headers, string $parameters) : void
+    {
+        \mail($to, $subject, $content, $headers, $parameters);
     }
 }

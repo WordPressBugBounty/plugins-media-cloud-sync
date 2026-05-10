@@ -34,7 +34,7 @@ use Dudlewebs\WPMCS\PHPUnit\Framework\TestCase;
  * @experimental
  * @internal
  */
-class SystemTestCase extends TestCase
+abstract class SystemTestCase extends TestCase
 {
     protected static $deletionQueue;
     private static $emulatedClasses = [];
@@ -71,7 +71,7 @@ class SystemTestCase extends TestCase
      */
     public static function randId()
     {
-        return rand(1, 9999999);
+        return \rand(1, 9999999);
     }
     /**
      * Create a bucket and enqueue it for deletion.
@@ -97,10 +97,10 @@ class SystemTestCase extends TestCase
         $backoff = new ExponentialBackoff(8, function ($ex) {
             return !$ex instanceof BadRequestException;
         });
-        $bucket = $backoff->execute(function () use ($client, $bucketName, $options) {
+        $bucket = $backoff->execute(function () use($client, $bucketName, $options) {
             return $client->createBucket($bucketName, $options);
         });
-        self::$deletionQueue->add(function () use ($bucket) {
+        self::$deletionQueue->add(function () use($bucket) {
             foreach ($bucket->objects() as $object) {
                 $object->delete();
             }
@@ -129,7 +129,7 @@ class SystemTestCase extends TestCase
     public static function createDataset(BigQueryClient $client, $datasetName, array $options = [])
     {
         $dataset = $client->createDataset($datasetName, $options);
-        self::$deletionQueue->add(function () use ($dataset) {
+        self::$deletionQueue->add(function () use($dataset) {
             $dataset->delete(['deleteContents' => \true]);
         });
         return $dataset;
@@ -156,10 +156,10 @@ class SystemTestCase extends TestCase
     public static function createTopic(PubSubClient $client, $topicName, array $options = [])
     {
         $backoff = new ExponentialBackoff(8);
-        $topic = $backoff->execute(function () use ($client, $topicName, $options) {
+        $topic = $backoff->execute(function () use($client, $topicName, $options) {
             return $client->createTopic($topicName, $options);
         });
-        self::$deletionQueue->add(function () use ($topic) {
+        self::$deletionQueue->add(function () use($topic) {
             foreach ($topic->subscriptions() as $subscription) {
                 $subscription->delete();
             }
@@ -182,7 +182,7 @@ class SystemTestCase extends TestCase
      */
     public static function setUsingEmulator($enabled = \true)
     {
-        self::$emulatedClasses[get_called_class()] = (bool) $enabled;
+        self::$emulatedClasses[\get_called_class()] = (bool) $enabled;
     }
     /**
      * Set "using emulator" flag for test cases with specified fully-qualified name prefix.
@@ -207,8 +207,8 @@ class SystemTestCase extends TestCase
     public static function setUsingEmulatorForClassPrefix($enabled = \true, $prefix = null)
     {
         if (!isset($prefix)) {
-            $className = get_called_class();
-            $prefix = substr($className, 0, strrpos($className, '\\') + 1);
+            $className = \get_called_class();
+            $prefix = \substr($className, 0, \strrpos($className, '\\') + 1);
         }
         self::$emulatedClassPrefixes[$prefix] = (bool) $enabled;
     }
@@ -228,12 +228,12 @@ class SystemTestCase extends TestCase
      */
     public static function isEmulatorUsed()
     {
-        $className = get_called_class();
+        $className = \get_called_class();
         if (!isset(self::$emulatedClasses[$className])) {
-            $prefix = substr($className, 0, strrpos($className, '\\') + 1);
+            $prefix = \substr($className, 0, \strrpos($className, '\\') + 1);
             $isEmulated = \false;
             foreach (self::$emulatedClassPrefixes as $key => $flag) {
-                if (strpos($prefix, $key) === 0) {
+                if (\strpos($prefix, $key) === 0) {
                     $isEmulated = $flag;
                     break;
                 }

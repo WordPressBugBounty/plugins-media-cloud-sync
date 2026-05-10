@@ -19,7 +19,6 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
 
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Bucket;
 use Dudlewebs\WPMCS\GuzzleHttp\Psr7\CachingStream;
 /**
  * A streamWrapper implementation for handling `gs://bucket/path/to/file.jpg`.
@@ -106,12 +105,38 @@ class StreamWrapper
         $this->stream_close();
     }
     /**
-     * Starting PHP 7.4, this is called when include/require is used on a stream.
-     * Absence of this method presents a warning.
-     * https://www.php.net/manual/en/migration74.incompatible.php
+     * This is called when include/require is used on a stream.
      */
     public function stream_set_option()
     {
+        return \false;
+    }
+    /**
+     * This is called when touch is used on a stream. See:
+     * https://www.php.net/manual/en/streamwrapper.stream-metadata.php
+     */
+    public function stream_metadata($path, $option, $value)
+    {
+        if ($option == \STREAM_META_TOUCH) {
+            $this->openPath($path);
+            return $this->touch();
+        }
+        return \false;
+    }
+    /**
+     * Creates an empty file if it does not exist.
+     * @return bool Returns true if file exists or has been created, false otherwise.
+     */
+    private function touch()
+    {
+        $object = $this->bucket->object($this->file);
+        try {
+            if (!$object->exists()) {
+                $this->bucket->upload('', ['name' => $this->file]);
+            }
+            return \true;
+        } catch (NotFoundException $e) {
+        }
         return \false;
     }
     /**
@@ -125,8 +150,8 @@ class StreamWrapper
     public static function register(StorageClient $client, $protocol = null)
     {
         $protocol = $protocol ?: self::DEFAULT_PROTOCOL;
-        if (!in_array($protocol, stream_get_wrappers())) {
-            if (!stream_wrapper_register($protocol, StreamWrapper::class, \STREAM_IS_URL)) {
+        if (!\in_array($protocol, \stream_get_wrappers())) {
+            if (!\stream_wrapper_register($protocol, StreamWrapper::class, \STREAM_IS_URL)) {
                 throw new \RuntimeException("Failed to register '{$protocol}://' protocol");
             }
             self::$clients[$protocol] = $client;
@@ -143,7 +168,7 @@ class StreamWrapper
     public static function unregister($protocol = null)
     {
         $protocol = $protocol ?: self::DEFAULT_PROTOCOL;
-        stream_wrapper_unregister($protocol);
+        \stream_wrapper_unregister($protocol);
         unset(self::$clients[$protocol]);
     }
     /**
@@ -170,13 +195,13 @@ class StreamWrapper
      */
     public function stream_open($path, $mode, $flags, &$openedPath)
     {
-        $client = $this->openPath($path);
+        $this->openPath($path);
         // strip off 'b' or 't' from the mode
-        $mode = rtrim($mode, 'bt');
+        $mode = \rtrim($mode, 'bt');
         $options = [];
         if ($this->context) {
-            $contextOptions = stream_context_get_options($this->context);
-            if (array_key_exists($this->protocol, $contextOptions)) {
+            $contextOptions = \stream_context_get_options($this->context);
+            if (\array_key_exists($this->protocol, $contextOptions)) {
                 $options = $contextOptions[$this->protocol] ?: [];
             }
             if (isset($options['flush'])) {
@@ -356,20 +381,20 @@ class StreamWrapper
             // list all results matching the given prefix, enumerate the
             // iterator, filter and transform results, and yield a fresh
             // generator containing only the directory listing.
-            $this->directoryIterator = call_user_func(function () use ($iterator) {
+            $this->directoryIterator = \call_user_func(function () use($iterator) {
                 $yielded = [];
-                $pathLen = strlen($this->makeDirectory($this->file));
+                $pathLen = \strlen($this->makeDirectory($this->file));
                 foreach ($iterator as $object) {
-                    $name = substr($object->name(), $pathLen);
-                    $parts = explode('/', $name);
+                    $name = \substr($object->name(), $pathLen);
+                    $parts = \explode('/', $name);
                     // since the service call returns nested results and we only
                     // want to yield results directly within the requested directory,
                     // check if we've already yielded this value.
-                    if ($parts[0] === "" || in_array($parts[0], $yielded)) {
+                    if ($parts[0] === '' || \in_array($parts[0], $yielded)) {
                         continue;
                     }
                     $yielded[] = $parts[0];
-                    yield $name => $parts[0];
+                    (yield $name => $parts[0]);
                 }
             });
         } catch (ServiceException $e) {
@@ -425,14 +450,14 @@ class StreamWrapper
     public function rename($from, $to)
     {
         $this->openPath($from);
-        $destination = (array) parse_url($to) + ['path' => '', 'host' => ''];
+        $destination = (array) \parse_url($to) + ['path' => '', 'host' => ''];
         $destinationBucket = $destination['host'];
-        $destinationPath = substr($destination['path'], 1);
+        $destinationPath = \substr($destination['path'], 1);
         // loop through to rename file and children, if given path is a directory.
         $objects = $this->bucket->objects(['prefix' => $this->file]);
         foreach ($objects as $obj) {
             $oldName = $obj->name();
-            $newPath = str_replace($this->file, $destinationPath, $oldName);
+            $newPath = \str_replace($this->file, $destinationPath, $oldName);
             try {
                 $obj->rename($newPath, ['destinationBucket' => $destinationBucket]);
             } catch (ServiceException $e) {
@@ -546,9 +571,9 @@ class StreamWrapper
      */
     private function openPath($path)
     {
-        $url = (array) parse_url($path) + ['scheme' => '', 'path' => '', 'host' => ''];
+        $url = (array) \parse_url($path) + ['scheme' => '', 'path' => '', 'host' => ''];
         $this->protocol = $url['scheme'];
-        $this->file = ltrim($url['path'], '/');
+        $this->file = \ltrim($url['path'], '/');
         $client = self::getClient($this->protocol);
         $this->bucket = $client->bucket($url['host']);
         return $client;
@@ -564,7 +589,7 @@ class StreamWrapper
         if ($path == '' or $path == '/') {
             return '';
         }
-        if (substr($path, -1) == '/') {
+        if (\substr($path, -1) == '/') {
             return $path;
         }
         return $path . '/';
@@ -598,7 +623,7 @@ class StreamWrapper
             return \false;
         }
         // equivalent to 100666 and 100444 in octal
-        $stats = array('mode' => $this->bucket->isWritable() ? self::FILE_WRITABLE_MODE : self::FILE_READABLE_MODE);
+        $stats = ['mode' => $this->bucket->isWritable() ? self::FILE_WRITABLE_MODE : self::FILE_READABLE_MODE];
         $this->statsFromFileInfo($info, $stats);
         return $this->makeStatArray($stats);
     }
@@ -612,8 +637,8 @@ class StreamWrapper
     private function statsFromFileInfo(array &$info, array &$stats)
     {
         $stats['size'] = isset($info['size']) ? (int) $info['size'] : null;
-        $stats['mtime'] = isset($info['updated']) ? strtotime($info['updated']) : null;
-        $stats['ctime'] = isset($info['timeCreated']) ? strtotime($info['timeCreated']) : null;
+        $stats['mtime'] = isset($info['updated']) ? \strtotime($info['updated']) : null;
+        $stats['ctime'] = isset($info['timeCreated']) ? \strtotime($info['timeCreated']) : null;
     }
     /**
      * Get the given path as a directory.
@@ -641,7 +666,7 @@ class StreamWrapper
      */
     private function makeStatArray($stats)
     {
-        return array_merge(array_fill_keys(['dev', 'ino', 'mode', 'nlink', 'uid', 'gid', 'rdev', 'size', 'atime', 'mtime', 'ctime', 'blksize', 'blocks'], 0), $stats);
+        return \array_merge(\array_fill_keys(['dev', 'ino', 'mode', 'nlink', 'uid', 'gid', 'rdev', 'size', 'atime', 'mtime', 'ctime', 'blksize', 'blocks'], 0), $stats);
     }
     /**
      * Helper for whether or not to trigger an error or just return false on an error.
@@ -653,7 +678,7 @@ class StreamWrapper
     private function returnError($message, $flags)
     {
         if ($flags & \STREAM_REPORT_ERRORS) {
-            trigger_error($message, \E_USER_WARNING);
+            \trigger_error($message, \E_USER_WARNING);
         }
         return \false;
     }

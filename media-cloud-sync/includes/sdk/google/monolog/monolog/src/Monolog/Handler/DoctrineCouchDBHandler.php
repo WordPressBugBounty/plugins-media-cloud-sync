@@ -11,10 +11,11 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Logger;
+use Dudlewebs\WPMCS\Monolog\Level;
 use Dudlewebs\WPMCS\Monolog\Formatter\NormalizerFormatter;
 use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
 use Dudlewebs\WPMCS\Doctrine\CouchDB\CouchDBClient;
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * CouchDB handler for Doctrine CouchDB ODM
  *
@@ -22,21 +23,20 @@ use Dudlewebs\WPMCS\Doctrine\CouchDB\CouchDBClient;
  */
 class DoctrineCouchDBHandler extends AbstractProcessingHandler
 {
-    /** @var CouchDBClient */
-    private $client;
-    public function __construct(CouchDBClient $client, $level = Logger::DEBUG, bool $bubble = \true)
+    private CouchDBClient $client;
+    public function __construct(CouchDBClient $client, int|string|Level $level = Level::Debug, bool $bubble = \true)
     {
         $this->client = $client;
         parent::__construct($level, $bubble);
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected function write(array $record): void
+    protected function write(LogRecord $record) : void
     {
-        $this->client->postDocument($record['formatted']);
+        $this->client->postDocument($record->formatted);
     }
-    protected function getDefaultFormatter(): FormatterInterface
+    protected function getDefaultFormatter() : FormatterInterface
     {
         return new NormalizerFormatter();
     }

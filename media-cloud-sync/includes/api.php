@@ -145,6 +145,7 @@ class Api {
 				'settings'	=> Utils::get_settings(),
 			],
 			'sync'			=> Sync::instance()->get_status(),
+			'license'		=> defined('WPMCS_PRO_VERSION') ? Utils::get_safe_license_data() : [],
 		];
 
 		return new WP_REST_Response( $data, 200 );
@@ -348,7 +349,6 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-
 		$status = Sync::instance()->start($action);
 
 		$result = [
@@ -373,7 +373,6 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-
 		$status = Sync::instance()->pause($action);
 
 		$result = [
@@ -398,7 +397,6 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-
 		$status = Sync::instance()->resume($action);
 
 		$result = [
@@ -423,7 +421,6 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-
 		$status = Sync::instance()->stop($action);
 
 		$result = [
@@ -455,7 +452,6 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-
 		// Retry Sync
 		$handler = Sync::instance()->get_class_by_action($type);
 		if($handler) {
@@ -508,17 +504,6 @@ class Api {
 
 		return $sorted_counts;
 	}
-
-
-    /**
-     * Add Custom Mime Type JSON
-     * @since 1.0.0
-     */
-    public function add_custom_mime_type_json($mimes) {
-        $mimes['json'] = 'application/json';
-        // Return the array back to the function with our added mime type.
-        return $mimes;
-    }
 
 
 	/**

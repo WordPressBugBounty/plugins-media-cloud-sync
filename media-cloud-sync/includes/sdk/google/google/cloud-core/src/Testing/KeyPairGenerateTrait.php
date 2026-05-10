@@ -31,7 +31,7 @@ trait KeyPairGenerateTrait
     use EncryptionTrait;
     private function getKeyPair()
     {
-        if (class_exists(RSA3::class)) {
+        if (\class_exists(RSA3::class)) {
             $key = RSA3::createKey();
             $key = $key->withPadding(RSA3::SIGNATURE_PKCS1)->withHash('sha256');
             return [$key->toString('PKCS1'), $key->getPublicKey()];
@@ -40,12 +40,12 @@ trait KeyPairGenerateTrait
         $rsa->setSignatureMode(RSA2::SIGNATURE_PKCS1);
         $rsa->setHash('sha256');
         $key = $rsa->createKey();
-        usleep(500);
+        \usleep(500);
         return [$key['privatekey'], $key['publickey']];
     }
     private function verifySignature($privateKey, $input, $signature)
     {
         $verify = $this->signString($privateKey, $input);
-        return urlencode(base64_encode($verify)) === $signature;
+        return \urlencode(\base64_encode($verify)) === $signature;
     }
 }

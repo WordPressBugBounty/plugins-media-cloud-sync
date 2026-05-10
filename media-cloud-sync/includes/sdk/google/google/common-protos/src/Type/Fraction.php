@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Type;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Represents a fraction in terms of a numerator divided by a denominator.
  *

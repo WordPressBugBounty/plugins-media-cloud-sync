@@ -13,4 +13,4 @@ if (\false) {
     }
 }
 // Autoload the class and its alias
-class_exists('Dudlewebs\WPMCS\Google\LongRunning\OperationsClient');
+\class_exists('Dudlewebs\\WPMCS\\Google\\LongRunning\\OperationsClient');

@@ -37,6 +37,8 @@ use Dudlewebs\WPMCS\GuzzleHttp\Promise\Promise;
 use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware which transforms $response into [$response, $metadata]
+ *
+ * @internal
  */
 class ResponseMetadataMiddleware implements MiddlewareInterface
 {
@@ -52,11 +54,11 @@ class ResponseMetadataMiddleware implements MiddlewareInterface
     public function __invoke(Call $call, array $options)
     {
         $metadataReceiver = new Promise();
-        $options['metadataCallback'] = function ($metadata) use ($metadataReceiver) {
+        $options['metadataCallback'] = function ($metadata) use($metadataReceiver) {
             $metadataReceiver->resolve($metadata);
         };
         $next = $this->nextHandler;
-        return $next($call, $options)->then(function ($response) use ($metadataReceiver) {
+        return $next($call, $options)->then(function ($response) use($metadataReceiver) {
             if ($metadataReceiver->getState() === PromiseInterface::FULFILLED) {
                 return [$response, $metadataReceiver->wait()];
             } else {

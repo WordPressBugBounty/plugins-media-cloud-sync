@@ -62,8 +62,8 @@ class Acl
     public function __construct(ConnectionInterface $connection, $type, array $identity)
     {
         $validTypes = ['bucketAccessControls', 'defaultObjectAccessControls', 'objectAccessControls'];
-        if (!in_array($type, $validTypes)) {
-            throw new InvalidArgumentException('type must be one of the following: ' . implode(', ', $validTypes));
+        if (!\in_array($type, $validTypes)) {
+            throw new InvalidArgumentException('type must be one of the following: ' . \implode(', ', $validTypes));
         }
         $this->connection = $connection;
         $this->aclOptions = $identity + ['type' => $type];

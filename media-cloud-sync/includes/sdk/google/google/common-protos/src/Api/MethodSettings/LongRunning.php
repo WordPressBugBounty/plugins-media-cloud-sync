@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api\MethodSettings;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Describes settings to use when generating API methods that use the
  * long-running operation pattern.

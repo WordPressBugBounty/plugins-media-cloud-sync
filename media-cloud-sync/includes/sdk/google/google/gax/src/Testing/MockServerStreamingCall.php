@@ -54,14 +54,14 @@ class MockServerStreamingCall extends \Dudlewebs\WPMCS\Grpc\ServerStreamingCall 
      * @param callable|array|null $deserialize An optional deserialize method for the response object.
      * @param stdClass|null $status An optional status object. If set to null, a status of OK is used.
      */
-    public function __construct(array $responses, $deserialize = null, stdClass $status = null)
+    public function __construct(array $responses, $deserialize = null, ?stdClass $status = null)
     {
         $this->responses = $responses;
         $this->deserialize = $deserialize;
-        if (is_null($status)) {
+        if (\is_null($status)) {
             $status = new MockStatus(Code::OK, 'OK', []);
         } elseif ($status instanceof stdClass) {
-            if (!property_exists($status, 'metadata')) {
+            if (!\property_exists($status, 'metadata')) {
                 $status->metadata = [];
             }
         }
@@ -69,10 +69,10 @@ class MockServerStreamingCall extends \Dudlewebs\WPMCS\Grpc\ServerStreamingCall 
     }
     public function responses()
     {
-        while (count($this->responses) > 0) {
-            $resp = array_shift($this->responses);
+        while (\count($this->responses) > 0) {
+            $resp = \array_shift($this->responses);
             $obj = $this->deserializeMessage($resp, $this->deserialize);
-            yield $obj;
+            (yield $obj);
         }
     }
     /**
@@ -81,8 +81,8 @@ class MockServerStreamingCall extends \Dudlewebs\WPMCS\Grpc\ServerStreamingCall 
      */
     public function getStatus()
     {
-        if (count($this->responses) > 0) {
-            throw new ApiException("Calls to getStatus() will block if all responses are not read", Code::INTERNAL, ApiStatus::INTERNAL);
+        if (\count($this->responses) > 0) {
+            throw new ApiException('Calls to getStatus() will block if all responses are not read', Code::INTERNAL, ApiStatus::INTERNAL);
         }
         return $this->status;
     }

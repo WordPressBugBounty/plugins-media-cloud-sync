@@ -11,6 +11,7 @@ declare (strict_types=1);
  */
 namespace Dudlewebs\WPMCS\Monolog\Handler;
 
+use Dudlewebs\WPMCS\Monolog\LogRecord;
 /**
  * No-op
  *
@@ -23,16 +24,16 @@ namespace Dudlewebs\WPMCS\Monolog\Handler;
 class NoopHandler extends Handler
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isHandling(array $record): bool
+    public function isHandling(LogRecord $record) : bool
     {
         return \true;
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function handle(array $record): bool
+    public function handle(LogRecord $record) : bool
     {
         return \false;
     }

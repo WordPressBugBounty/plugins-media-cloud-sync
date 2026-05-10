@@ -28,7 +28,7 @@ class CodedInputStream
     public function __construct($buffer)
     {
         $start = 0;
-        $end = strlen($buffer);
+        $end = \strlen($buffer);
         $this->buffer = $buffer;
         $this->buffer_size_after_limit = 0;
         $this->buffer_end = $end;
@@ -54,12 +54,12 @@ class CodedInputStream
     }
     public function substr($start, $end)
     {
-        return substr($this->buffer, $start, $end - $start);
+        return \substr($this->buffer, $start, $end - $start);
     }
     private function recomputeBufferLimits()
     {
         $this->buffer_end += $this->buffer_size_after_limit;
-        $closest_limit = min($this->current_limit, $this->total_bytes_limit);
+        $closest_limit = \min($this->current_limit, $this->total_bytes_limit);
         if ($closest_limit < $this->total_bytes_read) {
             // The limit position is in the current buffer.  We must adjust the
             // buffer size accordingly.
@@ -84,7 +84,7 @@ class CodedInputStream
             return \false;
         }
         if (\PHP_INT_SIZE == 4) {
-            $var = bcmod($var, 4294967296);
+            $var = \bcmod($var, 4294967296);
         } else {
             $var &= 0xffffffff;
         }
@@ -93,10 +93,10 @@ class CodedInputStream
             if (\PHP_INT_SIZE === 8) {
                 $var = $var | 0xffffffff << 32;
             } else {
-                $var = bcsub($var, 4294967296);
+                $var = \bcsub($var, 4294967296);
             }
         }
-        $var = intval($var);
+        $var = \intval($var);
         return \true;
     }
     /**
@@ -117,23 +117,25 @@ class CodedInputStream
                 if ($count === self::MAX_VARINT_BYTES) {
                     return \false;
                 }
-                $b = ord($this->buffer[$this->current]);
+                $b = \ord($this->buffer[$this->current]);
                 $bits = 7 * $count;
                 if ($bits >= 32) {
                     $high |= ($b & 0x7f) << $bits - 32;
-                } else if ($bits > 25) {
-                    // $bits is 28 in this case.
-                    $low |= ($b & 0x7f) << 28;
-                    $high = ($b & 0x7f) >> 4;
                 } else {
-                    $low |= ($b & 0x7f) << $bits;
+                    if ($bits > 25) {
+                        // $bits is 28 in this case.
+                        $low |= ($b & 0x7f) << 28;
+                        $high = ($b & 0x7f) >> 4;
+                    } else {
+                        $low |= ($b & 0x7f) << $bits;
+                    }
                 }
                 $this->advance(1);
                 $count += 1;
             } while ($b & 0x80);
             $var = GPBUtil::combineInt32ToInt64($high, $low);
-            if (bccomp($var, 0) < 0) {
-                $var = bcadd($var, "18446744073709551616");
+            if (\bccomp($var, 0) < 0) {
+                $var = \bcadd($var, "18446744073709551616");
             }
         } else {
             $result = 0;
@@ -145,7 +147,7 @@ class CodedInputStream
                 if ($count === self::MAX_VARINT_BYTES) {
                     return \false;
                 }
-                $byte = ord($this->buffer[$this->current]);
+                $byte = \ord($this->buffer[$this->current]);
                 $result |= ($byte & 0x7f) << $shift;
                 $shift += 7;
                 $this->advance(1);
@@ -179,7 +181,7 @@ class CodedInputStream
         if (!$this->readRaw(4, $data)) {
             return \false;
         }
-        $var = unpack('V', $data);
+        $var = \unpack('V', $data);
         $var = $var[1];
         return \true;
     }
@@ -194,11 +196,11 @@ class CodedInputStream
         if (!$this->readRaw(4, $data)) {
             return \false;
         }
-        $low = unpack('V', $data)[1];
+        $low = \unpack('V', $data)[1];
         if (!$this->readRaw(4, $data)) {
             return \false;
         }
-        $high = unpack('V', $data)[1];
+        $high = \unpack('V', $data)[1];
         if (\PHP_INT_SIZE == 4) {
             $var = GPBUtil::combineInt32ToInt64($high, $low);
         } else {
@@ -237,13 +239,14 @@ class CodedInputStream
     public function readRaw($size, &$buffer)
     {
         $current_buffer_size = 0;
-        if ($this->bufferSize() < $size) {
+        // size (varint) read from the wire could be negative.
+        if ($size < 0 || $this->bufferSize() < $size) {
             return \false;
         }
         if ($size === 0) {
             $buffer = "";
         } else {
-            $buffer = substr($this->buffer, $this->current, $size);
+            $buffer = \substr($this->buffer, $this->current, $size);
             $this->advance($size);
         }
         return \true;
@@ -293,7 +296,7 @@ class CodedInputStream
     public function incrementRecursionDepthAndPushLimit($byte_limit, &$old_limit, &$recursion_budget)
     {
         $old_limit = $this->pushLimit($byte_limit);
-        $recursion_limit = --$this->recursion_limit;
+        $recursion_budget = --$this->recursion_budget;
     }
     public function decrementRecursionDepthAndPopLimit($byte_limit)
     {

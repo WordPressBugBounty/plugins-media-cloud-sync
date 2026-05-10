@@ -32,7 +32,6 @@
  */
 namespace Dudlewebs\WPMCS\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
 /**
  * Provides functionality for loading a resource name template map from a descriptor config,
  * retrieving a PathTemplate, and parsing values using registered templates.
@@ -59,10 +58,10 @@ trait ResourceHelperTrait
     private static function loadPathTemplates(string $configPath, string $serviceName)
     {
         // TODO: Add void return type hint.
-        if (!is_null(self::$templateMap)) {
+        if (!\is_null(self::$templateMap)) {
             return;
         }
-        $descriptors = require $configPath;
+        $descriptors = (require $configPath);
         $templates = $descriptors['interfaces'][$serviceName]['templateMap'] ?? [];
         self::$templateMap = [];
         foreach ($templates as $name => $template) {
@@ -72,14 +71,14 @@ trait ResourceHelperTrait
     private static function getPathTemplate(string $key)
     {
         // TODO: Add nullable return type reference once PHP 7.1 is minimum.
-        if (is_null(self::$templateMap)) {
+        if (\is_null(self::$templateMap)) {
             self::registerPathTemplates();
         }
         return self::$templateMap[$key] ?? null;
     }
-    private static function parseFormattedName(string $formattedName, string $template = null): array
+    private static function parseFormattedName(string $formattedName, ?string $template = null) : array
     {
-        if (is_null(self::$templateMap)) {
+        if (\is_null(self::$templateMap)) {
             self::registerPathTemplates();
         }
         if ($template) {

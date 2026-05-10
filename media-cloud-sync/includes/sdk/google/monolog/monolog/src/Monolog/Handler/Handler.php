@@ -19,18 +19,18 @@ namespace Dudlewebs\WPMCS\Monolog\Handler;
 abstract class Handler implements HandlerInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function handleBatch(array $records): void
+    public function handleBatch(array $records) : void
     {
         foreach ($records as $record) {
             $this->handle($record);
         }
     }
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function close(): void
+    public function close() : void
     {
     }
     public function __destruct()
@@ -41,16 +41,9 @@ abstract class Handler implements HandlerInterface
             // do nothing
         }
     }
-    public function __sleep()
+    public function __serialize() : array
     {
         $this->close();
-        $reflClass = new \ReflectionClass($this);
-        $keys = [];
-        foreach ($reflClass->getProperties() as $reflProp) {
-            if (!$reflProp->isStatic()) {
-                $keys[] = $reflProp->getName();
-            }
-        }
-        return $keys;
+        return (array) $this;
     }
 }

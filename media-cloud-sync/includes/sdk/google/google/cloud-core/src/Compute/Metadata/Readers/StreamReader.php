@@ -57,7 +57,7 @@ class StreamReader implements ReaderInterface
      */
     public function read($path)
     {
-        $url = sprintf('http://%s/computeMetadata/v1/%s', GCECredentials::METADATA_IP, $path);
+        $url = \sprintf('http://%s/computeMetadata/v1/%s', GCECredentials::METADATA_IP, $path);
         return $this->getMetadata($url);
     }
     /**
@@ -69,7 +69,7 @@ class StreamReader implements ReaderInterface
      */
     protected function createStreamContext(array $options)
     {
-        return stream_context_create($options);
+        return \stream_context_create($options);
     }
     /**
      * Abstracted for testing.
@@ -80,6 +80,6 @@ class StreamReader implements ReaderInterface
      */
     protected function getMetadata($url)
     {
-        return file_get_contents($url, \false, $this->context);
+        return \file_get_contents($url, \false, $this->context);
     }
 }

@@ -10,7 +10,6 @@ use Dudlewebs\WPMCS\s3\Aws\Api\StructureShape;
 use Dudlewebs\WPMCS\s3\Aws\CommandInterface;
 use Dudlewebs\WPMCS\s3\Aws\Exception\AwsException;
 use Dudlewebs\WPMCS\s3\Aws\ResultInterface;
-use Dudlewebs\WPMCS\s3\GuzzleHttp\Psr7\Utils;
 use Dudlewebs\WPMCS\s3\Psr\Http\Message\ResponseInterface;
 use Dudlewebs\WPMCS\s3\Psr\Http\Message\StreamInterface;
 /**
@@ -78,8 +77,8 @@ final class S3Parser extends AbstractParser
     {
         // This error parsing should be just for 200 error responses
         // and operations where its output shape does not have a streaming
-        // member.
-        if (200 !== $response->getStatusCode() || !$this->shouldBeConsidered200Error($command->getName())) {
+        // member and the body of the response is seekable.
+        if (200 !== $response->getStatusCode() || !$this->shouldBeConsidered200Error($command->getName()) || !$response->getBody()->isSeekable()) {
             return;
         }
         // To guarantee we try the error parsing just for an Error xml response.

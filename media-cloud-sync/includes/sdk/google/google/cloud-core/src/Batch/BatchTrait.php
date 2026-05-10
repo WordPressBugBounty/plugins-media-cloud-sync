@@ -17,7 +17,6 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core\Batch;
 
-use Dudlewebs\WPMCS\Opis\Closure\SerializableClosure;
 /**
  * A trait to assist in the registering and processing of batch jobs.
  *
@@ -73,19 +72,19 @@ trait BatchTrait
      */
     public function send(array $items)
     {
-        $start = microtime(\true);
+        $start = \microtime(\true);
         try {
-            call_user_func_array($this->getCallback(), [$items]);
+            \call_user_func_array($this->getCallback(), [$items]);
         } catch (\Exception $e) {
             if ($this->debugOutput) {
-                fwrite($this->debugOutputResource, $e->getMessage() . \PHP_EOL . \PHP_EOL . $e->getTraceAsString() . \PHP_EOL);
+                \fwrite($this->debugOutputResource, $e->getMessage() . \PHP_EOL . \PHP_EOL . $e->getTraceAsString() . \PHP_EOL);
             }
             return \false;
         }
-        $end = microtime(\true);
+        $end = \microtime(\true);
         if ($this->debugOutput) {
-            fwrite($this->debugOutputResource, sprintf('%f seconds for %s: %d items' . \PHP_EOL, $end - $start, $this->batchMethod, count($items)));
-            fwrite($this->debugOutputResource, sprintf('memory used: %d' . \PHP_EOL, memory_get_usage()));
+            \fwrite($this->debugOutputResource, \sprintf('%f seconds for %s: %d items' . \PHP_EOL, $end - $start, $this->batchMethod, \count($items)));
+            \fwrite($this->debugOutputResource, \sprintf('memory used: %d' . \PHP_EOL, \memory_get_usage()));
         }
         return \true;
     }
@@ -95,7 +94,7 @@ trait BatchTrait
      *
      * @return array
      */
-    abstract protected function getCallback();
+    protected abstract function getCallback();
     /**
      * @param array $options [optional] {
      *     Configuration options.
@@ -141,7 +140,7 @@ trait BatchTrait
         $this->setSerializableClientOptions($options);
         $this->batchMethod = $options['batchMethod'];
         $this->identifier = $options['identifier'];
-        $this->debugOutputResource = $options['debugOutputResource'] ?? fopen('php://stderr', 'w');
+        $this->debugOutputResource = $options['debugOutputResource'] ?? \fopen('php://stderr', 'w');
         $this->debugOutput = $options['debugOutput'] ?? \false;
         $batchOptions = $options['batchOptions'] ?? [];
         $this->batchOptions = $batchOptions + ['batchSize' => 1000, 'callPeriod' => 2.0, 'numWorkers' => 2];

@@ -34,7 +34,7 @@ trait SimpleJobTrait
     /**
      * The simple loop function. This method is expected to be a blocking call.
      */
-    abstract public function run();
+    public abstract function run();
     /**
      * Registers this object as a SimpleJob.
      *
@@ -70,7 +70,7 @@ trait SimpleJobTrait
             return \false;
         }
         $config = $configStorage->load();
-        $config->registerJob($identifier, function ($id) use ($identifier, $options) {
+        $config->registerJob($identifier, function ($id) use($identifier, $options) {
             return new SimpleJob($identifier, [$this, 'run'], $id, $options);
         });
         try {

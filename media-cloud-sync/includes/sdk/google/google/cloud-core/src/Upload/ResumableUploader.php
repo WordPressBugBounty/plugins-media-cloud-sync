@@ -19,7 +19,6 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\Upload;
 
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\GoogleException;
 use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\UploadException;
 use Dudlewebs\WPMCS\Google\Cloud\Core\JsonTrait;
 use Dudlewebs\WPMCS\Google\Cloud\Core\RequestWrapper;
 use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
@@ -81,7 +80,7 @@ class ResumableUploader extends AbstractUploader
     {
         parent::__construct($requestWrapper, $data, $uri, $options);
         // Set uploadProgressCallback if it's passed as an option.
-        if (isset($options['uploadProgressCallback']) && is_callable($options['uploadProgressCallback'])) {
+        if (isset($options['uploadProgressCallback']) && \is_callable($options['uploadProgressCallback'])) {
             $this->uploadProgressCallback = $options['uploadProgressCallback'];
         } elseif (isset($options['uploadProgressCallback'])) {
             throw new \InvalidArgumentException('$options.uploadProgressCallback must be a callable.');
@@ -139,14 +138,21 @@ class ResumableUploader extends AbstractUploader
             $currStreamLimitSize = $data->getSize();
             $rangeEnd = $rangeStart + ($currStreamLimitSize - 1);
             $headers = $this->headers + ['Content-Length' => $currStreamLimitSize, 'Content-Type' => $this->contentType, 'Content-Range' => "bytes {$rangeStart}-{$rangeEnd}/{$size}"];
+            $customHeaders = $this->requestOptions['restOptions']['headers'] ?? [];
+            // Check if this chunk is the final one
+            $isFinalChunk = $size !== '*' && (int) ($rangeEnd + 1) === (int) $size;
+            if (!$isFinalChunk) {
+                unset($customHeaders['X-Goog-Hash']);
+            }
+            $headers = \array_merge($headers, $customHeaders);
             $request = new Request('PUT', $resumeUri, $headers, $data);
             try {
                 $response = $this->requestWrapper->send($request, $this->requestOptions);
             } catch (GoogleException $ex) {
-                throw new ServiceException("Upload failed. Please use this URI to resume your upload: {$this->resumeUri}", $ex->getCode(), null, json_decode($ex->getMessage(), \true) ?: []);
+                throw new ServiceException("Upload failed. Please use this URI to resume your upload: {$this->resumeUri}", $ex->getCode(), null, \json_decode($ex->getMessage(), \true) ?: []);
             }
-            if (is_callable($this->uploadProgressCallback)) {
-                call_user_func($this->uploadProgressCallback, $currStreamLimitSize);
+            if (\is_callable($this->uploadProgressCallback)) {
+                \call_user_func($this->uploadProgressCallback, $currStreamLimitSize);
             }
             $rangeStart = $this->getRangeStart($response->getHeaderLine('Range'));
         } while ($response->getStatusCode() === 308);
@@ -198,20 +204,21 @@ class ResumableUploader extends AbstractUploader
      */
     protected function getStatusResponse()
     {
-        $request = new Request('PUT', $this->resumeUri, ['Content-Range' => 'bytes */*']);
+        $request = new Request('PUT', $this->resumeUri, ['Content-Range' => 'bytes */' . $this->data->getSize()]);
         return $this->requestWrapper->send($request, $this->requestOptions);
     }
     /**
      * Gets the starting range for the upload.
      *
      * @param string $rangeHeader
-     * @return int|null
+     * @return int
      */
     protected function getRangeStart($rangeHeader)
     {
         if (!$rangeHeader) {
-            return null;
+            // assume no bytes are uploaded if no range header is present
+            return 0;
         }
-        return (int) explode('-', $rangeHeader)[1] + 1;
+        return (int) \explode('-', $rangeHeader)[1] + 1;
     }
 }

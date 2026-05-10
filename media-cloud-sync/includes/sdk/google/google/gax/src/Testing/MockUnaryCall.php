@@ -32,8 +32,8 @@
  */
 namespace Dudlewebs\WPMCS\Google\ApiCore\Testing;
 
-use Dudlewebs\WPMCS\Google\Rpc\Code;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\Google\Rpc\Code;
 use stdClass;
 /**
  * The MockUnaryCall class is used to mock out the \Grpc\UnaryCall class
@@ -56,11 +56,11 @@ class MockUnaryCall extends \Dudlewebs\WPMCS\Grpc\UnaryCall
      * @param callable|array|null $deserialize An optional deserialize method for the response object.
      * @param stdClass|null $status An optional status object. If set to null, a status of OK is used.
      */
-    public function __construct($response = null, $deserialize = null, stdClass $status = null)
+    public function __construct($response = null, $deserialize = null, ?stdClass $status = null)
     {
         $this->response = $response;
         $this->deserialize = $deserialize;
-        if (is_null($status)) {
+        if (\is_null($status)) {
             $status = new MockStatus(Code::OK);
         }
         $this->status = $status;

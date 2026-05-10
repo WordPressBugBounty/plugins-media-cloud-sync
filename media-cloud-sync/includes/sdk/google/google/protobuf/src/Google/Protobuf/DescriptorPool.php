@@ -33,7 +33,7 @@ class DescriptorPool
     public function getDescriptorByClassName($className)
     {
         $desc = $this->internal_pool->getDescriptorByClassName($className);
-        return is_null($desc) ? null : $desc->getPublicDescriptor();
+        return \is_null($desc) ? null : $desc->getPublicDescriptor();
     }
     /**
      * @param string $className A fully qualified protobuf class name
@@ -42,6 +42,6 @@ class DescriptorPool
     public function getEnumDescriptorByClassName($className)
     {
         $desc = $this->internal_pool->getEnumDescriptorByClassName($className);
-        return is_null($desc) ? null : $desc->getPublicDescriptor();
+        return \is_null($desc) ? null : $desc->getPublicDescriptor();
     }
 }

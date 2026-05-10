@@ -34,6 +34,7 @@ namespace Dudlewebs\WPMCS\Google\ApiCore;
 
 /**
  * For connect to emulator.
+ * @TODO: implement HeaderCredentialsInterface instead of extending CredentialsWrapper
  */
 class InsecureCredentialsWrapper extends CredentialsWrapper
 {
@@ -44,11 +45,11 @@ class InsecureCredentialsWrapper extends CredentialsWrapper
      * @param string $audience
      * @return callable|null Returns null so the gRPC can accept it as an insecure channel.
      */
-    public function getAuthorizationHeaderCallback($audience = null): ?callable
+    public function getAuthorizationHeaderCallback($audience = null) : ?callable
     {
         return null;
     }
-    public function checkUniverseDomain(): void
+    public function checkUniverseDomain() : void
     {
     }
 }

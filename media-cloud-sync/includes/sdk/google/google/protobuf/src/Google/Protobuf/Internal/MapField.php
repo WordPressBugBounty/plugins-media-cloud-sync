@@ -160,8 +160,8 @@ class MapField implements \ArrayAccess, \IteratorAggregate, \Countable
                 GPBUtil::checkString($value, \true);
                 break;
             case GPBType::MESSAGE:
-                if (is_null($value)) {
-                    trigger_error("Map element cannot be null.", \E_USER_ERROR);
+                if (\is_null($value)) {
+                    \trigger_error("Map element cannot be null.", \E_USER_ERROR);
                 }
                 GPBUtil::checkMessage($value, $this->klass);
                 break;
@@ -195,7 +195,7 @@ class MapField implements \ArrayAccess, \IteratorAggregate, \Countable
      * @return bool True if the element at the given key exists.
      * @throws \ErrorException Invalid type for key.
      */
-    public function offsetExists($key): bool
+    public function offsetExists($key) : bool
     {
         $this->checkKey($this->key_type, $key);
         return isset($this->container[$key]);
@@ -203,7 +203,7 @@ class MapField implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * @ignore
      */
-    public function getIterator(): Traversable
+    public function getIterator() : Traversable
     {
         return new MapFieldIter($this->container, $this->key_type);
     }
@@ -214,9 +214,9 @@ class MapField implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @return integer The number of stored elements.
      */
-    public function count(): int
+    public function count() : int
     {
-        return count($this->container);
+        return \count($this->container);
     }
     /**
      * @ignore
@@ -249,7 +249,7 @@ class MapField implements \ArrayAccess, \IteratorAggregate, \Countable
                 GPBUtil::checkString($key, \true);
                 break;
             default:
-                trigger_error("Given type cannot be map key.", \E_USER_ERROR);
+                \trigger_error("Given type cannot be map key.", \E_USER_ERROR);
                 break;
         }
     }

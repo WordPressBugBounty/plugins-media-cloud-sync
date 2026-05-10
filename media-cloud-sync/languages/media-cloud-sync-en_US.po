@@ -3,7 +3,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/components/Buttons/index.jsx:131
+#: src/components/Buttons/index.jsx:134
 msgid "PURCHASE PREMIUM"
 msgstr ""
 
@@ -43,26 +43,31 @@ msgstr ""
 msgid "I need you !!"
 msgstr ""
 
-#: src/components/Header/index.jsx:18
-msgid "Dashboard"
+#: src/components/Header/index.jsx:115
+msgid "Donate"
 msgstr ""
 
 #: src/components/Header/index.jsx:23
+msgid "Dashboard"
+msgstr ""
+
+#: src/components/Header/index.jsx:28
 #: src/schema.js:27
 msgid "Settings"
 msgstr ""
 
-#: src/components/Header/index.jsx:28
+#: src/components/Header/index.jsx:33
 #: src/schema.js:2240
 msgid "Documentation"
 msgstr ""
 
-#: src/components/Header/index.jsx:41
-msgid "Premium Version Coming Soon"
+#: src/components/Header/index.jsx:40
+#: src/pages/License.jsx:139
+msgid "License"
 msgstr ""
 
-#: src/components/Header/index.jsx:95
-msgid "Donate"
+#: src/components/Header/index.jsx:61
+msgid "Premium Version Coming Soon"
 msgstr ""
 
 #: src/components/HeaderPrgressIndicator/index.jsx:124
@@ -80,6 +85,87 @@ msgstr ""
 
 #: src/components/JsonReader/index.jsx:46
 msgid "Read JSON from file"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:14
+msgid "Active"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:16
+msgid "Expired"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:18
+msgid "Revoked"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:20
+msgid "Inactive"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:22
+msgid "Limit Reached"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:24
+msgid "Not Found"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:25
+msgid "Unknown"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:31
+msgid "Just now"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:34
+msgid "min ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:37
+msgid "hours ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:39
+msgid "days ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:53
+msgid "License Details"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:65
+msgid "License Key"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:74
+msgid "Expiry"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:78
+#: src/pages/MediaSettings.jsx:498
+msgid "Never"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:84
+msgid "Last Checked"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:93
+msgid "Status Message"
+msgstr ""
+
+#: src/components/LicenseExpiredNotice/index.jsx:11
+msgid "Renew your license to continue using PRO features."
+msgstr ""
+
+#: src/components/LicenseExpiredNotice/index.jsx:22
+msgid "Renew Now"
+msgstr ""
+
+#: src/components/LicenseExpiredNotice/index.jsx:9
+msgid "License Expired:"
 msgstr ""
 
 #: src/components/Loading/index.jsx:11
@@ -261,15 +347,15 @@ msgstr ""
 msgid "Welcome to Media Cloud Sync Dashboard"
 msgstr ""
 
-#: src/helper/index.js:56
+#: src/helper/index.js:44
 msgid "This field is required"
 msgstr ""
 
-#: src/helper/index.js:68
+#: src/helper/index.js:56
 msgid "Maximum length exceeded"
 msgstr ""
 
-#: src/helper/index.js:85
+#: src/helper/index.js:73
 msgid "Invalid Format"
 msgstr ""
 
@@ -384,6 +470,58 @@ msgstr ""
 msgid "Back to Dashboard"
 msgstr ""
 
+#: src/pages/License.jsx:110
+msgid "License status refreshed."
+msgstr ""
+
+#: src/pages/License.jsx:125
+msgid "Failed to refresh status."
+msgstr ""
+
+#: src/pages/License.jsx:142
+msgid "Activate your license to unlock PRO features."
+msgstr ""
+
+#: src/pages/License.jsx:158
+msgid "Enter License Key"
+msgstr ""
+
+#: src/pages/License.jsx:168
+msgid "e.g. MCS-XXXX-XXXX-XXXX-XXXX-XXXX"
+msgstr ""
+
+#: src/pages/License.jsx:182
+msgid "Activate License"
+msgstr ""
+
+#: src/pages/License.jsx:199
+msgid "Refresh Status"
+msgstr ""
+
+#: src/pages/License.jsx:209
+msgid "Deactivate License"
+msgstr ""
+
+#: src/pages/License.jsx:33
+msgid "Please enter a license key."
+msgstr ""
+
+#: src/pages/License.jsx:48
+msgid "License activated!"
+msgstr ""
+
+#: src/pages/License.jsx:68
+msgid "Activation failed."
+msgstr ""
+
+#: src/pages/License.jsx:83
+msgid "License deactivated."
+msgstr ""
+
+#: src/pages/License.jsx:92
+msgid "Deactivation failed."
+msgstr ""
+
 #: src/pages/MediaSettings.jsx:258
 msgid "Saving configuration"
 msgstr ""
@@ -414,10 +552,6 @@ msgstr ""
 
 #: src/pages/MediaSettings.jsx:478
 msgid "Last checked"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:498
-msgid "Never"
 msgstr ""
 
 #: src/pages/MediaSettings.jsx:535

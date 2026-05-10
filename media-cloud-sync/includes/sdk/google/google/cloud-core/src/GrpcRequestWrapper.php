@@ -17,10 +17,9 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception;
 use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
 use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
 use Dudlewebs\WPMCS\Google\Rpc\Code;
 /**
  * The GrpcRequestWrapper is responsible for delivering gRPC requests.
@@ -93,7 +92,7 @@ class GrpcRequestWrapper
         $retries = $options['retries'] ?? $this->retries;
         $retryFunction = $options['grpcRetryFunction'] ?? function (\Exception $ex) {
             $statusCode = $ex->getCode();
-            return in_array($statusCode, $this->grpcRetryCodes);
+            return \in_array($statusCode, $this->grpcRetryCodes);
         };
         $grpcOptions = $options['grpcOptions'] ?? $this->grpcOptions;
         $timeout = $options['requestTimeout'] ?? $this->requestTimeout;
@@ -105,7 +104,7 @@ class GrpcRequestWrapper
             }
             $grpcOptions['retrySettings'] = $retrySettings;
         }
-        $optionalArgs =& $args[count($args) - 1];
+        $optionalArgs =& $args[\count($args) - 1];
         $optionalArgs += $grpcOptions;
         try {
             return $this->handleResponse($backoff->execute($request, $args));

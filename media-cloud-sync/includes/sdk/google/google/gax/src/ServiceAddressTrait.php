@@ -49,11 +49,11 @@ trait ServiceAddressTrait
      */
     private static function normalizeServiceAddress(string $apiEndpoint)
     {
-        $components = explode(':', $apiEndpoint);
-        if (count($components) == 2) {
+        $components = \explode(':', $apiEndpoint);
+        if (\count($components) == 2) {
             // Port is included in service address
             return [$components[0], $components[1]];
-        } elseif (count($components) == 1) {
+        } elseif (\count($components) == 1) {
             // Port is not included - append default port
             return [$components[0], self::$defaultPort];
         } else {

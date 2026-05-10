@@ -78,7 +78,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      */
     public function __construct($scope = [])
     {
-        $this->scope = is_array($scope) ? $scope : explode(' ', (string) $scope);
+        $this->scope = \is_array($scope) ? $scope : \explode(' ', (string) $scope);
     }
     /**
      * Determines if this an App Engine instance, by accessing the
@@ -89,7 +89,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      */
     public static function onAppEngine()
     {
-        $appEngineProduction = isset($_SERVER['SERVER_SOFTWARE']) && 0 === strpos($_SERVER['SERVER_SOFTWARE'], 'Google App Engine');
+        $appEngineProduction = isset($_SERVER['SERVER_SOFTWARE']) && 0 === \strpos($_SERVER['SERVER_SOFTWARE'], 'Google App Engine');
         if ($appEngineProduction) {
             return \true;
         }
@@ -106,7 +106,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      * As the AppIdentityService uses protobufs to fetch the access token,
      * the GuzzleHttp\ClientInterface instance passed in will not be used.
      *
-     * @param callable $httpHandler callback which delivers psr7 request
+     * @param callable|null $httpHandler callback which delivers psr7 request
      * @return array<mixed> {
      *     A set of auth related metadata, containing the following
      *
@@ -114,7 +114,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      *     @type string $expiration_time
      * }
      */
-    public function fetchAuthToken(callable $httpHandler = null)
+    public function fetchAuthToken(?callable $httpHandler = null)
     {
         try {
             $this->checkAppEngineContext();
@@ -139,17 +139,17 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
     {
         $this->checkAppEngineContext();
         /** @phpstan-ignore-next-line */
-        return base64_encode(AppIdentityService::signForApp($stringToSign)['signature']);
+        return \base64_encode(AppIdentityService::signForApp($stringToSign)['signature']);
     }
     /**
      * Get the project ID from AppIdentityService.
      *
      * Returns null if AppIdentityService is unavailable.
      *
-     * @param callable $httpHandler Not used by this type.
+     * @param callable|null $httpHandler Not used by this type.
      * @return string|null
      */
-    public function getProjectId(callable $httpHandler = null)
+    public function getProjectId(?callable $httpHandler = null)
     {
         try {
             $this->checkAppEngineContext();
@@ -164,11 +164,11 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      *
      * Subsequent calls to this method will return a cached value.
      *
-     * @param callable $httpHandler Not used in this implementation.
+     * @param callable|null $httpHandler Not used in this implementation.
      * @return string
      * @throws \Exception If AppEngine SDK or mock is not available.
      */
-    public function getClientName(callable $httpHandler = null)
+    public function getClientName(?callable $httpHandler = null)
     {
         $this->checkAppEngineContext();
         if (!$this->clientName) {
@@ -202,7 +202,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      */
     private function checkAppEngineContext()
     {
-        if (!self::onAppEngine() || !class_exists('Dudlewebs\WPMCS\google\appengine\api\app_identity\AppIdentityService')) {
+        if (!self::onAppEngine() || !\class_exists('Dudlewebs\\WPMCS\\google\\appengine\\api\\app_identity\\AppIdentityService')) {
             throw new \Exception('This class must be run in App Engine, or you must include the AppIdentityService ' . 'mock class defined in tests/mocks/AppIdentityService.php');
         }
     }

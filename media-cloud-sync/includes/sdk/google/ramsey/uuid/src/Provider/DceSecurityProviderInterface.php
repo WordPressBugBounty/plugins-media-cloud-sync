@@ -15,8 +15,7 @@ namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV2;
 use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
 /**
- * A DCE provider provides access to local domain identifiers for version 2,
- * DCE Security, UUIDs
+ * A DCE provider provides access to local domain identifiers for version 2, DCE Security, UUIDs
  *
  * @see UuidV2
  */
@@ -27,11 +26,11 @@ interface DceSecurityProviderInterface
      *
      * @link https://en.wikipedia.org/wiki/User_identifier User identifier
      */
-    public function getUid(): IntegerObject;
+    public function getUid() : IntegerObject;
     /**
      * Returns a group identifier for the system
      *
      * @link https://en.wikipedia.org/wiki/Group_identifier Group identifier
      */
-    public function getGid(): IntegerObject;
+    public function getGid() : IntegerObject;
 }

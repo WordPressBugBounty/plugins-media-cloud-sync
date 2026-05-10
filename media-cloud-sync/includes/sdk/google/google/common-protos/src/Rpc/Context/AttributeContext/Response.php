@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Rpc\Context\AttributeContext;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * This message defines attributes for a typical network response. It
  * generally models semantics of an HTTP response.

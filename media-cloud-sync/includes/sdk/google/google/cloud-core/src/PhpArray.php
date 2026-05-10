@@ -18,10 +18,10 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
 use Dudlewebs\WPMCS\DrSlump\Protobuf;
-use Dudlewebs\WPMCS\google\protobuf\Value;
 use Dudlewebs\WPMCS\google\protobuf\ListValue;
 use Dudlewebs\WPMCS\google\protobuf\NullValue;
 use Dudlewebs\WPMCS\google\protobuf\Struct;
+use Dudlewebs\WPMCS\google\protobuf\Value;
 /**
  * Extend the Protobuf-PHP array codec to allow messages to match the format
  * used for REST.
@@ -62,7 +62,7 @@ class PhpArray extends Protobuf\Codec\PhpArray
         foreach ($descriptor->getFields() as $tag => $field) {
             $empty = !$message->_has($tag);
             if ($field->isRequired() && $empty) {
-                throw new \UnexpectedValueException(sprintf('Message %s\'s field tag %s(%s) is required but has no value', get_class($message), $tag, $field->getName()));
+                throw new \UnexpectedValueException(\sprintf('Message %s\'s field tag %s(%s) is required but has no value', \get_class($message), $tag, $field->getName()));
             }
             if ($empty) {
                 continue;
@@ -71,7 +71,7 @@ class PhpArray extends Protobuf\Codec\PhpArray
             $v = $message->_get($tag);
             if ($field->isRepeated()) {
                 // Make sure the value is an array of values
-                $v = is_array($v) ? $v : array($v);
+                $v = \is_array($v) ? $v : [$v];
                 $arr = [];
                 foreach ($v as $k => $vv) {
                     // Skip nullified repeated values
@@ -80,7 +80,7 @@ class PhpArray extends Protobuf\Codec\PhpArray
                     }
                     $filteredValue = $this->filterValue($vv, $field);
                     if ($this->isKeyValueMessage($vv)) {
-                        $arr[key($filteredValue)] = current($filteredValue);
+                        $arr[\key($filteredValue)] = \current($filteredValue);
                     } else {
                         $arr[$k] = $filteredValue;
                     }
@@ -91,7 +91,7 @@ class PhpArray extends Protobuf\Codec\PhpArray
             }
             $key = $this->useCamelCase ? $this->toCamelCase($key) : $key;
             if (isset($this->customFilters[$key])) {
-                $v = call_user_func($this->customFilters[$key], $v);
+                $v = \call_user_func($this->customFilters[$key], $v);
             }
             $data[$key] = $v;
         }
@@ -110,13 +110,13 @@ class PhpArray extends Protobuf\Codec\PhpArray
             $field = $this->useTagNumber ? $descriptor->getField($key) : $descriptor->getFieldByName($this->toSnakeCase($key));
             // Unknown field found
             if (!$field) {
-                $unknown = new Protobuf\Codec\PhpArray\Unknown($key, gettype($v), $v);
+                $unknown = new Protobuf\Codec\PhpArray\Unknown($key, \gettype($v), $v);
                 $message->addUnknown($unknown);
                 continue;
             }
             if ($field->isRepeated()) {
                 // Make sure the value is an array of values
-                $v = is_array($v) && is_int(key($v)) ? $v : array($v);
+                $v = \is_array($v) && \is_int(\key($v)) ? $v : [$v];
                 foreach ($v as $k => $vv) {
                     $v[$k] = $this->filterValue($vv, $field);
                 }
@@ -129,7 +129,7 @@ class PhpArray extends Protobuf\Codec\PhpArray
     }
     protected function filterValue($value, Protobuf\Field $field)
     {
-        if (trim($field->getReference(), '\\') === NullValue::class) {
+        if (\trim($field->getReference(), '\\') === NullValue::class) {
             return null;
         }
         if ($value instanceof Protobuf\Message) {
@@ -172,14 +172,14 @@ class PhpArray extends Protobuf\Codec\PhpArray
     }
     private function toSnakeCase($key)
     {
-        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $key));
+        return \strtolower(\preg_replace(['/([a-z\\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $key));
     }
     private function toCamelCase($key)
     {
-        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
+        return \lcfirst(\str_replace(' ', '', \ucwords(\str_replace('_', ' ', $key))));
     }
     private function isKeyValueMessage($value)
     {
-        return property_exists($value, 'key') && property_exists($value, 'value');
+        return \property_exists($value, 'key') && \property_exists($value, 'value');
     }
 }

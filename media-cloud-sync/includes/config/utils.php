@@ -950,4 +950,40 @@ class Utils {
 		return filter_input( $type, $variable, $filter, $options );
 	}
 
+	/**
+	 * Get license data safe for frontend exposure (no raw key).
+	 *
+	 * @return array
+	 */
+	public static function get_safe_license_data() {
+		$data = get_option('wpmcs_pro_license', []);
+		if (empty($data)) {
+			return [];
+		}
+		$key = $data['license_key'] ?? '';
+		$masked = '';
+		if (!empty($key)) {
+			$parts = explode('-', $key);
+			if (count($parts) <= 2) {
+				$masked = str_repeat('*', strlen($key));
+			} else {
+				$first = $parts[0];
+				$last = end($parts);
+				$middle_count = count($parts) - 2;
+				$masked_middle = array_fill(0, $middle_count, '****');
+				$masked = $first . '-' . implode('-', $masked_middle) . '-' . $last;
+			}
+		}
+		return [
+			'masked_key'          => $masked,
+			'status'              => $data['status'] ?? '',
+			'expiry'              => $data['expiry'] ?? '',
+			'is_expired'          => $data['is_expired'] ?? false,
+			'is_domain_activated' => $data['is_domain_activated'] ?? false,
+			'can_activate'        => $data['can_activate'] ?? false,
+			'message'             => $data['message'] ?? '',
+			'last_checked'        => $data['last_checked'] ?? 0,
+		];
+	}
+
 }

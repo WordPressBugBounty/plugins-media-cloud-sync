@@ -35,7 +35,6 @@ trait StubTrait
     public function ___getProperty($prop)
     {
         $property = $this->___getPropertyReflector($prop);
-        $property->setAccessible(\true);
         return $property->getValue($this);
     }
     /**
@@ -47,11 +46,10 @@ trait StubTrait
      */
     public function ___setProperty($prop, $value)
     {
-        if (!in_array($prop, json_decode($this->___props))) {
-            throw new \RuntimeException(sprintf('Property %s cannot be overloaded', $prop));
+        if (!\in_array($prop, \json_decode($this->___props))) {
+            throw new \RuntimeException(\sprintf('Property %s cannot be overloaded', $prop));
         }
         $property = $this->___getPropertyReflector($prop);
-        $property->setAccessible(\true);
         $property->setValue($this, $value);
     }
     private function ___getPropertyReflector($property)

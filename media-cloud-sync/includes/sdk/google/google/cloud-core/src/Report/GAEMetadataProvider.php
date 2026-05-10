@@ -22,7 +22,7 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\Report;
  */
 abstract class GAEMetadataProvider implements MetadataProviderInterface
 {
-    abstract protected function getTraceValue($server);
+    protected abstract function getTraceValue($server);
     /** @var array */
     private $data;
     /**

@@ -34,13 +34,13 @@ trait LockTrait
      * @return bool
      * @throws \RuntimeException If the lock fails to be acquired.
      */
-    abstract public function acquire(array $options = []);
+    public abstract function acquire(array $options = []);
     /**
      * Releases the lock.
      *
      * @throws \RuntimeException
      */
-    abstract public function release();
+    public abstract function release();
     /**
      * Execute a callable within a lock. If an exception is caught during
      * execution of the callable the lock will first be released before throwing

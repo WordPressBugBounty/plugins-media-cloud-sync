@@ -25,7 +25,7 @@ class Descriptor
      */
     public function getFullName()
     {
-        return trim($this->internal_desc->getFullName(), ".");
+        return \trim($this->internal_desc->getFullName(), ".");
     }
     /**
      * @return string PHP class name
@@ -47,7 +47,7 @@ class Descriptor
      */
     public function getFieldCount()
     {
-        return count($this->internal_desc->getField());
+        return \count($this->internal_desc->getField());
     }
     /**
      * @param int $index Must be >= 0 and < getOneofDeclCount()
@@ -62,7 +62,7 @@ class Descriptor
      */
     public function getOneofDeclCount()
     {
-        return count($this->internal_desc->getOneofDecl());
+        return \count($this->internal_desc->getOneofDecl());
     }
     /**
      * @return int Number of real oneofs in message

@@ -56,4 +56,3 @@ class StackdriverUtil
         $this->err_client->reportErrorEvent($project_name, $error_event);
     }
 }
-\class_alias('Dudlewebs\WPMCS\StackdriverUtil', 'StackdriverUtil', \false);

@@ -21,5 +21,5 @@ interface TimeProviderInterface
     /**
      * Returns a time object
      */
-    public function getTime(): Time;
+    public function getTime() : Time;
 }

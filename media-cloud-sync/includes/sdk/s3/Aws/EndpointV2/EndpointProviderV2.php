@@ -3,6 +3,7 @@
 namespace Dudlewebs\WPMCS\s3\Aws\EndpointV2;
 
 use Dudlewebs\WPMCS\s3\Aws\EndpointV2\Ruleset\Ruleset;
+use Dudlewebs\WPMCS\s3\Aws\EndpointV2\Ruleset\RulesetEndpoint;
 use Dudlewebs\WPMCS\s3\Aws\Exception\UnresolvedEndpointException;
 use Dudlewebs\WPMCS\s3\Aws\LruArrayCache;
 /**

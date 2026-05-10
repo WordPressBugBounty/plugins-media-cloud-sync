@@ -19,11 +19,10 @@ namespace Dudlewebs\WPMCS\Google\Cloud\Core\Iam;
 
 use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
 use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iam\PolicyBuilder;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\Policy;
 use Dudlewebs\WPMCS\Google\Cloud\Core\RequestHandler;
 use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\GetIamPolicyRequest;
 use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\GetPolicyOptions;
+use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\Policy;
 use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\SetIamPolicyRequest;
 use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use InvalidArgumentException;
@@ -136,7 +135,7 @@ class IamManager
         if ($policy instanceof PolicyBuilder) {
             $policy = $policy->result();
         }
-        if (!is_array($policy)) {
+        if (!\is_array($policy)) {
             throw new InvalidArgumentException('Given policy data must be an array or an instance of PolicyBuilder.');
         }
         $policy = $this->serializer->decodeMessage(new Policy(), $policy);

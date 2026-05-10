@@ -63,7 +63,7 @@ class ApiStatus
      */
     public static function isValidStatus(string $status)
     {
-        return array_key_exists($status, self::$apiStatusToCodeMap);
+        return \array_key_exists($status, self::$apiStatusToCodeMap);
     }
     /**
      * @param int $code
@@ -71,7 +71,7 @@ class ApiStatus
      */
     public static function statusFromRpcCode(int $code)
     {
-        if (array_key_exists($code, self::$codeToApiStatusMap)) {
+        if (\array_key_exists($code, self::$codeToApiStatusMap)) {
             return self::$codeToApiStatusMap[$code];
         }
         return ApiStatus::UNRECOGNIZED_STATUS;
@@ -82,7 +82,7 @@ class ApiStatus
      */
     public static function rpcCodeFromStatus(string $status)
     {
-        if (array_key_exists($status, self::$apiStatusToCodeMap)) {
+        if (\array_key_exists($status, self::$apiStatusToCodeMap)) {
             return self::$apiStatusToCodeMap[$status];
         }
         return ApiStatus::UNRECOGNIZED_CODE;
@@ -96,7 +96,7 @@ class ApiStatus
      */
     public static function rpcCodeFromHttpStatusCode(int $httpStatusCode)
     {
-        if (array_key_exists($httpStatusCode, self::$httpStatusCodeToRpcCodeMap)) {
+        if (\array_key_exists($httpStatusCode, self::$httpStatusCodeToRpcCodeMap)) {
             return self::$httpStatusCodeToRpcCodeMap[$httpStatusCode];
         }
         // All 2xx

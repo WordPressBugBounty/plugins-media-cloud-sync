@@ -12,4 +12,4 @@ if (\false) {
     }
 }
 // Autoload the class and its alias
-class_exists('Dudlewebs\WPMCS\Google\LongRunning\Gapic\OperationsGapicClient');
+\class_exists('Dudlewebs\\WPMCS\\Google\\LongRunning\\Gapic\\OperationsGapicClient');

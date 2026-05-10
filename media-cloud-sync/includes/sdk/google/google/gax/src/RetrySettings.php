@@ -77,7 +77,7 @@ use Closure;
  * RetrySettings objects can be used to control retries for many RPC methods in
  * [google-cloud-php](https://github.com/googleapis/google-cloud-php).
  * The examples below make use of the
- * [GroupServiceClient](https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/monitoring/v3/groupserviceclient)
+ * [GroupServiceClient](https://cloud.google.com/php/docs/reference/cloud-monitoring/latest/V3.Client.GroupServiceClient)
  * from the [Monitoring V3 API](https://github.com/googleapis/google-cloud-php/tree/master/src/Monitoring/V3),
  * but they can be applied to other APIs in the
  * [google-cloud-php](https://github.com/googleapis/google-cloud-php) repository.
@@ -88,7 +88,7 @@ use Closure;
  * the particular retry parameters to be updated.
  *
  * Example of disabling retries for a single call to the
- * [listGroups](https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/monitoring/v3/groupserviceclient?method=listGroups)
+ * [listGroups](https://cloud.google.com/php/docs/reference/cloud-monitoring/latest/V3.Client.GroupServiceClient#_Google_Cloud_Monitoring_V3_Client_GroupServiceClient__listGroups__)
  * method, and setting a custom timeout:
  * ```
  * $result = $client->listGroups($name, [
@@ -101,7 +101,7 @@ use Closure;
  *
  * Example of creating a new RetrySettings object and using it to override
  * the retry settings for a call to the
- * [listGroups](https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/monitoring/v3/groupserviceclient?method=listGroups)
+ * [listGroups](https://cloud.google.com/php/docs/reference/cloud-monitoring/latest/V3.Client.GroupServiceClient#_Google_Cloud_Monitoring_V3_Client_GroupServiceClient__listGroups__)
  * method:
  * ```
  * $customRetrySettings = new RetrySettings([
@@ -126,8 +126,8 @@ use Closure;
  * It is also possible to specify the retry behavior for RPC methods when
  * constructing a client object using the 'retrySettingsArray'. The examples
  * below again make use of the
- * [GroupServiceClient](https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/monitoring/v3/groupserviceclient)
- * from the [Monitoring V3 API](https://github.com/googleapis/google-cloud-php/tree/master/src/Monitoring/V3),
+ * [GroupServiceClient](https://cloud.google.com/php/docs/reference/cloud-monitoring/latest/V3.Client.GroupServiceClient)
+ * from the [Monitoring V3 API](https://github.com/googleapis/google-cloud-php/tree/main/Monitoring/src/V3),
  * but they can be applied to other APIs in the
  * [google-cloud-php](https://github.com/googleapis/google-cloud-php) repository.
  *
@@ -261,7 +261,7 @@ class RetrySettings
      */
     public function __construct(array $settings)
     {
-        $this->validateNotNull($settings, ['initialRetryDelayMillis', 'retryDelayMultiplier', 'maxRetryDelayMillis', 'initialRpcTimeoutMillis', 'rpcTimeoutMultiplier', 'maxRpcTimeoutMillis', 'totalTimeoutMillis', 'retryableCodes']);
+        self::validateNotNull($settings, ['initialRetryDelayMillis', 'retryDelayMultiplier', 'maxRetryDelayMillis', 'initialRpcTimeoutMillis', 'rpcTimeoutMultiplier', 'maxRpcTimeoutMillis', 'totalTimeoutMillis', 'retryableCodes']);
         $this->initialRetryDelayMillis = $settings['initialRetryDelayMillis'];
         $this->retryDelayMultiplier = $settings['retryDelayMultiplier'];
         $this->maxRetryDelayMillis = $settings['maxRetryDelayMillis'];
@@ -270,8 +270,8 @@ class RetrySettings
         $this->maxRpcTimeoutMillis = $settings['maxRpcTimeoutMillis'];
         $this->totalTimeoutMillis = $settings['totalTimeoutMillis'];
         $this->retryableCodes = $settings['retryableCodes'];
-        $this->retriesEnabled = array_key_exists('retriesEnabled', $settings) ? $settings['retriesEnabled'] : count($this->retryableCodes) > 0;
-        $this->noRetriesRpcTimeoutMillis = array_key_exists('noRetriesRpcTimeoutMillis', $settings) ? $settings['noRetriesRpcTimeoutMillis'] : $this->initialRpcTimeoutMillis;
+        $this->retriesEnabled = \array_key_exists('retriesEnabled', $settings) ? $settings['retriesEnabled'] : \count($this->retryableCodes) > 0;
+        $this->noRetriesRpcTimeoutMillis = \array_key_exists('noRetriesRpcTimeoutMillis', $settings) ? $settings['noRetriesRpcTimeoutMillis'] : $this->initialRpcTimeoutMillis;
         $this->maxRetries = $settings['maxRetries'] ?? self::DEFAULT_MAX_RETRIES;
         $this->retryFunction = $settings['retryFunction'] ?? null;
     }
@@ -302,10 +302,10 @@ class RetrySettings
             } else {
                 $retryCodesName = $methodConfig['retry_codes_name'];
                 $retryParamsName = $methodConfig['retry_params_name'];
-                if (!array_key_exists($retryCodesName, $retryCodes)) {
+                if (!\array_key_exists($retryCodesName, $retryCodes)) {
                     throw new ValidationException("Invalid retry_codes_name setting: '{$retryCodesName}'");
                 }
-                if (!array_key_exists($retryParamsName, $retryParams)) {
+                if (!\array_key_exists($retryParamsName, $retryParams)) {
                     throw new ValidationException("Invalid retry_params_name setting: '{$retryParamsName}'");
                 }
                 foreach ($retryCodes[$retryCodesName] as $status) {
@@ -454,8 +454,8 @@ class RetrySettings
     {
         $camelCaseSettings = [];
         foreach ($settings as $key => $value) {
-            $camelCaseKey = str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
-            $camelCaseSettings[lcfirst($camelCaseKey)] = $value;
+            $camelCaseKey = \str_replace(' ', '', \ucwords(\str_replace('_', ' ', $key)));
+            $camelCaseSettings[\lcfirst($camelCaseKey)] = $value;
         }
         return $camelCaseSettings;
     }

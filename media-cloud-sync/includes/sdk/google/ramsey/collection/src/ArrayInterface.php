@@ -15,7 +15,6 @@ namespace Dudlewebs\WPMCS\Ramsey\Collection;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Serializable;
 /**
  * `ArrayInterface` provides traversable array functionality to data types.
  *
@@ -23,20 +22,20 @@ use Serializable;
  * @extends ArrayAccess<array-key, T>
  * @extends IteratorAggregate<array-key, T>
  */
-interface ArrayInterface extends ArrayAccess, Countable, IteratorAggregate, Serializable
+interface ArrayInterface extends ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * Removes all items from this array.
      */
-    public function clear(): void;
+    public function clear() : void;
     /**
      * Returns a native PHP array representation of this array object.
      *
      * @return array<array-key, T>
      */
-    public function toArray(): array;
+    public function toArray() : array;
     /**
      * Returns `true` if this array is empty.
      */
-    public function isEmpty(): bool;
+    public function isEmpty() : bool;
 }

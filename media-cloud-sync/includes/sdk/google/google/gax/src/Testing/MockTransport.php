@@ -54,8 +54,8 @@ class MockTransport implements TransportInterface
     }
     public function startUnaryCall(Call $call, array $options)
     {
-        $call = call_user_func([$this, $call->getMethod()], $call, $options);
-        return $promise = new Promise(function () use ($call, &$promise) {
+        $call = \call_user_func([$this, $call->getMethod()], $call, $options);
+        return $promise = new Promise(function () use($call, &$promise) {
             list($response, $status) = $call->wait();
             if ($status->code == Code::OK) {
                 $promise->resolve($response);

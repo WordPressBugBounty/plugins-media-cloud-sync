@@ -17,15 +17,12 @@
  */
 namespace Dudlewebs\WPMCS\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\TimeTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\WhitelistTrait;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
 use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
 use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
 /**
  * @internal
  * Responsible for forwarding the requests to their
@@ -42,13 +39,13 @@ class RequestHandler
      * @var Serializer
      */
     private Serializer $serializer;
-    private array $clients;
+    private array $clients = [];
     /**
      * @param Serializer $serializer
-     * @param array $clientClasses
+     * @param array<string|object> $clients
      * @param array $clientConfig
      */
-    public function __construct(Serializer $serializer, array $clientClasses, array $clientConfig = [])
+    public function __construct(Serializer $serializer, array $clients, array $clientConfig = [])
     {
         //@codeCoverageIgnoreStart
         $this->serializer = $serializer;
@@ -58,13 +55,16 @@ class RequestHandler
         $clientConfig += ['libName' => 'gccl', 'emulatorHost' => null];
         if ((bool) $clientConfig['emulatorHost']) {
             $emulatorConfig = $this->emulatorGapicConfig($clientConfig['emulatorHost']);
-            $clientConfig = array_merge($clientConfig, $emulatorConfig);
+            $clientConfig = \array_merge($clientConfig, $emulatorConfig);
         }
         //@codeCoverageIgnoreEnd
         // Initialize the client classes and store them in memory
-        $this->clients = [];
-        foreach ($clientClasses as $className) {
-            $this->clients[$className] = new $className($clientConfig);
+        foreach ($clients as $client) {
+            if (\is_object($client)) {
+                $this->clients[\get_class($client)] = $client;
+            } else {
+                $this->clients[$client] = new $client($clientConfig);
+            }
         }
     }
     /**
@@ -90,7 +90,7 @@ class RequestHandler
         $allArgs[] = $optionalArgs;
         try {
             $callable = [$clientObj, $method];
-            $response = call_user_func_array($callable, $allArgs);
+            $response = \call_user_func_array($callable, $allArgs);
             return $this->handleResponse($response);
         } catch (ApiException $ex) {
             throw $this->convertToGoogleException($ex);

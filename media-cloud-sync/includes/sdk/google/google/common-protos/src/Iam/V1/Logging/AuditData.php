@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Iam\V1\Logging;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Audit log information specific to Cloud IAM. This message is serialized
  * as an `Any` type in the `ServiceData` message of an

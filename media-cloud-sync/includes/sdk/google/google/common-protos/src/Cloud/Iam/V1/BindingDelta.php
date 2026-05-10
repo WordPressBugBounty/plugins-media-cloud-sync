@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Cloud\Iam\V1;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * One delta entry for Binding. Each individual change (only one member in each
  * entry) to a binding will be a separate entry.

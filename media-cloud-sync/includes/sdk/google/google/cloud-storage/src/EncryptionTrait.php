@@ -75,8 +75,8 @@ trait EncryptionTrait
         if ($key) {
             $headerNames = $useCopySourceHeaders ? $this->copySourceEncryptionHeaderNames : $this->encryptionHeaderNames;
             if (!$keySHA256) {
-                $decodedKey = base64_decode($key);
-                $keySHA256 = base64_encode(hash('SHA256', $decodedKey, \true));
+                $decodedKey = \base64_decode($key);
+                $keySHA256 = \base64_encode(\hash('SHA256', $decodedKey, \true));
             }
             return [$headerNames['algorithm'] => 'AES256', $headerNames['key'] => $key, $headerNames['keySHA256'] => $keySHA256];
         }
@@ -98,18 +98,18 @@ trait EncryptionTrait
     protected function signString($privateKey, $data, $forceOpenssl = \false)
     {
         $signature = '';
-        if (class_exists(RSA3::class) && !$forceOpenssl) {
+        if (\class_exists(RSA3::class) && !$forceOpenssl) {
             $rsa = RSA3::loadPrivateKey($privateKey);
             $rsa = $rsa->withPadding(RSA3::SIGNATURE_PKCS1)->withHash('sha256');
             $signature = $rsa->sign($data);
-        } elseif (class_exists(RSA2::class) && !$forceOpenssl) {
+        } elseif (\class_exists(RSA2::class) && !$forceOpenssl) {
             $rsa = new RSA2();
             $rsa->loadKey($privateKey);
             $rsa->setSignatureMode(RSA2::SIGNATURE_PKCS1);
             $rsa->setHash('sha256');
             $signature = $rsa->sign($data);
-        } elseif (extension_loaded('openssl')) {
-            openssl_sign($data, $signature, $privateKey, 'sha256WithRSAEncryption');
+        } elseif (\extension_loaded('openssl')) {
+            \openssl_sign($data, $signature, $privateKey, 'sha256WithRSAEncryption');
         } else {
             // @codeCoverageIgnoreStart
             throw new \RuntimeException('OpenSSL is not installed.');

@@ -46,8 +46,8 @@ class Version
      */
     public static function getApiCoreVersion()
     {
-        if (is_null(self::$version)) {
-            $versionFile = implode(\DIRECTORY_SEPARATOR, [__DIR__, '..', 'VERSION']);
+        if (\is_null(self::$version)) {
+            $versionFile = \implode(\DIRECTORY_SEPARATOR, [__DIR__, '..', 'VERSION']);
             self::$version = self::readVersionFile($versionFile);
         }
         return self::$version;
@@ -61,8 +61,8 @@ class Version
      */
     public static function readVersionFile(string $file)
     {
-        $versionString = file_exists($file) ? (string) file_get_contents($file) : "";
-        return trim($versionString);
+        $versionString = \file_exists($file) ? (string) \file_get_contents($file) : '';
+        return \trim($versionString);
     }
     /**
      * Private constructor.

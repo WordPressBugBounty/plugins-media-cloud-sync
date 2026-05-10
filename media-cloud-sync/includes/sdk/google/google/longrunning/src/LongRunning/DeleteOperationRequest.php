@@ -5,10 +5,11 @@
 namespace Dudlewebs\WPMCS\Google\LongRunning;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
- * The request message for [Operations.DeleteOperation][google.longrunning.Operations.DeleteOperation].
+ * The request message for
+ * [Operations.DeleteOperation][google.longrunning.Operations.DeleteOperation].
  *
  * Generated from protobuf message <code>google.longrunning.DeleteOperationRequest</code>
  */
@@ -27,7 +28,7 @@ class DeleteOperationRequest extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\M
      *
      * @experimental
      */
-    public static function build(string $name): self
+    public static function build(string $name) : self
     {
         return (new self())->setName($name);
     }

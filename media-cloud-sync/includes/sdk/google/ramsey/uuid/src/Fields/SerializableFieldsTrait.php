@@ -19,52 +19,49 @@ use function strlen;
 /**
  * Provides common serialization functionality to fields
  *
- * @psalm-immutable
+ * @immutable
  */
 trait SerializableFieldsTrait
 {
     /**
      * @param string $bytes The bytes that comprise the fields
      */
-    abstract public function __construct(string $bytes);
+    public abstract function __construct(string $bytes);
     /**
      * Returns the bytes that comprise the fields
      */
-    abstract public function getBytes(): string;
+    public abstract function getBytes() : string;
     /**
-     * Returns a string representation of object
+     * Returns a string representation of the object
      */
-    public function serialize(): string
+    public function serialize() : string
     {
         return $this->getBytes();
     }
     /**
      * @return array{bytes: string}
      */
-    public function __serialize(): array
+    public function __serialize() : array
     {
         return ['bytes' => $this->getBytes()];
     }
     /**
      * Constructs the object from a serialized string representation
      *
-     * @param string $serialized The serialized string representation of the object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress UnusedMethodCall
+     * @param string $data The serialized string representation of the object
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data) : void
     {
-        if (strlen($serialized) === 16) {
-            $this->__construct($serialized);
+        if (strlen($data) === 16) {
+            $this->__construct($data);
         } else {
-            $this->__construct(base64_decode($serialized));
+            $this->__construct(base64_decode($data));
         }
     }
     /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
      */
-    public function __unserialize(array $data): void
+    public function __unserialize(array $data) : void
     {
         // @codeCoverageIgnoreStart
         if (!isset($data['bytes'])) {

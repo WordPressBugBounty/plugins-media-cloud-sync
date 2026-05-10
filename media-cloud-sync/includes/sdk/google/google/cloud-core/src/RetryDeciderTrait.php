@@ -43,9 +43,9 @@ trait RetryDeciderTrait
     {
         $httpRetryCodes = $this->httpRetryCodes;
         $httpRetryMessages = $this->httpRetryMessages;
-        return function (\Exception $ex) use ($httpRetryCodes, $httpRetryMessages, $shouldRetryMessages) {
+        return function (\Exception $ex) use($httpRetryCodes, $httpRetryMessages, $shouldRetryMessages) {
             $statusCode = $ex->getCode();
-            if (in_array($statusCode, $httpRetryCodes)) {
+            if (\in_array($statusCode, $httpRetryCodes)) {
                 return \true;
             }
             if (!$shouldRetryMessages) {
@@ -61,7 +61,7 @@ trait RetryDeciderTrait
                 return \false;
             }
             foreach ($message['error']['errors'] as $error) {
-                if (in_array($error['reason'], $httpRetryMessages)) {
+                if (\in_array($error['reason'], $httpRetryMessages)) {
                     return \true;
                 }
             }

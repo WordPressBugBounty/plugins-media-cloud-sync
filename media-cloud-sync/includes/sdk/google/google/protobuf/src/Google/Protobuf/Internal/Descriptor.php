@@ -46,7 +46,7 @@ class Descriptor
     public function addField($field)
     {
         $this->field[$field->getNumber()] = $field;
-        $this->json_to_field[$field->getJsonName()] = $field;
+        $this->json_to_field[$field->getJsonName() ?? ''] = $field;
         $this->name_to_field[$field->getName()] = $field;
         $this->index_to_field[] = $field;
     }
@@ -96,7 +96,7 @@ class Descriptor
     }
     public function getFieldByIndex($index)
     {
-        if (count($this->index_to_field) <= $index) {
+        if (\count($this->index_to_field) <= $index) {
             return NULL;
         } else {
             return $this->index_to_field[$index];

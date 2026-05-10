@@ -86,7 +86,7 @@ class RepeatedFieldIter implements \Iterator
      *
      * @return bool True if there are more elements to iterate.
      */
-    public function valid(): bool
+    public function valid() : bool
     {
         return isset($this->container[$this->position]);
     }

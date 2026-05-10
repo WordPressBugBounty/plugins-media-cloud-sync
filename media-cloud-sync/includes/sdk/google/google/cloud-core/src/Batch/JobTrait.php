@@ -82,7 +82,7 @@ trait JobTrait
     /**
      * Runs the job loop. This is expected to be a blocking call.
      */
-    abstract public function run();
+    public abstract function run();
     /**
      * Finish any pending activity for this job.
      *

@@ -101,14 +101,14 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
                 $literalSegments[] = $segment;
                 continue;
             }
-            if (!array_key_exists($key, $bindings)) {
+            if (!\array_key_exists($key, $bindings)) {
                 throw $this->renderingException($bindings, "missing required binding '{$key}' for segment '{$segment}'");
             }
             $value = $bindings[$key];
-            if (!is_null($value) && $segment->matches($value)) {
+            if (!\is_null($value) && $segment->matches($value)) {
                 $literalSegments[] = new Segment(Segment::LITERAL_SEGMENT, $value, $segment->getValue(), $segment->getTemplate(), $segment->getSeparator());
             } else {
-                $valueString = is_null($value) ? "null" : "'{$value}'";
+                $valueString = \is_null($value) ? 'null' : "'{$value}'";
                 throw $this->renderingException($bindings, "expected binding '{$key}' to match segment '{$segment}', instead got {$valueString}");
             }
         }
@@ -144,22 +144,22 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
         // key.
         $keySegmentTuples = self::buildKeySegmentTuples($this->segments);
         $flattenedKeySegmentTuples = self::flattenKeySegmentTuples($keySegmentTuples);
-        $flattenedKeySegmentTuplesCount = count($flattenedKeySegmentTuples);
-        assert($flattenedKeySegmentTuplesCount > 0);
-        $slashPathPieces = explode('/', $path);
+        $flattenedKeySegmentTuplesCount = \count($flattenedKeySegmentTuples);
+        \assert($flattenedKeySegmentTuplesCount > 0);
+        $slashPathPieces = \explode('/', $path);
         $pathPieces = [];
         $pathPiecesIndex = 0;
         $startIndex = 0;
-        $slashPathPiecesCount = count($slashPathPieces);
+        $slashPathPiecesCount = \count($slashPathPieces);
         $doubleWildcardPieceCount = $slashPathPiecesCount - $flattenedKeySegmentTuplesCount + 1;
-        for ($i = 0; $i < count($flattenedKeySegmentTuples); $i++) {
+        for ($i = 0; $i < \count($flattenedKeySegmentTuples); $i++) {
             $segmentKey = $flattenedKeySegmentTuples[$i][0];
             $segment = $flattenedKeySegmentTuples[$i][1];
             // In our flattened list of segments, we should never encounter a variable segment
-            assert($segment->getSegmentType() !== Segment::VARIABLE_SEGMENT);
+            \assert($segment->getSegmentType() !== Segment::VARIABLE_SEGMENT);
             if ($segment->getSegmentType() == Segment::DOUBLE_WILDCARD_SEGMENT) {
-                $pathPiecesForSegment = array_slice($slashPathPieces, $pathPiecesIndex, $doubleWildcardPieceCount);
-                $pathPiece = implode('/', $pathPiecesForSegment);
+                $pathPiecesForSegment = \array_slice($slashPathPieces, $pathPiecesIndex, $doubleWildcardPieceCount);
+                $pathPiece = \implode('/', $pathPiecesForSegment);
                 $pathPiecesIndex += $doubleWildcardPieceCount;
                 $pathPieces[] = $pathPiece;
                 continue;
@@ -171,25 +171,25 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
             }
             if ($segment->getSeparator() === '/') {
                 if ($pathPiecesIndex >= $slashPathPiecesCount) {
-                    throw $this->matchException($path, "segment and path length mismatch");
+                    throw $this->matchException($path, 'segment and path length mismatch');
                 }
-                $pathPiece = substr($slashPathPieces[$pathPiecesIndex++], $startIndex);
+                $pathPiece = \substr($slashPathPieces[$pathPiecesIndex++], $startIndex);
                 $startIndex = 0;
             } else {
-                $rawPiece = substr($slashPathPieces[$pathPiecesIndex], $startIndex);
-                $pathPieceLength = strpos($rawPiece, $segment->getSeparator());
-                $pathPiece = substr($rawPiece, 0, $pathPieceLength);
+                $rawPiece = \substr($slashPathPieces[$pathPiecesIndex], $startIndex);
+                $pathPieceLength = \strpos($rawPiece, $segment->getSeparator());
+                $pathPiece = \substr($rawPiece, 0, $pathPieceLength);
                 $startIndex += $pathPieceLength + 1;
             }
             $pathPieces[] = $pathPiece;
         }
         if ($flattenedKeySegmentTuples[$i - 1][1]->getSegmentType() !== Segment::DOUBLE_WILDCARD_SEGMENT) {
             // Process any remaining pieces. The binding logic will throw exceptions for any invalid paths.
-            for (; $pathPiecesIndex < count($slashPathPieces); $pathPiecesIndex++) {
+            for (; $pathPiecesIndex < \count($slashPathPieces); $pathPiecesIndex++) {
                 $pathPieces[] = $slashPathPieces[$pathPiecesIndex];
             }
         }
-        $pathPiecesCount = count($pathPieces);
+        $pathPiecesCount = \count($pathPieces);
         // We would like to match pieces of our path 1:1 with the segments of our template. However,
         // this is confounded by the presence of double wildcards ('**') in the template, which can
         // match multiple segments in the path.
@@ -199,7 +199,7 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
         if ($pathPiecesCount < $flattenedKeySegmentTuplesCount) {
             // Each segment in $flattenedKeyedSegments must consume at least one
             // segment in $pathSegments, so matching must fail.
-            throw $this->matchException($path, "path does not contain enough segments to be matched");
+            throw $this->matchException($path, 'path does not contain enough segments to be matched');
         }
         $doubleWildcardPieceCount = $pathPiecesCount - $flattenedKeySegmentTuplesCount + 1;
         $bindings = [];
@@ -227,7 +227,7 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
         // Collapse the bindings from lists into strings
         $collapsedBindings = [];
         foreach ($bindings as $key => $boundPieces) {
-            $collapsedBindings[$key] = implode('/', $boundPieces);
+            $collapsedBindings[$key] = \implode('/', $boundPieces);
         }
         return $collapsedBindings;
     }
@@ -237,7 +237,7 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
     }
     private function renderingException(array $bindings, string $reason)
     {
-        $bindingsString = print_r($bindings, \true);
+        $bindingsString = \print_r($bindings, \true);
         return new ValidationException("Error rendering '{$this}': {$reason}\n" . "Provided bindings: {$bindingsString}");
     }
     /**
@@ -245,7 +245,7 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
      * @param string|null $separator An optional string separator
      * @return array[] A list of [string, Segment] tuples
      */
-    private static function buildKeySegmentTuples(array $segments, string $separator = null)
+    private static function buildKeySegmentTuples(array $segments, ?string $separator = null)
     {
         $keySegmentTuples = [];
         $positionalArgumentCounter = 0;
@@ -284,7 +284,7 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
                     foreach ($nestedKeySegmentTuples as list($nestedKey, $nestedSegment)) {
                         /** @var Segment $nestedSegment */
                         // Nested variables are not allowed
-                        assert($nestedSegment->getSegmentType() !== Segment::VARIABLE_SEGMENT);
+                        \assert($nestedSegment->getSegmentType() !== Segment::VARIABLE_SEGMENT);
                         // Insert the nested segment with key set to the outer key of the
                         // parent variable segment
                         $flattenedKeySegmentTuples[] = [$key, $nestedSegment];
@@ -323,11 +323,11 @@ class RelativeResourceTemplate implements ResourceTemplateInterface
      */
     private static function renderSegments(array $segmentsToRender)
     {
-        $renderResult = "";
-        for ($i = 0; $i < count($segmentsToRender); $i++) {
+        $renderResult = '';
+        for ($i = 0; $i < \count($segmentsToRender); $i++) {
             $segment = $segmentsToRender[$i];
             $renderResult .= $segment;
-            if ($i < count($segmentsToRender) - 1) {
+            if ($i < \count($segmentsToRender) - 1) {
                 $renderResult .= $segment->getSeparator();
             }
         }

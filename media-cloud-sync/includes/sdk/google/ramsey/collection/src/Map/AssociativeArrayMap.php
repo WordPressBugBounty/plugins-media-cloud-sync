@@ -15,8 +15,7 @@ namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
 /**
  * `AssociativeArrayMap` represents a standard associative array object.
  *
- * @template T
- * @extends AbstractMap<T>
+ * @extends AbstractMap<string, mixed>
  */
 class AssociativeArrayMap extends AbstractMap
 {

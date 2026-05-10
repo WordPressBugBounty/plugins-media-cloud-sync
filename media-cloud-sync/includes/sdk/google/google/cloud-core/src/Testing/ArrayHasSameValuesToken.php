@@ -23,7 +23,7 @@ class ArrayHasSameValuesToken implements TokenInterface
      * @experimental
      * @internal
      */
-    public function __construct($value, StringUtil $util = null)
+    public function __construct($value, ?StringUtil $util = null)
     {
         $this->value = $value;
         $this->util = $util ?: new StringUtil();
@@ -41,8 +41,8 @@ class ArrayHasSameValuesToken implements TokenInterface
     }
     private function compare(array $value, array $argument)
     {
-        array_multisort($value);
-        array_multisort($argument);
+        \array_multisort($value);
+        \array_multisort($argument);
         return $value == $argument;
     }
     /**
@@ -68,6 +68,6 @@ class ArrayHasSameValuesToken implements TokenInterface
         } else {
             $string = 'same(%s)';
         }
-        return sprintf($string, $this->util->stringify($this->value));
+        return \sprintf($string, $this->util->stringify($this->value));
     }
 }

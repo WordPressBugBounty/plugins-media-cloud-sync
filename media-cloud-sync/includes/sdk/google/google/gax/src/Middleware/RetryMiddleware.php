@@ -39,6 +39,8 @@ use Dudlewebs\WPMCS\Google\ApiCore\RetrySettings;
 use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware that adds retry functionality.
+ *
+ * @internal
  */
 class RetryMiddleware implements MiddlewareInterface
 {
@@ -75,11 +77,15 @@ class RetryMiddleware implements MiddlewareInterface
                 $options['timeoutMillis'] = $this->retrySettings->getInitialRpcTimeoutMillis();
             }
         }
+        // Setting the retry attempt for logging
+        if ($this->retryAttempts > 0) {
+            $options['retryAttempt'] = $this->retryAttempts;
+        }
         // Call the handler immediately if retry settings are disabled.
         if (!$this->retrySettings->retriesEnabled()) {
             return $nextHandler($call, $options);
         }
-        return $nextHandler($call, $options)->then(null, function ($e) use ($call, $options) {
+        return $nextHandler($call, $options)->then(null, function ($e) use($call, $options) {
             $retryFunction = $this->getRetryFunction();
             // If the number of retries has surpassed the max allowed retries
             // then throw the exception as we normally would.
@@ -118,8 +124,8 @@ class RetryMiddleware implements MiddlewareInterface
         if ($currentTimeMs >= $deadlineMs) {
             throw new ApiException('Retry total timeout exceeded.', \Dudlewebs\WPMCS\Google\Rpc\Code::DEADLINE_EXCEEDED, ApiStatus::DEADLINE_EXCEEDED);
         }
-        $delayMs = min($delayMs * $delayMult, $maxDelayMs);
-        $timeoutMs = (int) min($timeoutMs * $timeoutMult, $maxTimeoutMs, $deadlineMs - $this->getCurrentTimeMs());
+        $delayMs = \min($delayMs * $delayMult, $maxDelayMs);
+        $timeoutMs = (int) \min($timeoutMs * $timeoutMult, $maxTimeoutMs, $deadlineMs - $this->getCurrentTimeMs());
         $nextHandler = new RetryMiddleware($this->nextHandler, $this->retrySettings->with(['initialRetryDelayMillis' => $delayMs]), $deadlineMs, $this->retryAttempts + 1);
         // Set the timeout for the call
         $options['timeoutMillis'] = $timeoutMs;
@@ -127,21 +133,21 @@ class RetryMiddleware implements MiddlewareInterface
     }
     protected function getCurrentTimeMs()
     {
-        return microtime(\true) * 1000.0;
+        return \microtime(\true) * 1000.0;
     }
     /**
      * This is the default retry behaviour.
      */
     private function getRetryFunction()
     {
-        return $this->retrySettings->getRetryFunction() ?? function (\Throwable $e, array $options): bool {
+        return $this->retrySettings->getRetryFunction() ?? function (\Throwable $e, array $options) : bool {
             // This is the default retry behaviour, i.e. we don't retry an ApiException
             // and for other exception types, we only retry when the error code is in
             // the list of retryable error codes.
             if (!$e instanceof ApiException) {
                 return \false;
             }
-            if (!in_array($e->getStatus(), $this->retrySettings->getRetryableCodes())) {
+            if (!\in_array($e->getStatus(), $this->retrySettings->getRetryableCodes())) {
                 return \false;
             }
             return \true;

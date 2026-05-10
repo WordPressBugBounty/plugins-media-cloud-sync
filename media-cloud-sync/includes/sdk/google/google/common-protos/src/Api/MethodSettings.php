@@ -5,8 +5,8 @@
 namespace Dudlewebs\WPMCS\Google\Api;
 
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedField;
 use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
 /**
  * Describes the generator configuration for a method.
  *
@@ -17,6 +17,11 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     /**
      * The fully qualified name of the method, for which the options below apply.
      * This is used to find the method to apply the options.
+     * Example:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.storage.control.v2.StorageControl.CreateFolder
+     *         # method settings for CreateFolder...
      *
      * Generated from protobuf field <code>string selector = 1;</code>
      */
@@ -26,17 +31,14 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * API methods for RPCs. Complements RPCs that use the annotations in
      * google/longrunning/operations.proto.
      * Example of a YAML configuration::
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.cloud.speech.v2.Speech.BatchRecognize
-     *        long_running:
-     *          initial_poll_delay:
-     *            seconds: 60 # 1 minute
-     *          poll_delay_multiplier: 1.5
-     *          max_poll_delay:
-     *            seconds: 360 # 6 minutes
-     *          total_poll_timeout:
-     *             seconds: 54000 # 90 minutes
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.cloud.speech.v2.Speech.BatchRecognize
+     *         long_running:
+     *           initial_poll_delay: 60s # 1 minute
+     *           poll_delay_multiplier: 1.5
+     *           max_poll_delay: 360s # 6 minutes
+     *           total_poll_timeout: 54000s # 90 minutes
      *
      * Generated from protobuf field <code>.google.api.MethodSettings.LongRunning long_running = 2;</code>
      */
@@ -46,15 +48,29 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * automatically populated by the client libraries based on their
      * (google.api.field_info).format. Currently supported format: UUID4.
      * Example of a YAML configuration:
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.example.v1.ExampleService.CreateExample
-     *        auto_populated_fields:
-     *        - request_id
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.CreateExample
+     *         auto_populated_fields:
+     *         - request_id
      *
      * Generated from protobuf field <code>repeated string auto_populated_fields = 3;</code>
      */
     private $auto_populated_fields;
+    /**
+     * Batching configuration for an API method in client libraries.
+     * Example of a YAML configuration:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.BatchCreateExample
+     *         batching:
+     *           element_count_threshold: 1000
+     *           request_byte_threshold: 100000000
+     *           delay_threshold_millis: 10
+     *
+     * Generated from protobuf field <code>.google.api.BatchingConfigProto batching = 4;</code>
+     */
+    protected $batching = null;
     /**
      * Constructor.
      *
@@ -64,32 +80,44 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      *     @type string $selector
      *           The fully qualified name of the method, for which the options below apply.
      *           This is used to find the method to apply the options.
+     *           Example:
+     *               publishing:
+     *                 method_settings:
+     *                 - selector: google.storage.control.v2.StorageControl.CreateFolder
+     *                   # method settings for CreateFolder...
      *     @type \Google\Api\MethodSettings\LongRunning $long_running
      *           Describes settings to use for long-running operations when generating
      *           API methods for RPCs. Complements RPCs that use the annotations in
      *           google/longrunning/operations.proto.
      *           Example of a YAML configuration::
-     *            publishing:
-     *              method_settings:
-     *                - selector: google.cloud.speech.v2.Speech.BatchRecognize
-     *                  long_running:
-     *                    initial_poll_delay:
-     *                      seconds: 60 # 1 minute
-     *                    poll_delay_multiplier: 1.5
-     *                    max_poll_delay:
-     *                      seconds: 360 # 6 minutes
-     *                    total_poll_timeout:
-     *                       seconds: 54000 # 90 minutes
-     *     @type array<string>|\Google\Protobuf\Internal\RepeatedField $auto_populated_fields
+     *               publishing:
+     *                 method_settings:
+     *                 - selector: google.cloud.speech.v2.Speech.BatchRecognize
+     *                   long_running:
+     *                     initial_poll_delay: 60s # 1 minute
+     *                     poll_delay_multiplier: 1.5
+     *                     max_poll_delay: 360s # 6 minutes
+     *                     total_poll_timeout: 54000s # 90 minutes
+     *     @type string[] $auto_populated_fields
      *           List of top-level fields of the request message, that should be
      *           automatically populated by the client libraries based on their
      *           (google.api.field_info).format. Currently supported format: UUID4.
      *           Example of a YAML configuration:
-     *            publishing:
-     *              method_settings:
-     *                - selector: google.example.v1.ExampleService.CreateExample
-     *                  auto_populated_fields:
-     *                  - request_id
+     *               publishing:
+     *                 method_settings:
+     *                 - selector: google.example.v1.ExampleService.CreateExample
+     *                   auto_populated_fields:
+     *                   - request_id
+     *     @type \Google\Api\BatchingConfigProto $batching
+     *           Batching configuration for an API method in client libraries.
+     *           Example of a YAML configuration:
+     *               publishing:
+     *                 method_settings:
+     *                 - selector: google.example.v1.ExampleService.BatchCreateExample
+     *                   batching:
+     *                     element_count_threshold: 1000
+     *                     request_byte_threshold: 100000000
+     *                     delay_threshold_millis: 10
      * }
      */
     public function __construct($data = NULL)
@@ -100,6 +128,11 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     /**
      * The fully qualified name of the method, for which the options below apply.
      * This is used to find the method to apply the options.
+     * Example:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.storage.control.v2.StorageControl.CreateFolder
+     *         # method settings for CreateFolder...
      *
      * Generated from protobuf field <code>string selector = 1;</code>
      * @return string
@@ -111,6 +144,11 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
     /**
      * The fully qualified name of the method, for which the options below apply.
      * This is used to find the method to apply the options.
+     * Example:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.storage.control.v2.StorageControl.CreateFolder
+     *         # method settings for CreateFolder...
      *
      * Generated from protobuf field <code>string selector = 1;</code>
      * @param string $var
@@ -127,17 +165,14 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * API methods for RPCs. Complements RPCs that use the annotations in
      * google/longrunning/operations.proto.
      * Example of a YAML configuration::
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.cloud.speech.v2.Speech.BatchRecognize
-     *        long_running:
-     *          initial_poll_delay:
-     *            seconds: 60 # 1 minute
-     *          poll_delay_multiplier: 1.5
-     *          max_poll_delay:
-     *            seconds: 360 # 6 minutes
-     *          total_poll_timeout:
-     *             seconds: 54000 # 90 minutes
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.cloud.speech.v2.Speech.BatchRecognize
+     *         long_running:
+     *           initial_poll_delay: 60s # 1 minute
+     *           poll_delay_multiplier: 1.5
+     *           max_poll_delay: 360s # 6 minutes
+     *           total_poll_timeout: 54000s # 90 minutes
      *
      * Generated from protobuf field <code>.google.api.MethodSettings.LongRunning long_running = 2;</code>
      * @return \Google\Api\MethodSettings\LongRunning|null
@@ -159,17 +194,14 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * API methods for RPCs. Complements RPCs that use the annotations in
      * google/longrunning/operations.proto.
      * Example of a YAML configuration::
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.cloud.speech.v2.Speech.BatchRecognize
-     *        long_running:
-     *          initial_poll_delay:
-     *            seconds: 60 # 1 minute
-     *          poll_delay_multiplier: 1.5
-     *          max_poll_delay:
-     *            seconds: 360 # 6 minutes
-     *          total_poll_timeout:
-     *             seconds: 54000 # 90 minutes
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.cloud.speech.v2.Speech.BatchRecognize
+     *         long_running:
+     *           initial_poll_delay: 60s # 1 minute
+     *           poll_delay_multiplier: 1.5
+     *           max_poll_delay: 360s # 6 minutes
+     *           total_poll_timeout: 54000s # 90 minutes
      *
      * Generated from protobuf field <code>.google.api.MethodSettings.LongRunning long_running = 2;</code>
      * @param \Google\Api\MethodSettings\LongRunning $var
@@ -186,14 +218,14 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * automatically populated by the client libraries based on their
      * (google.api.field_info).format. Currently supported format: UUID4.
      * Example of a YAML configuration:
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.example.v1.ExampleService.CreateExample
-     *        auto_populated_fields:
-     *        - request_id
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.CreateExample
+     *         auto_populated_fields:
+     *         - request_id
      *
      * Generated from protobuf field <code>repeated string auto_populated_fields = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getAutoPopulatedFields()
     {
@@ -204,20 +236,67 @@ class MethodSettings extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      * automatically populated by the client libraries based on their
      * (google.api.field_info).format. Currently supported format: UUID4.
      * Example of a YAML configuration:
-     *  publishing:
-     *    method_settings:
-     *      - selector: google.example.v1.ExampleService.CreateExample
-     *        auto_populated_fields:
-     *        - request_id
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.CreateExample
+     *         auto_populated_fields:
+     *         - request_id
      *
      * Generated from protobuf field <code>repeated string auto_populated_fields = 3;</code>
-     * @param array<string>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setAutoPopulatedFields($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType::STRING);
         $this->auto_populated_fields = $arr;
+        return $this;
+    }
+    /**
+     * Batching configuration for an API method in client libraries.
+     * Example of a YAML configuration:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.BatchCreateExample
+     *         batching:
+     *           element_count_threshold: 1000
+     *           request_byte_threshold: 100000000
+     *           delay_threshold_millis: 10
+     *
+     * Generated from protobuf field <code>.google.api.BatchingConfigProto batching = 4;</code>
+     * @return \Google\Api\BatchingConfigProto|null
+     */
+    public function getBatching()
+    {
+        return $this->batching;
+    }
+    public function hasBatching()
+    {
+        return isset($this->batching);
+    }
+    public function clearBatching()
+    {
+        unset($this->batching);
+    }
+    /**
+     * Batching configuration for an API method in client libraries.
+     * Example of a YAML configuration:
+     *     publishing:
+     *       method_settings:
+     *       - selector: google.example.v1.ExampleService.BatchCreateExample
+     *         batching:
+     *           element_count_threshold: 1000
+     *           request_byte_threshold: 100000000
+     *           delay_threshold_millis: 10
+     *
+     * Generated from protobuf field <code>.google.api.BatchingConfigProto batching = 4;</code>
+     * @param \Google\Api\BatchingConfigProto $var
+     * @return $this
+     */
+    public function setBatching($var)
+    {
+        GPBUtil::checkMessage($var, \Dudlewebs\WPMCS\Google\Api\BatchingConfigProto::class);
+        $this->batching = $var;
         return $this;
     }
 }

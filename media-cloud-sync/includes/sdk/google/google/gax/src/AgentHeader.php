@@ -70,7 +70,7 @@ class AgentHeader
         //      - grpcVersion (grpc/)
         //      - restVersion (rest/)
         //      - protobufVersion (pb/)
-        $metricsHeaders['gl-php'] = $headerInfo['phpVersion'] ?? phpversion();
+        $metricsHeaders['gl-php'] = $headerInfo['phpVersion'] ?? \phpversion();
         if (isset($headerInfo['libName'])) {
             $metricsHeaders[$headerInfo['libName']] = $headerInfo['libVersion'] ?? self::UNKNOWN_VERSION;
         }
@@ -84,16 +84,16 @@ class AgentHeader
         // either, since some clients may have the extension installed but opt to use a
         // REST-only library (e.g. GCE).
         // TODO: Should we stop sending empty gRPC headers?
-        $metricsHeaders['grpc'] = $headerInfo['grpcVersion'] ?? phpversion('grpc');
+        $metricsHeaders['grpc'] = $headerInfo['grpcVersion'] ?? \phpversion('grpc');
         $metricsHeaders['rest'] = $headerInfo['restVersion'] ?? $apiCoreVersion;
         // The native version is not set by default because it is complex and costly to retrieve.
         // Users can override this default behavior if needed.
-        $metricsHeaders['pb'] = $headerInfo['protobufVersion'] ?? (phpversion('protobuf') ? phpversion('protobuf') . '+c' : '+n');
+        $metricsHeaders['pb'] = $headerInfo['protobufVersion'] ?? (\phpversion('protobuf') ? \phpversion('protobuf') . '+c' : '+n');
         $metricsList = [];
         foreach ($metricsHeaders as $key => $value) {
-            $metricsList[] = $key . "/" . $value;
+            $metricsList[] = $key . '/' . $value;
         }
-        return [self::AGENT_HEADER_KEY => [implode(" ", $metricsList)]];
+        return [self::AGENT_HEADER_KEY => [\implode(' ', $metricsList)]];
     }
     /**
      * Reads the gapic version string from a VERSION file. In order to determine the file
@@ -110,7 +110,7 @@ class AgentHeader
     public static function readGapicVersionFromFile(string $callingClass)
     {
         $callingClassFile = (new \ReflectionClass($callingClass))->getFileName();
-        $versionFile = substr($callingClassFile, 0, strrpos($callingClassFile, \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR)) . \DIRECTORY_SEPARATOR . 'VERSION';
+        $versionFile = \substr($callingClassFile, 0, \strrpos($callingClassFile, \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR)) . \DIRECTORY_SEPARATOR . 'VERSION';
         return Version::readVersionFile($versionFile);
     }
 }
