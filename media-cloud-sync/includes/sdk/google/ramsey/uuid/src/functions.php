@@ -11,11 +11,11 @@
  * phpcs:disable Squiz.Functions.GlobalFunction
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid;
 
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
 /**
  * Returns a version 1 (Gregorian time) UUID from a host ID, sequence number, and the current time
  *

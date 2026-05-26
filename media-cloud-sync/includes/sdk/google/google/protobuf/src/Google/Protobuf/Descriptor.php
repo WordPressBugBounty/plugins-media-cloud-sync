@@ -6,9 +6,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GetPublicDescriptorTrait;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GetPublicDescriptorTrait;
 class Descriptor
 {
     use GetPublicDescriptorTrait;

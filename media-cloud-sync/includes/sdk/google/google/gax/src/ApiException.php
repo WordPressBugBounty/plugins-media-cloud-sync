@@ -30,12 +30,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
 use Exception;
-use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
-use Dudlewebs\WPMCS\Google\Rpc\Status;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\RepeatedField;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Status;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
 use stdClass;
 /**
  * Represents an exception thrown during an RPC.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
 /**
  * Debug function used to describe the provided value type and class.

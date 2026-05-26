@@ -1,15 +1,15 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Firebase\JWT;
+namespace Dudlewebs\WPMCS\GCP\Firebase\JWT;
 
 use ArrayAccess;
 use InvalidArgumentException;
 use LogicException;
 use OutOfBoundsException;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemInterface;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
-use Dudlewebs\WPMCS\Psr\Http\Client\ClientInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Client\ClientInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestFactoryInterface;
 use RuntimeException;
 use UnexpectedValueException;
 /**

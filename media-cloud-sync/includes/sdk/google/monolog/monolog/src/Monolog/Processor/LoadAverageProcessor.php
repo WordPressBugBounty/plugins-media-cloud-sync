@@ -9,9 +9,9 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Processor;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Processor;
 
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Injects sys_getloadavg in all records @see https://www.php.net/manual/en/function.sys-getloadavg.php
  *

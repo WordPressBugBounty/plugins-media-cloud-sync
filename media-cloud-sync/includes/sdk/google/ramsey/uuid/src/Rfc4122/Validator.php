@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Validator\ValidatorInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Validator\ValidatorInterface;
 use function preg_match;
 use function str_replace;
 /**

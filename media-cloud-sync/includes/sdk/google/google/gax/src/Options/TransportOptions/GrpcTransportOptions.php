@@ -30,16 +30,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Options\TransportOptions;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\TransportOptions;
 
 use ArrayAccess;
 use Closure;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\OptionsInterface;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\OptionsTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\Grpc\UnaryInterceptorInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\OptionsInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\OptionsTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\Grpc\UnaryInterceptorInterface;
 use Grpc\Channel;
-use Dudlewebs\WPMCS\Grpc\Interceptor;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Grpc\Interceptor;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * The GrpcTransportOptions class provides typing to the associative array of options used to
  * configure {@see \Google\ApiCore\Transport\GrpcTransport}.

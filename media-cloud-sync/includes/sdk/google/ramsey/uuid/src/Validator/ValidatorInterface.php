@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Validator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Validator;
 
 /**
  * A validator validates a string as a proper UUID

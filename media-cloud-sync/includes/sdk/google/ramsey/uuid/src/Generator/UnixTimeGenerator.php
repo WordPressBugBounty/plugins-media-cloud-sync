@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Brick\Math\BigInteger;
+use Dudlewebs\WPMCS\GCP\Brick\Math\BigInteger;
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 use function assert;
 use function hash;
 use function pack;

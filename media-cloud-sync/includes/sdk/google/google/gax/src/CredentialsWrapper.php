@@ -30,22 +30,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
 use DomainException;
 use Exception;
-use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Cache\MemoryCacheItemPool;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\GCECredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenCache;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Auth\UpdateMetadataInterface;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ApplicationDefaultCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Cache\MemoryCacheItemPool;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\GCECredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\UpdateMetadataInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * The CredentialsWrapper object provides a wrapper around a FetchAuthTokenInterface.
  */

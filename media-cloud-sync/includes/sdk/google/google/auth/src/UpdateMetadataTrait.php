@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
 /**
  * Provides shared methods for updating request metadata (request headers).

@@ -15,24 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
 use DomainException;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\AppIdentityCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\GCECredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ImpersonatedServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\UserRefreshCredentials;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Auth\Logging\StdOutLogger;
-use Dudlewebs\WPMCS\Google\Auth\Middleware\AuthTokenMiddleware;
-use Dudlewebs\WPMCS\Google\Auth\Middleware\ProxyAuthTokenMiddleware;
-use Dudlewebs\WPMCS\Google\Auth\Subscriber\AuthTokenSubscriber;
-use Dudlewebs\WPMCS\GuzzleHttp\Client;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\AppIdentityCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\GCECredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ImpersonatedServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\UserRefreshCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\StdOutLogger;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Middleware\AuthTokenMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Middleware\ProxyAuthTokenMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Subscriber\AuthTokenSubscriber;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Client;
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * ApplicationDefaultCredentials obtains the default credentials for
  * authorizing a request to a Google service.

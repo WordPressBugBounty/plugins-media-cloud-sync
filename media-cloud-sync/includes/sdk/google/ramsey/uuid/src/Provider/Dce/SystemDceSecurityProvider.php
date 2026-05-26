@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider\Dce;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\Dce;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\DceSecurityException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\DceSecurityProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\DceSecurityException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\DceSecurityProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
 use function escapeshellarg;
 use function preg_split;
 use function str_getcsv;

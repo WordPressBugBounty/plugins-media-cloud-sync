@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
 /**
  * Represents a newly created HMAC key. Provides access to the key metadata and

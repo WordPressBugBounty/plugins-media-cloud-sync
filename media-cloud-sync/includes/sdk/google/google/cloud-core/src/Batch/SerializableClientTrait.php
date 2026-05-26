@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Batch;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Batch;
 
-use Dudlewebs\WPMCS\Opis\Closure\SerializableClosure;
+use Dudlewebs\WPMCS\GCP\Opis\Closure\SerializableClosure;
 /**
  * A trait to assist in serializing/deserializing client configuration that may
  * contain closures.
@@ -83,7 +83,7 @@ trait SerializableClientTrait
      */
     private function getDefaultClosureSerializer()
     {
-        if (\function_exists('Dudlewebs\\WPMCS\\Opis\\Closure\\serialize')) {
+        if (\function_exists('Dudlewebs\\WPMCS\\GCP\\Opis\\Closure\\serialize')) {
             return new OpisClosureSerializerV4();
         }
         if (\class_exists(SerializableClosure::class)) {

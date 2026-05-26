@@ -1,9 +1,9 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math\Exception;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math\Exception;
 
-use Dudlewebs\WPMCS\Brick\Math\BigInteger;
+use Dudlewebs\WPMCS\GCP\Brick\Math\BigInteger;
 /**
  * Exception thrown when an integer overflow occurs.
  */

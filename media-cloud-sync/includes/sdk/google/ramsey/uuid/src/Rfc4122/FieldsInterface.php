@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 /**
  * UUID fields, as defined by RFC 4122
  *

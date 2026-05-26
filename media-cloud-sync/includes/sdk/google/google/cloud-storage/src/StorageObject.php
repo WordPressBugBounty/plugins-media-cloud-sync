@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Timestamp;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\SignedUrlUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Timestamp;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\SignedUrlUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\ConnectionInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Objects are the individual pieces of data that you store in Google Cloud
  * Storage.

@@ -9,10 +9,10 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog;
+namespace Dudlewebs\WPMCS\GCP\Monolog;
 
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
 use ReflectionExtension;
 /**
  * Monolog POSIX signal handler

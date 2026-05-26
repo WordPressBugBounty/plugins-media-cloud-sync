@@ -1,19 +1,19 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\ConnectException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\FulfilledPromise;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7;
-use Dudlewebs\WPMCS\GuzzleHttp\TransferStats;
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\ConnectException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\FulfilledPromise;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\TransferStats;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * HTTP handler that uses PHP's HTTP stream wrapper.
  *
@@ -251,9 +251,9 @@ class StreamHandler
         return $this->createResource(function () use($uri, $contextResource, $context, $options, $request) {
             $resource = @\fopen((string) $uri, 'r', \false, $contextResource);
             // See https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_the_http_response_header_predefined_variable
-            if (\function_exists('Dudlewebs\\WPMCS\\http_get_last_response_headers')) {
+            if (\function_exists('Dudlewebs\\WPMCS\\GCP\\http_get_last_response_headers')) {
                 /** @var array|null */
-                $http_response_header = \Dudlewebs\WPMCS\http_get_last_response_headers();
+                $http_response_header = \Dudlewebs\WPMCS\GCP\http_get_last_response_headers();
             }
             $this->lastHeaders = $http_response_header ?? [];
             if (\false === $resource) {

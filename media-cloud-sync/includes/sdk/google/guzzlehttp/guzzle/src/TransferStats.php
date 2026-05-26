@@ -1,10 +1,10 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * Represents data at the point after it was transferred either successfully
  * or after a network error.

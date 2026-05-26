@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Map;
 
 /**
  * `AssociativeArrayMap` represents a standard associative array object.

@@ -9,13 +9,13 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Utils;
-use Dudlewebs\WPMCS\Monolog\Formatter\FlowdockFormatter;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FlowdockFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Sends notifications through the Flowdock push API
  *

@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Compute\Metadata\Readers;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Compute\Metadata\Readers;
 
-use Dudlewebs\WPMCS\Google\Auth\Credentials\GCECredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\GCECredentials;
 /**
  * A class only reading the metadata URL with an appropriate header.
  *

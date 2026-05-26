@@ -9,16 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Elastic\Transport\Exception\TransportException;
-use Dudlewebs\WPMCS\Elastica\Document;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\ElasticaFormatter;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Elastica\Client;
-use Dudlewebs\WPMCS\Elastica\Exception\ExceptionInterface;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Elastic\Transport\Exception\TransportException;
+use Dudlewebs\WPMCS\GCP\Elastica\Document;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\ElasticaFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Elastica\Client;
+use Dudlewebs\WPMCS\GCP\Elastica\Exception\ExceptionInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Elastic Search handler
  *

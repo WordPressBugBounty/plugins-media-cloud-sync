@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Http\Message;
+namespace Dudlewebs\WPMCS\GCP\Psr\Http\Message;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

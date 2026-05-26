@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 /**
  * A name generator generates strings of binary data created by hashing together a namespace with a name, according to a
  * hashing algorithm

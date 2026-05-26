@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Http\Client;
+namespace Dudlewebs\WPMCS\GCP\Psr\Http\Client;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 interface ClientInterface
 {
     /**

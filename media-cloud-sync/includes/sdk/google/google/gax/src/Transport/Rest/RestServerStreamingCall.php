@@ -30,15 +30,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Transport\Rest;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\Rest;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\ApiStatus;
-use Dudlewebs\WPMCS\Google\ApiCore\ServerStreamingCallInterface;
-use Dudlewebs\WPMCS\Google\Rpc\Code;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiStatus;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServerStreamingCallInterface;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Code;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 use stdClass;
 /**
  * Class RestServerStreamingCall implements \Google\ApiCore\ServerStreamingCallInterface.

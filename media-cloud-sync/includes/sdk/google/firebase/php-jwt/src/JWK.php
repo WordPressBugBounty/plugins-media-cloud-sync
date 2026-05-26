@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Firebase\JWT;
+namespace Dudlewebs\WPMCS\GCP\Firebase\JWT;
 
 use DomainException;
 use InvalidArgumentException;
@@ -187,14 +187,6 @@ class JWK
     {
         $mod = JWT::urlsafeB64Decode($n);
         $exp = JWT::urlsafeB64Decode($e);
-        // Correct encoding for ASN1, as ints are represented as unsigned in jwk
-        // but signed in ASN1. Prepending null byte makes it unsigned.
-        if (\strlen($mod) > 0 && \ord($mod[0]) >= 128) {
-            $mod = \chr(0) . $mod;
-        }
-        if (\strlen($exp) > 0 && \ord($exp[0]) >= 128) {
-            $exp = \chr(0) . $exp;
-        }
         $modulus = \pack('Ca*a*', 2, self::encodeLength(\strlen($mod)), $mod);
         $publicExponent = \pack('Ca*a*', 2, self::encodeLength(\strlen($exp)), $exp);
         $rsaPublicKey = \pack('Ca*a*a*', 48, self::encodeLength(\strlen($modulus) + \strlen($publicExponent)), $modulus, $publicExponent);

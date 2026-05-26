@@ -1,13 +1,13 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
 use Closure;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\Promise;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\Promise;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Returns an asynchronous response using curl_multi_* functions.
  *

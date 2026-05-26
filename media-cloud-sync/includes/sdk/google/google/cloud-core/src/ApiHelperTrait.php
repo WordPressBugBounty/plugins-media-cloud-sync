@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ArrayTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\CallOptions;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Protobuf\NullValue;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\CallOptions;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\NullValue;
 use LogicException;
 /**
  * @internal

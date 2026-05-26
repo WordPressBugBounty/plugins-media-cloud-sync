@@ -1,16 +1,16 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\HandlerStack;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\TransferStats;
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\HandlerStack;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\TransferStats;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Handler that returns responses or throw exceptions from a queue.
  *

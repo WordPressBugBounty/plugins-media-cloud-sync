@@ -9,12 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Processor;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Processor;
 
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Logger;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Logger;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Injects Git branch and Git commit SHA in all records
  *

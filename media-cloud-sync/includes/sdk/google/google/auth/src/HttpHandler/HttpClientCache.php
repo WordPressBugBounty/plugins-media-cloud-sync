@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\HttpHandler;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\ClientInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\ClientInterface;
 /**
  * Stores an HTTP Client in order to prevent multiple instantiations.
  */

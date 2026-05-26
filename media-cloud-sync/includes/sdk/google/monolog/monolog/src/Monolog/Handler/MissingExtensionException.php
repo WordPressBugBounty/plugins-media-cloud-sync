@@ -9,7 +9,7 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
 /**
  * Exception can be thrown if an extension for a handler is missing

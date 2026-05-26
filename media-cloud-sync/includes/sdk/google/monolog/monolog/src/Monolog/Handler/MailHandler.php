@@ -9,11 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\HtmlFormatter;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\HtmlFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Base class for all mail handlers
  *

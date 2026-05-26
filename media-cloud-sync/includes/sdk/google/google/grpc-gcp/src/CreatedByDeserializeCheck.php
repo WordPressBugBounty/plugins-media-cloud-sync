@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * DeserializeCheck is used to check whether _ChannelRef is created by deserialization or not.

@@ -10,12 +10,12 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Fields\SerializableFieldsTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields\SerializableFieldsTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 use function bin2hex;
 use function dechex;
 use function hexdec;

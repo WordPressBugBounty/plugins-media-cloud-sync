@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\ConnectionInterface;
 use InvalidArgumentException;
 /**
  * Google Cloud Storage uses access control lists (ACLs) to manage bucket and

@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\DrSlump\Protobuf;
-use Dudlewebs\WPMCS\google\protobuf\ListValue;
-use Dudlewebs\WPMCS\google\protobuf\NullValue;
-use Dudlewebs\WPMCS\google\protobuf\Struct;
-use Dudlewebs\WPMCS\google\protobuf\Value;
+use Dudlewebs\WPMCS\GCP\DrSlump\Protobuf;
+use Dudlewebs\WPMCS\GCP\google\protobuf\ListValue;
+use Dudlewebs\WPMCS\GCP\google\protobuf\NullValue;
+use Dudlewebs\WPMCS\GCP\google\protobuf\Struct;
+use Dudlewebs\WPMCS\GCP\google\protobuf\Value;
 /**
  * Extend the Protobuf-PHP array codec to allow messages to match the format
  * used for REST.

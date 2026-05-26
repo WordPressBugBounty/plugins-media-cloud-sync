@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
-use Dudlewebs\WPMCS\Google\Auth\Credentials\GCECredentials;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\GCECredentials;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * A class to implement caching for calls to GCECredentials::onGce. This class
  * is used automatically when you pass a `Psr\Cache\CacheItemPoolInterface`

@@ -1,10 +1,10 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\RequestOptions;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\RequestOptions;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Provides basic proxies for handlers.
  *

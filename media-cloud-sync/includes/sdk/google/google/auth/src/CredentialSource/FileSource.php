@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\CredentialSource;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource;
 
-use Dudlewebs\WPMCS\Google\Auth\ExternalAccountCredentialSourceInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExternalAccountCredentialSourceInterface;
 use InvalidArgumentException;
 use UnexpectedValueException;
 /**

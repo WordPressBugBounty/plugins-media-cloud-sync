@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Query;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
-use Dudlewebs\WPMCS\Rize\UriTemplate;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Query;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate;
 /**
  * Provides a light wrapper around often used URI related functions.
  */

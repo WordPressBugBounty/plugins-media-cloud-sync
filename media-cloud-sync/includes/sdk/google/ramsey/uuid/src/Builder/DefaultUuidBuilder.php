@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Builder;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 /**
  * @deprecated Please transition to {@see Rfc4122UuidBuilder}.
  *

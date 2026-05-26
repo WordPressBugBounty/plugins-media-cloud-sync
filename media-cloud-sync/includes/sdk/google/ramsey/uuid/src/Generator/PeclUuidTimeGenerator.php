@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
 use function uuid_create;
 use function uuid_parse;

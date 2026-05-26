@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * GcpExtensionChannel maintains an array of channels for certain API.

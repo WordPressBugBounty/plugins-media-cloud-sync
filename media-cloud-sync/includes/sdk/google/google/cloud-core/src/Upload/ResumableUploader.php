@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Upload;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\GoogleException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\JsonTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestWrapper;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\LimitStream;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\GoogleException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\JsonTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestWrapper;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\LimitStream;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Resumable upload implementation.
  */
@@ -138,13 +138,6 @@ class ResumableUploader extends AbstractUploader
             $currStreamLimitSize = $data->getSize();
             $rangeEnd = $rangeStart + ($currStreamLimitSize - 1);
             $headers = $this->headers + ['Content-Length' => $currStreamLimitSize, 'Content-Type' => $this->contentType, 'Content-Range' => "bytes {$rangeStart}-{$rangeEnd}/{$size}"];
-            $customHeaders = $this->requestOptions['restOptions']['headers'] ?? [];
-            // Check if this chunk is the final one
-            $isFinalChunk = $size !== '*' && (int) ($rangeEnd + 1) === (int) $size;
-            if (!$isFinalChunk) {
-                unset($customHeaders['X-Goog-Hash']);
-            }
-            $headers = \array_merge($headers, $customHeaders);
             $request = new Request('PUT', $resumeUri, $headers, $data);
             try {
                 $response = $this->requestWrapper->send($request, $this->requestOptions);

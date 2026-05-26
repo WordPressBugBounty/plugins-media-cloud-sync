@@ -30,10 +30,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\TransportInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\TransportInterface;
 /**
  * A Middleware in charge of handling the end of the callstack to call the transport layer.
  * This middleware is made so the callstack in the GapicClientTrait is always a middleware.

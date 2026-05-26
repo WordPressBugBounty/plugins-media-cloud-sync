@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Uri;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Uri;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Builds a PSR7 request from a service definition.
  */

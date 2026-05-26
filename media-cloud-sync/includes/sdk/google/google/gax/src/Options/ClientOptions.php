@@ -30,15 +30,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Options;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Options;
 
 use ArrayAccess;
 use Closure;
-use Dudlewebs\WPMCS\Google\ApiCore\CredentialsWrapper;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\TransportInterface;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\CredentialsWrapper;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\TransportInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * The ClientOptions class adds typing to the associative array of options
  * passed into each API client constructor. To use this class directly, pass

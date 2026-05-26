@@ -30,17 +30,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\LongRunning\CancelOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\Client\OperationsClient;
-use Dudlewebs\WPMCS\Google\LongRunning\DeleteOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\GetOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\Operation;
-use Dudlewebs\WPMCS\Google\LongRunning\OperationsClient as LegacyOperationsClient;
-use Dudlewebs\WPMCS\Google\Protobuf\Any;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Rpc\Status;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\CancelOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Client\OperationsClient;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\DeleteOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\GetOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Operation;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\OperationsClient as LegacyOperationsClient;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Any;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Status;
 use LogicException;
 /**
  * Response object from a long running API method.

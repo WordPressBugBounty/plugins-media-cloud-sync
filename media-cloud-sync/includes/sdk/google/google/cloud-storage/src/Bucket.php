@@ -15,25 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\GoogleException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iam\Iam;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\ItemIterator;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\PageIterator;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Timestamp;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\ResumableUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\StreamableUploader;
-use Dudlewebs\WPMCS\Google\Cloud\PubSub\Topic;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\IamBucket;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\MimeType;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\GoogleException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iam\Iam;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iterator\ItemIterator;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iterator\PageIterator;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Timestamp;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\ResumableUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\StreamableUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\PubSub\Topic;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\ConnectionInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\IamBucket;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\MimeType;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Buckets are the basic containers that hold your data. Everything that you
  * store in Google Cloud Storage must be contained in a bucket.
@@ -1523,7 +1523,7 @@ class Bucket
             return \sprintf(self::NOTIFICATION_TEMPLATE, $topic->name());
         }
         if (!\is_string($topic)) {
-            throw new \InvalidArgumentException('Dudlewebs\\WPMCS\\$topic may only be a string or instance of Google\\Cloud\\PubSub\\Topic');
+            throw new \InvalidArgumentException('Dudlewebs\\WPMCS\\GCP\\$topic may only be a string or instance of Google\\Cloud\\PubSub\\Topic');
         }
         if (\preg_match('/projects\\/[^\\/]*\\/topics\\/(.*)/', $topic) === 1) {
             return \sprintf(self::NOTIFICATION_TEMPLATE, $topic);

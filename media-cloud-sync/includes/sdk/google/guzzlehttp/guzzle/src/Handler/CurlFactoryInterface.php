@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 interface CurlFactoryInterface
 {
     /**

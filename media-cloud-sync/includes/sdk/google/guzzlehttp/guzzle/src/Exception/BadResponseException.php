@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Exception;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 /**
  * Exception when an HTTP error occurs (4xx or 5xx error)
  */

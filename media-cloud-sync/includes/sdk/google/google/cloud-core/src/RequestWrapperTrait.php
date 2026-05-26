@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Cache\MemoryCacheItemPool;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenCache;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ApplicationDefaultCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Cache\MemoryCacheItemPool;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * Encapsulates shared functionality of request wrappers.
  */

@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
 /**
  * @internal
  */

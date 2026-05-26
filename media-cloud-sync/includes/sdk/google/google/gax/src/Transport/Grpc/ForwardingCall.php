@@ -30,9 +30,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Transport\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\Grpc;
 
-use Dudlewebs\WPMCS\Grpc\AbstractCall;
+use Dudlewebs\WPMCS\GCP\Grpc\AbstractCall;
 /**
  * Class ForwardingCall wraps a \Grpc\AbstractCall.
  *

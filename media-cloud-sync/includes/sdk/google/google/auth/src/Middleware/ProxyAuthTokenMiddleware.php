@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Middleware;
 
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * ProxyAuthTokenMiddleware is a Guzzle Middleware that adds an Authorization header
  * provided by an object implementing FetchAuthTokenInterface.

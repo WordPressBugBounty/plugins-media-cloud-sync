@@ -30,12 +30,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Options;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Options;
 
 use ArrayAccess;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\TransportOptions\GrpcFallbackTransportOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\TransportOptions\GrpcTransportOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\TransportOptions\RestTransportOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\TransportOptions\GrpcFallbackTransportOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\TransportOptions\GrpcTransportOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\TransportOptions\RestTransportOptions;
 class TransportOptions implements ArrayAccess, OptionsInterface
 {
     use OptionsTrait;

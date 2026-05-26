@@ -30,11 +30,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
 /**
  * Middleware which wraps the response in an OperationResponse object.
  *

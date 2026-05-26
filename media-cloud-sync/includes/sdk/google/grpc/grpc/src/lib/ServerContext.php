@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Grpc;
 
 /**
  * This is an experimental and incomplete implementation of gRPC server

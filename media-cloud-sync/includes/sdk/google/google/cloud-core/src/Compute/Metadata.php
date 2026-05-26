@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Compute;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Compute;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Compute\Metadata\Readers\HttpHandlerReader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Compute\Metadata\Readers\ReaderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Compute\Metadata\Readers\HttpHandlerReader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Compute\Metadata\Readers\ReaderInterface;
 /**
  * A library for accessing the Google Compute Engine (GCE) metadata.
  *

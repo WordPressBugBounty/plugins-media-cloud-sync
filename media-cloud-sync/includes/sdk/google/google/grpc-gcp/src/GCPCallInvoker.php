@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * GCPCallInvoker updates the channel pool(GcpExtensionChannel) for
@@ -30,7 +30,7 @@ namespace Dudlewebs\WPMCS\Grpc\Gcp;
  *     spanner session name.
  *   - if the RPC is defined as unbind, unbind the channel with the key.
  */
-class GCPCallInvoker implements \Dudlewebs\WPMCS\Grpc\CallInvoker
+class GCPCallInvoker implements \Dudlewebs\WPMCS\GCP\Grpc\CallInvoker
 {
     private $channel;
     private $affinity_conf;

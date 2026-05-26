@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\ApiCore\InsecureCredentialsWrapper as ApiCoreInsecureCredentialsWrapper;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\InsecureCredentialsWrapper as ApiCoreInsecureCredentialsWrapper;
 /**
  * For connect to emulator.
  *

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
 use ArrayObject;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\ItemIterator;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Iterator\PageIterator;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iterator\ItemIterator;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iterator\PageIterator;
 /**
  * Iterates over a set of buckets.
  *

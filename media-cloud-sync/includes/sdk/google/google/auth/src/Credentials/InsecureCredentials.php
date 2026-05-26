@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
 /**
  * Provides a set of credentials that will always return an empty access token.
  * This is useful for APIs which do not require authentication, for local

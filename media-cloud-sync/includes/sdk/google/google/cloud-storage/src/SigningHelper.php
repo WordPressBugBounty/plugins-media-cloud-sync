@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\SignBlobInterface;
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\JsonTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Timestamp;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\RetryTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\SignBlobInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\JsonTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Timestamp;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\ConnectionInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\RetryTrait;
 /**
  * Provides common methods for signing storage URLs.
  *
@@ -38,7 +38,7 @@ class SigningHelper
     const DEFAULT_URL_SIGNING_VERSION = 'v2';
     const DEFAULT_DOWNLOAD_HOST = 'storage.googleapis.com';
     const V4_ALGO_NAME = 'GOOG4-RSA-SHA256';
-    const V4_TIMESTAMP_FORMAT = 'Dudlewebs\\WPMCS\\Ymd\\THis\\Z';
+    const V4_TIMESTAMP_FORMAT = 'Dudlewebs\\WPMCS\\GCP\\Ymd\\THis\\Z';
     const V4_DATESTAMP_FORMAT = 'Ymd';
     const MAX_RETRIES = 5;
     /**

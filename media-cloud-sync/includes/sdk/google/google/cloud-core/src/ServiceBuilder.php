@@ -15,27 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\Guzzle6HttpHandler;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Cloud\BigQuery\BigQueryClient;
-use Dudlewebs\WPMCS\Google\Cloud\Datastore\DatastoreClient;
-use Dudlewebs\WPMCS\Google\Cloud\Firestore\FirestoreClient;
-use Dudlewebs\WPMCS\Google\Cloud\Language\LanguageClient as DeprecatedLanguageClient;
-use Dudlewebs\WPMCS\Google\Cloud\Language\V2\Client\LanguageServiceClient;
-use Dudlewebs\WPMCS\Google\Cloud\Logging\LoggingClient;
-use Dudlewebs\WPMCS\Google\Cloud\PubSub\PubSubClient;
-use Dudlewebs\WPMCS\Google\Cloud\Spanner\SpannerClient;
-use Dudlewebs\WPMCS\Google\Cloud\Speech\SpeechClient as DeprecatedSpeechClient;
-use Dudlewebs\WPMCS\Google\Cloud\Speech\V2\Client\SpeechClient;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\StorageClient;
-use Dudlewebs\WPMCS\Google\Cloud\Trace\V2\Client\TraceServiceClient;
-use Dudlewebs\WPMCS\Google\Cloud\Translate\V2\TranslateClient as DeprecatedTranslateClient;
-use Dudlewebs\WPMCS\Google\Cloud\Translate\V3\Client\TranslationServiceClient;
-use Dudlewebs\WPMCS\Google\Cloud\Vision\V1\Client\ImageAnnotatorClient;
-use Dudlewebs\WPMCS\Google\Cloud\Vision\VisionClient as DeprecatedVisionClient;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\Guzzle6HttpHandler;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\BigQuery\BigQueryClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Datastore\DatastoreClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Firestore\FirestoreClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Language\LanguageClient as DeprecatedLanguageClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Language\V2\Client\LanguageServiceClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Logging\LoggingClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\PubSub\PubSubClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Spanner\SpannerClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Speech\SpeechClient as DeprecatedSpeechClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Speech\V2\Client\SpeechClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\StorageClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Trace\V2\Client\TraceServiceClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Translate\V2\TranslateClient as DeprecatedTranslateClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Translate\V3\Client\TranslationServiceClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Vision\V1\Client\ImageAnnotatorClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Vision\VisionClient as DeprecatedVisionClient;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * Google Cloud Platform is a set of modular cloud-based services that allow you
  * to create anything from simple websites to complex applications.

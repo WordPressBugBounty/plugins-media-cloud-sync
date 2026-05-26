@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 require '../vendor/autoload.php';
 $_DATABASE = 'projects/grpc-prober-testing/instances/test-instance/databases/test-db';
@@ -125,7 +125,7 @@ function read($client, &$metrics)
     $readRequest->setTable('users');
     $readRequest->setColumns(['username', 'firstname', 'lastname']);
     $keyset = new Google\Cloud\Spanner\V1\KeySet();
-    $keyset->setAll(\Dudlewebs\WPMCS\True);
+    $keyset->setAll(\Dudlewebs\WPMCS\GCP\True);
     $readRequest->setKeySet($keyset);
     $result_set = $client->Read($readRequest);
     $lantency = (microtime_float() - $time_start) * 1000;
@@ -229,7 +229,7 @@ function partition($client, &$metrics)
     $ptn_read_request->setTable('users');
     $ptn_read_request->setTransaction($txn_selector);
     $keyset = new Google\Cloud\Spanner\V1\KeySet();
-    $keyset->setAll(\Dudlewebs\WPMCS\True);
+    $keyset->setAll(\Dudlewebs\WPMCS\GCP\True);
     $ptn_read_request->setKeySet($keyset);
     $ptn_read_request->setColumns(['username', 'firstname', 'lastname']);
     $time_start = microtime_float();

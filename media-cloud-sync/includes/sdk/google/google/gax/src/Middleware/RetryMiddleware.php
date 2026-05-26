@@ -30,13 +30,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\ApiStatus;
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\RetrySettings;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiStatus;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\RetrySettings;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware that adds retry functionality.
  *
@@ -122,7 +122,7 @@ class RetryMiddleware implements MiddlewareInterface
         $currentTimeMs = $this->getCurrentTimeMs();
         $deadlineMs = $this->deadlineMs ?: $currentTimeMs + $totalTimeoutMs;
         if ($currentTimeMs >= $deadlineMs) {
-            throw new ApiException('Retry total timeout exceeded.', \Dudlewebs\WPMCS\Google\Rpc\Code::DEADLINE_EXCEEDED, ApiStatus::DEADLINE_EXCEEDED);
+            throw new ApiException('Retry total timeout exceeded.', \Dudlewebs\WPMCS\GCP\Google\Rpc\Code::DEADLINE_EXCEEDED, ApiStatus::DEADLINE_EXCEEDED);
         }
         $delayMs = \min($delayMs * $delayMult, $maxDelayMs);
         $timeoutMs = (int) \min($timeoutMs * $timeoutMult, $maxTimeoutMs, $deadlineMs - $this->getCurrentTimeMs());

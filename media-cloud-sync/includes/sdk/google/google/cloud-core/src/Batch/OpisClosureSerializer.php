@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Batch;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Batch;
 
-use Dudlewebs\WPMCS\Opis\Closure\SerializableClosure;
+use Dudlewebs\WPMCS\GCP\Opis\Closure\SerializableClosure;
 /**
  * A closure serializer utilizing
  * [Opis Closure Library](https://github.com/opis/closure).

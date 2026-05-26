@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\HttpHandler;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler;
 
-use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
-use Dudlewebs\WPMCS\GuzzleHttp\BodySummarizer;
-use Dudlewebs\WPMCS\GuzzleHttp\Client;
-use Dudlewebs\WPMCS\GuzzleHttp\ClientInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\HandlerStack;
-use Dudlewebs\WPMCS\GuzzleHttp\Middleware;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ApplicationDefaultCredentials;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\BodySummarizer;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Client;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\ClientInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\HandlerStack;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Middleware;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 class HttpHandlerFactory
 {
     /**
@@ -49,9 +49,9 @@ class HttpHandlerFactory
         }
         $logger = $logger === \false ? null : $logger ?? ApplicationDefaultCredentials::getDefaultLogger();
         $version = null;
-        if (\defined('GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
+        if (\defined('Dudlewebs\\WPMCS\\GCP\\GuzzleHttp\\ClientInterface::MAJOR_VERSION')) {
             $version = ClientInterface::MAJOR_VERSION;
-        } elseif (\defined('GuzzleHttp\\ClientInterface::VERSION')) {
+        } elseif (\defined('Dudlewebs\\WPMCS\\GCP\\GuzzleHttp\\ClientInterface::VERSION')) {
             $version = (int) \substr(ClientInterface::VERSION, 0, 1);
         }
         switch ($version) {

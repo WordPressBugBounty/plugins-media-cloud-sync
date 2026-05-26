@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
 /**
  * @internal
  * Responsible for forwarding the requests to their

@@ -10,20 +10,20 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid;
 
 use BadMethodCallException;
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Fields\FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Lazy\LazyUuidFromString;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields\FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
 use function assert;
 use function bin2hex;

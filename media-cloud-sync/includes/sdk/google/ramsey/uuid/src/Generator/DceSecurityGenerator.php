@@ -10,14 +10,14 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\DceSecurityException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\DceSecurityProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\DceSecurityException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\DceSecurityProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 use function hex2bin;
 use function in_array;
 use function pack;

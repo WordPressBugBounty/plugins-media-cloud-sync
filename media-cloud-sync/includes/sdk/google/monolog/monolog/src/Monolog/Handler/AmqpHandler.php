@@ -9,16 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Gelf\Message as GelfMessage;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\JsonFormatter;
-use Dudlewebs\WPMCS\PhpAmqpLib\Message\AMQPMessage;
-use Dudlewebs\WPMCS\PhpAmqpLib\Channel\AMQPChannel;
+use Dudlewebs\WPMCS\GCP\Gelf\Message as GelfMessage;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\JsonFormatter;
+use Dudlewebs\WPMCS\GCP\PhpAmqpLib\Message\AMQPMessage;
+use Dudlewebs\WPMCS\GCP\PhpAmqpLib\Channel\AMQPChannel;
 use AMQPExchange;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 class AmqpHandler extends AbstractProcessingHandler
 {
     protected AMQPExchange|AMQPChannel $exchange;

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Batch;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Batch;
 
 /**
  * A utility trait for handling failed items.

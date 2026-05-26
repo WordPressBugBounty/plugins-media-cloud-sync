@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Time;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Time;
 /**
  * A time converter converts timestamps into representations that may be used in UUIDs
  *

@@ -6,10 +6,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBType;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
 class MapEntry extends Message
 {
     public $key;

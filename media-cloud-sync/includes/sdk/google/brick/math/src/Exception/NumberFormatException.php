@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math\Exception;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math\Exception;
 
 /**
  * Exception thrown when attempting to create a number from a string with an invalid format.

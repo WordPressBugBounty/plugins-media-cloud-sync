@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * Represents an active call that sends a single message and then gets a
@@ -27,7 +27,7 @@ class GCPUnaryCall extends GcpBaseCall
 {
     protected function createRealCall($channel)
     {
-        $this->real_call = new \Dudlewebs\WPMCS\Grpc\UnaryCall($channel, $this->method, $this->deserialize, $this->options);
+        $this->real_call = new \Dudlewebs\WPMCS\GCP\Grpc\UnaryCall($channel, $this->method, $this->deserialize, $this->options);
         $this->has_real_call = \true;
         return $this->real_call;
     }

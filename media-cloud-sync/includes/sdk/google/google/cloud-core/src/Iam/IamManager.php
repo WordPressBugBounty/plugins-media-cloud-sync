@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Iam;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iam;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestHandler;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\GetIamPolicyRequest;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\GetPolicyOptions;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\Policy;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\SetIamPolicyRequest;
-use Dudlewebs\WPMCS\Google\Cloud\Iam\V1\TestIamPermissionsRequest;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestHandler;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Iam\V1\GetIamPolicyRequest;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Iam\V1\GetPolicyOptions;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Iam\V1\Policy;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Iam\V1\SetIamPolicyRequest;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Iam\V1\TestIamPermissionsRequest;
 use InvalidArgumentException;
 /**
  * IAM Manager

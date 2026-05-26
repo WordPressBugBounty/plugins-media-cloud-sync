@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Grpc;
 
 /**
  * Base class for generated client stubs. Stub methods are expected to call
@@ -41,7 +41,7 @@ class BaseStub
      */
     public function __construct($hostname, $opts, $channel = null)
     {
-        if (!\method_exists('Dudlewebs\\WPMCS\\Grpc\\ChannelCredentials', 'isDefaultRootsPemSet') || !ChannelCredentials::isDefaultRootsPemSet()) {
+        if (!\method_exists('Dudlewebs\\WPMCS\\GCP\\Grpc\\ChannelCredentials', 'isDefaultRootsPemSet') || !ChannelCredentials::isDefaultRootsPemSet()) {
             $ssl_roots = \file_get_contents(\dirname(__FILE__) . '/../../etc/roots.pem');
             ChannelCredentials::setDefaultRootsPem($ssl_roots);
         }
@@ -66,7 +66,7 @@ class BaseStub
         }
         $this->call_invoker = new DefaultCallInvoker();
         if ($channel) {
-            if (!\is_a($channel, 'Grpc\\Channel') && !\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+            if (!\is_a($channel, 'Grpc\\Channel') && !\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
                 throw new \Exception('The channel argument is not a Channel object ' . 'or an InterceptorChannel object created by ' . 'Interceptor::intercept($channel, Interceptor|Interceptor[] $interceptors)');
             }
             $this->channel = $channel;
@@ -81,8 +81,8 @@ class BaseStub
         } else {
             $opts['grpc.primary_user_agent'] = '';
         }
-        if (\defined('Dudlewebs\\WPMCS\\Grpc\\VERSION')) {
-            $version_str = \Dudlewebs\WPMCS\Grpc\VERSION;
+        if (\defined('Dudlewebs\\WPMCS\\GCP\\Grpc\\VERSION')) {
+            $version_str = \Dudlewebs\WPMCS\GCP\Grpc\VERSION;
         } else {
             if (!\file_exists($composerFile = __DIR__ . '/../../composer.json')) {
                 // for grpc/grpc-php subpackage
@@ -320,7 +320,7 @@ class BaseStub
      */
     private function _UnaryUnaryCallFactory($channel)
     {
-        if (\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+        if (\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
             return function ($method, $argument, $deserialize, array $metadata = [], array $options = []) use($channel) {
                 return $channel->getInterceptor()->interceptUnaryUnary($method, $argument, $deserialize, $this->_UnaryUnaryCallFactory($channel->getNext()), $metadata, $options);
             };
@@ -337,7 +337,7 @@ class BaseStub
      */
     private function _UnaryStreamCallFactory($channel)
     {
-        if (\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+        if (\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
             return function ($method, $argument, $deserialize, array $metadata = [], array $options = []) use($channel) {
                 return $channel->getInterceptor()->interceptUnaryStream($method, $argument, $deserialize, $this->_UnaryStreamCallFactory($channel->getNext()), $metadata, $options);
             };
@@ -354,7 +354,7 @@ class BaseStub
      */
     private function _StreamUnaryCallFactory($channel)
     {
-        if (\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+        if (\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
             return function ($method, $deserialize, array $metadata = [], array $options = []) use($channel) {
                 return $channel->getInterceptor()->interceptStreamUnary($method, $deserialize, $this->_StreamUnaryCallFactory($channel->getNext()), $metadata, $options);
             };
@@ -371,7 +371,7 @@ class BaseStub
      */
     private function _StreamStreamCallFactory($channel)
     {
-        if (\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+        if (\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
             return function ($method, $deserialize, array $metadata = [], array $options = []) use($channel) {
                 return $channel->getInterceptor()->interceptStreamStream($method, $deserialize, $this->_StreamStreamCallFactory($channel->getNext()), $metadata, $options);
             };

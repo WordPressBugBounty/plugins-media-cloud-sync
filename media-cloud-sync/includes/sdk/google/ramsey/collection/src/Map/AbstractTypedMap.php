@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Map;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Collection\Tool\TypeTrait;
-use Dudlewebs\WPMCS\Ramsey\Collection\Tool\ValueToStringTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Tool\TypeTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Tool\ValueToStringTrait;
 /**
  * This class provides a basic implementation of `TypedMapInterface`, to
  * minimize the effort required to implement this interface.

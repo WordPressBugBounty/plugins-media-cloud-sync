@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Upload;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\JsonTrait;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\JsonTrait;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 /**
  * Multipart upload implementation.
  */
@@ -66,8 +66,6 @@ class MultipartUploader extends AbstractUploader
         if ($size !== null) {
             $headers['Content-Length'] = $size;
         }
-        $customHeaders = $this->requestOptions['restOptions']['headers'] ?? [];
-        $headers = \array_merge($headers, $customHeaders);
         return new Request('POST', $this->uri, $headers, $multipartStream);
     }
 }

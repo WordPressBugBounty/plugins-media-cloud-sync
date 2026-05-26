@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Middleware;
 
-use Dudlewebs\WPMCS\Google\Auth\CacheTrait;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CacheTrait;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * ScopedAccessTokenMiddleware is a Guzzle Middleware that adds an Authorization
  * header provided by a closure.

@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Internal;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Internal;
 
 /**
  * This is a PRIVATE API and can change without notice.
@@ -33,7 +33,7 @@ class InterceptorChannel extends \Grpc\Channel
      */
     public function __construct($channel, $interceptor)
     {
-        if (!\is_a($channel, 'Grpc\\Channel') && !\is_a($channel, 'Dudlewebs\\WPMCS\\Grpc\\Internal\\InterceptorChannel')) {
+        if (!\is_a($channel, 'Grpc\\Channel') && !\is_a($channel, 'Dudlewebs\\WPMCS\\GCP\\Grpc\\Internal\\InterceptorChannel')) {
             throw new \Exception('The channel argument is not a Channel object ' . 'or an InterceptorChannel object created by ' . 'Interceptor::intercept($channel, Interceptor|Interceptor[] $interceptors)');
         }
         $this->interceptor = $interceptor;

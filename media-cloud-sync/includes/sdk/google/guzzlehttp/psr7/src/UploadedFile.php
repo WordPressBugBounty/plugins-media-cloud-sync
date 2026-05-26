@@ -1,11 +1,11 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UploadedFileInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 class UploadedFile implements UploadedFileInterface
 {

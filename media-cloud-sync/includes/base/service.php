@@ -10,11 +10,11 @@ class Service {
     private $token;
     private $service    = false;
     private $providers  = [
-        's3'            => 'S3',
-        'gcloud'        => 'GCloud',
-        'docean'        => 'DOcean',
-        'cloudflareR2'  => 'CloudflareR2',
-        's3compatible'  => 'S3Compatible',
+        's3'            => ['class' => 'S3',            'sdk' => 's3'],
+        'gcloud'        => ['class' => 'GCloud',        'sdk' => 'google'],
+        'docean'        => ['class' => 'DOcean',        'sdk' => 's3'],
+        'cloudflareR2'  => ['class' => 'CloudflareR2',  'sdk' => 's3'],
+        's3compatible'  => ['class' => 'S3Compatible',  'sdk' => 's3'],
     ];
 
     protected $settings;
@@ -398,12 +398,37 @@ class Service {
      */
     public function get_handler_class($service) {
         if(isset($this->providers[$service])) {
-            $class = __NAMESPACE__ . '\\' . $this->providers[$service];
+            $provider = $this->providers[$service];
+            if(!empty($provider['sdk'])) {
+                self::load_sdk($provider['sdk']);
+            }
+            $class = __NAMESPACE__ . '\\' . $provider['class'];
             if(class_exists($class)) {
                 return new $class();
             }
         }
         return false;
+    }
+
+    /**
+     * Lazy load the bundled SDK autoloader for the given service.
+     * Each SDK is required at most once per request.
+     *
+     * @since 1.3.10
+     */
+    private static function load_sdk($sdk) {
+        static $loaded = [];
+        if (isset($loaded[$sdk])) {
+            return;
+        }
+        if ($sdk === 's3') {
+            require_once WPMCS_SDK_PATH . 's3/aws-autoloader.php';
+        } elseif ($sdk === 'google') {
+            require_once WPMCS_SDK_PATH . 'google/autoload.php';
+        } else {
+            return;
+        }
+        $loaded[$sdk] = true;
     }
 
     /**

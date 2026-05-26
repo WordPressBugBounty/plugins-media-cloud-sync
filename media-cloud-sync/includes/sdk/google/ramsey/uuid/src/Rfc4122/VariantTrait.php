@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidBytesException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidBytesException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 use function decbin;
 use function str_pad;
 use function str_starts_with;

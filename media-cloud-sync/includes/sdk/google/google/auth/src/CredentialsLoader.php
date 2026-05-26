@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ExternalAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ImpersonatedServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\InsecureCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\ServiceAccountCredentials;
-use Dudlewebs\WPMCS\Google\Auth\Credentials\UserRefreshCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ExternalAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ImpersonatedServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\InsecureCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\ServiceAccountCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\UserRefreshCredentials;
 use RuntimeException;
 use UnexpectedValueException;
 /**
@@ -176,9 +176,9 @@ abstract class CredentialsLoader implements GetUniverseDomainInterface, FetchAut
     public static function makeHttpClient(FetchAuthTokenInterface $fetcher, array $httpClientOptions = [], ?callable $httpHandler = null, ?callable $tokenCallback = null)
     {
         $middleware = new Middleware\AuthTokenMiddleware($fetcher, $httpHandler, $tokenCallback);
-        $stack = \Dudlewebs\WPMCS\GuzzleHttp\HandlerStack::create();
+        $stack = \Dudlewebs\WPMCS\GCP\GuzzleHttp\HandlerStack::create();
         $stack->push($middleware);
-        return new \Dudlewebs\WPMCS\GuzzleHttp\Client(['handler' => $stack, 'auth' => 'google_auth'] + $httpClientOptions);
+        return new \Dudlewebs\WPMCS\GCP\GuzzleHttp\Client(['handler' => $stack, 'auth' => 'google_auth'] + $httpClientOptions);
     }
     /**
      * Create a new instance of InsecureCredentials.

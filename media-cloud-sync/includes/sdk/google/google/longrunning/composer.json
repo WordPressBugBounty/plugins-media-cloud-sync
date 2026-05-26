@@ -1,26 +1,26 @@
 {
-    "name": "google\/longrunning",
-    "description": "Google LongRunning Client for PHP",
-    "license": "Apache-2.0",
-    "minimum-stability": "stable",
-    "version": "0.7.1",
-    "autoload": {
-        "psr-4": {
-            "Dudlewebs\\WPMCS\\Google\\ApiCore\\LongRunning\\": "src\/ApiCore\/LongRunning",
-            "Dudlewebs\\WPMCS\\Google\\LongRunning\\": "src\/LongRunning",
-            "Dudlewebs\\WPMCS\\GPBMetadata\\Google\\Longrunning\\": "metadata\/Longrunning"
-        }
-    },
-    "extra": {
-        "component": {
-            "id": "longrunning",
-            "path": "LongRunning",
-            "entry": null,
-            "target": "googleapis\/php-longrunning"
-        }
-    },
-    "require-dev": {
-        "google\/gax": "^1.38.0",
-        "phpunit\/phpunit": "^9.0"
-    }
+	"name": "google/longrunning",
+	"description": "Google LongRunning Client for PHP",
+	"license": "Apache-2.0",
+	"minimum-stability": "stable",
+	"version": "0.7.0",
+	"autoload": {
+		"psr-4": {
+			"Dudlewebs\\WPMCS\\GCP\\Google\\ApiCore\\LongRunning\\": "src/ApiCore/LongRunning",
+			"Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\": "src/LongRunning",
+			"Dudlewebs\\WPMCS\\GCP\\GPBMetadata\\Google\\Longrunning\\": "metadata/Longrunning"
+		}
+	},
+	"extra": {
+		"component": {
+			"id": "longrunning",
+			"path": "LongRunning",
+			"entry": null,
+			"target": "googleapis/php-longrunning"
+		}
+	},
+	"require-dev": {
+		"google/gax": "^1.38.0",
+		"phpunit/phpunit": "^9.0"
+	}
 }

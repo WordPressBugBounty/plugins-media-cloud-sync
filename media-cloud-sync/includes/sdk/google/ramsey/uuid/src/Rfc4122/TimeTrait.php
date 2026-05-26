@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\DateTimeException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\DateTimeException;
 use Throwable;
 use function str_pad;
 use const STR_PAD_LEFT;

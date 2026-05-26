@@ -9,17 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
 use Closure;
-use Dudlewebs\WPMCS\Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Dudlewebs\WPMCS\Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Logger;
-use Dudlewebs\WPMCS\Monolog\ResettableInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
+use Dudlewebs\WPMCS\GCP\Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Logger;
+use Dudlewebs\WPMCS\GCP\Monolog\ResettableInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Buffers all records until a certain level is reached
  *

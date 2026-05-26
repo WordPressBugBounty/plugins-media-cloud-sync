@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Logger;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Logger;
 
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Handler\StreamHandler;
-use Dudlewebs\WPMCS\Monolog\Logger;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Handler\StreamHandler;
+use Dudlewebs\WPMCS\GCP\Monolog\Logger;
 /**
  * Monolog 3.x handler for logging on App Engine flexible environment.
  *

@@ -4,8 +4,8 @@ namespace Dudlewebs\WPMCS;
 defined('ABSPATH') || exit;
 
 // Libraries
-use Dudlewebs\WPMCS\Google\Cloud\Storage\StorageClient;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\StorageClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
 
 use Exception;
 

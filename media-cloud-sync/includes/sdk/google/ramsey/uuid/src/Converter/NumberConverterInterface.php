@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter;
 
 /**
  * A number converter converts UUIDs from hexadecimal characters into representations of integers and vice versa

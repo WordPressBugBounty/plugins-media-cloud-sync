@@ -10,18 +10,18 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Nonstandard;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Nonstandard;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Lazy\LazyUuidFromString;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\TimeTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV1;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid as BaseUuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\TimeTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidV1;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid as BaseUuid;
 /**
  * Reordered time, or version 6, UUIDs include timestamp, clock sequence, and node values that are combined into a
  * 128-bit unsigned integer
@@ -67,7 +67,7 @@ class UuidV6 extends BaseUuid implements UuidInterface
     /**
      * Converts a version 1 UUID into an instance of a version 6 UUID
      */
-    public static function fromUuidV1(UuidV1 $uuidV1) : \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV6
+    public static function fromUuidV1(UuidV1 $uuidV1) : \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidV6
     {
         $hex = $uuidV1->getHex()->toString();
         $hex = \substr($hex, 13, 3) . \substr($hex, 8, 4) . \substr($hex, 0, 5) . '6' . \substr($hex, 5, 3) . \substr($hex, 16);

@@ -1,13 +1,13 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\GuzzleHttp\Handler\CurlHandler;
-use Dudlewebs\WPMCS\GuzzleHttp\Handler\CurlMultiHandler;
-use Dudlewebs\WPMCS\GuzzleHttp\Handler\Proxy;
-use Dudlewebs\WPMCS\GuzzleHttp\Handler\StreamHandler;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler\CurlHandler;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler\CurlMultiHandler;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler\Proxy;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler\StreamHandler;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 final class Utils
 {
     /**

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\ExecutableHandler;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\ExecutableHandler;
 
 use RuntimeException;
-use Dudlewebs\WPMCS\Symfony\Component\Process\Exception\ProcessTimedOutException;
-use Dudlewebs\WPMCS\Symfony\Component\Process\Process;
+use Dudlewebs\WPMCS\GCP\Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Dudlewebs\WPMCS\GCP\Symfony\Component\Process\Process;
 class ExecutableHandler
 {
     private const DEFAULT_EXECUTABLE_TIMEOUT_MILLIS = 30 * 1000;

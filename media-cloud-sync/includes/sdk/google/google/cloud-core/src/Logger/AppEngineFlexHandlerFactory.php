@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Logger;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Logger;
 
 use Exception;
-use Dudlewebs\WPMCS\Monolog\Logger;
+use Dudlewebs\WPMCS\GCP\Monolog\Logger;
 /**
  * Factory to build out an AppEngineFlexHandler for the installed version of Monolog.
  */
@@ -43,7 +43,7 @@ class AppEngineFlexHandlerFactory
      */
     public static function build($level = Logger::INFO, $bubble = \true, $filePermission = 0640, $useLocking = \false, $stream = null)
     {
-        $version = \defined('Monolog\\Logger::API') ? Logger::API : 1;
+        $version = \defined('Dudlewebs\\WPMCS\\GCP\\Monolog\\Logger::API') ? Logger::API : 1;
         switch ($version) {
             case 1:
                 return new AppEngineFlexHandler($level, $bubble, $filePermission, $useLocking, $stream);

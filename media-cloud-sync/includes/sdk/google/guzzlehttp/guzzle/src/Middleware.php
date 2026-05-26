@@ -1,14 +1,14 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Cookie\CookieJarInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Cookie\CookieJarInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * Functions used to create and wrap handlers with handler middleware.
  */
@@ -29,7 +29,7 @@ final class Middleware
                 if (empty($options['cookies'])) {
                     return $handler($request, $options);
                 } elseif (!$options['cookies'] instanceof CookieJarInterface) {
-                    throw new \InvalidArgumentException('Dudlewebs\\WPMCS\\cookies must be an instance of GuzzleHttp\\Cookie\\CookieJarInterface');
+                    throw new \InvalidArgumentException('Dudlewebs\\WPMCS\\GCP\\cookies must be an instance of GuzzleHttp\\Cookie\\CookieJarInterface');
                 }
                 $cookieJar = $options['cookies'];
                 $request = $cookieJar->withCookieHeader($request);

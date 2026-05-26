@@ -30,29 +30,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Transport;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport;
 
 use Exception;
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\BidiStream;
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\ClientStream;
-use Dudlewebs\WPMCS\Google\ApiCore\GrpcSupportTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
-use Dudlewebs\WPMCS\Google\ApiCore\ServiceAddressTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\Grpc\ServerStreamingCallWrapper;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\Grpc\UnaryInterceptorInterface;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationTrait;
-use Dudlewebs\WPMCS\Google\Auth\Logging\LoggingTrait;
-use Dudlewebs\WPMCS\Google\Auth\Logging\RpcLogEvent;
-use Dudlewebs\WPMCS\Google\Rpc\Code;
-use Dudlewebs\WPMCS\Grpc\BaseStub;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\BidiStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ClientStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\GrpcSupportTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServerStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServiceAddressTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\Grpc\ServerStreamingCallWrapper;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\Grpc\UnaryInterceptorInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\LoggingTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\RpcLogEvent;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Code;
+use Dudlewebs\WPMCS\GCP\Grpc\BaseStub;
 use Grpc\Channel;
 use Grpc\ChannelCredentials;
-use Dudlewebs\WPMCS\Grpc\Interceptor;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\Promise;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Grpc\Interceptor;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\Promise;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * A gRPC based transport implementation.
  */

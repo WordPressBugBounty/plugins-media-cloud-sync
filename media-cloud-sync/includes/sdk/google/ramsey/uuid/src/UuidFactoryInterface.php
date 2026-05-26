@@ -10,12 +10,12 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid;
 
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Validator\ValidatorInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Validator\ValidatorInterface;
 /**
  * UuidFactoryInterface defines the common functionality all `UuidFactory` instances must implement
  */

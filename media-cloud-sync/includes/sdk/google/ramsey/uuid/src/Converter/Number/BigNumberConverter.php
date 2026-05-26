@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Number;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Number;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Math\BrickMathCalculator;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math\BrickMathCalculator;
 /**
  * Previously used to integrate moontoast/math as a bignum arithmetic library, BigNumberConverter is deprecated in favor
  * of GenericNumberConverter

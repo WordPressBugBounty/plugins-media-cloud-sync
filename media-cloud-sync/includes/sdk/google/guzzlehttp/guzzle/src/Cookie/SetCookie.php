@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Cookie;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Cookie;
 
 /**
  * Set-Cookie object

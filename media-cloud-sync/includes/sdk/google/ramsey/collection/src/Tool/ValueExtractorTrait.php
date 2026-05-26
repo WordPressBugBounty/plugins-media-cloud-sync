@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Tool;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Tool;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidPropertyOrMethod;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidPropertyOrMethod;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\UnsupportedOperationException;
 use ReflectionProperty;
 use function is_array;
 use function is_object;

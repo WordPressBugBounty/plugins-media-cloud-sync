@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * @internal
  */

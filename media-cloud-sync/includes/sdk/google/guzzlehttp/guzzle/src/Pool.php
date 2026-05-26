@@ -1,12 +1,12 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\EachPromise;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromisorInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\EachPromise;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromisorInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Sends an iterator of requests concurrently using a capped pool size.
  *

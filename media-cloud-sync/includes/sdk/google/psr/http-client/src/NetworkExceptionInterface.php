@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Http\Client;
+namespace Dudlewebs\WPMCS\GCP\Psr\Http\Client;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Thrown when the request cannot be completed because of network issues.
  *

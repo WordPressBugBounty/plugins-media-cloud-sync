@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Type;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
 use function json_decode;
 use function json_encode;

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\CredentialSource;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource;
 
-use Dudlewebs\WPMCS\Google\Auth\ExecutableHandler\ExecutableHandler;
-use Dudlewebs\WPMCS\Google\Auth\ExecutableHandler\ExecutableResponseError;
-use Dudlewebs\WPMCS\Google\Auth\ExternalAccountCredentialSourceInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExecutableHandler\ExecutableHandler;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExecutableHandler\ExecutableResponseError;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExternalAccountCredentialSourceInterface;
 use RuntimeException;
 /**
  * ExecutableSource enables the exchange of workload identity pool external credentials for

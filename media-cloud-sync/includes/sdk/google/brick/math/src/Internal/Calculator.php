@@ -1,10 +1,10 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math\Internal;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math\Internal;
 
-use Dudlewebs\WPMCS\Brick\Math\Exception\RoundingNecessaryException;
-use Dudlewebs\WPMCS\Brick\Math\RoundingMode;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\RoundingNecessaryException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\RoundingMode;
 /**
  * Performs basic operations on arbitrary size integers.
  *

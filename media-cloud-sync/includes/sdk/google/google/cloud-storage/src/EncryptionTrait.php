@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\phpseclib\Crypt\RSA as RSA2;
-use Dudlewebs\WPMCS\phpseclib3\Crypt\RSA as RSA3;
+use Dudlewebs\WPMCS\GCP\phpseclib\Crypt\RSA as RSA2;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Crypt\RSA as RSA3;
 /**
  * Trait which provides helper methods for customer-supplied encryption.
  */

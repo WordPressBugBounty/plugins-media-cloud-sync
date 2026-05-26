@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 /**
  * A time generator generates strings of binary data based on a node ID, clock sequence, and the current time
  */

@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Codec;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use function bin2hex;
 use function sprintf;
 use function substr;

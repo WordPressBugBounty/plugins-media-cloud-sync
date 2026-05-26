@@ -30,9 +30,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
 /**
  * Contains information necessary to manage a network request.
  */

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\CachingStream;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\CachingStream;
 /**
  * A streamWrapper implementation for handling `gs://bucket/path/to/file.jpg`.
  * Note that you can only open a file with mode 'r', 'rb', 'rt', 'w', 'wb', 'wt', 'a', 'ab', or 'at'.

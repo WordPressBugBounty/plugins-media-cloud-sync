@@ -15,28 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
 use DateTime;
-use Dudlewebs\WPMCS\Firebase\JWT\ExpiredException;
-use Dudlewebs\WPMCS\Firebase\JWT\JWT;
-use Dudlewebs\WPMCS\Firebase\JWT\Key;
-use Dudlewebs\WPMCS\Firebase\JWT\SignatureInvalidException;
-use Dudlewebs\WPMCS\Google\Auth\Cache\MemoryCacheItemPool;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\ExpiredException;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\JWT;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\Key;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\SignatureInvalidException;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Cache\MemoryCacheItemPool;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\phpseclib3\Crypt\PublicKeyLoader;
-use Dudlewebs\WPMCS\phpseclib3\Crypt\RSA;
-use Dudlewebs\WPMCS\phpseclib3\Math\BigInteger;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Crypt\PublicKeyLoader;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Crypt\RSA;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Math\BigInteger;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
-use Dudlewebs\WPMCS\SimpleJWT\InvalidTokenException;
-use Dudlewebs\WPMCS\SimpleJWT\JWT as SimpleJWT;
-use Dudlewebs\WPMCS\SimpleJWT\Keys\KeyFactory;
-use Dudlewebs\WPMCS\SimpleJWT\Keys\KeySet;
+use Dudlewebs\WPMCS\GCP\SimpleJWT\InvalidTokenException;
+use Dudlewebs\WPMCS\GCP\SimpleJWT\JWT as SimpleJWT;
+use Dudlewebs\WPMCS\GCP\SimpleJWT\Keys\KeyFactory;
+use Dudlewebs\WPMCS\GCP\SimpleJWT\Keys\KeySet;
 use TypeError;
 use UnexpectedValueException;
 /**

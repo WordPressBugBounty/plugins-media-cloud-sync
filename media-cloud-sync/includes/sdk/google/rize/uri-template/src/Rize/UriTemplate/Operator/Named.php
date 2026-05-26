@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Rize\UriTemplate\Operator;
+namespace Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Operator;
 
-use Dudlewebs\WPMCS\Rize\UriTemplate\Node;
-use Dudlewebs\WPMCS\Rize\UriTemplate\Parser;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Parser;
 /**
  * | 1   |    {?list}    ?list=red,green,blue                 | {name}=(?:\w+(?:,\w+?)*)*
  * | 2   |    {?list*}   ?list=red&list=green&list=blue       | {name}+=(?:{$value}+(?:{sep}{name}+={$value}*))*

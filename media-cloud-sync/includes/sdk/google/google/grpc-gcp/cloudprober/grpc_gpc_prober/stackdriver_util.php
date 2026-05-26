@@ -1,12 +1,12 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 require '../vendor/autoload.php';
-use Dudlewebs\WPMCS\Google\Cloud\ErrorReporting\V1beta1\ReportErrorsServiceClient;
-use Dudlewebs\WPMCS\Google\Cloud\ErrorReporting\V1beta1\ErrorContext;
-use Dudlewebs\WPMCS\Google\Cloud\ErrorReporting\V1beta1\ReportedErrorEvent;
-use Dudlewebs\WPMCS\Google\Cloud\ErrorReporting\V1beta1\SourceLocation;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\ErrorReporting\V1beta1\ReportErrorsServiceClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\ErrorReporting\V1beta1\ErrorContext;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\ErrorReporting\V1beta1\ReportedErrorEvent;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\ErrorReporting\V1beta1\SourceLocation;
 class StackdriverUtil
 {
     protected $api;

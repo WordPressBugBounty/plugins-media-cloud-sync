@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Rize;
+namespace Dudlewebs\WPMCS\GCP\Rize;
 
-use Dudlewebs\WPMCS\Rize\UriTemplate\Parser;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Parser;
 /**
  * URI Template.
  */

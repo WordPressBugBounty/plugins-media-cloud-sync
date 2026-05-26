@@ -6,12 +6,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBLabel;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Descriptor;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\FieldDescriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBLabel;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBType;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Descriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\FieldDescriptor;
 class MessageBuilderContext
 {
     private $descriptor;

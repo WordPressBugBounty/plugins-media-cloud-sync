@@ -10,15 +10,15 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\RandomSourceException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\TimeSourceException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\NodeProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\TimeProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\RandomSourceException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\TimeSourceException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\NodeProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\TimeProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 use Throwable;
 use function dechex;
 use function hex2bin;

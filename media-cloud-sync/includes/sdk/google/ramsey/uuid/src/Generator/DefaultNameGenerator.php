@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\NameException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\NameException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use ValueError;
 use function hash;
 /**

@@ -30,14 +30,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Transport;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport;
 
-use Dudlewebs\WPMCS\Google\ApiCore\BidiStream;
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\ClientStream;
-use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\BidiStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ClientStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServerStream;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
 interface TransportInterface
 {
     /**

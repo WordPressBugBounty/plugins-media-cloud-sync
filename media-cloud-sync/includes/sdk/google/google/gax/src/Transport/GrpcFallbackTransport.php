@@ -30,20 +30,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Transport;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\ApiStatus;
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\Google\ApiCore\ServiceAddressTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationTrait;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Rpc\Status;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiStatus;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServiceAddressTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationTrait;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Status;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 /**
  * A transport that sends protobuf over HTTP 1.1 that can be used when full gRPC support
  * is not available.

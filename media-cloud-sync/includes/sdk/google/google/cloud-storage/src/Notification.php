@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\NotFoundException;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\Connection\ConnectionInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\NotFoundException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection\ConnectionInterface;
 /**
  * Cloud Pub/Sub Notifications sends information about changes to objects in
  * your buckets to Google Cloud Pub/Sub, where the information is added to a

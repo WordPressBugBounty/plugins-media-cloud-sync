@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Rize\UriTemplate\Node;
+namespace Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node;
 
-use Dudlewebs\WPMCS\Rize\UriTemplate\Operator;
-use Dudlewebs\WPMCS\Rize\UriTemplate\Parser;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Operator;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Parser;
 class Expression extends Abstraction
 {
     /**

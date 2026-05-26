@@ -21,13 +21,13 @@
  * https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto
  * Updates to the above are reflected here through a refresh process.
  */
-namespace Dudlewebs\WPMCS\Google\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\LongRunning;
 
-use Dudlewebs\WPMCS\Google\LongRunning\Gapic\OperationsGapicClient;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Gapic\OperationsGapicClient;
 /** {@inheritdoc} */
 class OperationsClient extends OperationsGapicClient
 {
     // This class is intentionally empty, and is intended to hold manual additions to
     // the generated {@see OperationsGapicClient} class.
 }
-\class_alias('Dudlewebs\\WPMCS\\Google\\LongRunning\\OperationsClient', 'Dudlewebs\\WPMCS\\Google\\ApiCore\\LongRunning\\OperationsClient');
+\class_alias('Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\OperationsClient', 'Dudlewebs\\WPMCS\\GCP\\Google\\ApiCore\\LongRunning\\OperationsClient');

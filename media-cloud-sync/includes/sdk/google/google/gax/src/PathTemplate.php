@@ -30,11 +30,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ResourceTemplate\AbsoluteResourceTemplate;
-use Dudlewebs\WPMCS\Google\ApiCore\ResourceTemplate\RelativeResourceTemplate;
-use Dudlewebs\WPMCS\Google\ApiCore\ResourceTemplate\ResourceTemplateInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ResourceTemplate\AbsoluteResourceTemplate;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ResourceTemplate\RelativeResourceTemplate;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ResourceTemplate\ResourceTemplateInterface;
 /**
  * Represents a path template.
  *

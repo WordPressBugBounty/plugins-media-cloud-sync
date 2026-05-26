@@ -30,11 +30,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\Promise;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\Promise;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Middleware which transforms $response into [$response, $metadata]
  *

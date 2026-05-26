@@ -9,12 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Formatter;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Formatter;
 
 use MongoDB\BSON\Type;
 use MongoDB\BSON\UTCDateTime;
-use Dudlewebs\WPMCS\Monolog\Utils;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Formats a record for use with the MongoDBHandler.
  *

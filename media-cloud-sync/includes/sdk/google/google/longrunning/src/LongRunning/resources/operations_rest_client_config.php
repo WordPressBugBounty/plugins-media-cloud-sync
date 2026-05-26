@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 /*
  * Copyright 2024 Google LLC

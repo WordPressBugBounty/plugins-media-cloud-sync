@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Rize\UriTemplate\Node;
+namespace Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node;
 
 class Literal extends Abstraction
 {

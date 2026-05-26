@@ -1,12 +1,12 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * PSR-7 request implementation.
  */

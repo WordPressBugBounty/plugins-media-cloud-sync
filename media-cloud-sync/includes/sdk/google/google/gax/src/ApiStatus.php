@@ -30,9 +30,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\Rpc\Code;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Code;
 class ApiStatus
 {
     const OK = 'OK';

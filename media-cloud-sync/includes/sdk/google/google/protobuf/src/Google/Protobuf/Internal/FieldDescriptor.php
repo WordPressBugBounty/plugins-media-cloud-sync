@@ -6,7 +6,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
 class FieldDescriptor
 {
@@ -27,7 +27,7 @@ class FieldDescriptor
     private $containing_oneof;
     public function __construct()
     {
-        $this->public_desc = new \Dudlewebs\WPMCS\Google\Protobuf\FieldDescriptor($this);
+        $this->public_desc = new \Dudlewebs\WPMCS\GCP\Google\Protobuf\FieldDescriptor($this);
     }
     public function setOneofIndex($index)
     {
@@ -155,13 +155,13 @@ class FieldDescriptor
     }
     public function isTimestamp()
     {
-        return $this->getType() == GPBType::MESSAGE && $this->getMessageType()->getClass() === "Google\\Protobuf\\Timestamp";
+        return $this->getType() == GPBType::MESSAGE && $this->getMessageType()->getClass() === "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp";
     }
     public function isWrapperType()
     {
         if ($this->getType() == GPBType::MESSAGE) {
             $class = $this->getMessageType()->getClass();
-            return \in_array($class, ["Google\\Protobuf\\DoubleValue", "Google\\Protobuf\\FloatValue", "Google\\Protobuf\\Int64Value", "Google\\Protobuf\\UInt64Value", "Google\\Protobuf\\Int32Value", "Google\\Protobuf\\UInt32Value", "Google\\Protobuf\\BoolValue", "Google\\Protobuf\\StringValue", "Google\\Protobuf\\BytesValue"]);
+            return \in_array($class, ["Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\DoubleValue", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FloatValue", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int64Value", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt64Value", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int32Value", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt32Value", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BoolValue", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\StringValue", "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BytesValue"]);
         }
         return \false;
     }

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Cache;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Cache;
 
 use ErrorException;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemInterface;
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 class FileSystemCacheItemPool implements CacheItemPoolInterface
 {
     /**

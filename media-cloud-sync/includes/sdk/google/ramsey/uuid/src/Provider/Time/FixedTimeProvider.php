@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider\Time;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\Time;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\TimeProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Time;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\TimeProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Time;
 /**
  * FixedTimeProvider uses a known time to provide the time
  *

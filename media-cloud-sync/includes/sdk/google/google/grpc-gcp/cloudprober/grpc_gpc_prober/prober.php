@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 \chdir(\dirname(__FILE__));
 require '../vendor/autoload.php';
@@ -12,9 +12,9 @@ require './stackdriver_util.php';
 $_OAUTH_SCOPE = 'https://www.googleapis.com/auth/cloud-platform';
 $_FIRESTORE_TARGET = 'firestore.googleapis.com:443';
 $_SPANNER_TARGET = 'spanner.googleapis.com:443';
-use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
-use Dudlewebs\WPMCS\Google\Cloud\Firestore\V1beta1\FirestoreGrpcClient;
-use Dudlewebs\WPMCS\Google\Cloud\Spanner\V1\SpannerGrpcClient;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ApplicationDefaultCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Firestore\V1beta1\FirestoreGrpcClient;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Spanner\V1\SpannerGrpcClient;
 function getArgs()
 {
     $options = \getopt('', ['api:', 'extension:']);
@@ -68,7 +68,7 @@ function executeProbes($api)
         }
     }
     if ($success == $total) {
-        $util->setSuccess(\Dudlewebs\WPMCS\True);
+        $util->setSuccess(\Dudlewebs\WPMCS\GCP\True);
     }
     $util->addMetrics($metrics);
     $util->outputMetrics();

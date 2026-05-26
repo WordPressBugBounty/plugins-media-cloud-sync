@@ -30,10 +30,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Options;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Options;
 
 use BadMethodCallException;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
 /**
  * Trait implemented by any class representing an associative array of PHP options.
  * This provides validation and typehinting to loosely typed associative arrays.

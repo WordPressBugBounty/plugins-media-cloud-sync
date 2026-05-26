@@ -1,19 +1,19 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Cookie\CookieJar;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\GuzzleException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Cookie\CookieJar;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\GuzzleException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * @final
  */
-class Client implements ClientInterface, \Dudlewebs\WPMCS\Psr\Http\Client\ClientInterface
+class Client implements ClientInterface, \Dudlewebs\WPMCS\GCP\Psr\Http\Client\ClientInterface
 {
     use ClientTrait;
     /**

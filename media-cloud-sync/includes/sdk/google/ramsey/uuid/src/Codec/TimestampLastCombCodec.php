@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Codec;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec;
 
 /**
  * TimestampLastCombCodec encodes and decodes COMBs, with the timestamp as the last 48 bits

@@ -10,13 +10,13 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\CollectionMismatchException;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidPropertyOrMethod;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\NoSuchElementException;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\CollectionMismatchException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidPropertyOrMethod;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\NoSuchElementException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\UnsupportedOperationException;
 /**
  * A collection represents a group of values, known as its elements.
  *

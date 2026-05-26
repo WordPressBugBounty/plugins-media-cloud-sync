@@ -10,12 +10,12 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Builder;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\BuilderNotFoundException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnableToBuildUuidException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\BuilderNotFoundException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 /**
  * FallbackBuilder builds a UUID by stepping through a list of UUID builders until a UUID can be constructed without exceptions
  *

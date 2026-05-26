@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\LongRunning;
 
 /**
  * Defines the calls required to manage Long Running Operations.

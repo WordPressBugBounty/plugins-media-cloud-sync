@@ -30,12 +30,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware;
 
-use Dudlewebs\WPMCS\Google\Api\FieldInfo\Format;
-use Dudlewebs\WPMCS\Google\ApiCore\Call;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Google\Api\FieldInfo\Format;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Call;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 /**
  * Middleware that adds autopopulation functionality. This middlware is
  * added iff auto population settings are present in the resource

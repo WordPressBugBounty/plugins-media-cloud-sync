@@ -30,18 +30,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\ApiCore\Options\ClientOptions;
-use Dudlewebs\WPMCS\Google\Auth\ApplicationDefaultCredentials;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Grpc\Gcp\ApiConfig;
-use Dudlewebs\WPMCS\Grpc\Gcp\Config;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\ClientOptions;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ApplicationDefaultCredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Grpc\Gcp\ApiConfig;
+use Dudlewebs\WPMCS\GCP\Grpc\Gcp\Config;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
 /**
  * Common functions used to work with various clients.
  *

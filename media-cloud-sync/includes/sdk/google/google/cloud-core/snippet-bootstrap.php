@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
-use Dudlewebs\WPMCS\DG\BypassFinals;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\TestHelpers;
+use Dudlewebs\WPMCS\GCP\DG\BypassFinals;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Testing\TestHelpers;
 TestHelpers::snippetBootstrap();
 \date_default_timezone_set('UTC');
 // Make sure that while testing we bypass the `final` keyword for the GAPIC client.

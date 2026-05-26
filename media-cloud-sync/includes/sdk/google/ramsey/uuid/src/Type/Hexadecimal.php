@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Type;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 use function preg_match;
 use function sprintf;

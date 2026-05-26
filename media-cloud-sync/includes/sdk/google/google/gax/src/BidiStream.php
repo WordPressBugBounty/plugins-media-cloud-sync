@@ -30,14 +30,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\Auth\Logging\LoggingTrait;
-use Dudlewebs\WPMCS\Google\Auth\Logging\RpcLogEvent;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Rpc\Code;
-use Dudlewebs\WPMCS\Grpc\BidiStreamingCall;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\LoggingTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\RpcLogEvent;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Code;
+use Dudlewebs\WPMCS\GCP\Grpc\BidiStreamingCall;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * BidiStream is the response object from a gRPC bidirectional streaming API call.
  */

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\LongRunning;
 
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
-use Dudlewebs\WPMCS\Google\GAX\OperationResponse as GaxOperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\GCP\Google\GAX\OperationResponse as GaxOperationResponse;
 /**
  * Serializes and deserializes ApiCore LRO Response objects.
  *

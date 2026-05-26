@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection;
 
 /**
  * This class contains the basic implementation of a collection that does not

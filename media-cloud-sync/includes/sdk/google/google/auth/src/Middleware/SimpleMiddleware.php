@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Middleware;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Middleware;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Query;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Query;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * SimpleMiddleware is a Guzzle Middleware that implements Google's Simple API
  * access.

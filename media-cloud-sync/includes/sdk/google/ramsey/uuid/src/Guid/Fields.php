@@ -10,17 +10,17 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Guid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Guid;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Fields\SerializableFieldsTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\MaxTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\NilTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\VariantTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\VersionTrait;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields\SerializableFieldsTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\MaxTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\NilTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\VariantTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\VersionTrait;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 use function bin2hex;
 use function dechex;
 use function hexdec;

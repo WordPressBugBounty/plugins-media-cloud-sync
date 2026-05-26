@@ -10,14 +10,14 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Guid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Guid;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Builder\UuidBuilderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnableToBuildUuidException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use Throwable;
 /**
  * GuidBuilder builds instances of Guid

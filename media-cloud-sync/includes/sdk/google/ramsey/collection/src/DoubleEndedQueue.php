@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\NoSuchElementException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\NoSuchElementException;
 use function array_key_last;
 use function array_pop;
 use function array_unshift;

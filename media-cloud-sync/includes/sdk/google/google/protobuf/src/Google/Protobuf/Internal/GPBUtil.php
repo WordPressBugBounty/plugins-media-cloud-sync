@@ -6,13 +6,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Duration;
-use Dudlewebs\WPMCS\Google\Protobuf\FieldMask;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\MapField;
-use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Duration;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\FieldMask;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBType;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\MapField;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\RepeatedField;
 use function bccomp;
 function camel2underscore($input)
 {
@@ -367,7 +367,7 @@ class GPBUtil
         if ($date === \false) {
             throw new \Exception("Invalid RFC 3339 timestamp.");
         }
-        $value = new \Dudlewebs\WPMCS\Google\Protobuf\Timestamp();
+        $value = new \Dudlewebs\WPMCS\GCP\Google\Protobuf\Timestamp();
         $seconds = $date->format("U");
         $value->setSeconds($seconds);
         $value->setNanos($nanoseconds);
@@ -498,10 +498,10 @@ class GPBUtil
     }
     public static function hasSpecialJsonMapping($msg)
     {
-        return \is_a($msg, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Any') || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\ListValue") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Struct") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Value") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Duration") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Timestamp") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\FieldMask") || static::hasJsonValue($msg);
+        return \is_a($msg, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Any') || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\ListValue") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Struct") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Value") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask") || static::hasJsonValue($msg);
     }
     public static function hasJsonValue($msg)
     {
-        return \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\DoubleValue") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\FloatValue") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Int64Value") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt64Value") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Int32Value") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt32Value") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\BoolValue") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\StringValue") || \is_a($msg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\BytesValue");
+        return \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\DoubleValue") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FloatValue") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int64Value") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt64Value") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int32Value") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt32Value") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BoolValue") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\StringValue") || \is_a($msg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BytesValue");
     }
 }

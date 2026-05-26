@@ -10,14 +10,14 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Math\CalculatorInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Math\RoundingMode;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Time;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math\CalculatorInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math\RoundingMode;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Time;
 use function explode;
 use function str_pad;
 use const STR_PAD_LEFT;

@@ -1,9 +1,9 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Stream that when read returns bytes for a streaming multipart or
  * multipart/form-data stream.

@@ -30,9 +30,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
 /**
  * The ApiKeyHeaderCredentials object provides a wrapper around an API key.
  */

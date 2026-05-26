@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Http\Message;
+namespace Dudlewebs\WPMCS\GCP\Psr\Http\Message;
 
 interface UriFactoryInterface
 {

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
 use DateTimeInterface;
 /**
@@ -41,9 +41,9 @@ use DateTimeInterface;
 class Timestamp implements \JsonSerializable
 {
     use TimeTrait;
-    const FORMAT = 'Dudlewebs\\WPMCS\\Y-m-d\\TH:i:s.u\\Z';
-    const FORMAT_NO_MS = 'Dudlewebs\\WPMCS\\Y-m-d\\TH:i:s\\Z';
-    const FORMAT_INTERPOLATE = 'Dudlewebs\\WPMCS\\Y-m-d\\TH:i:s.%\\s\\Z';
+    const FORMAT = 'Dudlewebs\\WPMCS\\GCP\\Y-m-d\\TH:i:s.u\\Z';
+    const FORMAT_NO_MS = 'Dudlewebs\\WPMCS\\GCP\\Y-m-d\\TH:i:s\\Z';
+    const FORMAT_INTERPOLATE = 'Dudlewebs\\WPMCS\\GCP\\Y-m-d\\TH:i:s.%\\s\\Z';
     /**
      * @var \DateTimeInterface
      */

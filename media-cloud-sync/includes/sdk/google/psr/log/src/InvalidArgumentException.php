@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Log;
+namespace Dudlewebs\WPMCS\GCP\Psr\Log;
 
 class InvalidArgumentException extends \InvalidArgumentException
 {

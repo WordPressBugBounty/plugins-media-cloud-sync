@@ -10,16 +10,16 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Builder;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\AbstractCollection;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Number\GenericNumberConverter;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time\GenericTimeConverter;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time\PhpTimeConverter;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Guid\GuidBuilder;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Math\BrickMathCalculator;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\AbstractCollection;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Number\GenericNumberConverter;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time\GenericTimeConverter;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Guid\GuidBuilder;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math\BrickMathCalculator;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Traversable;
 /**
  * A collection of UuidBuilderInterface objects

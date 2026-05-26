@@ -9,12 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\NormalizerFormatter;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\NormalizerFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Handler sending logs to Zend Monitor
  *
@@ -28,7 +28,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
      */
     public function __construct(int|string|Level $level = Level::Debug, bool $bubble = \true)
     {
-        if (!\function_exists('Dudlewebs\\WPMCS\\zend_monitor_custom_event')) {
+        if (!\function_exists('Dudlewebs\\WPMCS\\GCP\\zend_monitor_custom_event')) {
             throw new MissingExtensionException('You must have Zend Server installed with Zend Monitor enabled in order to use this handler');
         }
         parent::__construct($level, $bubble);
@@ -39,14 +39,14 @@ class ZendMonitorHandler extends AbstractProcessingHandler
     protected function toZendMonitorLevel(Level $level) : int
     {
         return match ($level) {
-            Level::Debug => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_INFO,
-            Level::Info => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_INFO,
-            Level::Notice => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_INFO,
-            Level::Warning => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_WARNING,
-            Level::Error => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
-            Level::Critical => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
-            Level::Alert => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
-            Level::Emergency => \Dudlewebs\WPMCS\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
+            Level::Debug => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_INFO,
+            Level::Info => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_INFO,
+            Level::Notice => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_INFO,
+            Level::Warning => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_WARNING,
+            Level::Error => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
+            Level::Critical => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
+            Level::Alert => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
+            Level::Emergency => \Dudlewebs\WPMCS\GCP\ZEND_MONITOR_EVENT_SEVERITY_ERROR,
         };
     }
     /**

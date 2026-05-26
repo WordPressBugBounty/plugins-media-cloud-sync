@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\ExecutableHandler;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\ExecutableHandler;
 
 use Error;
 class ExecutableResponseError extends Error

@@ -10,13 +10,13 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Codec;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use function strlen;
 use function substr;
 /**

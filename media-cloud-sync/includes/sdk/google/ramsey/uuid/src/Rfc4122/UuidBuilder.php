@@ -10,19 +10,19 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Builder\UuidBuilderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time\UnixTimeConverter;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnableToBuildUuidException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Math\BrickMathCalculator;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time\UnixTimeConverter;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math\BrickMathCalculator;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use Throwable;
 /**
  * UuidBuilder builds instances of RFC 9562 (formerly 4122) UUIDs

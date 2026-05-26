@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Cookie;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Cookie;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
 /**
  * Persists non-session cookies using a JSON formatted file
  */

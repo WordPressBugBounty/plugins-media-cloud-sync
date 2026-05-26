@@ -15,23 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
 use COM;
 use com_exception;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Auth\Iam;
-use Dudlewebs\WPMCS\Google\Auth\IamSignerTrait;
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Auth\SignBlobInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\ClientException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\ConnectException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\ServerException;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Iam;
+use Dudlewebs\WPMCS\GCP\Google\Auth\IamSignerTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\SignBlobInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\ClientException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\ConnectException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\ServerException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 /**
  * GCECredentials supports authorization on Google Compute Engine.

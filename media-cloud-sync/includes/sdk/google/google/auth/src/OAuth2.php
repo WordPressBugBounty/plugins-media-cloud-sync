@@ -15,19 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
-use Dudlewebs\WPMCS\Firebase\JWT\JWT;
-use Dudlewebs\WPMCS\Firebase\JWT\Key;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Query;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\JWT;
+use Dudlewebs\WPMCS\GCP\Firebase\JWT\Key;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Query;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * OAuth2 supports authentication by OAuth2 2-legged flows.
  *

@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\RandomLib\Factory;
-use Dudlewebs\WPMCS\RandomLib\Generator;
+use Dudlewebs\WPMCS\GCP\RandomLib\Factory;
+use Dudlewebs\WPMCS\GCP\RandomLib\Generator;
 /**
  * RandomLibAdapter generates strings of random binary data using the paragonie/random-lib library
  *

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
 use Exception;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
 trait IamSignerTrait
 {
     /**

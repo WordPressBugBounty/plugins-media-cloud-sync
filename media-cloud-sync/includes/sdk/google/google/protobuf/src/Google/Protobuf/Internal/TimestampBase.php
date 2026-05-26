@@ -1,12 +1,12 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
 /**
  * Base class for Google\Protobuf\Timestamp, this contains hand-written
  * convenience methods.
  */
-class TimestampBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
+class TimestampBase extends \Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message
 {
     /*
      * Converts PHP DateTime to Timestamp.

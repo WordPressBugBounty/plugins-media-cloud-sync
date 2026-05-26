@@ -16,7 +16,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-namespace Dudlewebs\WPMCS\Google\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\LongRunning;
 
 /**
  * Manages long-running operations with an API service.
@@ -29,7 +29,7 @@ namespace Dudlewebs\WPMCS\Google\LongRunning;
  * returns long-running operations should implement the `Operations` interface
  * so developers can have a consistent client experience.
  */
-class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
+class OperationsGrpcClient extends \Dudlewebs\WPMCS\GCP\Grpc\BaseStub
 {
     /**
      * @param string $hostname hostname
@@ -56,9 +56,9 @@ class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function ListOperations(\Dudlewebs\WPMCS\Google\LongRunning\ListOperationsRequest $argument, $metadata = [], $options = [])
+    public function ListOperations(\Dudlewebs\WPMCS\GCP\Google\LongRunning\ListOperationsRequest $argument, $metadata = [], $options = [])
     {
-        return $this->_simpleRequest('/google.longrunning.Operations/ListOperations', $argument, ['Dudlewebs\\WPMCS\\Google\\LongRunning\\ListOperationsResponse', 'decode'], $metadata, $options);
+        return $this->_simpleRequest('/google.longrunning.Operations/ListOperations', $argument, ['Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\ListOperationsResponse', 'decode'], $metadata, $options);
     }
     /**
      * Gets the latest state of a long-running operation.  Clients can use this
@@ -69,9 +69,9 @@ class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function GetOperation(\Dudlewebs\WPMCS\Google\LongRunning\GetOperationRequest $argument, $metadata = [], $options = [])
+    public function GetOperation(\Dudlewebs\WPMCS\GCP\Google\LongRunning\GetOperationRequest $argument, $metadata = [], $options = [])
     {
-        return $this->_simpleRequest('/google.longrunning.Operations/GetOperation', $argument, ['Dudlewebs\\WPMCS\\Google\\LongRunning\\Operation', 'decode'], $metadata, $options);
+        return $this->_simpleRequest('/google.longrunning.Operations/GetOperation', $argument, ['Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\Operation', 'decode'], $metadata, $options);
     }
     /**
      * Deletes a long-running operation. This method indicates that the client is
@@ -83,9 +83,9 @@ class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function DeleteOperation(\Dudlewebs\WPMCS\Google\LongRunning\DeleteOperationRequest $argument, $metadata = [], $options = [])
+    public function DeleteOperation(\Dudlewebs\WPMCS\GCP\Google\LongRunning\DeleteOperationRequest $argument, $metadata = [], $options = [])
     {
-        return $this->_simpleRequest('/google.longrunning.Operations/DeleteOperation', $argument, ['Dudlewebs\\WPMCS\\Google\\Protobuf\\GPBEmpty', 'decode'], $metadata, $options);
+        return $this->_simpleRequest('/google.longrunning.Operations/DeleteOperation', $argument, ['Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\GPBEmpty', 'decode'], $metadata, $options);
     }
     /**
      * Starts asynchronous cancellation on a long-running operation.  The server
@@ -103,9 +103,9 @@ class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function CancelOperation(\Dudlewebs\WPMCS\Google\LongRunning\CancelOperationRequest $argument, $metadata = [], $options = [])
+    public function CancelOperation(\Dudlewebs\WPMCS\GCP\Google\LongRunning\CancelOperationRequest $argument, $metadata = [], $options = [])
     {
-        return $this->_simpleRequest('/google.longrunning.Operations/CancelOperation', $argument, ['Dudlewebs\\WPMCS\\Google\\Protobuf\\GPBEmpty', 'decode'], $metadata, $options);
+        return $this->_simpleRequest('/google.longrunning.Operations/CancelOperation', $argument, ['Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\GPBEmpty', 'decode'], $metadata, $options);
     }
     /**
      * Waits until the specified long-running operation is done or reaches at most
@@ -122,8 +122,8 @@ class OperationsGrpcClient extends \Dudlewebs\WPMCS\Grpc\BaseStub
      * @param array $options call options
      * @return \Grpc\UnaryCall
      */
-    public function WaitOperation(\Dudlewebs\WPMCS\Google\LongRunning\WaitOperationRequest $argument, $metadata = [], $options = [])
+    public function WaitOperation(\Dudlewebs\WPMCS\GCP\Google\LongRunning\WaitOperationRequest $argument, $metadata = [], $options = [])
     {
-        return $this->_simpleRequest('/google.longrunning.Operations/WaitOperation', $argument, ['Dudlewebs\\WPMCS\\Google\\LongRunning\\Operation', 'decode'], $metadata, $options);
+        return $this->_simpleRequest('/google.longrunning.Operations/WaitOperation', $argument, ['Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\Operation', 'decode'], $metadata, $options);
     }
 }

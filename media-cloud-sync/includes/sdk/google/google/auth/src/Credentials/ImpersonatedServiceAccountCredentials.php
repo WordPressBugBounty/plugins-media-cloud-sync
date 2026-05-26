@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
-use Dudlewebs\WPMCS\Google\Auth\CacheTrait;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Auth\IamSignerTrait;
-use Dudlewebs\WPMCS\Google\Auth\SignBlobInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CacheTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Auth\IamSignerTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\SignBlobInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 use LogicException;
 /**

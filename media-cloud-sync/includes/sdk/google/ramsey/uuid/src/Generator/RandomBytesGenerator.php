@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Generator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Generator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\RandomSourceException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\RandomSourceException;
 use Throwable;
 /**
  * RandomBytesGenerator generates strings of random binary data using the built-in `random_bytes()` PHP function

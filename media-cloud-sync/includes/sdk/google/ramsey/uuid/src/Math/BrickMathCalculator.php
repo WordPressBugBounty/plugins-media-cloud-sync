@@ -10,17 +10,17 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Math;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Math;
 
-use Dudlewebs\WPMCS\Brick\Math\BigDecimal;
-use Dudlewebs\WPMCS\Brick\Math\BigInteger;
-use Dudlewebs\WPMCS\Brick\Math\Exception\MathException;
-use Dudlewebs\WPMCS\Brick\Math\RoundingMode as BrickMathRounding;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\InvalidArgumentException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Decimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\NumberInterface;
+use Dudlewebs\WPMCS\GCP\Brick\Math\BigDecimal;
+use Dudlewebs\WPMCS\GCP\Brick\Math\BigInteger;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\MathException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\RoundingMode as BrickMathRounding;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Decimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\NumberInterface;
 /**
  * A calculator using the brick/math library for arbitrary-precision arithmetic
  *

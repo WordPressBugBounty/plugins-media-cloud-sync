@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Lock;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Lock;
 
-use Dudlewebs\WPMCS\Symfony\Component\Lock\LockInterface as SymfonyLockInterface;
+use Dudlewebs\WPMCS\GCP\Symfony\Component\Lock\LockInterface as SymfonyLockInterface;
 /**
  * Symfony lock component adapter.
  * @deprecated

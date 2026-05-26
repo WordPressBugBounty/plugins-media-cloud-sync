@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Logger;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Logger;
 
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Shared trait to enrich and format a record with
  * App Engine Flex specific information.

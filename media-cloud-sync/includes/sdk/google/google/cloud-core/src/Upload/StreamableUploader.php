@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Upload;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\GoogleException;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\GoogleException;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 /**
  * Uploader that is a special case of the ResumableUploader where we can write
  * the file contents in a streaming manner.
@@ -41,10 +41,9 @@ class StreamableUploader extends ResumableUploader
         if ($writeSize === 0) {
             return [];
         }
-        $isFinalRequest = $writeSize === null;
         // find or create the resumeUri
         $resumeUri = $this->getResumeUri();
-        if ($writeSize !== null) {
+        if ($writeSize) {
             $rangeEnd = $this->rangeStart + $writeSize - 1;
             $data = $this->data->read($writeSize);
         } else {
@@ -54,12 +53,6 @@ class StreamableUploader extends ResumableUploader
         }
         // do the streaming write
         $headers = ['Content-Length' => $writeSize, 'Content-Type' => $this->contentType, 'Content-Range' => "bytes {$this->rangeStart}-{$rangeEnd}/*"];
-        $customHeaders = $this->requestOptions['restOptions']['headers'] ?? [];
-        // Only include X-Goog-Hash if this is the final request
-        if (!$isFinalRequest) {
-            unset($customHeaders['X-Goog-Hash']);
-        }
-        $headers = \array_merge($headers, $customHeaders);
         $request = new Request('PUT', $resumeUri, $headers, $data);
         try {
             $response = $this->requestWrapper->send($request, $this->requestOptions);

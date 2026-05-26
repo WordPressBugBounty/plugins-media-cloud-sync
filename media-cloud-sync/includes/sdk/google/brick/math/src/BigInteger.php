@@ -1,15 +1,15 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math;
 
-use Dudlewebs\WPMCS\Brick\Math\Exception\DivisionByZeroException;
-use Dudlewebs\WPMCS\Brick\Math\Exception\IntegerOverflowException;
-use Dudlewebs\WPMCS\Brick\Math\Exception\MathException;
-use Dudlewebs\WPMCS\Brick\Math\Exception\NegativeNumberException;
-use Dudlewebs\WPMCS\Brick\Math\Exception\NumberFormatException;
-use Dudlewebs\WPMCS\Brick\Math\Internal\Calculator;
-use Dudlewebs\WPMCS\Override;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\DivisionByZeroException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\IntegerOverflowException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\MathException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\NegativeNumberException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Exception\NumberFormatException;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Internal\Calculator;
+use Dudlewebs\WPMCS\GCP\Override;
 /**
  * An arbitrary-size integer.
  *

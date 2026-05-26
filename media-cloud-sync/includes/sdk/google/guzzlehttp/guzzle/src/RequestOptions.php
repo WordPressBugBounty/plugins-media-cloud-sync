@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.

@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Time;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Time;
 /**
  * A time provider retrieves the current time
  */

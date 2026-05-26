@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Number;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Number;
 
 /**
  * @deprecated DegradedNumberConverter is no longer necessary for converting numbers on 32-bit systems. Please

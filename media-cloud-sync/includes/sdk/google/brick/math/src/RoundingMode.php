@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math;
 
 /**
  * Specifies a rounding behavior for numerical operations capable of discarding precision.

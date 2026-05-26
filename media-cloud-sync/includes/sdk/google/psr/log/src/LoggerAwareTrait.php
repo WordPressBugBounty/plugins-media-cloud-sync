@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Log;
+namespace Dudlewebs\WPMCS\GCP\Psr\Log;
 
 /**
  * Basic Implementation of LoggerAwareInterface.

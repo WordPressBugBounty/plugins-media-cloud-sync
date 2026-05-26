@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Fields;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields;
 
 use ValueError;
 use function base64_decode;

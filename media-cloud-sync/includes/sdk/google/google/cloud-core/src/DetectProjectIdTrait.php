@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\GoogleException;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\GoogleException;
 /**
  * @internal
  * Provides functionality common to handwritten clients.

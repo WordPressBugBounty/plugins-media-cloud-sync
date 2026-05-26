@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math\Exception;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math\Exception;
 
 /**
  * Exception thrown when a division by zero occurs.

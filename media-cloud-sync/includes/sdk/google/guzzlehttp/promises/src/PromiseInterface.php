@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Promise;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise;
 
 /**
  * A promise represents the eventual result of an asynchronous operation.

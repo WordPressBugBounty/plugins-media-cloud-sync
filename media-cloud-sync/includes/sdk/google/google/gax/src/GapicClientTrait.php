@@ -30,28 +30,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
-use Dudlewebs\WPMCS\Google\ApiCore\LongRunning\OperationsClient;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\CredentialsWrapperMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\FixedHeaderMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\OperationsMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\OptionsFilterMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\PagedMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\RequestAutoPopulationMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\RetryMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Middleware\TransportCallMiddleware;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\CallOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\ClientOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\TransportOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\GrpcFallbackTransport;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\GrpcTransport;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\RestTransport;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\TransportInterface;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\LongRunning\Operation;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\LongRunning\OperationsClient;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\CredentialsWrapperMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\FixedHeaderMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\OperationsMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\OptionsFilterMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\PagedMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\RequestAutoPopulationMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\RetryMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Middleware\TransportCallMiddleware;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\CallOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\ClientOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\TransportOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\GrpcFallbackTransport;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\GrpcTransport;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\RestTransport;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\TransportInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Operation;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
 /**
  * Common functions used to work with various clients.
  *

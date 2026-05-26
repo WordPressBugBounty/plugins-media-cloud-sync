@@ -9,20 +9,20 @@
 /**
  * Defines Message, the parent class extended by all protocol message classes.
  */
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\CodedInputStream;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\CodedOutputStream;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBWire;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\MapEntry;
-use Dudlewebs\WPMCS\Google\Protobuf\ListValue;
-use Dudlewebs\WPMCS\Google\Protobuf\RepeatedField;
-use Dudlewebs\WPMCS\Google\Protobuf\PrintOptions;
-use Dudlewebs\WPMCS\Google\Protobuf\Value;
-use Dudlewebs\WPMCS\Google\Protobuf\Struct;
-use Dudlewebs\WPMCS\Google\Protobuf\NullValue;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\CodedInputStream;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\CodedOutputStream;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\DescriptorPool;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBType;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBWire;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\MapEntry;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\ListValue;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\RepeatedField;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\PrintOptions;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Value;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Struct;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\NullValue;
 /**
  * Parent class of all proto messages. Users should not instantiate this class
  * or extend this class or its child classes by their own.  See the comment of
@@ -731,7 +731,7 @@ class Message
             case GPBType::MESSAGE:
                 $klass = $field->getMessageType()->getClass();
                 $submsg = new $klass();
-                if (\is_a($submsg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Duration")) {
+                if (\is_a($submsg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration")) {
                     if (\is_null($value)) {
                         return $this->defaultValue($field);
                     } else {
@@ -757,7 +757,7 @@ class Message
                         $submsg->setSeconds($timestamp->getSeconds());
                         $submsg->setNanos($timestamp->getNanos());
                     } else {
-                        if (\is_a($submsg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\FieldMask")) {
+                        if (\is_a($submsg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask")) {
                             if (\is_null($value)) {
                                 return $this->defaultValue($field);
                             }
@@ -767,7 +767,7 @@ class Message
                                 throw new GPBDecodeException("Invalid FieldMask: " . $e->getMessage());
                             }
                         } else {
-                            if (\is_null($value) && !\is_a($submsg, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Value")) {
+                            if (\is_null($value) && !\is_a($submsg, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Value")) {
                                 return $this->defaultValue($field);
                             }
                             if (GPBUtil::hasSpecialJsonMapping($submsg)) {
@@ -1032,7 +1032,7 @@ class Message
     }
     protected function mergeFromJsonArray($array, $ignore_unknown)
     {
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Any")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Any")) {
             $this->clear();
             $this->setTypeUrl($array["@type"]);
             $msg = $this->unpack();
@@ -1045,27 +1045,27 @@ class Message
             $this->setValue($msg->serializeToString());
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\DoubleValue") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\FloatValue") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Int64Value") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt64Value") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Int32Value") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt32Value") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\BoolValue") || \is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\StringValue")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\DoubleValue") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FloatValue") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int64Value") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt64Value") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int32Value") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt32Value") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BoolValue") || \is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\StringValue")) {
             $this->setValue($array);
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\BytesValue")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BytesValue")) {
             $this->setValue(\base64_decode($array));
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Duration")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration")) {
             $this->mergeFrom(GPBUtil::parseDuration($array));
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\FieldMask")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask")) {
             $this->mergeFrom(GPBUtil::parseFieldMask($array));
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Timestamp")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp")) {
             $this->mergeFrom(GPBUtil::parseTimestamp($array));
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Struct")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Struct")) {
             $fields = $this->getFields();
             foreach ($array as $key => $value) {
                 $v = new Value();
@@ -1074,7 +1074,7 @@ class Message
             }
             return;
         }
-        if (\is_a($this, "Dudlewebs\\WPMCS\\Google\\Protobuf\\Value")) {
+        if (\is_a($this, "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Value")) {
             if (\is_bool($array)) {
                 $this->setBoolValue($array);
             } elseif (\is_string($array)) {
@@ -1193,12 +1193,12 @@ class Message
     public function parseFromJsonStream($input, $ignore_unknown)
     {
         $array = \json_decode($input->getData(), \true, 512, \JSON_BIGINT_AS_STRING);
-        if ($this instanceof \Dudlewebs\WPMCS\Google\Protobuf\ListValue) {
+        if ($this instanceof \Dudlewebs\WPMCS\GCP\Google\Protobuf\ListValue) {
             $array = ["values" => $array];
         }
         if (\is_null($array)) {
-            if ($this instanceof \Dudlewebs\WPMCS\Google\Protobuf\Value) {
-                $this->setNullValue(\Dudlewebs\WPMCS\Google\Protobuf\NullValue::NULL_VALUE);
+            if ($this instanceof \Dudlewebs\WPMCS\GCP\Google\Protobuf\Value) {
+                $this->setNullValue(\Dudlewebs\WPMCS\GCP\Google\Protobuf\NullValue::NULL_VALUE);
                 return;
             } else {
                 throw new GPBDecodeException("Cannot decode json string: " . $input->getData());
@@ -1318,7 +1318,7 @@ class Message
      */
     public function serializeToJsonStream(&$output)
     {
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Any')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Any')) {
             $output->writeRaw("{", 1);
             $type_field = $this->desc->getFieldByNumber(1);
             $value_msg = $this->unpack();
@@ -1343,21 +1343,21 @@ class Message
                 }
             }
             $output->writeRaw("}", 1);
-        } elseif (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\FieldMask')) {
+        } elseif (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask')) {
             $field_mask = GPBUtil::formatFieldMask($this);
             $output->writeRaw("\"", 1);
             $output->writeRaw($field_mask, \strlen($field_mask));
             $output->writeRaw("\"", 1);
-        } elseif (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Duration')) {
+        } elseif (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration')) {
             $duration = GPBUtil::formatDuration($this) . "s";
             $output->writeRaw("\"", 1);
             $output->writeRaw($duration, \strlen($duration));
             $output->writeRaw("\"", 1);
-        } elseif (\get_class($this) === 'Google\\Protobuf\\Timestamp') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp') {
             $timestamp = GPBUtil::formatTimestamp($this);
             $timestamp = \json_encode($timestamp);
             $output->writeRaw($timestamp, \strlen($timestamp));
-        } elseif (\get_class($this) === 'Google\\Protobuf\\ListValue') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\ListValue') {
             $field = $this->desc->getField()[1];
             if (!$this->existField($field)) {
                 $output->writeRaw("[]", 2);
@@ -1366,7 +1366,7 @@ class Message
                     return \false;
                 }
             }
-        } elseif (\get_class($this) === 'Google\\Protobuf\\Struct') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Struct') {
             $field = $this->desc->getField()[1];
             if (!$this->existField($field)) {
                 $output->writeRaw("{}", 2);
@@ -1574,7 +1574,7 @@ class Message
                 break;
             case GPBType::ENUM:
                 $enum_desc = $field->getEnumType();
-                if ($enum_desc->getClass() === "Google\\Protobuf\\NullValue") {
+                if ($enum_desc->getClass() === "Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\NullValue") {
                     $size += 4;
                     break;
                 }
@@ -1816,7 +1816,7 @@ class Message
     public function jsonByteSize($options = 0)
     {
         $size = 0;
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Any')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Any')) {
             // Size for "{}".
             $size += 2;
             // Size for "\"@type\":".
@@ -1836,19 +1836,19 @@ class Message
                     $size += $value_size - 1;
                 }
             }
-        } elseif (\get_class($this) === 'Google\\Protobuf\\FieldMask') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask') {
             $field_mask = GPBUtil::formatFieldMask($this);
             $size += \strlen($field_mask) + 2;
             // 2 for ""
-        } elseif (\get_class($this) === 'Google\\Protobuf\\Duration') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration') {
             $duration = GPBUtil::formatDuration($this) . "s";
             $size += \strlen($duration) + 2;
             // 2 for ""
-        } elseif (\get_class($this) === 'Google\\Protobuf\\Timestamp') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp') {
             $timestamp = GPBUtil::formatTimestamp($this);
             $timestamp = \json_encode($timestamp);
             $size += \strlen($timestamp);
-        } elseif (\get_class($this) === 'Google\\Protobuf\\ListValue') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\ListValue') {
             $field = $this->desc->getField()[1];
             if ($this->existField($field)) {
                 $field_size = $this->fieldJsonByteSize($field, $options);
@@ -1857,7 +1857,7 @@ class Message
                 // Size for "[]".
                 $size += 2;
             }
-        } elseif (\get_class($this) === 'Google\\Protobuf\\Struct') {
+        } elseif (\get_class($this) === 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Struct') {
             $field = $this->desc->getField()[1];
             if ($this->existField($field)) {
                 $field_size = $this->fieldJsonByteSize($field, $options);
@@ -1887,10 +1887,10 @@ class Message
     }
     public function __debugInfo()
     {
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\FieldMask')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FieldMask')) {
             return ['paths' => $this->getPaths()->__debugInfo()];
         }
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Value')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Value')) {
             switch ($this->getKind()) {
                 case 'null_value':
                     return ['nullValue' => $this->getNullValue()];
@@ -1907,10 +1907,10 @@ class Message
             }
             return [];
         }
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\BoolValue') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\BytesValue') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\DoubleValue') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\FloatValue') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\StringValue') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Int32Value') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Int64Value') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt32Value') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\UInt64Value')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BoolValue') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\BytesValue') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\DoubleValue') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\FloatValue') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\StringValue') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int32Value') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Int64Value') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt32Value') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\UInt64Value')) {
             return ['value' => \json_decode($this->serializeToJsonString(), \true)];
         }
-        if (\is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Duration') || \is_a($this, 'Dudlewebs\\WPMCS\\Google\\Protobuf\\Timestamp')) {
+        if (\is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Duration') || \is_a($this, 'Dudlewebs\\WPMCS\\GCP\\Google\\Protobuf\\Timestamp')) {
             return ['seconds' => $this->getSeconds(), 'nanos' => $this->getNanos()];
         }
         return \json_decode($this->serializeToJsonString(), \true);

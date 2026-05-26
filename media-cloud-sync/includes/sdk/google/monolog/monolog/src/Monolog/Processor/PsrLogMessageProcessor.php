@@ -9,10 +9,10 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Processor;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Processor;
 
-use Dudlewebs\WPMCS\Monolog\Utils;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Processes a record's message according to PSR-3 rules
  *
@@ -52,7 +52,7 @@ class PsrLogMessageProcessor implements ProcessorInterface
             if (null === $val || \is_scalar($val) || \is_object($val) && \method_exists($val, "__toString")) {
                 $replacements[$placeholder] = $val;
             } elseif ($val instanceof \DateTimeInterface) {
-                if (null === $this->dateFormat && $val instanceof \Dudlewebs\WPMCS\Monolog\JsonSerializableDateTimeImmutable) {
+                if (null === $this->dateFormat && $val instanceof \Dudlewebs\WPMCS\GCP\Monolog\JsonSerializableDateTimeImmutable) {
                     // handle monolog dates using __toString if no specific dateFormat was asked for
                     // so that it follows the useMicroseconds flag
                     $replacements[$placeholder] = (string) $val;

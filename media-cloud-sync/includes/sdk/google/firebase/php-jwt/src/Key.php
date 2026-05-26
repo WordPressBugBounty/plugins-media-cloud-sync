@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Firebase\JWT;
+namespace Dudlewebs\WPMCS\GCP\Firebase\JWT;
 
 use InvalidArgumentException;
 use OpenSSLAsymmetricKey;

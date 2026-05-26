@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Promise;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise;
 
 interface TaskQueueInterface
 {

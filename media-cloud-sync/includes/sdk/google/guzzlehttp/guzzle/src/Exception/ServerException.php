@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Exception;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception;
 
 /**
  * Exception when a server error is encountered (5xx codes)

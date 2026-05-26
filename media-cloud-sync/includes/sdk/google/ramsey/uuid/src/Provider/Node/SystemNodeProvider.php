@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider\Node;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\Node;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\NodeException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\NodeProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\NodeException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\NodeProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 use function array_filter;
 use function array_map;
 use function array_walk;

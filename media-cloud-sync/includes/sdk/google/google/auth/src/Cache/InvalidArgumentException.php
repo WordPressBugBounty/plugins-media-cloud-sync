@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Cache;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Cache;
 
-use Dudlewebs\WPMCS\Psr\Cache\InvalidArgumentException as PsrInvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\InvalidArgumentException as PsrInvalidArgumentException;
 class InvalidArgumentException extends \InvalidArgumentException implements PsrInvalidArgumentException
 {
 }

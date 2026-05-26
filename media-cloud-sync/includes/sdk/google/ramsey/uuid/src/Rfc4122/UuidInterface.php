@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface as BaseUuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface as BaseUuidInterface;
 /**
  * A universally unique identifier (UUID), as defined in RFC 9562 (formerly RFC 4122)
  *

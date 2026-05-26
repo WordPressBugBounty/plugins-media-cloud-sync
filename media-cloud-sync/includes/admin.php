@@ -94,14 +94,14 @@ class Admin {
      * @return  void
      * @since   1.0.0
      */
-    public function install($network_wide = false) {
+    public static function install($network_wide = false) {
         Db::handle_tables($network_wide);
-        
+
         // Redirection on activation
-        add_option($this->token.'_do_activation_redirect', true);
+        add_option(WPMCS_TOKEN . '_do_activation_redirect', true);
 
         //Protect directories
-        $this->_protect_upload_dir();
+        self::_protect_upload_dir();
     }
 
     /**
@@ -110,7 +110,7 @@ class Admin {
      */
     public function create_plugin_dir() {
         //Protect directories
-        $this->_protect_upload_dir();
+        self::_protect_upload_dir();
     }
 
     /**
@@ -121,7 +121,7 @@ class Admin {
      * @since   1.3.0
      * @see \Dudlewebs\WPMCS\Admin::_protect_upload_dir
      */
-    private function _protect_upload_dir(){
+    private static function _protect_upload_dir(){
         $upload_dir = wp_upload_dir();
 
         $upload_base = $upload_dir['basedir'] . '/' . Schema::getConstant('UPLOADS');
@@ -153,7 +153,7 @@ class Admin {
     /**
      * Deactivation hook
      */
-    public function deactivation(){
+    public static function deactivation(){
     }
 
 

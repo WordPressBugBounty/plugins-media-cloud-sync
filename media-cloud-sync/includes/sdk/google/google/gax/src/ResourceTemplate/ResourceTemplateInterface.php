@@ -30,9 +30,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore\ResourceTemplate;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\ResourceTemplate;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
 /**
  * Represents a resource template that may or may not contain a leading slash, and if a leading
  * slash is present may contain a trailing verb (":<verb>"). (Note that a trailing verb without a

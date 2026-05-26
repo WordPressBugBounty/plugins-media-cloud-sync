@@ -21,25 +21,25 @@
  * https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto
  * Updates to the above are reflected here through a refresh process.
  */
-namespace Dudlewebs\WPMCS\Google\LongRunning\Client;
+namespace Dudlewebs\WPMCS\GCP\Google\LongRunning\Client;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\CredentialsWrapper;
-use Dudlewebs\WPMCS\Google\ApiCore\GapicClientTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\Options\ClientOptions;
-use Dudlewebs\WPMCS\Google\ApiCore\PagedListResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\RetrySettings;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\TransportInterface;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\LongRunning\CancelOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\DeleteOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\GetOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\ListOperationsRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\Operation;
-use Dudlewebs\WPMCS\Google\LongRunning\WaitOperationRequest;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\CredentialsWrapper;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\GapicClientTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Options\ClientOptions;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\PagedListResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\RetrySettings;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\TransportInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\CancelOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\DeleteOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\GetOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\ListOperationsRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Operation;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\WaitOperationRequest;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 /**
  * Service Description: Manages long-running operations with an API service.
  *

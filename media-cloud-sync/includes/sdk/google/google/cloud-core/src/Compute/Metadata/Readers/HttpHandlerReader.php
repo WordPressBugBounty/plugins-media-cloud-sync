@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Compute\Metadata\Readers;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Compute\Metadata\Readers;
 
-use Dudlewebs\WPMCS\Google\Auth\Credentials\GCECredentials;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Credentials\GCECredentials;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 /**
  * Read Compute Metadata using the HTTP Handler utility.
  */

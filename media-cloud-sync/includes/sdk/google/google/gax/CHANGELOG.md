@@ -1,19 +1,5 @@
 # Changelog
 
-## [1.42.3](https://github.com/googleapis/gax-php/compare/v1.42.2...v1.42.3) (2026-04-29)
-
-
-### Bug Fixes
-
-* **serializer:** Catch Throwable to handle PHP 7+ Errors ([#664](https://github.com/googleapis/gax-php/issues/664)) ([250acdb](https://github.com/googleapis/gax-php/commit/250acdb2178afdfa0347947e52b242404a8e0faa))
-
-## [1.42.2](https://github.com/googleapis/gax-php/compare/v1.42.1...v1.42.2) (2026-04-02)
-
-
-### Bug Fixes
-
-* Ensure safe minimum for protobuf v5 ([#661](https://github.com/googleapis/gax-php/issues/661)) ([e10a8c9](https://github.com/googleapis/gax-php/commit/e10a8c993b5d4861d80f2c702ae77373d8817622))
-
 ## [1.42.1](https://github.com/googleapis/gax-php/compare/v1.42.0...v1.42.1) (2026-03-12)
 
 

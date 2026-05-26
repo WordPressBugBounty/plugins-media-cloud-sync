@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * A class to implement caching for any object implementing
  * FetchAuthTokenInterface
@@ -93,7 +93,7 @@ class FetchAuthTokenCache implements FetchAuthTokenInterface, GetQuotaProjectInt
     public function getClientName(?callable $httpHandler = null)
     {
         if (!$this->fetcher instanceof SignBlobInterface) {
-            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Google\\Auth\\SignBlobInterface');
+            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Dudlewebs\\WPMCS\\GCP\\Google\\Auth\\SignBlobInterface');
         }
         return $this->fetcher->getClientName($httpHandler);
     }
@@ -111,7 +111,7 @@ class FetchAuthTokenCache implements FetchAuthTokenInterface, GetQuotaProjectInt
     public function signBlob($stringToSign, $forceOpenSsl = \false)
     {
         if (!$this->fetcher instanceof SignBlobInterface) {
-            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Google\\Auth\\SignBlobInterface');
+            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Dudlewebs\\WPMCS\\GCP\\Google\\Auth\\SignBlobInterface');
         }
         // Pass the access token from cache for credentials that sign blobs
         // using the IAM API. This saves a call to fetch an access token when a
@@ -147,7 +147,7 @@ class FetchAuthTokenCache implements FetchAuthTokenInterface, GetQuotaProjectInt
     public function getProjectId(?callable $httpHandler = null)
     {
         if (!$this->fetcher instanceof ProjectIdProviderInterface) {
-            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Google\\Auth\\ProvidesProjectIdInterface');
+            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Dudlewebs\\WPMCS\\GCP\\Google\\Auth\\ProvidesProjectIdInterface');
         }
         // Pass the access token from cache for credentials that require an
         // access token to fetch the project ID. This saves a call to fetch an
@@ -187,7 +187,7 @@ class FetchAuthTokenCache implements FetchAuthTokenInterface, GetQuotaProjectInt
     public function updateMetadata($metadata, $authUri = null, ?callable $httpHandler = null)
     {
         if (!$this->fetcher instanceof UpdateMetadataInterface) {
-            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Google\\Auth\\UpdateMetadataInterface');
+            throw new \RuntimeException('Credentials fetcher does not implement ' . 'Dudlewebs\\WPMCS\\GCP\\Google\\Auth\\UpdateMetadataInterface');
         }
         $cached = $this->fetchAuthTokenFromCache($authUri);
         if ($cached) {

@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Map;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\AbstractArray;
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\AbstractArray;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\InvalidArgumentException;
 use Traversable;
 use function array_key_exists;
 use function array_keys;

@@ -15,27 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Storage\Connection;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\Connection;
 
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestBuilder;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestWrapper;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RestTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Retry;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\AbstractUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\MultipartUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\ResumableUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Upload\StreamableUploader;
-use Dudlewebs\WPMCS\Google\Cloud\Core\UriTrait;
-use Dudlewebs\WPMCS\Google\Cloud\Storage\StorageClient;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\MimeType;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestBuilder;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestWrapper;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RestTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Retry;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\AbstractUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\MultipartUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\ResumableUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload\StreamableUploader;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\UriTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\StorageClient;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\MimeType;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 /**
  * Implementation of the
  * [Google Cloud Storage JSON API](https://cloud.google.com/storage/docs/json_api/).

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\Testing\TestHelpers;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Testing\TestHelpers;
 TestHelpers::perfBootstrap();

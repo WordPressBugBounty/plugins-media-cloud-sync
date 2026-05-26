@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Logging;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Logging;
 
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerTrait;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerTrait;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
 use Stringable;
 /**
  * A basic logger class to log into stdOut for GCP logging.

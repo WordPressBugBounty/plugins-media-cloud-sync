@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\LongRunning;
 
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\Serializer;
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestProcessorTrait;
-use Dudlewebs\WPMCS\Google\LongRunning\ListOperationsRequest;
-use Dudlewebs\WPMCS\Google\Protobuf\Any;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Serializer;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestProcessorTrait;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\ListOperationsRequest;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Any;
 /**
  * Defines the calls required to manage Long Running Operations using a GAPIC
  * generated client.

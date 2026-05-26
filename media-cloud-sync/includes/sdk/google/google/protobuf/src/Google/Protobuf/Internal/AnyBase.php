@@ -1,12 +1,12 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
 /**
  * Base class for Google\Protobuf\Any, this contains hand-written convenience
  * methods like pack() and unpack().
  */
-class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
+class AnyBase extends \Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message
 {
     const TYPE_URL_PREFIX = 'type.googleapis.com/';
     /**
@@ -28,7 +28,7 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
         }
         $fully_qualified_name = \substr($this->type_url, $url_prifix_len);
         // Create message according to fully qualified name.
-        $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
+        $pool = \Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
         $desc = $pool->getDescriptorByProtoName($fully_qualified_name);
         if (\is_null($desc)) {
             throw new \Exception("Class " . $fully_qualified_name . " hasn't been added to descriptor pool");
@@ -53,7 +53,7 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
         // Set value using serialized message.
         $this->value = $msg->serializeToString();
         // Set type url.
-        $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
+        $pool = \Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
         $desc = $pool->getDescriptorByClassName(\get_class($msg));
         $fully_qualified_name = $desc->getFullName();
         $this->type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualified_name;
@@ -65,7 +65,7 @@ class AnyBase extends \Dudlewebs\WPMCS\Google\Protobuf\Internal\Message
      */
     public function is($klass)
     {
-        $pool = \Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
+        $pool = \Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\DescriptorPool::getGeneratedPool();
         $desc = $pool->getDescriptorByClassName($klass);
         $fully_qualified_name = $desc->getFullName();
         $type_url = GPBUtil::TYPE_URL_PREFIX . $fully_qualified_name;

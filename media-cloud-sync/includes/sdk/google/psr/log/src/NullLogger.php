@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Log;
+namespace Dudlewebs\WPMCS\GCP\Psr\Log;
 
 /**
  * This Logger can be used to avoid conditional log calls.

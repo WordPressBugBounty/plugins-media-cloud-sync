@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
-use Dudlewebs\WPMCS\Google\Auth\OAuth2;
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Auth\ServiceAccountSignerTrait;
-use Dudlewebs\WPMCS\Google\Auth\SignBlobInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\OAuth2;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ServiceAccountSignerTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\SignBlobInterface;
 /**
  * Authenticates requests using Google's Service Account credentials via
  * JWT Access.

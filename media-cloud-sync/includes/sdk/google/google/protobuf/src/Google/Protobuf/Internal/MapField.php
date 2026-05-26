@@ -10,7 +10,7 @@
  * MapField and MapFieldIter are used by generated protocol message classes to
  * manipulate map fields.
  */
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
 use Traversable;
 /**

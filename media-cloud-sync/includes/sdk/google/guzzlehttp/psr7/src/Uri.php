@@ -1,10 +1,10 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Exception\MalformedUriException;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Exception\MalformedUriException;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * PSR-7 URI implementation.
  *

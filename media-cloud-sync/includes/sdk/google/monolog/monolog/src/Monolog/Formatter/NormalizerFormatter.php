@@ -9,12 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Formatter;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Formatter;
 
-use Dudlewebs\WPMCS\Monolog\JsonSerializableDateTimeImmutable;
-use Dudlewebs\WPMCS\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\Monolog\JsonSerializableDateTimeImmutable;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
 use Throwable;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Normalizes incoming records to remove objects/resources so it's easier to dump to various targets
  *

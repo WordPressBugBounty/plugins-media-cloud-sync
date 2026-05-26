@@ -10,18 +10,18 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Lazy;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Fields\FieldsInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV1;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV6;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidFactory;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Fields\FieldsInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidV1;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidV6;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidFactory;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 use ValueError;
 use function assert;
 use function bin2hex;
@@ -210,7 +210,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getClockSeqHiAndReserved()->toString());
     }
     /**
@@ -222,7 +222,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getClockSeqLow()->toString());
     }
     /**
@@ -234,7 +234,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getClockSeq()->toString());
     }
     /**
@@ -264,7 +264,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getNode()->toString());
     }
     /**
@@ -276,7 +276,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getTimeHiAndVersion()->toString());
     }
     /**
@@ -288,7 +288,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getTimeLow()->toString());
     }
     /**
@@ -300,7 +300,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         return $instance->getNumberConverter()->fromHex($fields->getTimeMid()->toString());
     }
     /**
@@ -312,7 +312,7 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = $this->unwrapped ?? $this->unwrap();
         $fields = $instance->getFields();
-        assert($fields instanceof \Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\FieldsInterface);
+        assert($fields instanceof \Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\FieldsInterface);
         if ($fields->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }

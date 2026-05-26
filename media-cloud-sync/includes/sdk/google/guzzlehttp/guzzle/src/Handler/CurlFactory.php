@@ -1,17 +1,17 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Handler;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Handler;
 
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\ConnectException;
-use Dudlewebs\WPMCS\GuzzleHttp\Exception\RequestException;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise as P;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\FulfilledPromise;
-use Dudlewebs\WPMCS\GuzzleHttp\Promise\PromiseInterface;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\LazyOpenStream;
-use Dudlewebs\WPMCS\GuzzleHttp\TransferStats;
-use Dudlewebs\WPMCS\GuzzleHttp\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\ConnectException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception\RequestException;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise as P;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\FulfilledPromise;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Promise\PromiseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\LazyOpenStream;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\TransferStats;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * Creates curl resources from a request
  *
@@ -184,7 +184,7 @@ class CurlFactory implements CurlFactoryInterface
         $sanitizedError = self::sanitizeCurlError($ctx['error'] ?? '', $uri);
         $message = \sprintf('cURL error %s: %s (%s)', $ctx['errno'], $sanitizedError, 'see https://curl.haxx.se/libcurl/c/libcurl-errors.html');
         if ('' !== $sanitizedError) {
-            $redactedUriString = \Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils::redactUserInfo($uri)->__toString();
+            $redactedUriString = \Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils::redactUserInfo($uri)->__toString();
             if ($redactedUriString !== '' && \false === \strpos($sanitizedError, $redactedUriString)) {
                 $message .= \sprintf(' for %s', $redactedUriString);
             }
@@ -203,7 +203,7 @@ class CurlFactory implements CurlFactoryInterface
         if ('' === $baseUriString) {
             return $error;
         }
-        $redactedUriString = \Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils::redactUserInfo($baseUri)->__toString();
+        $redactedUriString = \Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils::redactUserInfo($baseUri)->__toString();
         return \str_replace($baseUriString, $redactedUriString, $error);
     }
     /**
@@ -354,11 +354,11 @@ class CurlFactory implements CurlFactoryInterface
         }
         if (!isset($options['sink'])) {
             // Use a default temp stream if no sink was set.
-            $options['sink'] = \Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils::tryFopen('php://temp', 'w+');
+            $options['sink'] = \Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils::tryFopen('php://temp', 'w+');
         }
         $sink = $options['sink'];
         if (!\is_string($sink)) {
-            $sink = \Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils::streamFor($sink);
+            $sink = \Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils::streamFor($sink);
         } elseif (!\is_dir(\dirname($sink))) {
             // Ensure that the directory exists before failing in curl.
             throw new \RuntimeException(\sprintf('Directory %s does not exist for sink value of %s', \dirname($sink), $sink));

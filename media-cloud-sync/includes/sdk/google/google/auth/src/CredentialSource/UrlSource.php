@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\CredentialSource;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource;
 
-use Dudlewebs\WPMCS\Google\Auth\ExternalAccountCredentialSourceInterface;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExternalAccountCredentialSourceInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 use UnexpectedValueException;
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Firebase\JWT;
+namespace Dudlewebs\WPMCS\GCP\Firebase\JWT;
 
 use ArrayAccess;
 use DateTime;
@@ -240,8 +240,20 @@ class JWT
                 }
                 return $signature;
             case 'sodium_crypto':
+                if (!\function_exists('sodium_crypto_sign_detached')) {
+                    throw new DomainException('libsodium is not available');
+                }
+                if (!\is_string($key)) {
+                    throw new InvalidArgumentException('key must be a string when using EdDSA');
+                }
                 try {
-                    return \sodium_crypto_sign_detached($msg, self::validateEdDSAKey($key));
+                    // The last non-empty line is used as the key.
+                    $lines = \array_filter(\explode("\n", $key));
+                    $key = \base64_decode((string) \end($lines));
+                    if (\strlen($key) === 0) {
+                        throw new DomainException('Key cannot be empty string');
+                    }
+                    return \sodium_crypto_sign_detached($msg, $key);
                 } catch (Exception $e) {
                     throw new DomainException($e->getMessage(), 0, $e);
                 }
@@ -287,8 +299,19 @@ class JWT
                 // returns 1 on success, 0 on failure, -1 on error.
                 throw new DomainException('OpenSSL error: ' . \openssl_error_string());
             case 'sodium_crypto':
+                if (!\function_exists('sodium_crypto_sign_verify_detached')) {
+                    throw new DomainException('libsodium is not available');
+                }
+                if (!\is_string($keyMaterial)) {
+                    throw new InvalidArgumentException('key must be a string when using EdDSA');
+                }
                 try {
-                    $key = self::validateEdDSAKey($keyMaterial);
+                    // The last non-empty line is used as the key.
+                    $lines = \array_filter(\explode("\n", $keyMaterial));
+                    $key = \base64_decode((string) \end($lines));
+                    if (\strlen($key) === 0) {
+                        throw new DomainException('Key cannot be empty string');
+                    }
                     if (\strlen($signature) === 0) {
                         throw new DomainException('Signature cannot be empty string');
                     }
@@ -615,25 +638,5 @@ class JWT
         if ($keyDetails['bits'] < $minKeyLength) {
             throw new DomainException('Provided key is too short');
         }
-    }
-    /**
-     * @param string|OpenSSLAsymmetricKey|OpenSSLCertificate  $keyMaterial
-     * @return non-empty-string
-     */
-    private static function validateEdDSAKey(#[\SensitiveParameter] $keyMaterial) : string
-    {
-        if (!\function_exists('sodium_crypto_sign_verify_detached')) {
-            throw new DomainException('libsodium is not available');
-        }
-        if (!\is_string($keyMaterial)) {
-            throw new InvalidArgumentException('key must be a string when using EdDSA');
-        }
-        // The last non-empty line is used as the key.
-        $lines = \array_filter(\explode("\n", $keyMaterial));
-        $key = self::urlsafeB64Decode((string) \end($lines));
-        if (\strlen($key) === 0) {
-            throw new DomainException('Key cannot be empty string');
-        }
-        return $key;
     }
 }

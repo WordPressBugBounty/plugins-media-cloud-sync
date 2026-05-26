@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Exception;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception;
 
 use RuntimeException;
 /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Google\ApiCore\LongRunning;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore\LongRunning;
 
-use Dudlewebs\WPMCS\Google\ApiCore\LongRunning\Gapic\OperationsGapicClient;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\LongRunning\Gapic\OperationsGapicClient;
 if (\false) {
     /**
      * This class is deprecated. Use Google\LongRunning\OperationsClient instead.
@@ -13,4 +13,4 @@ if (\false) {
     }
 }
 // Autoload the class and its alias
-\class_exists('Dudlewebs\\WPMCS\\Google\\LongRunning\\OperationsClient');
+\class_exists('Dudlewebs\\WPMCS\\GCP\\Google\\LongRunning\\OperationsClient');

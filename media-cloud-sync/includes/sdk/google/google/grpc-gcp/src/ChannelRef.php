@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * ChannelRef is used to record how many active streams the channel has.

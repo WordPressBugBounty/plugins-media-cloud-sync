@@ -21,25 +21,25 @@
  * https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto
  * Updates to the above are reflected here through a refresh process.
  */
-namespace Dudlewebs\WPMCS\Google\LongRunning\Gapic;
+namespace Dudlewebs\WPMCS\GCP\Google\LongRunning\Gapic;
 
-use Dudlewebs\WPMCS\Google\ApiCore\ApiException;
-use Dudlewebs\WPMCS\Google\ApiCore\CredentialsWrapper;
-use Dudlewebs\WPMCS\Google\ApiCore\GapicClientTrait;
-use Dudlewebs\WPMCS\Google\ApiCore\RequestParamsHeaderDescriptor;
-use Dudlewebs\WPMCS\Google\ApiCore\RetrySettings;
-use Dudlewebs\WPMCS\Google\ApiCore\Transport\TransportInterface;
-use Dudlewebs\WPMCS\Google\ApiCore\ValidationException;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\LongRunning\CancelOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\DeleteOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\GetOperationRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\ListOperationsRequest;
-use Dudlewebs\WPMCS\Google\LongRunning\ListOperationsResponse;
-use Dudlewebs\WPMCS\Google\LongRunning\Operation;
-use Dudlewebs\WPMCS\Google\LongRunning\WaitOperationRequest;
-use Dudlewebs\WPMCS\Google\Protobuf\Duration;
-use Dudlewebs\WPMCS\Google\Protobuf\GPBEmpty;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ApiException;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\CredentialsWrapper;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\GapicClientTrait;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\RequestParamsHeaderDescriptor;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\RetrySettings;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\Transport\TransportInterface;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ValidationException;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\CancelOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\DeleteOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\GetOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\ListOperationsRequest;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\ListOperationsResponse;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\Operation;
+use Dudlewebs\WPMCS\GCP\Google\LongRunning\WaitOperationRequest;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Duration;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\GPBEmpty;
 /**
  * Service Description: Manages long-running operations with an API service.
  *

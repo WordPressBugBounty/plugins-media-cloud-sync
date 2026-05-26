@@ -9,12 +9,12 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Processor;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Processor;
 
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Logger;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Logger;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
 /**
  * Injects line/file:class/function where the log message came from
  *
@@ -33,7 +33,7 @@ class IntrospectionProcessor implements ProcessorInterface
     protected array $skipClassesPartials;
     protected int $skipStackFramesCount;
     protected const SKIP_FUNCTIONS = ['call_user_func', 'call_user_func_array'];
-    protected const SKIP_CLASSES = ['Monolog\\'];
+    protected const SKIP_CLASSES = ['Dudlewebs\\WPMCS\\GCP\\Monolog\\'];
     /**
      * @param string|int|Level $level               The minimum logging level at which this Processor will be triggered
      * @param string[]         $skipClassesPartials

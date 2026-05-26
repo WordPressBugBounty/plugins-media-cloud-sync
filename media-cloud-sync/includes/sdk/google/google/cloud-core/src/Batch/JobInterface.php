@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Batch;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Batch;
 
 /**
  * The JobInterface represents any job that can be serialized and run in a

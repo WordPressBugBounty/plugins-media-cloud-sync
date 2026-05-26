@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Tool;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Tool;
 
 use function is_array;
 use function is_bool;

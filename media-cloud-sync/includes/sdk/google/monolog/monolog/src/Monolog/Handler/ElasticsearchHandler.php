@@ -9,20 +9,20 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Elastic\Elasticsearch\Response\Elasticsearch;
+use Dudlewebs\WPMCS\GCP\Elastic\Elasticsearch\Response\Elasticsearch;
 use Throwable;
 use RuntimeException;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Formatter\ElasticsearchFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\ElasticsearchFormatter;
 use InvalidArgumentException;
-use Dudlewebs\WPMCS\Elasticsearch\Common\Exceptions\RuntimeException as ElasticsearchRuntimeException;
-use Dudlewebs\WPMCS\Elasticsearch\Client;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
-use Dudlewebs\WPMCS\Elastic\Elasticsearch\Exception\InvalidArgumentException as ElasticInvalidArgumentException;
-use Dudlewebs\WPMCS\Elastic\Elasticsearch\Client as Client8;
+use Dudlewebs\WPMCS\GCP\Elasticsearch\Common\Exceptions\RuntimeException as ElasticsearchRuntimeException;
+use Dudlewebs\WPMCS\GCP\Elasticsearch\Client;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\Elastic\Elasticsearch\Exception\InvalidArgumentException as ElasticInvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Elastic\Elasticsearch\Client as Client8;
 /**
  * Elasticsearch handler
  *

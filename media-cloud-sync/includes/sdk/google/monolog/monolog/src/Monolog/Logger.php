@@ -9,16 +9,16 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog;
+namespace Dudlewebs\WPMCS\GCP\Monolog;
 
 use Closure;
 use DateTimeZone;
 use Fiber;
-use Dudlewebs\WPMCS\Monolog\Handler\HandlerInterface;
-use Dudlewebs\WPMCS\Monolog\Processor\ProcessorInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
-use Dudlewebs\WPMCS\Psr\Log\InvalidArgumentException;
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Monolog\Handler\HandlerInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Processor\ProcessorInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\InvalidArgumentException;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
 use Throwable;
 use Stringable;
 use WeakMap;

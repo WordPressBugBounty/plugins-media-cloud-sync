@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Http\Client;
+namespace Dudlewebs\WPMCS\GCP\Psr\Http\Client;
 
 /**
  * Every HTTP client related exception MUST implement this interface.

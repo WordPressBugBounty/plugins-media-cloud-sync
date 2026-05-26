@@ -10,13 +10,13 @@
  * RepeatedField and RepeatedFieldIter are used by generated protocol message
  * classes to manipulate repeated fields.
  */
-namespace Dudlewebs\WPMCS\Google\Protobuf;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\DescriptorPool;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBType;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\GPBUtil;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\RepeatedFieldIter;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\DescriptorPool;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBType;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\GPBUtil;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\RepeatedFieldIter;
 use Traversable;
 /**
  * RepeatedField is used by generated protocol message classes to manipulate

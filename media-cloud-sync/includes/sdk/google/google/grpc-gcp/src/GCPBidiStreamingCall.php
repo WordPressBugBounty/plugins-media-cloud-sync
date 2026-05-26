@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
 /**
  * Represents an active call that allows for sending and recieving messages
@@ -29,7 +29,7 @@ class GCPBidiStreamingCall extends GcpBaseCall
     protected function createRealCall($data = null)
     {
         $channel_ref = $this->_rpcPreProcess($data);
-        $this->real_call = new \Dudlewebs\WPMCS\Grpc\BidiStreamingCall($channel_ref->getRealChannel($this->gcp_channel->credentials), $this->method, $this->deserialize, $this->options);
+        $this->real_call = new \Dudlewebs\WPMCS\GCP\Grpc\BidiStreamingCall($channel_ref->getRealChannel($this->gcp_channel->credentials), $this->method, $this->deserialize, $this->options);
         $this->real_call->start($this->metadata_rpc);
         return $this->real_call;
     }

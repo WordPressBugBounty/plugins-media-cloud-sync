@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 if (!\function_exists('getallheaders')) {
     /**

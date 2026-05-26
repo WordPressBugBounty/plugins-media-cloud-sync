@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Grpc;
 
 /**
  * Represents an interceptor that intercept RPC invocations before call starts.

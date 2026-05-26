@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\HttpHandler;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler;
 
-use Dudlewebs\WPMCS\Google\Auth\Logging\LoggingTrait;
-use Dudlewebs\WPMCS\Google\Auth\Logging\RpcLogEvent;
-use Dudlewebs\WPMCS\GuzzleHttp\ClientInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Log\LoggerInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\LoggingTrait;
+use Dudlewebs\WPMCS\GCP\Google\Auth\Logging\RpcLogEvent;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\ClientInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LoggerInterface;
 class Guzzle6HttpHandler
 {
     use LoggingTrait;

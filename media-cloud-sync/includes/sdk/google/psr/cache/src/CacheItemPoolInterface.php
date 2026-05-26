@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Cache;
+namespace Dudlewebs\WPMCS\GCP\Psr\Cache;
 
 /**
  * CacheItemPoolInterface generates CacheItemInterface objects.

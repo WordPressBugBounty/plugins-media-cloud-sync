@@ -6,13 +6,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Descriptor;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\FileDescriptor;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\FileDescriptorSet;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\MessageBuilderContext;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\EnumBuilderContext;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Descriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\FileDescriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\FileDescriptorSet;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\MessageBuilderContext;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\EnumBuilderContext;
 class DescriptorPool
 {
     private static $pool;

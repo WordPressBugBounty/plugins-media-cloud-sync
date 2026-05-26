@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Type;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type;
 
 /**
  * NumberInterface ensures consistency in numeric values returned by ramsey/uuid

@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Upload;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Upload;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\RequestWrapper;
-use Dudlewebs\WPMCS\Google\Cloud\Core\UriTrait;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\RequestWrapper;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\UriTrait;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
 /**
  * Provides a base impementation for uploads.
  */

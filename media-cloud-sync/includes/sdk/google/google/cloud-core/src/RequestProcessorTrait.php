@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core;
 
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
-use Dudlewebs\WPMCS\Google\ApiCore\OperationResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\PagedListResponse;
-use Dudlewebs\WPMCS\Google\ApiCore\ServerStream;
-use Dudlewebs\WPMCS\Google\Cloud\Core\Exception\ServiceException;
-use Dudlewebs\WPMCS\Google\Rpc\BadRequest;
-use Dudlewebs\WPMCS\Google\Rpc\Code;
-use Dudlewebs\WPMCS\Google\Rpc\RetryInfo;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\OperationResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\PagedListResponse;
+use Dudlewebs\WPMCS\GCP\Google\ApiCore\ServerStream;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\BadRequest;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\Code;
+use Dudlewebs\WPMCS\GCP\Google\Rpc\RetryInfo;
 /**
  * @internal
  * Encapsulates shared functionality of classes that need to send

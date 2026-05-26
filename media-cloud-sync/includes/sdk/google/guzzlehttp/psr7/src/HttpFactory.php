@@ -1,20 +1,20 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7;
 
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ServerRequestFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ServerRequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\StreamInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UploadedFileFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UploadedFileInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriFactoryInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\UriInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ServerRequestFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ServerRequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\StreamInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UploadedFileFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UploadedFileInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriFactoryInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\UriInterface;
 /**
  * Implements all of the PSR-17 interfaces.
  *

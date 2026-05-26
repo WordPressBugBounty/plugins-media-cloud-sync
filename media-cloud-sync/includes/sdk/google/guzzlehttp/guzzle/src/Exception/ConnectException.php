@@ -1,9 +1,9 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Exception;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception;
 
-use Dudlewebs\WPMCS\Psr\Http\Client\NetworkExceptionInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Client\NetworkExceptionInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
 /**
  * Exception thrown when a connection cannot be established.
  *

@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Logging;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Logging;
 
-use Dudlewebs\WPMCS\Psr\Log\LogLevel;
+use Dudlewebs\WPMCS\GCP\Psr\Log\LogLevel;
 /**
  * A trait used to call a PSR-3 logging interface.
  *

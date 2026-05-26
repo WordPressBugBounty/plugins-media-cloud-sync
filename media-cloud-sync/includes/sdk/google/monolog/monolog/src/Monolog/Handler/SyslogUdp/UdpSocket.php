@@ -9,9 +9,9 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler\SyslogUdp;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler\SyslogUdp;
 
-use Dudlewebs\WPMCS\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
 use Socket;
 class UdpSocket
 {

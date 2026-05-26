@@ -1,12 +1,12 @@
 <?php
 
-namespace Dudlewebs\WPMCS\GuzzleHttp\Exception;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Exception;
 
-use Dudlewebs\WPMCS\GuzzleHttp\BodySummarizer;
-use Dudlewebs\WPMCS\GuzzleHttp\BodySummarizerInterface;
-use Dudlewebs\WPMCS\Psr\Http\Client\RequestExceptionInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\RequestInterface;
-use Dudlewebs\WPMCS\Psr\Http\Message\ResponseInterface;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\BodySummarizer;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\BodySummarizerInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Client\RequestExceptionInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\RequestInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Http\Message\ResponseInterface;
 /**
  * HTTP Request exception
  */
@@ -65,7 +65,7 @@ class RequestException extends TransferException implements RequestExceptionInte
             $label = 'Unsuccessful request';
             $className = __CLASS__;
         }
-        $uri = \Dudlewebs\WPMCS\GuzzleHttp\Psr7\Utils::redactUserInfo($request->getUri());
+        $uri = \Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Utils::redactUserInfo($request->getUri());
         // Client Error: `GET /` resulted in a `404 Not Found` response:
         // <html> ... (truncated)
         $message = \sprintf('%s: `%s %s` resulted in a `%s %s` response', $label, $request->getMethod(), $uri->__toString(), $response->getStatusCode(), $response->getReasonPhrase());

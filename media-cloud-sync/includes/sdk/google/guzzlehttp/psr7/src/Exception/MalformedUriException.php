@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\GuzzleHttp\Psr7\Exception;
+namespace Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Exception;
 
 use InvalidArgumentException;
 /**

@@ -10,7 +10,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time;
 
 /**
  * @deprecated DegradedTimeConverter is no longer necessary for converting time on 32-bit systems. Please transition to

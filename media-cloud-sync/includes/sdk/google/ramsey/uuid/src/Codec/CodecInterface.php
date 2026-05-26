@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Codec;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 /**
  * A codec encodes and decodes a UUID according to defined rules
  *

@@ -15,24 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
-use Dudlewebs\WPMCS\Google\Auth\CredentialSource\AwsNativeSource;
-use Dudlewebs\WPMCS\Google\Auth\CredentialSource\ExecutableSource;
-use Dudlewebs\WPMCS\Google\Auth\CredentialSource\FileSource;
-use Dudlewebs\WPMCS\Google\Auth\CredentialSource\UrlSource;
-use Dudlewebs\WPMCS\Google\Auth\ExecutableHandler\ExecutableHandler;
-use Dudlewebs\WPMCS\Google\Auth\ExternalAccountCredentialSourceInterface;
-use Dudlewebs\WPMCS\Google\Auth\FetchAuthTokenInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetQuotaProjectInterface;
-use Dudlewebs\WPMCS\Google\Auth\GetUniverseDomainInterface;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpClientCache;
-use Dudlewebs\WPMCS\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Dudlewebs\WPMCS\Google\Auth\OAuth2;
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Auth\UpdateMetadataInterface;
-use Dudlewebs\WPMCS\Google\Auth\UpdateMetadataTrait;
-use Dudlewebs\WPMCS\GuzzleHttp\Psr7\Request;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource\AwsNativeSource;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource\ExecutableSource;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource\FileSource;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialSource\UrlSource;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExecutableHandler\ExecutableHandler;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ExternalAccountCredentialSourceInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\FetchAuthTokenInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetQuotaProjectInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\GetUniverseDomainInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpClientCache;
+use Dudlewebs\WPMCS\GCP\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Dudlewebs\WPMCS\GCP\Google\Auth\OAuth2;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\UpdateMetadataInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\UpdateMetadataTrait;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 /**
  * **IMPORTANT**:

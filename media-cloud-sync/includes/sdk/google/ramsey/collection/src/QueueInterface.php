@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\Exception\NoSuchElementException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\Exception\NoSuchElementException;
 use RuntimeException;
 /**
  * A queue is a collection in which the entities in the collection are kept in

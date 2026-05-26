@@ -10,15 +10,15 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Builder;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Builder;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Codec\CodecInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\TimeConverterInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\DegradedUuid;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\Fields as Rfc4122Fields;
-use Dudlewebs\WPMCS\Ramsey\Uuid\UuidInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Codec\CodecInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\TimeConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\DegradedUuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\Fields as Rfc4122Fields;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\UuidInterface;
 /**
  * @deprecated DegradedUuid instances are no longer necessary to support 32-bit systems. Please transition to {@see DefaultUuidBuilder}.
  *

@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Grpc;
 
 /**
  * Represents an active call that allows for sending and receiving messages

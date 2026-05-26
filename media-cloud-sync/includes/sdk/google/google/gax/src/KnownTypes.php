@@ -30,7 +30,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
 /**
  * @internal
@@ -42,8 +42,8 @@ class KnownTypes
     public const GRPC_TYPES = self::BIN_TYPES;
     /** @deprecated use TYPE_URLS instead */
     public const JSON_TYPES = self::TYPE_URLS;
-    public const BIN_TYPES = ['google.rpc.retryinfo-bin' => \Dudlewebs\WPMCS\Google\Rpc\RetryInfo::class, 'google.rpc.debuginfo-bin' => \Dudlewebs\WPMCS\Google\Rpc\DebugInfo::class, 'google.rpc.quotafailure-bin' => \Dudlewebs\WPMCS\Google\Rpc\QuotaFailure::class, 'google.rpc.badrequest-bin' => \Dudlewebs\WPMCS\Google\Rpc\BadRequest::class, 'google.rpc.requestinfo-bin' => \Dudlewebs\WPMCS\Google\Rpc\RequestInfo::class, 'google.rpc.resourceinfo-bin' => \Dudlewebs\WPMCS\Google\Rpc\ResourceInfo::class, 'google.rpc.errorinfo-bin' => \Dudlewebs\WPMCS\Google\Rpc\ErrorInfo::class, 'google.rpc.help-bin' => \Dudlewebs\WPMCS\Google\Rpc\Help::class, 'google.rpc.localizedmessage-bin' => \Dudlewebs\WPMCS\Google\Rpc\LocalizedMessage::class, 'google.rpc.preconditionfailure-bin' => \Dudlewebs\WPMCS\Google\Rpc\PreconditionFailure::class];
-    public const TYPE_URLS = ['type.googleapis.com/google.rpc.RetryInfo' => \Dudlewebs\WPMCS\Google\Rpc\RetryInfo::class, 'type.googleapis.com/google.rpc.DebugInfo' => \Dudlewebs\WPMCS\Google\Rpc\DebugInfo::class, 'type.googleapis.com/google.rpc.QuotaFailure' => \Dudlewebs\WPMCS\Google\Rpc\QuotaFailure::class, 'type.googleapis.com/google.rpc.BadRequest' => \Dudlewebs\WPMCS\Google\Rpc\BadRequest::class, 'type.googleapis.com/google.rpc.RequestInfo' => \Dudlewebs\WPMCS\Google\Rpc\RequestInfo::class, 'type.googleapis.com/google.rpc.ResourceInfo' => \Dudlewebs\WPMCS\Google\Rpc\ResourceInfo::class, 'type.googleapis.com/google.rpc.ErrorInfo' => \Dudlewebs\WPMCS\Google\Rpc\ErrorInfo::class, 'type.googleapis.com/google.rpc.Help' => \Dudlewebs\WPMCS\Google\Rpc\Help::class, 'type.googleapis.com/google.rpc.LocalizedMessage' => \Dudlewebs\WPMCS\Google\Rpc\LocalizedMessage::class, 'type.googleapis.com/google.rpc.PreconditionFailure' => \Dudlewebs\WPMCS\Google\Rpc\PreconditionFailure::class];
+    public const BIN_TYPES = ['google.rpc.retryinfo-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\RetryInfo::class, 'google.rpc.debuginfo-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\DebugInfo::class, 'google.rpc.quotafailure-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\QuotaFailure::class, 'google.rpc.badrequest-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\BadRequest::class, 'google.rpc.requestinfo-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\RequestInfo::class, 'google.rpc.resourceinfo-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\ResourceInfo::class, 'google.rpc.errorinfo-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\ErrorInfo::class, 'google.rpc.help-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\Help::class, 'google.rpc.localizedmessage-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\LocalizedMessage::class, 'google.rpc.preconditionfailure-bin' => \Dudlewebs\WPMCS\GCP\Google\Rpc\PreconditionFailure::class];
+    public const TYPE_URLS = ['type.googleapis.com/google.rpc.RetryInfo' => \Dudlewebs\WPMCS\GCP\Google\Rpc\RetryInfo::class, 'type.googleapis.com/google.rpc.DebugInfo' => \Dudlewebs\WPMCS\GCP\Google\Rpc\DebugInfo::class, 'type.googleapis.com/google.rpc.QuotaFailure' => \Dudlewebs\WPMCS\GCP\Google\Rpc\QuotaFailure::class, 'type.googleapis.com/google.rpc.BadRequest' => \Dudlewebs\WPMCS\GCP\Google\Rpc\BadRequest::class, 'type.googleapis.com/google.rpc.RequestInfo' => \Dudlewebs\WPMCS\GCP\Google\Rpc\RequestInfo::class, 'type.googleapis.com/google.rpc.ResourceInfo' => \Dudlewebs\WPMCS\GCP\Google\Rpc\ResourceInfo::class, 'type.googleapis.com/google.rpc.ErrorInfo' => \Dudlewebs\WPMCS\GCP\Google\Rpc\ErrorInfo::class, 'type.googleapis.com/google.rpc.Help' => \Dudlewebs\WPMCS\GCP\Google\Rpc\Help::class, 'type.googleapis.com/google.rpc.LocalizedMessage' => \Dudlewebs\WPMCS\GCP\Google\Rpc\LocalizedMessage::class, 'type.googleapis.com/google.rpc.PreconditionFailure' => \Dudlewebs\WPMCS\GCP\Google\Rpc\PreconditionFailure::class];
     public static function allKnownTypes() : array
     {
         return \array_values(self::TYPE_URLS);
@@ -54,7 +54,7 @@ class KnownTypes
             return;
         }
         // adds all the above protobuf classes to the descriptor pool
-        \Dudlewebs\WPMCS\GPBMetadata\Google\Rpc\ErrorDetails::initOnce();
+        \Dudlewebs\WPMCS\GCP\GPBMetadata\Google\Rpc\ErrorDetails::initOnce();
         self::$initialized = \true;
     }
 }

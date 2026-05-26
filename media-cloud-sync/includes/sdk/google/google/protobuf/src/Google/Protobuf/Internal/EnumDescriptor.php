@@ -1,8 +1,8 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Google\Protobuf\Internal;
+namespace Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal;
 
-use Dudlewebs\WPMCS\Google\Protobuf\EnumValueDescriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\EnumValueDescriptor;
 class EnumDescriptor
 {
     use HasPublicDescriptorTrait;
@@ -14,7 +14,7 @@ class EnumDescriptor
     private $value_descriptor = [];
     public function __construct()
     {
-        $this->public_desc = new \Dudlewebs\WPMCS\Google\Protobuf\EnumDescriptor($this);
+        $this->public_desc = new \Dudlewebs\WPMCS\GCP\Google\Protobuf\EnumDescriptor($this);
     }
     public function setFullName($full_name)
     {

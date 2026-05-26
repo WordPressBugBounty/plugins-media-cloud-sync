@@ -9,17 +9,17 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Formatter\LineFormatter;
-use Dudlewebs\WPMCS\Monolog\Formatter\FormatterInterface;
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Monolog\Utils;
-use Dudlewebs\WPMCS\PhpConsole\Connector;
-use Dudlewebs\WPMCS\PhpConsole\Handler as VendorPhpConsoleHandler;
-use Dudlewebs\WPMCS\PhpConsole\Helper;
-use Dudlewebs\WPMCS\Monolog\LogRecord;
-use Dudlewebs\WPMCS\PhpConsole\Storage;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\LineFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\FormatterInterface;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Monolog\Utils;
+use Dudlewebs\WPMCS\GCP\PhpConsole\Connector;
+use Dudlewebs\WPMCS\GCP\PhpConsole\Handler as VendorPhpConsoleHandler;
+use Dudlewebs\WPMCS\GCP\PhpConsole\Helper;
+use Dudlewebs\WPMCS\GCP\Monolog\LogRecord;
+use Dudlewebs\WPMCS\GCP\PhpConsole\Storage;
 /**
  * Monolog handler for Google Chrome extension "PHP Console"
  *
@@ -93,7 +93,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
     private array $options = [
         'enabled' => \true,
         // bool Is PHP Console server enabled
-        'classesPartialsTraceIgnore' => ['Monolog\\'],
+        'classesPartialsTraceIgnore' => ['Dudlewebs\\WPMCS\\GCP\\Monolog\\'],
         // array Hide calls of classes started with...
         'debugTagsKeysInContext' => [0, 'tag'],
         // bool Is PHP Console server enabled
@@ -140,7 +140,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
      */
     public function __construct(array $options = [], ?Connector $connector = null, int|string|Level $level = Level::Debug, bool $bubble = \true)
     {
-        if (!\class_exists('Dudlewebs\\WPMCS\\PhpConsole\\Connector')) {
+        if (!\class_exists('Dudlewebs\\WPMCS\\GCP\\PhpConsole\\Connector')) {
             throw new \RuntimeException('PHP Console library not found. See https://github.com/barbushin/php-console#installation');
         }
         parent::__construct($level, $bubble);

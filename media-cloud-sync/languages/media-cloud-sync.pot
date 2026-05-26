@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Media Cloud Sync 1.3.9\n"
+"Project-Id-Version: Media Cloud Sync 1.3.10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/media-cloud-sync\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-10T09:55:29+00:00\n"
+"POT-Creation-Date: 2026-05-26T17:55:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: media-cloud-sync\n"
@@ -744,21 +744,21 @@ msgstr ""
 msgid "Access :"
 msgstr ""
 
-#: includes/main.php:158
-#: includes/main.php:171
-msgid "Something went wrong."
-msgstr ""
-
-#. translators: %s: PHP version.
-#: media-cloud-sync.php:79
+#. translators: 1: Plugin name, 2: PHP version.
+#: includes/main.php:79
 #, php-format
 msgid "%1$s requires PHP version %2$s+, plugin is currently not running."
 msgstr ""
 
-#. translators: %s: WordPress version.
-#: media-cloud-sync.php:95
+#. translators: 1: Plugin name, 2: WordPress version.
+#: includes/main.php:91
 #, php-format
 msgid "%1$s requires WordPress version %2$s+. Because you are using an earlier version, the plugin is currently not running."
+msgstr ""
+
+#: includes/main.php:204
+#: includes/main.php:217
+msgid "Something went wrong."
 msgstr ""
 
 #: app/src/components/Buttons/index.jsx:9

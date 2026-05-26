@@ -30,14 +30,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Dudlewebs\WPMCS\Google\ApiCore;
+namespace Dudlewebs\WPMCS\GCP\Google\ApiCore;
 
 use Exception;
-use Dudlewebs\WPMCS\Google\Protobuf\Any;
-use Dudlewebs\WPMCS\Google\Protobuf\Descriptor;
-use Dudlewebs\WPMCS\Google\Protobuf\DescriptorPool;
-use Dudlewebs\WPMCS\Google\Protobuf\FieldDescriptor;
-use Dudlewebs\WPMCS\Google\Protobuf\Internal\Message;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Any;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Descriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\DescriptorPool;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\FieldDescriptor;
+use Dudlewebs\WPMCS\GCP\Google\Protobuf\Internal\Message;
 use RuntimeException;
 /**
  * Collection of methods to help with serialization of protobuf objects
@@ -157,7 +157,7 @@ class Serializer
         $result = [];
         // If metadata contains a "status" bin, use that instead
         if (isset($metadata['grpc-status-details-bin'])) {
-            $status = new \Dudlewebs\WPMCS\Google\Rpc\Status();
+            $status = new \Dudlewebs\WPMCS\GCP\Google\Rpc\Status();
             $status->mergeFromString($metadata['grpc-status-details-bin'][0]);
             foreach ($status->getDetails() as $any) {
                 if (isset(KnownTypes::TYPE_URLS[$any->getTypeUrl()])) {
@@ -226,7 +226,7 @@ class Serializer
                 /** @var Message $unpacked */
                 $unpacked = $any->unpack();
                 $results[] = self::serializeToPhpArray($unpacked);
-            } catch (\Throwable $ex) {
+            } catch (\Exception $ex) {
                 // failed to unpack the $any object - show as unknown binary data
                 $results[] = ['typeUrl' => $any->getTypeUrl(), 'value' => '<Unknown Binary Data>'];
             }
@@ -414,13 +414,7 @@ class Serializer
      */
     private function checkFieldRepeated(FieldDescriptor $field) : bool
     {
-        if (\method_exists($field, 'isRepeated')) {
-            return $field->isRepeated();
-        }
-        if (\method_exists($field, 'getLabel')) {
-            return $field->getLabel() === GPBLabel::REPEATED;
-        }
-        throw new \Exception('No field repeated method avaialble');
+        return \method_exists($field, 'isRepeated') ? $field->isRepeated() : $field->getLabel() === GPBLabel::REPEATED;
     }
     /**
      * @param string $name

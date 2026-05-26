@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth;
 
-use Dudlewebs\WPMCS\phpseclib3\Crypt\PublicKeyLoader;
-use Dudlewebs\WPMCS\phpseclib3\Crypt\RSA;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Crypt\PublicKeyLoader;
+use Dudlewebs\WPMCS\GCP\phpseclib3\Crypt\RSA;
 /**
  * Sign a string using a Service Account private key.
  */

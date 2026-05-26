@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Collection\Map;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Collection\Map;
 
-use Dudlewebs\WPMCS\Ramsey\Collection\ArrayInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Collection\ArrayInterface;
 /**
  * An object that maps keys to values.
  *

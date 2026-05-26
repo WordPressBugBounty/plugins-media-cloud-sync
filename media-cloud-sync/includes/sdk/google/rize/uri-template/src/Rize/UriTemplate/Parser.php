@@ -1,11 +1,11 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Rize\UriTemplate;
+namespace Dudlewebs\WPMCS\GCP\Rize\UriTemplate;
 
-use Dudlewebs\WPMCS\Rize\UriTemplate\Node\Abstraction;
-use Dudlewebs\WPMCS\Rize\UriTemplate\Node\Expression;
-use Dudlewebs\WPMCS\Rize\UriTemplate\Node\Variable;
-use Dudlewebs\WPMCS\Rize\UriTemplate\Operator\UnNamed;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node\Abstraction;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node\Expression;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Node\Variable;
+use Dudlewebs\WPMCS\GCP\Rize\UriTemplate\Operator\UnNamed;
 class Parser
 {
     private const REGEX_VARNAME = '[A-z0-9.]|%[0-9a-fA-F]{2}';

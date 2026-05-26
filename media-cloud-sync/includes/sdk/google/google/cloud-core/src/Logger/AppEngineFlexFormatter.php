@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Logger;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Logger;
 
-use Dudlewebs\WPMCS\Monolog\Formatter\LineFormatter;
+use Dudlewebs\WPMCS\GCP\Monolog\Formatter\LineFormatter;
 /**
  * Monolog 1.x formatter for formatting logs on App Engine flexible environment.
  *

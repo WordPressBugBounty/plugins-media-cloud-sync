@@ -1,10 +1,10 @@
 <?php
 
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Brick\Math\Internal\Calculator;
+namespace Dudlewebs\WPMCS\GCP\Brick\Math\Internal\Calculator;
 
-use Dudlewebs\WPMCS\Brick\Math\Internal\Calculator;
-use Dudlewebs\WPMCS\Override;
+use Dudlewebs\WPMCS\GCP\Brick\Math\Internal\Calculator;
+use Dudlewebs\WPMCS\GCP\Override;
 /**
  * Calculator implementation built around the bcmath library.
  *

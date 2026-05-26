@@ -23,16 +23,16 @@ php env does not have libsodium installed:
 composer require paragonie/sodium_compat
 ```
 
-## Example
-
+Example
+-------
 ```php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-$key = 'example_key_of_sufficient_length';
+$key = 'example_key';
 $payload = [
-    'iss' => 'example.org',
-    'aud' => 'example.com',
+    'iss' => 'http://example.org',
+    'aud' => 'http://example.com',
     'iat' => 1356999524,
     'nbf' => 1357000000
 ];
@@ -69,9 +69,8 @@ $decoded_array = (array) $decoded;
 JWT::$leeway = 60; // $leeway in seconds
 $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 ```
-
-## Example encode/decode headers
-
+Example encode/decode headers
+-------
 Decoding the JWT headers without verifying the JWT first is NOT recommended, and is not supported by
 this library. This is because without verifying the JWT, the header values could have been tampered with.
 Any value pulled from an unverified header should be treated as if it could be any string sent in from an
@@ -81,10 +80,10 @@ header part:
 ```php
 use Firebase\JWT\JWT;
 
-$key = 'example_key_of_sufficient_length';
+$key = 'example_key';
 $payload = [
-    'iss' => 'example.org',
-    'aud' => 'example.com',
+    'iss' => 'http://example.org',
+    'aud' => 'http://example.com',
     'iat' => 1356999524,
     'nbf' => 1357000000
 ];
@@ -104,9 +103,8 @@ $decoded = json_decode(base64_decode($headersB64), true);
 
 print_r($decoded);
 ```
-
-## Example with RS256 (openssl)
-
+Example with RS256 (openssl)
+----------------------------
 ```php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -174,7 +172,8 @@ $decoded_array = (array) $decoded;
 echo "Decode:\n" . print_r($decoded_array, true) . "\n";
 ```
 
-## Example with a passphrase
+Example with a passphrase
+-------------------------
 
 ```php
 use Firebase\JWT\JWT;
@@ -210,8 +209,8 @@ $decoded = JWT::decode($jwt, new Key($publicKey, 'RS256'));
 echo "Decode:\n" . print_r((array) $decoded, true) . "\n";
 ```
 
-## Example with EdDSA (libsodium and Ed25519 signature)
-
+Example with EdDSA (libsodium and Ed25519 signature)
+----------------------------
 ```php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -239,21 +238,21 @@ echo "Encode:\n" . print_r($jwt, true) . "\n";
 
 $decoded = JWT::decode($jwt, new Key($publicKey, 'EdDSA'));
 echo "Decode:\n" . print_r((array) $decoded, true) . "\n";
-```
+````
 
-## Example with multiple keys
-
+Example with multiple keys
+--------------------------
 ```php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 // Example RSA keys from previous example
-// $privateRsKey = '...';
-// $publicRsKey = '...';
+// $privateKey1 = '...';
+// $publicKey1 = '...';
 
 // Example EdDSA keys from previous example
-// $privateEcKey = '...';
-// $publicEcKey = '...';
+// $privateKey2 = '...';
+// $publicKey2 = '...';
 
 $payload = [
     'iss' => 'example.org',
@@ -262,14 +261,14 @@ $payload = [
     'nbf' => 1357000000
 ];
 
-$jwt1 = JWT::encode($payload, $privateRsKey, 'RS256', 'kid1');
-$jwt2 = JWT::encode($payload, $privateEcKey, 'EdDSA', 'kid2');
+$jwt1 = JWT::encode($payload, $privateKey1, 'RS256', 'kid1');
+$jwt2 = JWT::encode($payload, $privateKey2, 'EdDSA', 'kid2');
 echo "Encode 1:\n" . print_r($jwt1, true) . "\n";
 echo "Encode 2:\n" . print_r($jwt2, true) . "\n";
 
 $keys = [
-    'kid1' => new Key($publicRsKey, 'RS256'),
-    'kid2' => new Key($publicEcKey, 'EdDSA'),
+    'kid1' => new Key($publicKey1, 'RS256'),
+    'kid2' => new Key($publicKey2, 'EdDSA'),
 ];
 
 $decoded1 = JWT::decode($jwt1, $keys);
@@ -279,7 +278,8 @@ echo "Decode 1:\n" . print_r((array) $decoded1, true) . "\n";
 echo "Decode 2:\n" . print_r((array) $decoded2, true) . "\n";
 ```
 
-## Using JWKs
+Using JWKs
+----------
 
 ```php
 use Firebase\JWT\JWK;
@@ -291,11 +291,11 @@ $jwks = ['keys' => []];
 
 // JWK::parseKeySet($jwks) returns an associative array of **kid** to Firebase\JWT\Key
 // objects. Pass this as the second parameter to JWT::decode.
-$decoded = JWT::decode($jwt, JWK::parseKeySet($jwks));
-print_r($decoded);
+JWT::decode($jwt, JWK::parseKeySet($jwks));
 ```
 
-## Using Cached Key Sets
+Using Cached Key Sets
+---------------------
 
 The `CachedKeySet` class can be used to fetch and cache JWKS (JSON Web Key Sets) from a public URI.
 This has the following advantages:
@@ -315,7 +315,7 @@ $jwksUri = 'https://www.gstatic.com/iap/verify/public_key-jwk';
 $httpClient = new GuzzleHttp\Client();
 
 // Create an HTTP request factory (can be any PSR-17 compatible HTTP request factory)
-$httpFactory = new GuzzleHttp\Psr7\HttpFactory();
+$httpFactory = new GuzzleHttp\Psr\HttpFactory();
 
 // Create a cache item pool (can be any PSR-6 compatible cache item pool)
 $cacheItemPool = Phpfastcache\CacheManager::getInstance('files');
@@ -406,8 +406,8 @@ Tests
 Run the tests using phpunit:
 
 ```bash
-$ composer update
-$ vendor/bin/phpunit -c phpunit.xml.dist
+$ pear install PHPUnit
+$ phpunit --configuration phpunit.xml.dist
 PHPUnit 3.7.10 by Sebastian Bergmann.
 .....
 Time: 0 seconds, Memory: 2.50Mb

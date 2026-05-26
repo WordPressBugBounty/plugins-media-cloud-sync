@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122\UuidV2;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Integer as IntegerObject;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122\UuidV2;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Integer as IntegerObject;
 /**
  * A DCE provider provides access to local domain identifiers for version 2, DCE Security, UUIDs
  *

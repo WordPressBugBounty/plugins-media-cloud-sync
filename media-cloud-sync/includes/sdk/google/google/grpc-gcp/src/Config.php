@@ -17,9 +17,9 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc\Gcp;
+namespace Dudlewebs\WPMCS\GCP\Grpc\Gcp;
 
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemPoolInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemPoolInterface;
 /**
  * Config is used to enable the support for the channel management.
  */
@@ -40,7 +40,7 @@ class Config
     {
         if ($conf == null) {
             // If there is no configure file, use the default gRPC channel.
-            $this->gcp_call_invoker = new \Dudlewebs\WPMCS\Grpc\DefaultCallInvoker();
+            $this->gcp_call_invoker = new \Dudlewebs\WPMCS\GCP\Grpc\DefaultCallInvoker();
             return;
         }
         $gcp_channel = null;

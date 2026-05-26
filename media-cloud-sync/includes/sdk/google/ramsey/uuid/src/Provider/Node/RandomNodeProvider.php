@@ -10,11 +10,11 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Provider\Node;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\Node;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Exception\RandomSourceException;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Provider\NodeProviderInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Type\Hexadecimal;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Exception\RandomSourceException;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Provider\NodeProviderInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Type\Hexadecimal;
 use Throwable;
 use function bin2hex;
 use function dechex;

@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Cache;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Cache;
 
-use Dudlewebs\WPMCS\Psr\Cache\CacheItemInterface;
+use Dudlewebs\WPMCS\GCP\Psr\Cache\CacheItemInterface;
 /**
  * A cache item.
  *

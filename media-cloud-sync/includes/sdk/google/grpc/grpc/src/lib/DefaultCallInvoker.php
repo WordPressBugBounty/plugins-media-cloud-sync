@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-namespace Dudlewebs\WPMCS\Grpc;
+namespace Dudlewebs\WPMCS\GCP\Grpc;
 
 /**
  * Default call invoker in the gRPC stub.

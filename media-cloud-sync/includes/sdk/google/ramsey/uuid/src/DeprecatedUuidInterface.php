@@ -10,10 +10,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid;
 
 use DateTimeInterface;
-use Dudlewebs\WPMCS\Ramsey\Uuid\Converter\NumberConverterInterface;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Converter\NumberConverterInterface;
 /**
  * This interface encapsulates deprecated methods for ramsey/uuid
  *

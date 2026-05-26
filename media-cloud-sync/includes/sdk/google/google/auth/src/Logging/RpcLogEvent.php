@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Logging;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Logging;
 
 /**
  * A class that contains all the required information for logging.

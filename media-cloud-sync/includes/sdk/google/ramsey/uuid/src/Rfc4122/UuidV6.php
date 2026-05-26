@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Rfc4122;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Rfc4122;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Nonstandard\UuidV6 as NonstandardUuidV6;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Nonstandard\UuidV6 as NonstandardUuidV6;
 /**
  * Reordered Gregorian time, or version 6, UUIDs include timestamp, clock sequence, and node values that are combined
  * into a 128-bit unsigned integer

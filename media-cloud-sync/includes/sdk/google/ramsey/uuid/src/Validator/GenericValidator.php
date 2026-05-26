@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 declare (strict_types=1);
-namespace Dudlewebs\WPMCS\Ramsey\Uuid\Validator;
+namespace Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Validator;
 
-use Dudlewebs\WPMCS\Ramsey\Uuid\Uuid;
+use Dudlewebs\WPMCS\GCP\Ramsey\Uuid\Uuid;
 use function preg_match;
 use function str_replace;
 /**

@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Auth\Credentials;
+namespace Dudlewebs\WPMCS\GCP\Google\Auth\Credentials;
 
 /*
  * The AppIdentityService class is automatically defined on App Engine,
  * so including this dependency is not necessary, and will result in a
  * PHP fatal error in the App Engine environment.
  */
-use Dudlewebs\WPMCS\google\appengine\api\app_identity\AppIdentityService;
-use Dudlewebs\WPMCS\Google\Auth\CredentialsLoader;
-use Dudlewebs\WPMCS\Google\Auth\ProjectIdProviderInterface;
-use Dudlewebs\WPMCS\Google\Auth\SignBlobInterface;
+use Dudlewebs\WPMCS\GCP\google\appengine\api\app_identity\AppIdentityService;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
+use Dudlewebs\WPMCS\GCP\Google\Auth\ProjectIdProviderInterface;
+use Dudlewebs\WPMCS\GCP\Google\Auth\SignBlobInterface;
 /**
  * @deprecated
  *
@@ -202,7 +202,7 @@ class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterf
      */
     private function checkAppEngineContext()
     {
-        if (!self::onAppEngine() || !\class_exists('Dudlewebs\\WPMCS\\google\\appengine\\api\\app_identity\\AppIdentityService')) {
+        if (!self::onAppEngine() || !\class_exists('Dudlewebs\\WPMCS\\GCP\\google\\appengine\\api\\app_identity\\AppIdentityService')) {
             throw new \Exception('This class must be run in App Engine, or you must include the AppIdentityService ' . 'mock class defined in tests/mocks/AppIdentityService.php');
         }
     }

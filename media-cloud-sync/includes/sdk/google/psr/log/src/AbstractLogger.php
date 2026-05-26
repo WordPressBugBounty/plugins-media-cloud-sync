@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS\Psr\Log;
+namespace Dudlewebs\WPMCS\GCP\Psr\Log;
 
 /**
  * This is a simple Logger implementation that other Loggers can inherit from.

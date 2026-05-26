@@ -9,11 +9,11 @@ declare (strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Dudlewebs\WPMCS\Monolog\Handler;
+namespace Dudlewebs\WPMCS\GCP\Monolog\Handler;
 
-use Dudlewebs\WPMCS\Monolog\Level;
-use Dudlewebs\WPMCS\Swift;
-use Dudlewebs\WPMCS\Swift_Message;
+use Dudlewebs\WPMCS\GCP\Monolog\Level;
+use Dudlewebs\WPMCS\GCP\Swift;
+use Dudlewebs\WPMCS\GCP\Swift_Message;
 /**
  * MandrillHandler uses cURL to send the emails to the Mandrill API
  *

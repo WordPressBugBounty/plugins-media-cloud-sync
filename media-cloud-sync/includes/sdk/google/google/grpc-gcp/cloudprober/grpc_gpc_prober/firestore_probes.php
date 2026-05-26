@@ -1,6 +1,6 @@
 <?php
 
-namespace Dudlewebs\WPMCS;
+namespace Dudlewebs\WPMCS\GCP;
 
 require '../vendor/autoload.php';
 $_PARENT_RESOURCE = 'projects/grpc-prober-testing/databases/(default)/documents';

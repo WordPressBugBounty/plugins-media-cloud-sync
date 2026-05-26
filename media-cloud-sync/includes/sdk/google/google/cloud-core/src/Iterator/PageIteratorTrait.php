@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Dudlewebs\WPMCS\Google\Cloud\Core\Iterator;
+namespace Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Iterator;
 
-use Dudlewebs\WPMCS\Google\Cloud\Core\ArrayTrait;
+use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\ArrayTrait;
 /**
  * This trait fulfills the
  * [\Iterator](http://php.net/manual/en/class.iterator.php) interface and
