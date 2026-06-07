@@ -6,9 +6,9 @@ Donate link: https://dudlewebs.com/donate
 Tags: sync, cloud, offload, media, aws
 License: GPLv2 or later
 Requires PHP: 8.1
-Requires at least: 5.2
+Requires at least: 5.9
 Tested up to: 7.0
-Stable tag: 1.3.10
+Stable tag: 1.3.11
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -141,6 +141,12 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.3.11 =
+* Feature: wp-config.php credentials support (WPMCS_CONFIG).
+* Feature: Connection status checks for storage and CDN.
+* Bug Fix: Redis Object Cache and object cache compatibility.
+* Bug Fix: Settings page and wp-config credential handling.
+* Compatibility: WordPress 5.9+ and PHP 8.1+.
 = 1.3.10 =
 * Bug Fix: Version not supported issue on google SDK.
 * Tweek: PHP compatibility restriction updated.

@@ -39,6 +39,10 @@ class Compatibility {
     }
 
     public function init() {
+        if(!Utils::is_service_enabled()) {
+            return;
+        }
+
         /*
          * Image Editor Handler
          * /wp-admin/includes/image-edit.php

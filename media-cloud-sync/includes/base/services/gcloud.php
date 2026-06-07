@@ -486,7 +486,6 @@ class GCloud {
         ];
         if (empty($this->gcloudClient) || empty($this->bucket_name)) {
             $result['message'] = esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return [
                 'message' => $result['message'],
                 'code'    => 200,
@@ -517,7 +516,6 @@ class GCloud {
                 if (!$this->exists($object_key)) {
                     $result['status'] = false;
                     $result['message'] = esc_html__('Failed to create an object for read permission check, please check service configuration', 'media-cloud-sync');
-                    Utils::set_status('cdnRead', $result);
                     return [
                         'message' => $result['message'],
                         'code'    => 200,
@@ -552,7 +550,6 @@ class GCloud {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Objects are not accessible to read', 'media-cloud-sync');
             }
-            Utils::set_status('cdnRead', $result);
             $this->deleteSingle($object_key);
             return [
                 'message' => $result['message'],
@@ -562,11 +559,9 @@ class GCloud {
             ];
         } catch (ServiceException $ex) {
             $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         } catch (Exception $ex) {
             $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         }
     }

@@ -395,7 +395,6 @@ class S3Compatible {
         
         if (empty($this->S3CompatibleClient) || empty($this->bucket_name)) {
             $result['message'] = esc_html__('Invalid Request', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => esc_html__('Invalid Request', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         }
 
@@ -438,7 +437,6 @@ class S3Compatible {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Objects are not accessible to read', 'media-cloud-sync');
             }
-            Utils::set_status('cdnRead', $result);
 
             $this->deleteSingle($object_key);
             return [
@@ -449,15 +447,12 @@ class S3Compatible {
             ];
         } catch (AwsException $ex) {
             $result['message'] = $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => $result['lastChecked']];
         } catch (S3Exception $ex) {
             $result['message'] = $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => $result['lastChecked']];
         } catch (Exception $ex) {
             $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            Utils::set_status('cdnRead', $result);
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => $result['lastChecked'] ];
         }
     }

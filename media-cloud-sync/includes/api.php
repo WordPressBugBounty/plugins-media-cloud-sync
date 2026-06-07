@@ -31,11 +31,12 @@ class Api {
 
 	public function register_routes() {
 		$this->add_route( '/verifyCredentials', 'verifyCredentials', 'POST' );
-		$this->add_route( '/permissions/checkExist', 'verifyBucketExist', 'POST' );
-		$this->add_route( '/permissions/addNewBucket', 'createBucket', 'POST' );
-		$this->add_route( '/permissions/write', 'verifyObjectWrite', 'POST' );
+		$this->add_route( '/bucket/checkExist', 'verifyBucketExist', 'POST' );
+		$this->add_route( '/bucket/addNew', 'createBucket', 'POST' );
+		$this->add_route( '/permissions/status', 'verifyStatus', 'POST' );
+		$this->add_route( '/permissions/write', 'verifyWrite', 'POST' );
 		$this->add_route( '/permissions/delete', 'verifyObjectDelete', 'POST' );
-		$this->add_route( '/permissions/read', 'verifyObjectRead', 'POST' );
+		$this->add_route( '/permissions/read', 'verifyRead', 'POST' );
 
 		$this->add_route( '/security/get_security', 'getBucketSecuritySettings', 'POST' );
 		$this->add_route( '/security/block_public_access', 'changePublicAccess', 'POST' );
@@ -81,12 +82,26 @@ class Api {
 		return new WP_REST_Response( Service::instance()->createBucket($data->get_params()), 200 );
 	}
 
-	
 	/**
-	 * Verify the Bucket Write Permission
+	 * Saved connection status checks (storage, CDN).
+	 * @since 1.3.11
 	 */
-	public function verifyObjectWrite( $data ) {
-		return new WP_REST_Response( Service::instance()->verifyObjectWritePermission($data->get_params()), 200 );
+	public function verifyStatus( $data ) {
+		$params = $data->get_params();
+		$check  = isset( $params['check'] ) ? sanitize_text_field( $params['check'] ) : 'storage';
+		return new WP_REST_Response( Service::instance()->verifyStatus( $check ), 200 );
+	}
+
+	/**
+	 * Verify bucket write permission (configure wizard) or saved storage status (legacy route).
+	 * @since 1.3.11
+	 */
+	public function verifyWrite( $data ) {
+		$params = $data->get_params();
+		if ( !empty( $params['service'] ) ) {
+			return new WP_REST_Response( Service::instance()->verifyObjectWritePermission( $params ), 200 );
+		}
+		return new WP_REST_Response( Service::instance()->verifyStatus( 'storage' ), 200 );
 	}
 
 	/**
@@ -97,10 +112,11 @@ class Api {
 	}
 
 	/**
-	 * Verify the Bucket Read Permission
+	 * Verify delivery read access (legacy route).
+	 * @since 1.3.11
 	 */
-	public function verifyObjectRead( $data ) {
-		return new WP_REST_Response( Service::instance()->verifyObjectReadPermission(), 200 );
+	public function verifyRead( $data ) {
+		return new WP_REST_Response( Service::instance()->verifyStatus( 'cdn' ), 200 );
 	}
 
 	/**
@@ -134,8 +150,10 @@ class Api {
         Counter::fetch_and_update();
 
 		$data = [
-			'credentials'	=> Utils::get_credentials( '', [], true ),
-			'common'		=> [
+			'credentials'		=> Utils::get_credentials( '', [], true ),
+			'serviceEnabled'	=> Utils::is_service_enabled(),
+			'serviceError'		=> Utils::get_service_configuration_error(),
+			'common'			=> [
 				'version'	=> defined('WPMCS_PRO_VERSION') ? WPMCS_PRO_VERSION : WPMCS_VERSION,
 				'counts'	=> [
 					'all'		=> Counter::get_count(),
@@ -168,6 +186,7 @@ class Api {
 		$serviceLabel 	= isset($saveData['serviceLabel']) ? $saveData['serviceLabel'] : '';
 		$cdn			= isset($saveData['cdn']) ? $saveData['cdn'] : [];
 		$config 		= isset($saveData['config']) ? $saveData['config'] : false;
+		$configSource 	= isset($saveData['configSource']) ? $saveData['configSource'] : 'database';
 		$bucketConfig 	= isset($saveData['bucketConfig']) ? $saveData['bucketConfig'] : [];
 		$security 		= isset($saveData['security']) ? $saveData['security'] : [];
 		$settings 		= isset($saveData['settings']) ? $saveData['settings'] : [];
@@ -187,7 +206,9 @@ class Api {
 
 
 		if($action === 'all' || $action === 'service'){
-			if ( $service === false || empty($config) || empty($bucketConfig)) return new WP_REST_Response( $result, 200 );
+			// In 'config' source mode the credentials live in the WPMCS_CONFIG constant,
+			// so an empty config payload is expected and must not block the save.
+			if ( $service === false || ($configSource !== 'config' && empty($config)) || empty($bucketConfig)) return new WP_REST_Response( $result, 200 );
 
 			$updated = Utils::update_option(
 				'credentials', 
@@ -195,7 +216,8 @@ class Api {
 					'service' 		=> $service,
 					'serviceLabel' 	=> $serviceLabel,
 					'cdn'			=> $cdn,
-					'config'		=> $config,
+					'config'		=> $configSource === 'config' ? [] : $config,
+					'configSource'	=> $configSource,
 					'bucketConfig'  => $bucketConfig,
 					'security'		=> $security
 				], 
@@ -209,26 +231,30 @@ class Api {
 					'message'		=> '',
 					'lastChecked'	=> null
 				]);
+				Utils::set_status('storageCredentials', [
+					'status'		=> false,
+					'message'		=> '',
+					'lastChecked'	=> null
+				]);
 			}
 		} 
 		
 		if(($action === 'all' || $action === 'settings')) {
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
-			
-			// Clear content meta cache if settings updated
-			Utils::clear_all_content_meta();
 			if(!$updatedSettings) $settingsOk = false;
 		}
 
-		// If action is all, service or settings, clear caches and update counts
-		if($action === 'all' || $action === 'service' || $action === 'settings') {
-			//clear object cache
+		// Clear plugin caches and refresh counts after any configuration save.
+		if(in_array($action, ['all', 'service', 'settings', 'cdn'], true)) {
+			if($action === 'all' || $action === 'service' || $action === 'settings') {
+				Integration::instance()->clear_all_meta(false);
+			}
+
+			if($action === 'all' || $action === 'settings') {
+				Utils::clear_all_content_meta(false, false);
+			}
+
 			Cache::flush_object_cache();
-			// clear all meta of attachments
-			Integration::instance()->clear_all_meta();
-			// clear all content meta
-			Utils::clear_all_content_meta();
-			// update counts
 			Counter::instance()->fetch_and_update();
 		}
 
@@ -346,6 +372,13 @@ class Api {
 			$result = [
 				'success'	=> false,
 				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+			];
+			return new WP_REST_Response( $result, 200 );
+		}
+		if(!Utils::is_service_enabled()) {
+			$result = [
+				'success'	=> false,
+				'message'	=> Utils::get_service_configuration_error() ?: esc_html__('Storage is not configured correctly.', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}

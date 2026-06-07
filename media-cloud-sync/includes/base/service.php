@@ -58,9 +58,206 @@ class Service {
             ];
             return $result;
         }
-        $config     = isset($data['config']) ? $data['config'] : [];
+
+        $configSource = isset($data['configSource']) ? $data['configSource'] : 'database';
+
+        if($configSource === 'config') {
+            // Credentials are expected from the WPMCS_CONFIG constant in wp-config.php.
+            if(!Utils::is_wp_config_credentials_defined()) {
+                return [
+                    'success' => false,
+                    'message' => esc_html__('WPMCS_CONFIG is not defined in wp-config.php', 'media-cloud-sync')
+                ];
+            }
+
+            $config  = Utils::get_wp_config_credentials();
+            $missing = [];
+            foreach(self::get_required_config_keys($service) as $key) {
+                if(!isset($config[$key]) || $config[$key] === '') {
+                    $missing[] = $key;
+                }
+            }
+            if(!empty($missing)) {
+                return [
+                    'success' => false,
+                    /* translators: %s: comma separated list of missing configuration keys */
+                    'message' => sprintf(esc_html__('WPMCS_CONFIG is missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing))
+                ];
+            }
+        } else {
+            $config = $this->resolve_config($data);
+        }
 
         return $handler_class->verifyCredentials($config);
+    }
+
+    /**
+     * Resolve the credential config for a wizard request.
+     * When the request indicates the 'config' source, credentials are pulled
+     * from the WPMCS_CONFIG constant (wp-config.php) instead of the payload.
+     * @since 1.3.11
+     * @param array $data
+     * @return array
+     */
+    private function resolve_config($data) {
+        $configSource = isset($data['configSource']) ? $data['configSource'] : 'database';
+        if($configSource === 'config') {
+            return Utils::get_wp_config_credentials();
+        }
+        return isset($data['config']) ? $data['config'] : [];
+    }
+
+    /**
+     * Required configuration keys per provider, used to validate the
+     * WPMCS_CONFIG constant before attempting credential verification.
+     * @since 1.3.11
+     * @param string $service
+     * @return array
+     */
+    public static function get_required_config_keys($service) {
+        $required = [
+            's3'           => ['access_key', 'secret_key', 'region'],
+            'gcloud'       => ['config_json'],
+            'docean'       => ['access_key', 'secret_key', 'region'],
+            'cloudflareR2' => ['account_id', 'access_key', 'secret_key'],
+            's3compatible' => ['endpoint', 'access_key', 'secret_key'],
+        ];
+        return isset($required[$service]) ? $required[$service] : [];
+    }
+
+    /**
+     * Persist a connection status result and normalize the response payload.
+     * @since 1.3.11
+     * @param string $status_key
+     * @param array  $result
+     * @return array
+     */
+    private function persist_connection_status($status_key, $result) {
+        $lastChecked = isset($result['lastChecked']) ? $result['lastChecked'] : time();
+        $success     = !empty($result['success']);
+        $message     = isset($result['message']) ? $result['message'] : '';
+
+        Utils::set_status($status_key, [
+            'status'      => $success,
+            'message'     => $message,
+            'lastChecked' => $lastChecked,
+        ]);
+
+        return [
+            'success'     => $success,
+            'message'     => $message,
+            'lastChecked' => $lastChecked,
+        ];
+    }
+
+    /**
+     * Verify saved storage credentials and bucket write access.
+     * @since 1.3.11
+     * @return array
+     */
+    private function run_storage_status_check() {
+        if(!Utils::is_service_enabled()) {
+            return $this->persist_connection_status('storageCredentials', [
+                'success'     => false,
+                'message'     => Utils::get_service_configuration_error(),
+                'lastChecked' => time(),
+            ]);
+        }
+
+        $credentials = Utils::get_credentials();
+        $data = [
+            'service'      => isset($credentials['service']) ? $credentials['service'] : Utils::get_service(),
+            'configSource' => Utils::get_credentials_source(),
+            'config'       => isset($credentials['config']) ? $credentials['config'] : [],
+            'bucketData'   => [
+                'config' => isset($credentials['bucketConfig']) ? $credentials['bucketConfig'] : [],
+            ],
+        ];
+
+        $result = $this->verifyObjectWritePermission($data);
+
+        return $this->persist_connection_status('storageCredentials', $result);
+    }
+
+    /**
+     * Verify CDN / delivery read access using saved credentials.
+     * @since 1.3.11
+     * @return array
+     */
+    private function run_cdn_status_check() {
+        if(!Utils::is_service_enabled()) {
+            return $this->persist_connection_status('cdnRead', [
+                'success'     => false,
+                'message'     => Utils::get_service_configuration_error(),
+                'lastChecked' => time(),
+            ]);
+        }
+
+        if(!$this->service) {
+            return $this->persist_connection_status('cdnRead', [
+                'success'     => false,
+                'message'     => esc_html__('No service selected', 'media-cloud-sync'),
+                'lastChecked' => time(),
+            ]);
+        }
+
+        return $this->persist_connection_status('cdnRead', $this->service->verifyObjectReadPermission());
+    }
+
+    /**
+     * Run one or more saved-connection status checks.
+     * @since 1.3.11
+     * @param string $check storage|cdn|all
+     * @return array
+     */
+    public function verifyStatus($check = 'storage') {
+        $check = is_string($check) ? strtolower($check) : 'storage';
+
+        if($check === 'write') {
+            $check = 'storage';
+        } elseif($check === 'read') {
+            $check = 'cdn';
+        }
+
+        if($check === 'all') {
+            $storage = $this->run_storage_status_check();
+            $cdn     = $this->run_cdn_status_check();
+
+            return [
+                'success' => !empty($storage['success']) && !empty($cdn['success']),
+                'checks'  => [
+                    'storageCredentials' => $storage,
+                    'cdnRead'              => $cdn,
+                ],
+            ];
+        }
+
+        if($check === 'cdn') {
+            return $this->run_cdn_status_check();
+        }
+
+        if($check !== 'storage') {
+            return [
+                'success' => false,
+                'message' => esc_html__('Invalid status check type', 'media-cloud-sync'),
+            ];
+        }
+
+        return $this->run_storage_status_check();
+    }
+
+    /**
+     * @deprecated 1.3.11 Use verifyStatus( 'storage' ).
+     */
+    public function verifyWrite() {
+        return $this->verifyStatus('storage');
+    }
+
+    /**
+     * @deprecated 1.3.11 Use verifyStatus( 'cdn' ).
+     */
+    public function verifyRead() {
+        return $this->verifyStatus('cdn');
     }
 
     /**
@@ -84,7 +281,7 @@ class Service {
             return $result;
         }
 
-        $config                 = isset($data['config']) ? $data['config'] : [];
+        $config                 = $this->resolve_config($data);
         $bucketData             = isset($data['bucketData']) ? $data['bucketData'] : [];
         $bucketConfig           = isset($bucketData['config']) ? $bucketData['config'] : [];
 
@@ -112,7 +309,7 @@ class Service {
             return $result;
         }
         
-        $config                 = isset($data['config']) ? $data['config'] : [];
+        $config                 = $this->resolve_config($data);
         $bucketData             = isset($data['bucketData']) ? $data['bucketData'] : [];
         $bucketAddNewConfig     = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];
 
@@ -140,7 +337,7 @@ class Service {
             return $result;
         }
 
-        $config             = isset($data['config']) ? $data['config'] : [];
+        $config             = $this->resolve_config($data);
         $bucketData         = isset($data['bucketData']) ? $data['bucketData'] : [];
         if(isset($bucketData['addNew']) && $bucketData['addNew']) {
             $bucketConfig   = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];
@@ -173,7 +370,7 @@ class Service {
             return $result;
         }
 
-        $config     = isset($data['config']) ? $data['config'] : [];
+        $config     = $this->resolve_config($data);
         $bucketData = isset($data['bucketData']) ? $data['bucketData'] : [];
         if(isset($bucketData['addNew']) && $bucketData['addNew']) {
             $bucketConfig   = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];
@@ -184,14 +381,6 @@ class Service {
         return $handler_class->verifyObjectDeletePermission( $config, $bucketConfig );
     }
 
-
-    /**
-     * Verify Object read permission
-     * @since 1.0.0
-     */
-    public function verifyObjectReadPermission() {
-        return $this->service->verifyObjectReadPermission();
-    }
 
     /**
      * Get Bucket Security Settings
@@ -221,7 +410,7 @@ class Service {
             return $result;
         }
 
-        $config                 = isset($data['config']) ? $data['config'] : [];
+        $config                 = $this->resolve_config($data);
         $bucketData             = isset($data['bucketData']) ? $data['bucketData'] : [];
         if(isset($bucketData['addNew']) && $bucketData['addNew']) {
             $bucketConfig           = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];
@@ -263,7 +452,7 @@ class Service {
             return $result;
         }
 
-        $config         = isset($data['config']) ? $data['config'] : [];
+        $config         = $this->resolve_config($data);
         $bucketData     = isset($data['bucketData']) ? $data['bucketData'] : [];
         if(isset($bucketData['addNew']) && $bucketData['addNew']) {
             $bucketConfig   = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];
@@ -303,7 +492,7 @@ class Service {
             return $result;
         }
 
-        $config                 = isset($data['config']) ? $data['config'] : [];
+        $config                 = $this->resolve_config($data);
         $bucketData             = isset($data['bucketData']) ? $data['bucketData'] : [];
         if(isset($bucketData['addNew']) && $bucketData['addNew']) {
             $bucketConfig           = isset($bucketData['addNewConfig']) ? $bucketData['addNewConfig'] : [];

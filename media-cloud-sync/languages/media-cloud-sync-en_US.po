@@ -3,30 +3,64 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/components/Buttons/index.jsx:134
-msgid "PURCHASE PREMIUM"
-msgstr ""
-
-#: src/components/Buttons/index.jsx:64
+#: src/components/Buttons/index.jsx:143
 msgid "Button"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:39
+#: src/components/Buttons/index.jsx:205
+msgid "PURCHASE PREMIUM"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:114
+msgid "Storage is not fully configured"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:124
+msgid "Review your storage credentials and bucket configuration."
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:133
+#: src/pages/Configure.jsx:89
+#: src/schema.js:136
+msgid "Configure"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:38
+#: src/schema.js:1747
+msgid "Bucket"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:56
 msgid "Connect to cloud"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:42
+#: src/components/ConnectionCard/index.jsx:62
 msgid "Get started with syncing your media files to the cloud."
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:54
+#: src/components/ConnectionCard/index.jsx:75
 msgid "Connected"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:58
-#: src/pages/Configure.jsx:88
-#: src/schema.js:136
-msgid "Configure"
+#: src/components/ConnectionCard/index.jsx:90
+msgid "Needs attention"
+msgstr ""
+
+#: src/components/ConnectionStatusCheck/index.jsx:30
+msgid "Check Status"
+msgstr ""
+
+#: src/components/ConnectionStatusCheck/index.jsx:37
+msgid "Fetching..."
+msgstr ""
+
+#: src/components/ConnectionStatusCheck/index.jsx:46
+#: src/components/Statistics/index.jsx:55
+msgid "Refresh"
+msgstr ""
+
+#: src/components/ConnectionStatusCheck/index.jsx:54
+msgid "Last checked"
 msgstr ""
 
 #: src/components/DonateSection/index.jsx:10
@@ -43,30 +77,30 @@ msgstr ""
 msgid "I need you !!"
 msgstr ""
 
-#: src/components/Header/index.jsx:115
+#: src/components/Header/index.jsx:122
 msgid "Donate"
 msgstr ""
 
-#: src/components/Header/index.jsx:23
+#: src/components/Header/index.jsx:25
 msgid "Dashboard"
 msgstr ""
 
-#: src/components/Header/index.jsx:28
+#: src/components/Header/index.jsx:31
 #: src/schema.js:27
 msgid "Settings"
 msgstr ""
 
-#: src/components/Header/index.jsx:33
-#: src/schema.js:2240
+#: src/components/Header/index.jsx:37
+#: src/schema.js:2428
 msgid "Documentation"
 msgstr ""
 
-#: src/components/Header/index.jsx:40
+#: src/components/Header/index.jsx:45
 #: src/pages/License.jsx:139
 msgid "License"
 msgstr ""
 
-#: src/components/Header/index.jsx:61
+#: src/components/Header/index.jsx:68
 msgid "Premium Version Coming Soon"
 msgstr ""
 
@@ -144,7 +178,7 @@ msgid "Expiry"
 msgstr ""
 
 #: src/components/LicenseCard/index.jsx:78
-#: src/pages/MediaSettings.jsx:498
+#: src/helper/index.js:108
 msgid "Never"
 msgstr ""
 
@@ -200,11 +234,6 @@ msgstr ""
 msgid "Refreshing Counts"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:55
-#: src/pages/MediaSettings.jsx:463
-msgid "Refresh"
-msgstr ""
-
 #: src/components/Statistics/index.jsx:66
 msgid "Progress Graph"
 msgstr ""
@@ -234,7 +263,7 @@ msgid "Retry"
 msgstr ""
 
 #: src/components/SyncScreen/ErrorListing/index.jsx:201
-#: src/pages/configure/verifyPermissions.jsx:243
+#: src/pages/configure/verifyPermissions.jsx:248
 msgid "Loading"
 msgstr ""
 
@@ -347,6 +376,14 @@ msgstr ""
 msgid "Welcome to Media Cloud Sync Dashboard"
 msgstr ""
 
+#: src/helper/connectionStatus.js:12
+msgid "Click the button to verify storage credentials and write access."
+msgstr ""
+
+#: src/helper/connectionStatus.js:21
+msgid "Click the button to check the read status of your Provider."
+msgstr ""
+
 #: src/helper/index.js:44
 msgid "This field is required"
 msgstr ""
@@ -364,7 +401,7 @@ msgid "Saving Provider"
 msgstr ""
 
 #: src/pages/ChooseCDN.jsx:128
-#: src/pages/Configure.jsx:539
+#: src/pages/Configure.jsx:564
 msgid "Back to Settings"
 msgstr ""
 
@@ -401,70 +438,70 @@ msgid "Cancel"
 msgstr ""
 
 #: src/pages/ChooseCDN.jsx:279
-#: src/pages/Configure.jsx:98
+#: src/pages/Configure.jsx:99
 #: src/schema.js:196
 msgid "Save"
 msgstr ""
 
 #: src/pages/ChooseCDN.jsx:57
-#: src/pages/MediaSettings.jsx:229
+#: src/pages/MediaSettings.jsx:239
 msgid "Please fix the highlighted errors before proceeding"
 msgstr ""
 
-#: src/pages/Configure.jsx:101
+#: src/pages/Configure.jsx:102
 msgid "Configuration"
 msgstr ""
 
-#: src/pages/Configure.jsx:105
+#: src/pages/Configure.jsx:106
 msgid "Save the credentials."
 msgstr ""
 
-#: src/pages/Configure.jsx:123
+#: src/pages/Configure.jsx:124
 msgid "Please enter a service name"
 msgstr ""
 
-#: src/pages/Configure.jsx:218
+#: src/pages/Configure.jsx:223
 msgid "Credentials"
 msgstr ""
 
-#: src/pages/Configure.jsx:543
+#: src/pages/Configure.jsx:568
 msgid "Exit to Dashboard"
 msgstr ""
 
-#: src/pages/Configure.jsx:577
+#: src/pages/Configure.jsx:602
 msgid "documentation"
 msgstr ""
 
-#: src/pages/Configure.jsx:589
+#: src/pages/Configure.jsx:614
 msgid "Verifying"
 msgstr ""
 
-#: src/pages/Configure.jsx:593
+#: src/pages/Configure.jsx:618
 msgid "Verifying your"
 msgstr ""
 
-#: src/pages/Configure.jsx:77
+#: src/pages/Configure.jsx:78
 msgid "Hey, There"
 msgstr ""
 
-#: src/pages/Configure.jsx:78
+#: src/pages/Configure.jsx:79
 msgid "Welcome to Media Cloud Sync"
 msgstr ""
 
-#: src/pages/Configure.jsx:81
+#: src/pages/Configure.jsx:82
 msgid "Configure Cloud Service"
 msgstr ""
 
-#: src/pages/Configure.jsx:82
+#: src/pages/Configure.jsx:83
 msgid "Choose your cloud service to connect to cloud."
 msgstr ""
 
-#: src/pages/Configure.jsx:92
+#: src/pages/Configure.jsx:93
 msgid "Trouble finding the credentials? View our <documentation_link>"
 msgstr ""
 
 #: src/pages/FileManager/FileManager.jsx:9
-#: src/pages/MediaSettings.jsx:329
+#: src/pages/MediaSettings.jsx:339
 #: src/pages/sync/BucketToBucket.jsx:10
 #: src/pages/sync/SyncScreen.jsx:217
 msgid "Back to Dashboard"
@@ -522,39 +559,23 @@ msgstr ""
 msgid "Deactivation failed."
 msgstr ""
 
-#: src/pages/MediaSettings.jsx:258
+#: src/pages/MediaSettings.jsx:268
 msgid "Saving configuration"
 msgstr ""
 
-#: src/pages/MediaSettings.jsx:334
+#: src/pages/MediaSettings.jsx:344
 msgid "Storage Settings"
 msgstr ""
 
-#: src/pages/MediaSettings.jsx:396
+#: src/pages/MediaSettings.jsx:415
 msgid "Delivery Settings"
 msgstr ""
 
-#: src/pages/MediaSettings.jsx:420
+#: src/pages/MediaSettings.jsx:440
 msgid "Change"
 msgstr ""
 
-#: src/pages/MediaSettings.jsx:437
-msgid "Check Status"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:448
-msgid "Fetching..."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:472
-msgid "Click the button to check the read status of your Provider."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:478
-msgid "Last checked"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:535
+#: src/pages/MediaSettings.jsx:488
 msgid "Sync in progress. Please wait until it completes before saving changes."
 msgstr ""
 
@@ -608,27 +629,43 @@ msgstr ""
 msgid "Choose Existing"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:278
+#: src/pages/configure/setCredentials.jsx:124
+msgid "Recommended"
+msgstr ""
+
+#: src/pages/configure/setCredentials.jsx:173
+msgid "Copy"
+msgstr ""
+
+#: src/pages/configure/setCredentials.jsx:209
+msgid "Copy region value"
+msgstr ""
+
+#: src/pages/configure/setCredentials.jsx:218
+msgid "Copied!"
+msgstr ""
+
+#: src/pages/configure/verifyPermissions.jsx:283
 msgid "Skipped"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:29
+#: src/pages/configure/verifyPermissions.jsx:30
 msgid "Adding new"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:32
+#: src/pages/configure/verifyPermissions.jsx:33
 msgid "Checking"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:34
+#: src/pages/configure/verifyPermissions.jsx:35
 msgid "exists"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:45
+#: src/pages/configure/verifyPermissions.jsx:46
 msgid "Checking write permissions"
 msgstr ""
 
-#: src/pages/configure/verifyPermissions.jsx:59
+#: src/pages/configure/verifyPermissions.jsx:60
 msgid "Checking delete permissions"
 msgstr ""
 
@@ -690,190 +727,253 @@ msgstr ""
 msgid "RESUME"
 msgstr ""
 
-#: src/schema.js:1015
-msgid ""
-"DigitalOcean Spaces is a cost-effective object storage solution designed "
-"for simplicity, scalability, and high availability, ideal for storing and "
-"serving large amounts of unstructured data"
-msgstr ""
-
 #: src/schema.js:103
 msgid "File Manager"
+msgstr ""
+
+#: src/schema.js:1034
+msgid ""
+"Enable this option if you need a custom prefix for your bucket path in "
+"Google Cloud Storage"
 msgstr ""
 
 #: src/schema.js:104
 msgid "Manage your cloud files directly from here"
 msgstr ""
 
-#: src/schema.js:1109
-msgid "Space"
+#: src/schema.js:1098
+msgid "Enter your DigitalOcean Spaces access key, secret key, and region below."
 msgstr ""
 
-#: src/schema.js:1139
-msgid "Enter Space Name"
+#: src/schema.js:1113
+msgid ""
+"Add the following to your wp-config.php (above the “That’s all, stop "
+"editing!” line) using your Spaces API credentials:"
+msgstr ""
+
+#: src/schema.js:1118
+msgid "Pick a Spaces region (e.g. nyc3, sfo3) and copy its value for wp-config.php."
+msgstr ""
+
+#: src/schema.js:1129
+msgid ""
+"DigitalOcean Spaces is a cost-effective object storage solution designed "
+"for simplicity, scalability, and high availability, ideal for storing and "
+"serving large amounts of unstructured data"
 msgstr ""
 
 #: src/schema.js:119
 msgid "Welcome"
 msgstr ""
 
-#: src/schema.js:1198
-msgid ""
-"Enable this option if you need a custom prefix for your bucket path in "
-"Digital Ocean Spaces."
+#: src/schema.js:1223
+msgid "Space"
 msgstr ""
 
-#: src/schema.js:1250
-msgid ""
-"Cloudflare R2 is a globally distributed, zero-egress-fee object storage "
-"service designed for high performance, reliability, and massive scalability."
+#: src/schema.js:1253
+msgid "Enter Space Name"
 msgstr ""
 
 #: src/schema.js:126
 msgid "Choose Provider"
 msgstr ""
 
-#: src/schema.js:1262
-msgid "Account ID"
-msgstr ""
-
-#: src/schema.js:1264
-msgid "Enter Account ID"
-msgstr ""
-
-#: src/schema.js:1279
-msgid "Data Jurisdiction / Region"
-msgstr ""
-
 #: src/schema.js:128
 msgid "Select Provider"
 msgstr ""
 
-#: src/schema.js:1283
-msgid "Choose region"
+#: src/schema.js:1312
+msgid ""
+"Enable this option if you need a custom prefix for your bucket path in "
+"Digital Ocean Spaces."
 msgstr ""
 
-#: src/schema.js:1309
-msgid "Enter Access Key"
-msgstr ""
-
-#: src/schema.js:1326
-msgid "Enter Secret Key"
-msgstr ""
-
-#: src/schema.js:1352
-msgid "Choose Bucket"
+#: src/schema.js:1370
+msgid ""
+"Enter your Cloudflare account ID, R2 access key, secret key, and region "
+"below."
 msgstr ""
 
 #: src/schema.js:138
 msgid "Configure credentials"
 msgstr ""
 
-#: src/schema.js:1401
-msgid "Upload to the bucket whenever a file is uploaded to the Media Library."
-msgstr ""
-
-#: src/schema.js:1413
-msgid "Remove the server file once it is successfully uploaded to the bucket."
-msgstr ""
-
-#: src/schema.js:1419
+#: src/schema.js:1385
 msgid ""
-"<p>This setting removes files from the server once uploaded. If you "
-"deactivate this plugin, files will no longer exist locally. Manual download "
-"via Cloudflare R2 may be required.</p>"
+"Add the following to your wp-config.php (above the “That’s all, stop "
+"editing!” line) using your Cloudflare R2 API credentials:"
 msgstr ""
 
-#: src/schema.js:1432
+#: src/schema.js:1390
+msgid "Pick a jurisdiction/region and copy its value for wp-config.php."
+msgstr ""
+
+#: src/schema.js:1402
 msgid ""
-"Enable this option if you want a custom folder prefix for your uploaded "
-"files."
+"Cloudflare R2 is a globally distributed, zero-egress-fee object storage "
+"service designed for high performance, reliability, and massive scalability."
 msgstr ""
 
-#: src/schema.js:1457
-msgid "Automatically create year/month folders inside your base path."
+#: src/schema.js:1414
+msgid "Account ID"
 msgstr ""
 
-#: src/schema.js:1469
-msgid "Append a timestamp to the file path for versioning."
+#: src/schema.js:1416
+msgid "Enter Account ID"
 msgstr ""
 
-#: src/schema.js:1479
-msgid "S3 Compatible"
+#: src/schema.js:1431
+msgid "Data Jurisdiction / Region"
+msgstr ""
+
+#: src/schema.js:1435
+msgid "Choose region"
+msgstr ""
+
+#: src/schema.js:1461
+msgid "Enter Access Key"
+msgstr ""
+
+#: src/schema.js:1478
+msgid "Enter Secret Key"
 msgstr ""
 
 #: src/schema.js:148
 msgid "Verifying Permissions"
 msgstr ""
 
-#: src/schema.js:1483
+#: src/schema.js:1504
+msgid "Choose Bucket"
+msgstr ""
+
+#: src/schema.js:1553
+msgid "Upload to the bucket whenever a file is uploaded to the Media Library."
+msgstr ""
+
+#: src/schema.js:1565
+msgid "Remove the server file once it is successfully uploaded to the bucket."
+msgstr ""
+
+#: src/schema.js:1571
+msgid ""
+"<p>This setting removes files from the server once uploaded. If you "
+"deactivate this plugin, files will no longer exist locally. Manual download "
+"via Cloudflare R2 may be required.</p>"
+msgstr ""
+
+#: src/schema.js:1584
+msgid ""
+"Enable this option if you want a custom folder prefix for your uploaded "
+"files."
+msgstr ""
+
+#: src/schema.js:1609
+msgid "Automatically create year/month folders inside your base path."
+msgstr ""
+
+#: src/schema.js:1621
+msgid "Append a timestamp to the file path for versioning."
+msgstr ""
+
+#: src/schema.js:1631
+msgid "S3 Compatible"
+msgstr ""
+
+#: src/schema.js:1637
+msgid "Store in Database"
+msgstr ""
+
+#: src/schema.js:1641
+msgid ""
+"Enter your S3-compatible storage endpoint, access key, secret key, and "
+"region below."
+msgstr ""
+
+#: src/schema.js:1647
+msgid "Use wp-config.php Constant"
+msgstr ""
+
+#: src/schema.js:1651
+msgid ""
+"Keep credentials out of the database by defining a WPMCS_CONFIG constant in "
+"wp-config.php. More secure than storing in the database."
+msgstr ""
+
+#: src/schema.js:1656
+msgid ""
+"Add the following to your wp-config.php (above the “That’s all, stop "
+"editing!” line). Replace YOUR_STORAGE_ENDPOINT with your provider’s "
+"S3-compatible endpoint URL:"
+msgstr ""
+
+#: src/schema.js:1670
 msgid ""
 "An S3-compatible storage service provides scalable, durable, and secure "
 "object storage with an interface and functionality similar to Amazon S3, "
 "enabling seamless integration with existing S3-based tools and applications."
 msgstr ""
 
-#: src/schema.js:1495
+#: src/schema.js:1682
 msgid "Storage Endpoint"
 msgstr ""
 
-#: src/schema.js:1500
+#: src/schema.js:1687
 msgid "Enter storage endpoint URL"
 msgstr ""
 
-#: src/schema.js:1516
+#: src/schema.js:1703
 msgid "Access Key"
 msgstr ""
 
-#: src/schema.js:1518
+#: src/schema.js:1705
 msgid "Enter access key"
 msgstr ""
 
-#: src/schema.js:1533
+#: src/schema.js:1720
 msgid "Secret Key"
 msgstr ""
 
-#: src/schema.js:1535
+#: src/schema.js:1722
 msgid "Enter secret key"
 msgstr ""
 
-#: src/schema.js:1550
+#: src/schema.js:1737
 msgid "Region"
 msgstr ""
 
-#: src/schema.js:1552
+#: src/schema.js:1739
 msgid "Enter region"
 msgstr ""
 
-#: src/schema.js:1560
-msgid "Bucket"
-msgstr ""
-
-#: src/schema.js:1565
+#: src/schema.js:1752
 msgid "Enter Bucket Name"
 msgstr ""
 
-#: src/schema.js:1570
+#: src/schema.js:1757
 msgid "Enter bucket name"
 msgstr ""
 
-#: src/schema.js:1591
+#: src/schema.js:1778
 msgid "Copy files to bucket"
 msgstr ""
 
-#: src/schema.js:1595
+#: src/schema.js:1782
 msgid "Upload to bucket, when ever a file is uploaded to Media Library"
 msgstr ""
 
-#: src/schema.js:1603
+#: src/schema.js:1790
 msgid "Remove files from server"
 msgstr ""
 
-#: src/schema.js:1607
+#: src/schema.js:1794
 msgid "Use this to remove file from server, Once it is uploaded to bucket"
 msgstr ""
 
-#: src/schema.js:1613
+#: src/schema.js:180
+msgid "Verify"
+msgstr ""
+
+#: src/schema.js:1800
 msgid ""
 "<p>This setting will remove the files from the server once it is uploaded "
 "to the cloud, And it can lead to issues if you deactivate our plugin, So be "
@@ -882,152 +982,156 @@ msgid ""
 "download it from the cloud and upload using FTP.</p>"
 msgstr ""
 
-#: src/schema.js:1622
+#: src/schema.js:1809
 msgid "Add Prefix to Bucket Path"
 msgstr ""
 
-#: src/schema.js:1626
+#: src/schema.js:1813
 msgid ""
 "Enable this option if you need a custom prefix for your bucket path in "
 "Amazon S3"
 msgstr ""
 
-#: src/schema.js:1639
+#: src/schema.js:1826
 msgid "Enter Prefix"
 msgstr ""
 
-#: src/schema.js:1648
+#: src/schema.js:1835
 msgid "Year/Month Structure"
 msgstr ""
 
-#: src/schema.js:1652
+#: src/schema.js:1839
 msgid ""
 "This will enable year/month directories at the end of your base path. "
 "Otherwise it will be uploaded in to the base path directly."
 msgstr ""
 
-#: src/schema.js:1660
+#: src/schema.js:1847
 msgid "Object versioning"
 msgstr ""
 
-#: src/schema.js:1664
+#: src/schema.js:1851
 msgid "Append a timestamp to the bucket path."
 msgstr ""
 
-#: src/schema.js:180
-msgid "Verify"
-msgstr ""
-
-#: src/schema.js:1811
+#: src/schema.js:1999
 msgid "Amazon S3"
 msgstr ""
 
-#: src/schema.js:1911
+#: src/schema.js:202
+msgid "Click Next once added — we’ll verify the constant on the server."
+msgstr ""
+
+#: src/schema.js:206
+msgid "Pick a region and copy its value for wp-config.php."
+msgstr ""
+
+#: src/schema.js:2099
 msgid "Google Cloud Storage"
 msgstr ""
 
-#: src/schema.js:2013
+#: src/schema.js:217
+msgid ""
+"Amazon S3 is an object storage service that offers high scalability, "
+"durability, and security for data storage and retrieval across the web."
+msgstr ""
+
+#: src/schema.js:2201
 msgid "Digital Ocean Spaces"
 msgstr ""
 
-#: src/schema.js:2034
+#: src/schema.js:2222
 msgid ""
 "For media library files that have been copied to the bucket, Enable this "
 "option to serve media from provider, so that they are served from the space "
 "instead of your server."
 msgstr ""
 
-#: src/schema.js:208
-msgid ""
-"Amazon S3 is an object storage service that offers high scalability, "
-"durability, and security for data storage and retrieval across the web."
-msgstr ""
-
-#: src/schema.js:2112
+#: src/schema.js:2300
 msgid "Cloudflare R2"
 msgstr ""
 
-#: src/schema.js:2118
+#: src/schema.js:2306
 msgid "Provider Console"
 msgstr ""
 
-#: src/schema.js:2123
+#: src/schema.js:2311
 msgid "Slow"
 msgstr ""
 
-#: src/schema.js:2132
+#: src/schema.js:2320
 msgid ""
 "For media library files that have been copied to the bucket, Enable this "
 "option to serve media from provider, so that they are served from the "
 "storage instead of your server."
 msgstr ""
 
-#: src/schema.js:2144
+#: src/schema.js:2332
 msgid ""
 "Serves media from a custom domain that has been pointed to your media "
 "storage. Or public endpoint provided by Cloudflare R2."
 msgstr ""
 
-#: src/schema.js:2236
+#: src/schema.js:2424
 msgid "Other"
 msgstr ""
 
-#: src/schema.js:2245
+#: src/schema.js:2433
 msgid "Fast"
 msgstr ""
 
-#: src/schema.js:2250
+#: src/schema.js:2438
 msgid "Deliver Synced Media"
 msgstr ""
 
-#: src/schema.js:2254
+#: src/schema.js:2442
 msgid ""
 "For media library files that have been copied to the bucket, Enable this "
 "option to serve media from provider, so that they are served from the "
 "bucket instead of your server."
 msgstr ""
 
-#: src/schema.js:2259
+#: src/schema.js:2447
 msgid "How URL rewriting works"
 msgstr ""
 
-#: src/schema.js:2267
+#: src/schema.js:2455
 msgid "Use Custom Domain Name (CNAME)"
 msgstr ""
 
-#: src/schema.js:2271
+#: src/schema.js:2459
 msgid ""
 "Serves media from a custom domain that has been pointed to your media "
 "storage."
 msgstr ""
 
-#: src/schema.js:2276
+#: src/schema.js:2464
 msgid "How to set a custom domain name"
 msgstr ""
 
-#: src/schema.js:2290
+#: src/schema.js:2478
 msgid "Enter Domain"
 msgstr ""
 
-#: src/schema.js:2304
+#: src/schema.js:2492
 msgid "Sync Media to Cloud Storage"
 msgstr ""
 
-#: src/schema.js:2311
+#: src/schema.js:2499
 msgid "Restore Media to Server"
 msgstr ""
 
-#: src/schema.js:2315
+#: src/schema.js:2503
 msgid ""
 "We will check all the media files that are synced to the cloud and restore "
 "any missing files to your server."
 msgstr ""
 
-#: src/schema.js:2322
+#: src/schema.js:2510
 msgid "Move Media to New Path"
 msgstr ""
 
-#: src/schema.js:2326
+#: src/schema.js:2514
 msgid ""
 "If you have changed the base path or enabled/disables year/month structure, "
 "Use this tool to move all your existing files to the new path in the cloud "
@@ -1047,61 +1151,85 @@ msgstr ""
 msgid "Sync your existing medias from server to cloud"
 msgstr ""
 
-#: src/schema.js:479
+#: src/schema.js:488
 msgid "Use Transfer Accilaration"
 msgstr ""
 
-#: src/schema.js:490
+#: src/schema.js:499
 msgid "Security"
 msgstr ""
 
-#: src/schema.js:494
+#: src/schema.js:503
 msgid "Block All Public Access"
 msgstr ""
 
-#: src/schema.js:495
+#: src/schema.js:504
 msgid ""
 "Since you are not using Amazon CloundFront for delivery, We recommend you "
 "keep Block All Public Access disabled, unless you have a very good reason "
 "to enable it."
 msgstr ""
 
-#: src/schema.js:504
+#: src/schema.js:513
 msgid "Enforce Object Ownership"
 msgstr ""
 
-#: src/schema.js:508
+#: src/schema.js:517
 msgid ""
 "Since you are not using Amazon CloundFront for delivery, We recommend you "
 "do not enforce Object Ownership, unless you have a very good reason to do "
 "so."
 msgstr ""
 
+#: src/schema.js:538
+msgid "Enter your AWS IAM access key, secret key, and region below."
+msgstr ""
+
+#: src/schema.js:553
+msgid ""
+"Add the following to your wp-config.php (above the “That’s all, stop "
+"editing!” line) using your AWS IAM credentials:"
+msgstr ""
+
+#: src/schema.js:558
+msgid "Pick an AWS region and copy its value for the region key in wp-config.php."
+msgstr ""
+
 #: src/schema.js:57
 msgid "View the Media Cloud Sync Documentation here"
 msgstr ""
 
-#: src/schema.js:618
+#: src/schema.js:670
+msgid "Paste your Google Cloud service account JSON below."
+msgstr ""
+
+#: src/schema.js:685
+msgid ""
+"Add the following to your wp-config.php (above the “That’s all, stop "
+"editing!” line). Paste your service account JSON as a single-line string:"
+msgstr ""
+
+#: src/schema.js:695
 msgid ""
 "Google Cloud Storage is a unified object storage service that provides high "
 "scalability, durability, and seamless integration with Google Cloud "
 "services for efficient data management and access."
 msgstr ""
 
-#: src/schema.js:631
+#: src/schema.js:708
 msgid "JSON Config File"
-msgstr ""
-
-#: src/schema.js:636
-msgid "Add JSON Code here"
-msgstr ""
-
-#: src/schema.js:672
-msgid "Bucket Name"
 msgstr ""
 
 #: src/schema.js:71
 msgid "Restore Media To Server"
+msgstr ""
+
+#: src/schema.js:713
+msgid "Add JSON Code here"
+msgstr ""
+
+#: src/schema.js:749
+msgid "Bucket Name"
 msgstr ""
 
 #: src/schema.js:75
@@ -1114,10 +1242,4 @@ msgstr ""
 
 #: src/schema.js:91
 msgid "Move your existing media from old path to newly configured path"
-msgstr ""
-
-#: src/schema.js:957
-msgid ""
-"Enable this option if you need a custom prefix for your bucket path in "
-"Google Cloud Storage"
 msgstr ""

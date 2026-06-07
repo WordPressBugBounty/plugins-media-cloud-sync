@@ -160,10 +160,6 @@ class MediaLibrary {
      *
      */
     public function delete_attachment($attachment_id){
-        if (!Utils::is_service_enabled()) {
-            return $attachment_id;
-        }
-
         $wpmcsItem  = Item::instance();
         $item       = $wpmcsItem->get($attachment_id, 'media_library');
 
@@ -376,7 +372,7 @@ class MediaLibrary {
                     'original_source_path'  => $backup['original_source_path'],
                     'original_key'          => $backup['original_key'],
                 ],
-                'extra' => Utilsmaybe_unserialize($backup['extra']),
+                'extra' => Utils::maybe_unserialize($backup['extra']),
             ];
         }
 
@@ -433,10 +429,6 @@ class MediaLibrary {
      * @return string
      */
     private function filter_unique_filename($filename, $ext, $dir, $post_id = null) {
-        if (!Utils::is_service_enabled()) {
-            return $filename;
-        }
-
         // sanitize the file name before we begin processing
         $filename   = sanitize_file_name($filename);
         $ext        = strtolower($ext);
@@ -1476,6 +1468,10 @@ class MediaLibrary {
             'data'      => array(),
             'exclude'   => false
         );
+
+        if(!Utils::is_service_enabled()) {
+            wp_send_json_success( $result );
+        }
 
         if ( ! isset( $_POST['id'] ) ) {
             wp_send_json_success( $result );

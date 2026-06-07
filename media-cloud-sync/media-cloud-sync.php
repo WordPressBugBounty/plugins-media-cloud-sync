@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Media Cloud Sync
- * Version: 1.3.10
+ * Version: 1.3.11
  * Description: Media Cloud Sync helps to sync your wordpress media to the cloud based services like Amazon S3, DigitalOcean Spaces, Google Cloud Storage, Cloudflare R2 and S3 Compatible Services.
  * Author: Dudlewebs
  * Author URI: http://dudlewebs.com
  * License: GPLv2 or later
- * Requires at least: 5.2
+ * Requires at least: 5.9
  * Tested up to: 7.0
  * Requires PHP: 8.1
  * Text Domain: media-cloud-sync
@@ -18,7 +18,7 @@ if (!defined('WPMCS_FILE')) {
     define('WPMCS_FILE', __FILE__);
 }
 
-define('WPMCS_VERSION', '1.3.10');
+define('WPMCS_VERSION', '1.3.11');
 define('WPMCS_PLUGIN_NAME', 'Media Cloud Sync');
 
 define('WPMCS_TOKEN', 'wpmcs');

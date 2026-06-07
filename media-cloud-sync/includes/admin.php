@@ -36,6 +36,7 @@ class Admin {
         add_action('admin_init', [$this, 'adminInit']);
 
         add_action('admin_menu', [$this, 'add_menu'], 10);
+        add_action('admin_notices', [$this, 'storage_credentials_admin_notice']);
 
         add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts'], 10, 1);
         add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_styles'], 10, 1);
@@ -287,7 +288,7 @@ class Admin {
             array($this, 'adminUi')
         );
 
-        if(Utils::is_service_enabled()) {
+        if(Utils::get_service()) {
             $this->hook_suffix[] = add_submenu_page(
                 $this->token . '-admin-ui', 
                 esc_html__('Settings', 'media-cloud-sync'), 
@@ -306,6 +307,30 @@ class Admin {
                 array($this, 'adminUi')
             );
         }
+    }
+
+    /**
+     * Admin notice when storage credentials are incomplete.
+     * @since 1.3.11
+     */
+    public function storage_credentials_admin_notice() {
+        if(!current_user_can('manage_options') || !Utils::get_service() || Utils::is_service_enabled()) {
+            return;
+        }
+
+        $error = Utils::get_service_configuration_error();
+        if(empty($error)) {
+            return;
+        }
+
+        $settings_url = admin_url('admin.php?page=' . $this->token . '-admin-ui#/settings');
+        $message      = esc_html($error) . ' ' . sprintf(
+            '<a href="%1$s">%2$s</a>',
+            esc_url($settings_url),
+            esc_html__('Open Media Cloud Sync settings', 'media-cloud-sync')
+        );
+
+        echo wp_kses_post(sprintf('<div class="notice notice-error is-dismissible"><p>%s</p></div>', $message));
     }
 
     /**
@@ -332,6 +357,10 @@ class Admin {
 	 * Load the media assets
 	 */
 	public function load_media_assets() {
+        if(!Utils::is_service_enabled()) {
+            return;
+        }
+
         /** CSS */
         wp_enqueue_style($this->token . '-media', esc_url($this->assets_url) . 'css/media.css', array(), $this->version);
         

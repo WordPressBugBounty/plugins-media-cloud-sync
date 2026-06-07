@@ -3,6 +3,16 @@ namespace Dudlewebs\WPMCS;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Plugin object cache wrapper.
+ *
+ * Supports all common WordPress environments on PHP 8.1+ and WordPress 5.9+:
+ * 1. Default WordPress object cache (in-memory, per request — no Redis/Memcached plugin).
+ * 2. Persistent object cache drop-ins (Redis Object Cache, Memcached, etc.).
+ *
+ * Reads and writes always go through wp_cache_* so behaviour is consistent;
+ * flush strategy differs based on whether a persistent drop-in is active.
+ */
 class Cache {
     private static $instance = null;
     private $assets_url;
@@ -60,16 +70,72 @@ class Cache {
     }
 
     /**
+     * Whether a persistent object cache drop-in is active (Redis, Memcached, etc.).
+     */
+    private static function uses_persistent_object_cache() {
+        return function_exists('wp_using_ext_object_cache') && wp_using_ext_object_cache();
+    }
+
+    /**
+     * Build a consistent object cache key for get/set/delete.
+     */
+    private static function build_cache_key($key, $post_id, $meta_name, $is_user_meta = false) {
+        return ($is_user_meta ? 'user_' : '')
+            . ($post_id == false ? '' : $post_id)
+            . $meta_name
+            . (!Utils::is_empty($key) ? '_' . $key : '');
+    }
+
+    /**
+     * Whether the active object cache supports a feature (WP 6.1+ or drop-in).
+     */
+    private static function cache_supports($feature) {
+        return function_exists('wp_cache_supports') && wp_cache_supports($feature);
+    }
+
+    /**
+     * Read from object cache with WP 5.5+ $found support.
+     */
+    private static function get_cached_value($cache_key, &$found) {
+        $group = Schema::getConstant('CACHE_GROUP');
+        $found = false;
+
+        if (!function_exists('wp_cache_get')) {
+            return false;
+        }
+
+        // wp_cache_get( ..., &$found ) is available from WordPress 5.5 (plugin requires 5.9).
+        return wp_cache_get($cache_key, $group, false, $found);
+    }
+
+    /**
+     * Write a value to the plugin object cache group.
+     */
+    private static function sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $is_user_meta = false) {
+        if (!function_exists('wp_cache_set') || !function_exists('wp_cache_delete')) {
+            return;
+        }
+
+        $group     = Schema::getConstant('CACHE_GROUP');
+        $cache_key = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
+
+        wp_cache_delete($cache_key, $group);
+        wp_cache_set($cache_key, $data, $group, $cache_expire);
+    }
+
+    /**
      * Get Object Cache
      */
     public static function get_object_cache($key = '', $post_id = false, $meta_name = false, $cache_expire = false, $is_user_meta = false) {
         $meta_name      = $meta_name == false ? Schema::getConstant('META_KEY') : $meta_name;
         $cache_expire   = $cache_expire == false ? Schema::getConstant('CACHE_EXPIRE') : $cache_expire;
+        $cache_key      = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
+        $found          = false;
 
-        $cache_key      = ($is_user_meta ? 'user_' : '').($post_id == false ? '' : $post_id) . $meta_name . (!empty($key) ? '_'.$key : '');
-
-        $data = wp_cache_get($cache_key, Schema::getConstant('CACHE_GROUP'));
-        if ($data !== false) return $data;
+        $data = self::get_cached_value($cache_key, $found);
+        if ($found) {
+            return $data;
+        }
 
         if ($is_user_meta) {
             $meta_data = get_user_meta($post_id, $meta_name, true);
@@ -88,8 +154,7 @@ class Cache {
             $data = false;
         }
 
-        // Set the data in object cache
-        wp_cache_set($cache_key, $data, Schema::getConstant('CACHE_GROUP'), $cache_expire);
+        self::sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $is_user_meta);
 
         return $data;
     }
@@ -115,14 +180,10 @@ class Cache {
         if(Utils::is_empty($key)) {
             // If key is empty, set the entire meta data
             $meta_data = $data;
-        } elseif (is_array($meta_data) && array_key_exists($key, $meta_data)) {
-            if($meta_data[$key] == $data) {
-                return true;
-            }
-            // If key exists, update the value
+            $cache_value = $data;
+        } else {
             $meta_data[$key] = $data;
-        } else { 
-            $meta_data[$key] = $data;
+            $cache_value = $data;
         }
 
         // Update the meta data
@@ -131,19 +192,22 @@ class Cache {
         } else {
             $update_result = $post_id == false ? update_option($meta_name, $meta_data) : update_post_meta($post_id, $meta_name, $meta_data);
         }
-        // If update failed, return false
-        if (!$update_result) {
-            return false;
+
+        // Always sync object cache so Redis and default WP cache stay current.
+        self::sync_object_cache($key, $cache_value, $post_id, $meta_name, $cache_expire, $is_user_meta);
+
+        if ($update_result) {
+            return true;
         }
 
-        // Update the object cache if caching is enabled
-        $cache_key = ($is_user_meta ? 'user_' : '') . ($post_id == false ? '' : $post_id) . $meta_name . '_' . $key;
-        wp_cache_delete($cache_key, Schema::getConstant('CACHE_GROUP'));
-        wp_cache_set($cache_key, $data, Schema::getConstant('CACHE_GROUP'), $cache_expire);
+        // update_option/update_meta return false when the value is unchanged — treat as success once cache is synced.
+        if ($is_user_meta) {
+            $stored = get_user_meta($post_id, $meta_name, true);
+        } else {
+            $stored = $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
+        }
 
-
-        // Return success if data update was successful
-        return $update_result;
+        return maybe_serialize($stored) === maybe_serialize($meta_data);
     }
 
     
@@ -176,13 +240,11 @@ class Cache {
             }
         }
 
-        // Delete from object cache
-        if ($update_result && $key) {
-            $cache_key = ($is_user_meta ? 'user_' : '') . ($post_id == false ? '' : $post_id) . $meta_name . '_' . $key;
+        if ($update_result && !Utils::is_empty($key) && function_exists('wp_cache_delete')) {
+            $cache_key = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
             wp_cache_delete($cache_key, Schema::getConstant('CACHE_GROUP'));
         }
 
-        // Return success if data delete was successful
         return $update_result;
     }
 
@@ -192,13 +254,54 @@ class Cache {
      * @since 1.3.2
      */
     public static function flush_object_cache() {
-        if(wp_cache_supports('flush_group')) {
-            wp_cache_flush_group(Schema::getConstant('CACHE_GROUP'));
+        $group = Schema::getConstant('CACHE_GROUP');
+
+        if (self::uses_persistent_object_cache()) {
+            // Redis / Memcached drop-in: flush only this plugin's cache group.
+            self::flush_cache_group($group);
         } else {
-            wp_cache_flush();
+            // Default WordPress in-memory cache: safe to flush the runtime cache.
+            self::flush_runtime_cache();
         }
+
         self::$cached_data = [];
         return true;
+    }
+
+    /**
+     * Flush the in-memory runtime cache (default WordPress, no drop-in plugin).
+     */
+    private static function flush_runtime_cache() {
+        if (self::cache_supports('flush_runtime') && function_exists('wp_cache_flush_runtime')) {
+            wp_cache_flush_runtime();
+            return;
+        }
+
+        if (function_exists('wp_cache_flush')) {
+            wp_cache_flush();
+        }
+    }
+
+    /**
+     * Flush all keys in the plugin cache group when the drop-in supports it.
+     */
+    private static function flush_cache_group($group) {
+        if (!function_exists('wp_cache_flush_group')) {
+            return false;
+        }
+
+        // Prefer the supported API so core never falls back to a full cache flush.
+        if (self::cache_supports('flush_group')) {
+            return (bool) wp_cache_flush_group($group);
+        }
+
+        // Persistent drop-ins (e.g. Redis Object Cache on WP 5.9) may provide flush_group
+        // without wp_cache_supports() being available in core.
+        if (self::uses_persistent_object_cache()) {
+            return (bool) wp_cache_flush_group($group);
+        }
+
+        return false;
     }
 
     

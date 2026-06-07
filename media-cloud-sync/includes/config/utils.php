@@ -26,7 +26,7 @@ class Utils {
      */
     public static function get_option($key, $default = false, $meta_name = false, $expire = false){
         $data = Cache::get_object_cache( $key, false, $meta_name, $expire );
-        return $data == false ? $default : $data;
+        return $data === false ? $default : $data;
     }
 
     /**
@@ -54,7 +54,7 @@ class Utils {
      */
     public static function get_meta($post_id, $key, $default = false, $meta_name = false, $expire = false){
         $data = Cache::get_object_cache( $key, $post_id, $meta_name, $expire );
-        return $data == false ? $default : $data;
+        return $data === false ? $default : $data;
     }
 
     /**
@@ -123,7 +123,7 @@ class Utils {
      */
     public static function get_user_meta($post_id, $key, $default = false, $meta_name = false, $expire = false){
         $data = Cache::get_object_cache( $key, $post_id, $meta_name, $expire, true );
-        return $data == false ? $default : $data;
+        return $data === false ? $default : $data;
     }
 
     /**
@@ -147,8 +147,12 @@ class Utils {
 
     /**
      * Clear meta from database
+     *
+     * @param string|false $meta_name
+     * @param string       $meta_table
+     * @param bool         $flush_cache Whether to flush the plugin object cache afterward.
      */
-    public static function clear_all_meta($meta_name = false, $meta_table = 'all') {
+    public static function clear_all_meta($meta_name = false, $meta_table = 'all', $flush_cache = true) {
         global $wpdb;
 
 		$meta_name = $meta_name == false || empty($meta_name) ? Schema::getConstant('META_KEY') : $meta_name;
@@ -174,21 +178,56 @@ class Utils {
             $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name = %s", $meta_name ) );
         }
 
-        // Clear object cache
-        Cache::flush_object_cache();
+        self::invalidate_core_meta_cache($meta_tables, $meta_name);
+
+        if ($flush_cache) {
+            Cache::flush_object_cache();
+        }
+
+        return true;
     }
 
     /**
      * Clears all content meta from the database
      *
-     * @param string $meta_name Optional. The meta key to clear. Defaults to the constant CONTENT_META_KEY.
+     * @param string|false $meta_name Optional. The meta key to clear. Defaults to the constant CONTENT_META_KEY.
+     * @param bool         $flush_cache Whether to flush the plugin object cache afterward.
      */
-    public static function clear_all_content_meta($meta_name = false) {
+    public static function clear_all_content_meta($meta_name = false, $flush_cache = true) {
         global $wpdb;
         $meta_name = $meta_name == false || empty($meta_name) ? Schema::getConstant('CONTENT_META_KEY') : $meta_name;
         
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = %s", $meta_name ) );
-        Cache::flush_object_cache();
+
+        self::invalidate_core_meta_cache(['postmeta'], $meta_name);
+
+        if ($flush_cache) {
+            Cache::flush_object_cache();
+        }
+
+        return true;
+    }
+
+    /**
+     * Invalidate WordPress core object caches after direct SQL meta deletes.
+     */
+    private static function invalidate_core_meta_cache($meta_tables, $meta_name) {
+        if (!function_exists('wp_cache_delete')) {
+            return;
+        }
+
+        if (in_array('options', $meta_tables, true)) {
+            wp_cache_delete('alloptions', 'options');
+            wp_cache_delete($meta_name, 'options');
+        }
+
+        if (in_array('postmeta', $meta_tables, true)) {
+            if (function_exists('wp_cache_set_last_changed')) {
+                wp_cache_set_last_changed('posts');
+            } elseif (function_exists('wp_cache_delete')) {
+                wp_cache_delete('last_changed', 'posts');
+            }
+        }
     }
 
 
@@ -201,24 +240,67 @@ class Utils {
     public static function get_credentials($option='', $default=false, $masked_config = false){
         $current_setttings = self::get_option('credentials',[], Schema::getConstant('GLOBAL_SETTINGS_KEY'));
         if(isset($current_setttings) && !empty($current_setttings)){
+            // Resolve the credential source. Defaults to 'database' for backward compatibility.
+            $source = isset($current_setttings['configSource']) ? $current_setttings['configSource'] : 'database';
+
+            if($source === 'config') {
+                // Credentials live in the WPMCS_CONFIG constant (wp-config.php).
+                // Server-side consumers receive the real values; REST-facing (masked) callers
+                // receive nothing so the constant contents are never exposed to the browser.
+                $current_setttings['config'] = $masked_config ? [] : self::get_wp_config_credentials();
+            } elseif($masked_config && isset($current_setttings['config'])) {
+                $current_setttings['config'] = self::mask_config($current_setttings['config']);
+            }
+
             if(isset($option) && !empty($option)){
                 if(isset($current_setttings[$option])) {
-                    if($masked_config && $option == 'config'){
-                        $current_setttings[$option] = self::mask_config($current_setttings[$option]);
-                    }
                     return $current_setttings[$option];
                 } else {
                     return $default;
                 }
             } else {
-                if($masked_config && isset($current_setttings['config'])){
-                    $current_setttings['config'] = self::mask_config($current_setttings['config']);
-                }
                 return $current_setttings;
             }
         } else {
             return $default;
         }
+    }
+
+    /**
+     * Check whether credentials are defined via the WPMCS_CONFIG constant in wp-config.php.
+     * @since 1.3.11
+     * @return boolean
+     */
+    public static function is_wp_config_credentials_defined(){
+        return defined('WPMCS_CONFIG');
+    }
+
+    /**
+     * Get credentials defined via the WPMCS_CONFIG constant in wp-config.php.
+     * Accepts either a PHP array or a serialized string.
+     * @since 1.3.11
+     * @return array
+     */
+    public static function get_wp_config_credentials(){
+        if(!defined('WPMCS_CONFIG')) {
+            return [];
+        }
+        $config = constant('WPMCS_CONFIG');
+        if(is_string($config)) {
+            $config = self::maybe_unserialize($config);
+        }
+        return is_array($config) ? $config : [];
+    }
+
+    /**
+     * Get the current credential source ('database' | 'config').
+     * Defaults to 'database' for backward compatibility.
+     * @since 1.3.11
+     * @return string
+     */
+    public static function get_credentials_source(){
+        $current_setttings = self::get_option('credentials',[], Schema::getConstant('GLOBAL_SETTINGS_KEY'));
+        return isset($current_setttings['configSource']) ? $current_setttings['configSource'] : 'database';
     }
 
     /**
@@ -294,13 +376,20 @@ class Utils {
      * 
      */
     public static function set_status($option='', $data=[]){
-        $current_setttings = self::get_option('status',[], Schema::getConstant('STATUS_KEY'));
-        if(isset($option) && !empty($option)){
-            $current_setttings[$option] = $data;
-            return self::update_option('status', $current_setttings, Schema::getConstant('STATUS_KEY'));
-        } else {
+        if(!isset($option) || empty($option)){
             return false;
         }
+
+        $meta_name = Schema::getConstant('STATUS_KEY');
+        $current_setttings = get_option($meta_name, []);
+
+        if(!is_array($current_setttings)) {
+            $current_setttings = [];
+        }
+
+        $current_setttings[$option] = $data;
+
+        return self::update_option('status', $current_setttings, $meta_name);
     }
 
     /**
@@ -346,7 +435,7 @@ class Utils {
      */
     public static function is_ok_to_serve($attachment_id = false, $check_id = true){
         return (
-            self::get_service() &&
+            self::is_service_enabled() &&
             self::get_settings('rewrite_url') &&
             ( $check_id ? isset($attachment_id) && !empty($attachment_id) : true )    
         );
@@ -359,10 +448,72 @@ class Utils {
      */
     public static function is_ok_to_upload($attachment_id = false){
         return (
-            self::get_service() &&
+            self::is_service_enabled() &&
             self::get_settings('copy_to_bucket') &&
             isset($attachment_id) && !empty($attachment_id)
         );
+    }
+
+    /**
+     * Whether stored credentials are complete for the configured service.
+     * @since 1.3.11
+     * @return boolean
+     */
+    private static function has_valid_storage_credentials() {
+        return self::get_service_configuration_error() === '';
+    }
+
+    /**
+     * Human-readable error when storage credentials are incomplete.
+     * @since 1.3.11
+     * @return string Empty when valid.
+     */
+    public static function get_service_configuration_error() {
+        $service = self::get_service();
+        if(!$service) {
+            return '';
+        }
+
+        $credentials  = self::get_credentials('', [], false);
+        $bucketConfig = isset($credentials['bucketConfig']) ? $credentials['bucketConfig'] : [];
+
+        if(empty($bucketConfig['bucket_name'])) {
+            return esc_html__('Bucket name is not configured.', 'media-cloud-sync');
+        }
+
+        $configSource = self::get_credentials_source();
+
+        if($configSource === 'config') {
+            if(!self::is_wp_config_credentials_defined()) {
+                return esc_html__('WPMCS_CONFIG is not defined in wp-config.php', 'media-cloud-sync');
+            }
+
+            $config  = self::get_wp_config_credentials();
+            $missing = [];
+            foreach(Service::get_required_config_keys($service) as $key) {
+                if(!isset($config[$key]) || $config[$key] === '') {
+                    $missing[] = $key;
+                }
+            }
+            if(!empty($missing)) {
+                /* translators: %s: comma separated list of missing configuration keys */
+                return sprintf(esc_html__('WPMCS_CONFIG is missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
+            }
+        } else {
+            $config  = isset($credentials['config']) ? $credentials['config'] : [];
+            $missing = [];
+            foreach(Service::get_required_config_keys($service) as $key) {
+                if(!isset($config[$key]) || $config[$key] === '') {
+                    $missing[] = $key;
+                }
+            }
+            if(!empty($missing)) {
+                /* translators: %s: comma separated list of missing configuration keys */
+                return sprintf(esc_html__('Storage credentials are incomplete. Missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -371,7 +522,7 @@ class Utils {
      * @return array|boolean|string|integer|float|double
      */
     public static function is_service_enabled(){
-        return !!self::get_service();
+        return !!self::get_service() && self::has_valid_storage_credentials();
     }
 
     /**

@@ -42,14 +42,14 @@ class Integration {
             foreach ($this->integrations as $integration) {
                 $integration = __NAMESPACE__ . '\\' . $integration;
                 if (class_exists($integration) && $integration::is_installed()) {
-                    $integration::instance();
-                    // Add Source types from all integrations
                     if (property_exists($integration, 'source_types')) {
                         self::$source_types = array_merge(self::$source_types, $integration::$source_types);
                     }
-                    // Add prefix and label from all integrations
                     if (property_exists($integration, 'source_type_prefix') && property_exists($integration, 'label')) {
                         self::$source_labels[$integration::$source_type_prefix] = $integration::$label;
+                    }
+                    if (Utils::is_service_enabled()) {
+                        $integration::instance();
                     }
                 }
             }
@@ -158,17 +158,19 @@ class Integration {
 
     /**
      * Clear all meta
+     *
+     * @param bool $flush_cache Whether to flush the plugin object cache after each table clear.
      */
-    public static function clear_all_meta() {
+    public static function clear_all_meta($flush_cache = true) {
         if (!empty(self::$source_types)) {
             foreach (self::$source_types as $source_type => $source_type_data) {
                 $table      = isset($source_type_data['table']) ? $source_type_data['table'] : false;
                 switch($table) {
                     case 'posts': 
-                        Utils::clear_all_meta(false, 'postmeta');
+                        Utils::clear_all_meta(false, 'postmeta', $flush_cache);
                         break;
                     case 'users':
-                        Utils::clear_all_meta(false, 'usermeta');
+                        Utils::clear_all_meta(false, 'usermeta', $flush_cache);
                         break;
                     default: null;
                 }

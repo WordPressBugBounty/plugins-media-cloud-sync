@@ -115,6 +115,7 @@ class Autoloader {
 
 			'Api'   		=> 'includes/api.php',
 			'Main'  		=> 'includes/main.php',
+			'Notices'		=> 'includes/notices.php',
 			'Front' 		=> 'includes/front.php',
             'Admin' 		=> 'includes/admin.php',
 			
