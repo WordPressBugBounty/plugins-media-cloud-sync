@@ -10,6 +10,7 @@ use Dudlewebs\WPMCS\s3\Aws\S3\Exception\S3Exception;
 use Dudlewebs\WPMCS\s3\Aws\S3\MultipartUploader;
 use Dudlewebs\WPMCS\s3\Aws\Exception\MultipartUploadException;
 use Dudlewebs\WPMCS\s3\Aws\Command;
+use Dudlewebs\WPMCS\s3\Aws\S3\ObjectUploader;
 use Exception;
 
 class CloudflareR2 {
@@ -31,21 +32,24 @@ class CloudflareR2 {
      * Admin constructor.
      * @since 1.0.0
      */
-    public function __construct() {
+    public function __construct($credentials = null) {
         $this->assets_url = WPMCS_ASSETS_URL;
         $this->version    = WPMCS_VERSION;
         $this->token      = WPMCS_TOKEN;
 
         // Initialize setup
-        $this->init();
+        $this->init($credentials);
     }
 
     /**
      * Initialise Client
+     *
+     * @param array|null $credentials Optional explicit credentials; falls back to
+     *                                Utils::get_credentials() when omitted.
      */
-    public function init() {
+    public function init($credentials = null) {
         $this->settings     = Utils::get_settings();
-        $this->credentials  = Utils::get_credentials();
+        $this->credentials  = $credentials !== null ? $credentials : Utils::get_credentials();
         $this->config       = isset($this->credentials['config']) && !empty($this->credentials['config'])
                                 ? $this->credentials['config']
                                 : [];
@@ -94,7 +98,7 @@ class CloudflareR2 {
         $secret_key = isset($config['secret_key']) ? $config['secret_key'] : false;
         $region     = isset($config['region']) ? $config['region'] : '';
 
-        if (!empty($account_id) && !empty($access_key) && !empty($secret_key)) {
+        if (!Service::has_missing_fields([$account_id, $access_key, $secret_key])) {
             try {
                 $cloudflareClient = new S3Client([
                     'version'                       => '2006-03-01',
@@ -197,7 +201,7 @@ class CloudflareR2 {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : false;
         $region     = isset($config['region']) ? $config['region'] : '';
 
-        if ( empty($account_id) || empty($access_key) || empty($secret_key) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$account_id, $access_key, $secret_key, $bucket_name]) ) {
             return array('message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
         }
 
@@ -254,7 +258,7 @@ class CloudflareR2 {
         $region     = isset($config['region']) ? $config['region'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
-        if ( empty($account_id) || empty($access_key) || empty($secret_key) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$account_id, $access_key, $secret_key, $bucket_name]) ) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -305,7 +309,7 @@ class CloudflareR2 {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
         $region     = isset($config['region']) ? $config['region'] : '';
 
-        if (empty($access_key) || empty($secret_key) || empty($bucket_name ) || empty($account_id)) {
+        if (Service::has_missing_fields([$access_key, $secret_key, $bucket_name, $account_id])) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -324,7 +328,7 @@ class CloudflareR2 {
                 ],
             ]);
 
-            $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+            $object_key = Utils::get_permission_check_object_key();
 
             // create an empty object to test write permission
             $cloudflareClient->putObject([
@@ -360,7 +364,7 @@ class CloudflareR2 {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
         $region     = isset($config['region']) ? $config['region'] : '';
 
-        if (empty($access_key) || empty($secret_key) || empty($bucket_name) || empty($account_id)) {
+        if (Service::has_missing_fields([$access_key, $secret_key, $bucket_name, $account_id])) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -379,7 +383,7 @@ class CloudflareR2 {
                 ],
             ]);
 
-            $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+            $object_key = Utils::get_permission_check_object_key();
 
             // Create a dummy object to check delete permission
             $cloudflareClient->deleteObject([
@@ -414,13 +418,13 @@ class CloudflareR2 {
             'lastChecked' => time(),
         ];
         
-        if (empty($this->cloudflareClient) || empty($this->bucket_name)) {
+        if (Service::has_missing_fields([$this->cloudflareClient, $this->bucket_name])) {
             $result['message'] = esc_html__('Invalid Request', 'media-cloud-sync');
             return ['message' => esc_html__('Invalid Request', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         }
 
         try {
-            $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+            $object_key = Utils::get_permission_check_object_key();
 
             // Check if the object was created successfully
             if (!$this->exists($object_key)) {
@@ -429,27 +433,35 @@ class CloudflareR2 {
                     'Bucket' => $this->bucket_name,
                     'Key'    => $object_key,
                     'Body'   => 'This is a test object to check permission.',
+                    'ContentType' => 'text/plain',
+                    'CacheControl' => 'no-cache, no-store, must-revalidate',
                 ]);
             }
 
             $url = $this->generate_file_url($object_key);
             $cdn_url = Cdn::may_generate_cdn_url($url, $object_key);
-            $headers = @get_headers($cdn_url);
-            if (strpos($headers[0], '200') !== false) {
+            // Never trust a cached response for this fixed, predictable URL — a stale cached
+            // error would otherwise keep failing the check long after real access is fine.
+            $no_cache_context = stream_context_create(['http' => ['header' => "Cache-Control: no-cache\r\nPragma: no-cache\r\n"]]);
+            $headers = @get_headers($cdn_url, false, $no_cache_context);
+            $status_code = (is_array($headers) && !empty($headers[0]) && preg_match('/\s(\d{3})\s/', $headers[0], $matches))
+                ? (int) $matches[1]
+                : 0;
+
+            if ($status_code === 200) {
                 $result['status'] = true;
                 $result['message'] = esc_html__('Objects are accessible to Read', 'media-cloud-sync');
-            } else if (strpos($headers[0], '403') !== false) {
+            } else if ($status_code === 403) {
                 $result['status'] = false;
-                if($this->cdnConfig['service'] == $this->service) {
+                if(isset($this->cdnConfig['service']) && $this->cdnConfig['service'] == $this->service) {
                     $result['message'] = esc_html__('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
                 } else {
                     $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
                 }
-                $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
-            } else if (strpos($headers[0], '404') !== false) {
+            } else if ($status_code === 404) {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Object not found. Please check your bucket policy', 'media-cloud-sync');
-            } else if (strpos($headers[0], '500') !== false) {
+            } else if ($status_code === 500) {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
             } else {
@@ -540,11 +552,64 @@ class CloudflareR2 {
     }
 
     /**
+     * List Objects — $delimiter = null gives a flat/recursive listing instead of one folder level.
+     * @since 1.3.13
+     */
+    public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
+        if (!$this->cloudflareClient) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+        }
+        try {
+            $params = ['Bucket' => $this->bucket_name, 'MaxKeys' => $maxKeys];
+            if (!empty($delimiter)) {
+                $params['Delimiter'] = $delimiter;
+            }
+            if (!empty($prefix)) {
+                $params['Prefix'] = $prefix;
+            }
+            if (!empty($continuationToken)) {
+                $params['ContinuationToken'] = $continuationToken;
+            }
+
+            $result  = $this->cloudflareClient->listObjectsV2($params);
+            $folders = [];
+            foreach (($result['CommonPrefixes'] ?? []) as $common) {
+                $folders[] = $common['Prefix'];
+            }
+            $objects = [];
+            foreach (($result['Contents'] ?? []) as $object) {
+                if ($object['Key'] === $prefix) {
+                    continue; // the folder placeholder object itself, not a file
+                }
+                $objects[] = [
+                    'key'           => $object['Key'],
+                    'size'          => (int) $object['Size'],
+                    'last_modified' => $object['LastModified'] ? $object['LastModified']->format(DATE_ATOM) : '',
+                ];
+            }
+
+            return [
+                'success'    => true,
+                'code'       => 200,
+                'message'    => '',
+                'folders'    => $folders,
+                'objects'    => $objects,
+                'next_token' => !empty($result['IsTruncated']) ? ($result['NextContinuationToken'] ?? null) : null,
+            ];
+        } catch (AwsException $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage(), 'folders' => [], 'objects' => [], 'next_token' => null];
+        } catch (S3Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage(), 'folders' => [], 'objects' => [], 'next_token' => null];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage(), 'folders' => [], 'objects' => [], 'next_token' => null];
+        }
+    }
+
+    /**
      * Upload Single
      * @since 1.0.0
      */
     public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='') {
-        $result = array();
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
@@ -552,95 +617,7 @@ class CloudflareR2 {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
                 $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
-
-                // Decide Multipart upload or normal put object
-                if (filesize($absolute_source_path) <= Schema::getConstant('CLOUDFLARE_R2_MULTIPART_MIN_FILE_SIZE')) {
-                    // Upload a publicly accessible file. The file size and type are determined by the SDK.
-                    try {
-                        $handle = fopen($absolute_source_path, 'rb');
-
-                        $this->cloudflareClient->putObject([
-                            'Bucket' => $this->bucket_name,
-                            'Key'    => $upload_path,
-                            'Body'   => $handle,
-                        ]);
-
-                        if (is_resource($handle)) {
-                            fclose($handle);
-                        }
-
-                        return [
-                            'success'  => true,
-                            'code'     => 200,
-                            'file_url' => $this->generate_file_url($upload_path),
-                            'key'      => $upload_path,
-                            'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync')
-                        ];
-
-                    } catch (AwsException $e) {
-                        return [
-                            'success' => false,
-                            'code'    => 200,
-                            'message' => $e->getMessage()
-                        ];
-                    }
-                } else {
-                    $options = [
-                        'bucket' => $this->bucket_name,
-                        'key'    => $upload_path,
-                        'before_initiate' => function ($params) {
-                            return $this->strip_acl($params);
-                        },
-                        'before_upload' => function ($params) {
-                            return $this->strip_acl($params);
-                        },
-                        'before_complete' => function ($params) {
-                            return $this->strip_acl($params);
-                        },
-                    ];
-
-                    try {
-                        $multiUploader = new MultipartUploader(
-                            $this->cloudflareClient,
-                            $absolute_source_path,
-                            $options
-                        );
-
-                        do {
-                            try {
-                                $uploaded = $multiUploader->upload();
-                            } catch (MultipartUploadException $e) {
-                                $options['state'] = $e->getState();
-                                $multiUploader = new MultipartUploader(
-                                    $this->cloudflareClient,
-                                    $absolute_source_path,
-                                    $options
-                                );
-                            }
-                        } while (!isset($uploaded));
-
-                        return [
-                            'success'  => true,
-                            'code'     => 200,
-                            'file_url' => $this->generate_file_url($upload_path),
-                            'key'      => $upload_path,
-                            'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync')
-                        ];
-
-                    } catch (MultipartUploadException $e) {
-                        return [
-                            'success' => false,
-                            'code'    => 200,
-                            'message' => $e->getMessage()
-                        ];
-                    } catch (AwsException $e) {
-                        return [
-                            'success' => false,
-                            'code'    => 200,
-                            'message' => $e->getMessage()
-                        ];
-                    }
-                }
+                return $this->execute_upload($absolute_source_path, $upload_path);
             }
         }
 
@@ -651,6 +628,92 @@ class CloudflareR2 {
         ];
     }
 
+    /**
+     * Upload a local file to an exact destination key (no Utils::generate_object_key() derivation).
+     * @since 1.4.0
+     */
+    public function uploadObjectAtKey($absolute_source_path, $key) {
+        return $this->execute_upload($absolute_source_path, $key);
+    }
+
+    /**
+     * Build an unexecuted ObjectUploader for the given local file and destination key, using
+     * this plugin's own multipart threshold rather than the SDK's 16MB default. $acl is
+     * explicitly null — R2 doesn't support S3-style ACLs — and the before_initiate/
+     * before_upload/before_complete hooks strip it via strip_acl(), since ObjectUploader's
+     * multipart delegation still threads $options through to MultipartUploader.
+     * @since 1.4.0
+     */
+    private function build_object_uploader($absolute_source_path, $key, $options = []) {
+        $handle = fopen($absolute_source_path, 'rb');
+        $params = [];
+        $cache_control = Utils::get_cache_control_header();
+        if ($cache_control) {
+            $params['CacheControl'] = $cache_control;
+        }
+        $options += [
+            'mup_threshold'   => Schema::getConstant('CLOUDFLARE_R2_MULTIPART_MIN_FILE_SIZE'),
+            'params'          => $params,
+            'before_initiate' => function ($params) {
+                return $this->strip_acl($params);
+            },
+            'before_upload' => function ($params) {
+                return $this->strip_acl($params);
+            },
+            'before_complete' => function ($params) {
+                return $this->strip_acl($params);
+            },
+        ];
+        return new ObjectUploader($this->cloudflareClient, $this->bucket_name, $key, $handle, null, $options);
+    }
+
+    /**
+     * Run an ObjectUploader synchronously and normalize the result shape. Retries up to
+     * 3 attempts on MultipartUploadException, resuming from the failed attempt's saved
+     * state rather than restarting the whole upload — same retry contract uploadSingle()
+     * had before the ObjectUploader swap.
+     * @since 1.4.0
+     */
+    private function execute_upload($absolute_source_path, $key) {
+        $max_attempts = 3;
+        $attempt = 0;
+        $options = [];
+
+        while (true) {
+            $attempt++;
+            try {
+                $this->build_object_uploader($absolute_source_path, $key, $options)->upload();
+                return [
+                    'success'  => true,
+                    'code'     => 200,
+                    'file_url' => $this->generate_file_url($key),
+                    'key'      => $key,
+                    'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync')
+                ];
+            } catch (MultipartUploadException $e) {
+                if ($attempt >= $max_attempts) {
+                    return [
+                        'success' => false,
+                        'code'    => 200,
+                        'message' => $e->getMessage()
+                    ];
+                }
+                $options = ['state' => $e->getState()];
+            } catch (AwsException $e) {
+                return [
+                    'success' => false,
+                    'code'    => 200,
+                    'message' => $e->getMessage()
+                ];
+            } catch (Exception $e) {
+                return [
+                    'success' => false,
+                    'code'    => 200,
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+    }
 
     /**
      * Exclude 'ACL' parameter from given params.
@@ -661,9 +724,11 @@ class CloudflareR2 {
      */
     private function strip_acl($params) {
         if ($params instanceof Command) {
+            // Mutate in place, not a clone — the SDK's before_* hooks (both here and in
+            // MultipartUploader) call this and discard the return value, relying on the
+            // same Command object being modified, not a modified copy being returned.
             if ($params->hasParam('ACL')) {
-                $params = clone $params;
-                $params->removeParam('ACL');
+                unset($params['ACL']);
             }
         } else if (is_array($params)) {
             if (isset($params['ACL'])) {
@@ -678,6 +743,7 @@ class CloudflareR2 {
      * @since 1.0.0
      */
     public function object_to_server($key, $save_path) {
+        if(!$this->cloudflareClient) return false;
         try {
             $getObject = $this->cloudflareClient->getObject([
                 'Bucket' => $this->bucket_name,
@@ -694,36 +760,110 @@ class CloudflareR2 {
     }
 
     /**
+     * Object bytes in memory, no local file — for callers (e.g. zip download) that need
+     * the content itself rather than a copy on the server's filesystem.
+     * @since 1.3.13
+     */
+    public function get_object_content($key) {
+        if(!$this->cloudflareClient) return false;
+        try {
+            $result = $this->cloudflareClient->getObject([
+                'Bucket' => $this->bucket_name,
+                'Key'    => $key,
+            ]);
+            return (string) $result['Body'];
+        } catch (AwsException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Deletes the live object, then best-effort purges every historical version too — a
+     * plain deleteSingle() on a versioned bucket only adds a delete marker, leaving prior
+     * versions (and the storage they use) behind at the old key. The live delete happens
+     * unconditionally first: some providers (Cloudflare R2 itself doesn't support
+     * ListObjectVersions at all — confirmed via a live 501 "NotImplemented" response) can't
+     * do the version-history part, and the object must still end up gone either way.
+     * @since 1.3.14
+     */
+    public function purge_all_versions($key) {
+        if (!$this->cloudflareClient) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+        }
+
+        try {
+            $this->cloudflareClient->deleteObject([
+                'Bucket' => $this->bucket_name,
+                'Key'    => $key,
+            ]);
+        } catch (AwsException $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        }
+
+        // Best-effort only from here — providers that don't support version listing (R2)
+        // simply skip this part; the live object above is already gone regardless.
+        try {
+            $objects = [];
+            $marker  = null;
+            do {
+                $args = ['Bucket' => $this->bucket_name, 'Prefix' => $key];
+                if ($marker) {
+                    $args['KeyMarker']       = $marker['key'];
+                    $args['VersionIdMarker'] = $marker['version'];
+                }
+                $result = $this->cloudflareClient->listObjectVersions($args);
+                foreach (array_merge($result['Versions'] ?? [], $result['DeleteMarkers'] ?? []) as $version) {
+                    if (($version['Key'] ?? null) === $key) {
+                        $objects[] = ['Key' => $key, 'VersionId' => $version['VersionId']];
+                    }
+                }
+                $marker = !empty($result['IsTruncated'])
+                    ? ['key' => $result['NextKeyMarker'], 'version' => $result['NextVersionIdMarker']]
+                    : null;
+            } while ($marker);
+
+            foreach (array_chunk($objects, 1000) as $chunk) {
+                $this->cloudflareClient->deleteObjects([
+                    'Bucket' => $this->bucket_name,
+                    'Delete' => ['Objects' => $chunk],
+                ]);
+            }
+        } catch (AwsException $e) {
+            // Version history cleanup unsupported/failed — not fatal, live object is gone.
+        }
+
+        return ['success' => true, 'code' => 200, 'message' => esc_html__('Purged Successfully', 'media-cloud-sync')];
+    }
+
+    /**
      * Copy to new path
      * @since 1.3.4
      */
+    // Trusts copyObject()'s own success/failure rather than pre/post-verifying with extra
+    // exists() HEAD requests — each one is a full network round-trip, and with move/copy
+    // processing keys sequentially, three extra round-trips per file adds up fast on a
+    // folder with many files. copyObject() itself throws (caught below) if the source is
+    // missing or the copy otherwise fails, so nothing is lost by not checking first.
     public function copy_to_new_path($key, $new_path) {
+        if (!$this->cloudflareClient) {
+            return [
+                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'code'    => 200,
+                'success' => false
+            ];
+        }
         try {
-            // Step 1: Verify object exists at old location
-            if (!$this->exists($key)) {
-                return [
-                    'message' => esc_html__('Original file not found' , 'media-cloud-sync'),
-                    'code' => 200,
-                    'success' => false
-                ];
-            }
-            // Step 2: Copy object
-            if (!$this->exists($new_path)) {
-                $this->cloudflareClient->copyObject([
-                    'Bucket'            => $this->bucket_name,
-                    'CopySource'        => "{$this->bucket_name}/{$key}",
-                    'Key'               => $new_path,
-                    'MetadataDirective' => 'COPY',
-                ]);
-            }
-            // Step 3: Verify object exists at new location
-            if ($this->exists($new_path)) {
-                return [
-                    'success' => true,
-                    'code'    => 200,
-                    'message' => esc_html__('File copied successfully', 'media-cloud-sync')
-                ];
-            }
+            $this->cloudflareClient->copyObject([
+                'Bucket'            => $this->bucket_name,
+                'CopySource'        => "{$this->bucket_name}/{$key}",
+                'Key'               => $new_path,
+                'MetadataDirective' => 'COPY',
+            ]);
+            return [
+                'success' => true,
+                'code'    => 200,
+                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+            ];
         } catch (AwsException $e) {
             return [
                 'success' => false,
@@ -731,11 +871,37 @@ class CloudflareR2 {
                 'message' => $e->getMessage()
             ];
         }
-        return [
-            'success' => false,
-            'code'    => 200,
-            'message' => esc_html__('File not copied', 'media-cloud-sync')
-        ];
+    }
+
+    // Like copy_to_new_path() but into an explicit (possibly different) bucket — needs write
+    // access there too, so callers should fall back to download+upload on failure.
+    public function copy_to_bucket($key, $new_key, $dest_bucket) {
+        if (!$this->cloudflareClient) {
+            return [
+                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'code'    => 200,
+                'success' => false
+            ];
+        }
+        try {
+            $this->cloudflareClient->copyObject([
+                'Bucket'            => $dest_bucket,
+                'CopySource'        => "{$this->bucket_name}/{$key}",
+                'Key'               => $new_key,
+                'MetadataDirective' => 'COPY',
+            ]);
+            return [
+                'success' => true,
+                'code'    => 200,
+                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+            ];
+        } catch (AwsException $e) {
+            return [
+                'success' => false,
+                'code'    => 200,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
     /**
@@ -744,6 +910,13 @@ class CloudflareR2 {
      */
     public function deleteSingle($key) {
         $result = array();
+        if (!$this->cloudflareClient) {
+            return array(
+                'success' => false,
+                'code'    => 200,
+                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+            );
+        }
         if (isset($key) && !empty($key)) {
             try {
                 $this->cloudflareClient->deleteObject([
@@ -787,6 +960,13 @@ class CloudflareR2 {
      */
     public function get_private_url($key) {
         $result = array();
+        if (!$this->cloudflareClient) {
+            return array(
+                'success' => false,
+                'code'    => 200,
+                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+            );
+        }
         if (isset($key) && !empty($key)) {
             try {
                 $cmd = $this->cloudflareClient->getCommand('GetObject', [

@@ -74,12 +74,48 @@ class Sync {
         $action_class = $this->get_class_by_action($action);
 
         if($action_class) {
-            $action_class->start();
+            // BGRunner's lock is per-type — nothing else stops two different actions from running at once.
+            $blocking_action = $this->find_running_action($action);
+            if ($blocking_action) {
+                return [
+                    'success' => false,
+                    /* translators: %s: the action that is currently running */
+                    'message' => sprintf(__('Another sync (%s) is currently running. Stop or finish it before starting a new one.', 'media-cloud-sync'), $blocking_action),
+                ];
+            }
+
+            $start_result = $action_class->start();
+            // A job's start() can signal a precondition failure (e.g. no destination
+            // configured) by returning ['success' => false, ...] instead of the usual
+            // void/true — short-circuit and pass that straight through instead of masking
+            // it with a status object that always reads as started.
+            if (is_array($start_result) && isset($start_result['success']) && $start_result['success'] === false) {
+                return $start_result;
+            }
             return $action_class->get_status();
         } else {
             /* translators: %s: action name */
             throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
         }
+    }
+
+    // Action string of another registered action currently running/paused, or null.
+    private function find_running_action( $except_action ) {
+        $runner = BGRunner::instance();
+        foreach ($this->syncClasses as $class) {
+            $class_with_namespace = __NAMESPACE__.'\\'. trim($class);
+            if(!class_exists($class_with_namespace)) continue;
+
+            $instance = $class_with_namespace::instance();
+            $other_action = $instance->get_action();
+            if ($other_action === $except_action) continue;
+
+            $status = $runner->status($other_action);
+            if (in_array($status['status'] ?? 'stopped', ['running', 'paused'], true)) {
+                return $other_action;
+            }
+        }
+        return null;
     }
 
     /**
@@ -116,17 +152,53 @@ class Sync {
 
     /**
      * Stops the sync process.
-     * 
+     *
      */
     public function stop( $action ) {
         $action_class = $this->get_class_by_action($action);
-        
+
         if($action_class) {
             $action_class->stop();
             return $action_class->get_status();
         } else {
             throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
         }
+    }
+
+
+    /**
+     * Sets the sync method ('ajax'|'cron'|'mixed') preference for the given action's type.
+     */
+    public function set_sync_method( $action, $method ) {
+        $action_class = $this->get_class_by_action($action);
+
+        if($action_class) {
+            return $action_class->set_sync_method($method);
+        } else {
+            throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
+        }
+    }
+
+
+    /**
+     * Ticks the sync process — processes a small batch synchronously (ajax/mixed sync mode).
+     * Gracefully no-ops (returns current status unchanged) for an action whose class hasn't
+     * been updated with a tick() method yet — it's still safely progressing via cron, this
+     * just means ajax ticking isn't wired up for it yet, not a failure.
+     * @since 1.3.13
+     */
+    public function tick( $action, $batch = 5 ) {
+        $action_class = $this->get_class_by_action($action);
+
+        if(!$action_class) {
+            throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
+        }
+
+        if(method_exists($action_class, 'tick')) {
+            return $action_class->tick($batch);
+        }
+
+        return $action_class->get_status();
     }
 
 

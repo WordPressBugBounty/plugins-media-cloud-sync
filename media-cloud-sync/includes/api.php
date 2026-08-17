@@ -46,6 +46,7 @@ class Api {
 		$this->add_route( '/saveConfig', 'saveConfig', 'POST' );
 		$this->add_route( '/refreshCounts', 'refreshCounts', 'POST' );
 		$this->add_route( '/getErrorLogs', 'getErrorLogs', 'POST' );
+		$this->add_route( '/clearErrorLogs', 'clearErrorLogs', 'POST' );
 
 		// Upgrade Database Routes
 		$this->add_route( '/upgrade/status', 'getUpgradeStatus' );
@@ -57,6 +58,8 @@ class Api {
 		$this->add_route( '/sync/pause', 'pauseSync', 'POST' );
 		$this->add_route( '/sync/resume', 'resumeSync', 'POST' );
 		$this->add_route( '/sync/stop', 'stopSync', 'POST' );
+		$this->add_route( '/sync/tick', 'tickSync', 'POST' );
+		$this->add_route( '/sync/setMethod', 'setSyncMethod', 'POST' );
 
 		$this->add_route( '/sync/retrySingle', 'retrySingle', 'POST' );
 	}
@@ -164,6 +167,10 @@ class Api {
 			],
 			'sync'			=> Sync::instance()->get_status(),
 			'license'		=> defined('WPMCS_PRO_VERSION') ? Utils::get_safe_license_data() : [],
+			'file_manager'	=> defined('WPMCS_PRO_VERSION') ? [
+				'delete_enabled' => (bool) Utils::get_option('delete_enabled', false, Schema::getConstant('FILE_MANAGER_SETTINGS_KEY')),
+				'root_folder'    => Utils::get_option('root_folder', '', Schema::getConstant('FILE_MANAGER_SETTINGS_KEY')),
+			] : [],
 		];
 
 		return new WP_REST_Response( $data, 200 );
@@ -202,6 +209,7 @@ class Api {
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 
 			if(!$updated) $serviceOk = false;
+			if(!$updatedSettings) $settingsOk = false;
 		}
 
 
@@ -336,6 +344,30 @@ class Api {
 
 
 	/**
+	 * Clear all error logs for a sync type (e.g. stale entries from earlier failed attempts).
+	 * @since 1.3.13
+	 */
+	public function clearErrorLogs( $request ) {
+		$type = isset($request->get_params()['type']) ? $request->get_params()['type'] : '';
+
+		if (empty($type) || !Sync::instance()->get_class_by_action($type)) {
+			return new WP_REST_Response( [
+				'success'	=> false,
+				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+			], 200 );
+		}
+
+		Logger::instance()->remove_logs_by_type($type);
+
+		$result = [
+			'success'	=> true,
+			'message'	=> esc_html__('Error logs cleared', 'media-cloud-sync')
+		];
+		return new WP_REST_Response( $result, 200 );
+	}
+
+
+	/**
 	 * Get Status
 	 * @since 1.2.13
 	 */
@@ -368,7 +400,7 @@ class Api {
 	 */
 	public function startSync( $data ) {
 		$action = isset($data->get_params()['action']) ? $data->get_params()['action'] : '';
-		if(empty($action)) {
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
 				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
@@ -383,6 +415,12 @@ class Api {
 			return new WP_REST_Response( $result, 200 );
 		}
 		$status = Sync::instance()->start($action);
+
+		// Sync::start() passes a job's own precondition-failure array straight through
+		// (e.g. no destination configured) instead of masking it as a started status.
+		if (is_array($status) && isset($status['success']) && $status['success'] === false) {
+			return new WP_REST_Response( $status, 200 );
+		}
 
 		$result = [
 			'success'	=> true,
@@ -399,7 +437,7 @@ class Api {
 	 */
 	public function pauseSync( $data ) {
 		$action = isset($data->get_params()['action']) ? $data->get_params()['action'] : '';
-		if(empty($action)) {
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
 				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
@@ -418,12 +456,44 @@ class Api {
 
 
 	/**
+	 * Save the sync method ('ajax'|'cron'|'mixed') preference for a sync type.
+	 * @since 1.3.13
+	 */
+	public function setSyncMethod( $data ) {
+		$params = $data->get_params();
+		$action = isset($params['action']) ? sanitize_text_field($params['action']) : '';
+		$method = isset($params['sync_method']) ? sanitize_text_field($params['sync_method']) : '';
+
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
+			return new WP_REST_Response( [
+				'success'	=> false,
+				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+			], 200 );
+		}
+
+		$saved = Sync::instance()->set_sync_method($action, $method);
+		if(!$saved) {
+			return new WP_REST_Response( [
+				'success'	=> false,
+				'message'	=> esc_html__('Invalid sync method', 'media-cloud-sync')
+			], 200 );
+		}
+
+		$result = [
+			'success'		=> true,
+			'sync_method'	=> $method,
+			'status'		=> Sync::instance()->get_class_by_action($action)->get_status(),
+		];
+		return new WP_REST_Response( $result, 200 );
+	}
+
+	/**
 	 * Resume Sync
 	 * @since 1.2.13
 	 */
 	public function resumeSync( $data ) {
 		$action = isset($data->get_params()['action']) ? $data->get_params()['action'] : '';
-		if(empty($action)) {
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
 				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
@@ -447,7 +517,7 @@ class Api {
 	 */
 	public function stopSync( $data ) {
 		$action = isset($data->get_params()['action']) ? $data->get_params()['action'] : '';
-		if(empty($action)) {
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
 				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
@@ -470,6 +540,65 @@ class Api {
 
 
 	/**
+	 * Tick Sync — process a small batch synchronously, driving Ajax/Mixed sync mode.
+	 * @since 1.3.13
+	 */
+	public function tickSync( $data ) {
+		$params = $data->get_params();
+		$action = isset($params['action']) ? $params['action'] : '';
+
+		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
+			$result = [
+				'success'	=> false,
+				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+			];
+			return new WP_REST_Response( $result, 200 );
+		}
+
+		// Defense in depth — the frontend should never call this in free/unlicensed mode, but
+		// the endpoint must not trust that, and must not silently no-op: an unlicensed call
+		// needs a clear rejection so the frontend's tick loop stops instead of retrying forever.
+		if ( ! Utils::is_pro_licensed() ) {
+			$result = [
+				'success'	=> false,
+				'message'	=> esc_html__('Ajax sync requires an active Pro license', 'media-cloud-sync')
+			];
+			return new WP_REST_Response( $result, 200 );
+		}
+
+		// Clamp regardless of what the frontend sends — the endpoint itself must enforce the
+		// ceiling, since a batch of slow uploads processed sequentially in one request risks
+		// exceeding reverse-proxy/webserver timeouts that process_iterations() can't see.
+		$batch = isset($params['batch']) ? (int) $params['batch'] : 5;
+		$batch = min(10, max(1, $batch));
+
+		$status = Sync::instance()->tick($action, $batch);
+
+		$result = [
+			'success'	=> true,
+			'status'	=> $status,
+			'message'	=> esc_html__('Sync ticked successfully', 'media-cloud-sync')
+		];
+
+		// Deliberately omitted on every tick (this endpoint may be hit ~once/second while a
+		// sync runs, and Counter::get_count() is a real query) — but the Dashboard's own
+		// Statistics widget reads a *different* redux slice (common.counts) than the Sync
+		// screen's progress (sync[action]), only refreshed via the slower ~2-3s useSyncPolling
+		// cadence. That's an acceptable few-seconds lag while a sync is actively running, but
+		// right when it finishes it becomes a visibly wrong, stuck-looking number on the
+		// Dashboard until the next poll happens to catch up. Only pay for the query at that
+		// one transition, not on every tick.
+		if ( isset( $status['status'] ) && $status['status'] !== 'running' ) {
+			$result['counts'] = [
+				'all'			=> Counter::get_count(),
+				'categorized'	=> $this->getSortedMediaCounts()
+			];
+		}
+		return new WP_REST_Response( $result, 200 );
+	}
+
+
+	/**
 	 * Retry a Media Sync Error
 	 */
 	public function retrySingle( $data ) {
@@ -487,9 +616,21 @@ class Api {
 		}
 		// Retry Sync
 		$handler = Sync::instance()->get_class_by_action($type);
-		if($handler) {
-			$handler->retry_single($id, $source_type);
+		if(!$handler) {
+			$result = [
+				'success'	=> false,
+				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+			];
+			return new WP_REST_Response( $result, 200 );
 		}
+		if(!method_exists($handler, 'retry_single')) {
+			$result = [
+				'success'	=> false,
+				'message'	=> esc_html__('Retry is not available for this sync type.', 'media-cloud-sync')
+			];
+			return new WP_REST_Response( $result, 200 );
+		}
+		$handler->retry_single($id, $source_type);
 
 		$status = Utils::is_empty(Logger::instance()->get_log($type, $id, $source_type)) ? true : false;
 
@@ -516,18 +657,18 @@ class Api {
                 foreach($detailed_counts as $source_type => $counts) {
                     $found_prefix = false;
                     foreach($prefixes as $prefix) {
-                        $found_prefix = strpos($source_type, $prefix) === 0 ? $prefix : false;;
+                        $found_prefix = strpos($source_type, $prefix) === 0 ? $prefix : false;
                         if($found_prefix !== false) break;
                     }
 
                     if($found_prefix !== false) {
                         $sorted_counts[$found_prefix] = [
 							'label'	=> $source_labels[$found_prefix],
-							'uploaded' => isset($sorted_counts[$found_prefix]['data']['uploaded']) 
-                                ? $sorted_counts[$found_prefix]['data']['uploaded'] + $counts['uploaded'] 
+							'uploaded' => isset( $sorted_counts[ $found_prefix ]['uploaded'] )
+                                ? $sorted_counts[ $found_prefix ]['uploaded'] + $counts['uploaded']
                                 : $counts['uploaded'],
-                            'total' => isset($sorted_counts[$found_prefix]['data']['total']) 
-                                ? $sorted_counts[$found_prefix]['data']['total'] + $counts['total'] 
+                            'total' => isset( $sorted_counts[ $found_prefix ]['total'] )
+                                ? $sorted_counts[ $found_prefix ]['total'] + $counts['total']
                                 : $counts['total']
                         ];
                     }

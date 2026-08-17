@@ -81,7 +81,7 @@ class Cache {
      */
     private static function build_cache_key($key, $post_id, $meta_name, $is_user_meta = false) {
         return ($is_user_meta ? 'user_' : '')
-            . ($post_id == false ? '' : $post_id)
+            . ($post_id == false ? '' : $post_id . '_')
             . $meta_name
             . (!Utils::is_empty($key) ? '_' . $key : '');
     }

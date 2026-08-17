@@ -1,5 +1,17 @@
 // Deactivation Form
 jQuery(document).ready(function () {
+	// NOTE: the "requirements" value below intentionally matches the literal
+	// value="Plugin doesn\'t meet my requirements" attribute currently rendered
+	// in includes/admin.php (the backslash is not a PHP-string escape there —
+	// that markup is raw HTML, so it prints as a literal backslash character).
+	var COMMENT_REQUIRED_REASONS = [
+		"I found a bug",
+		"Plugin suddenly stopped working",
+		"Plugin broke my site",
+		"Other",
+		"Plugin doesn\\'t meet my requirements",
+	];
+
 	jQuery(document).on("click", function (e) {
 		var popup = document.getElementById("dw-wpmcs-survey-form");
 		var overlay = document.getElementById("dw-wpmcs-survey-form-wrap");
@@ -33,7 +45,10 @@ jQuery(document).ready(function () {
 		overlay.style.display = "none";
 		jQuery("#dw-wpmcs-survey-form form")[0].reset();
 		jQuery("#dw-wpmcs-survey-form form .dw-wpmcs-comments").hide();
-		jQuery("#dw-wpmcs-error").html("");
+		jQuery("#dw-wpmcs-survey-form .dw-wpmcs-comments textarea").removeClass(
+			"has-error"
+		);
+		dwWpmcsSetError("");
 	}
 
 	jQuery("#dw-wpmcs-survey-form form").on("submit", function (e) {
@@ -70,7 +85,7 @@ jQuery(document).ready(function () {
 	});
 
 	jQuery("#dw-wpmcs-survey-form .dw-wpmcs-comments textarea").on(
-		"keyup",
+		"input",
 		function () {
 			dwWpmcsValidate();
 		}
@@ -79,50 +94,43 @@ jQuery(document).ready(function () {
 	jQuery("#dw-wpmcs-survey-form form input[type='radio']").on(
 		"change",
 		function () {
-			dwWpmcsValidate();
-			let val = jQuery(this).val();
-			if (
-				val == "I found a bug" ||
-				val == "Plugin suddenly stopped working" ||
-				val == "Plugin broke my site" ||
-				val == "Other" ||
-				val == "Plugin doesn't meet my requirement"
-			) {
+			var val = jQuery(this).val();
+			if (COMMENT_REQUIRED_REASONS.indexOf(val) !== -1) {
 				jQuery("#dw-wpmcs-survey-form form .dw-wpmcs-comments").show();
 			} else {
 				jQuery("#dw-wpmcs-survey-form form .dw-wpmcs-comments").hide();
 			}
+			dwWpmcsValidate();
 		}
 	);
 
+	function dwWpmcsSetError(message) {
+		jQuery("#dw-wpmcs-error-text").text(message);
+		jQuery("#dw-wpmcs-error").toggleClass("is-visible", !!message);
+	}
+
 	function dwWpmcsValidate() {
-		var error = "";
 		var reason = jQuery(
 			"#dw-wpmcs-survey-form form input[name='reason']:checked"
 		).val();
+		var $textarea = jQuery("#dw-wpmcs-survey-form .dw-wpmcs-comments textarea");
+		$textarea.removeClass("has-error");
+
 		if (!reason) {
-			error += "Please select your reason for deactivation";
-		}
-		if (
-			error === "" &&
-			(reason == "I found a bug" ||
-				reason == "Plugin suddenly stopped working" ||
-				reason == "Plugin broke my site" ||
-				reason == "Other" ||
-				reason == "Plugin doesn't meet my requirement")
-		) {
-			var comments = jQuery(
-				"#dw-wpmcs-survey-form .dw-wpmcs-comments textarea"
-			).val();
-			if (comments.length <= 0) {
-				error += "Please specify";
-			}
-		}
-		if (error !== "") {
-			jQuery("#dw-wpmcs-error").html(error);
+			dwWpmcsSetError("Please select a reason so we know how to improve");
 			return false;
 		}
-		jQuery("#dw-wpmcs-error").html("");
+
+		if (
+			COMMENT_REQUIRED_REASONS.indexOf(reason) !== -1 &&
+			$textarea.val().trim().length <= 0
+		) {
+			dwWpmcsSetError("Please add a few details so we can look into it");
+			$textarea.addClass("has-error");
+			return false;
+		}
+
+		dwWpmcsSetError("");
 		return true;
 	}
 });

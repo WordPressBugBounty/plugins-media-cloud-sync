@@ -337,9 +337,86 @@ class Db {
             update_option( $this->token . '_db_upgrade_version', '0.0.0', false );
         }
 
+        /**
+         * If DB version below 1.0.6
+         *
+         * @since 1.3.12
+         * Flatten recursively nested wpmcs_status_data caused by legacy set_status writes.
+         */
+        if ( version_compare( $current_version, '1.0.6', '<' ) ) {
+            $this->repair_nested_status_data();
+        }
+
 
 
         update_option( $this->token.'_db_version', $latest_version, true );
+    }
+
+    /**
+     * One-time repair for recursively nested wpmcs_status_data.
+     * Flattens status entries caused by legacy set_status writes that used get_option directly.
+     *
+     * @since 1.3.12
+     * @return void
+     */
+    private function repair_nested_status_data() {
+        $meta_name = Schema::getConstant('STATUS_KEY');
+        $current_settings = Utils::get_option('status', [], $meta_name);
+
+        if (!is_array($current_settings) || empty($current_settings)) {
+            return;
+        }
+
+        $known_keys = ['cdnRead', 'storageCredentials'];
+        $collected  = [];
+        $this->collect_status_entries($current_settings, $collected);
+
+        if (empty($collected)) {
+            return;
+        }
+
+        $normalized = [];
+        foreach ($known_keys as $key) {
+            if (isset($collected[$key])) {
+                $normalized[$key] = $collected[$key];
+            }
+        }
+
+        if (empty($normalized) || $normalized === $current_settings) {
+            return;
+        }
+
+        Utils::update_option('status', $normalized, $meta_name);
+    }
+
+    /**
+     * Collect status entries from all nesting levels, preferring the latest check.
+     * @since 1.3.12
+     * @param array $settings
+     * @param array $collected
+     * @return void
+     */
+    private function collect_status_entries($settings, &$collected) {
+        if (!is_array($settings)) {
+            return;
+        }
+
+        $known_keys = ['cdnRead', 'storageCredentials'];
+
+        foreach ($known_keys as $key) {
+            if (isset($settings[$key]) && is_array($settings[$key]) && array_key_exists('status', $settings[$key])) {
+                $entry   = $settings[$key];
+                $checked = isset($entry['lastChecked']) ? (int) $entry['lastChecked'] : 0;
+
+                if (!isset($collected[$key]) || $checked >= ($collected[$key]['lastChecked'] ?? 0)) {
+                    $collected[$key] = $entry;
+                }
+            }
+        }
+
+        if (isset($settings['status']) && is_array($settings['status'])) {
+            $this->collect_status_entries($settings['status'], $collected);
+        }
     }
 
     /**

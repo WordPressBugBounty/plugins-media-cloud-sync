@@ -67,7 +67,7 @@ class Utils {
         if(!(!empty($key) || $post_id)) return false;
 
         if($db_query) {
-            $meta_data = $wpdb->get_row( "SELECT meta_value FROM $wpdb->postmeta WHERE post_id=$post_id AND meta_key='$key'" );
+            $meta_data = $wpdb->get_row( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post_id, $key ) );
             if ($wpdb->last_error || null === $meta_data || !isset($meta_data)) {
                 return false;
             }
@@ -87,7 +87,7 @@ class Utils {
         if(!(!empty($key))) return false;
 
         if($db_query) {
-            $meta_data = $wpdb->get_row( "SELECT option_value FROM $wpdb->options WHERE option_name='$key'" );
+            $meta_data = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name=%s", $key ) );
             if ($wpdb->last_error || null === $meta_data || !isset($meta_data)) {
                 return false;
             }
@@ -267,25 +267,26 @@ class Utils {
     }
 
     /**
-     * Check whether credentials are defined via the WPMCS_CONFIG constant in wp-config.php.
+     * Check whether credentials are defined via a wp-config.php constant.
      * @since 1.3.11
+     * @param string $constant
      * @return boolean
      */
-    public static function is_wp_config_credentials_defined(){
-        return defined('WPMCS_CONFIG');
+    public static function is_wp_config_credentials_defined($constant = 'WPMCS_CONFIG'){
+        return defined($constant);
     }
 
     /**
-     * Get credentials defined via the WPMCS_CONFIG constant in wp-config.php.
-     * Accepts either a PHP array or a serialized string.
+     * Get credentials defined via a wp-config.php constant. Accepts a PHP array or serialized string.
      * @since 1.3.11
+     * @param string $constant
      * @return array
      */
-    public static function get_wp_config_credentials(){
-        if(!defined('WPMCS_CONFIG')) {
+    public static function get_wp_config_credentials($constant = 'WPMCS_CONFIG'){
+        if(!defined($constant)) {
             return [];
         }
-        $config = constant('WPMCS_CONFIG');
+        $config = constant($constant);
         if(is_string($config)) {
             $config = self::maybe_unserialize($config);
         }
@@ -354,7 +355,8 @@ class Utils {
      * @return array|boolean|string|integer|float|double
      */
     public static function get_status($option='', $default=false){
-        $current_setttings = self::get_option('status',[], Schema::getConstant('STATUS_KEY'));
+        $current_setttings = self::get_option('status', [], Schema::getConstant('STATUS_KEY'));
+
         if(isset($current_setttings) && !empty($current_setttings)){
             if(isset($option) && !empty($option)){
                 if(isset($current_setttings[$option])) {
@@ -381,7 +383,7 @@ class Utils {
         }
 
         $meta_name = Schema::getConstant('STATUS_KEY');
-        $current_setttings = get_option($meta_name, []);
+        $current_setttings = self::get_status('', []);
 
         if(!is_array($current_setttings)) {
             $current_setttings = [];
@@ -673,14 +675,24 @@ class Utils {
 
         $ext = isset( $path_parts['extension'] ) ? strtolower( $path_parts['extension'] ) : '';
 
-        $allowed = [];
-        if ( isset( $settings['extensions_include'] ) && is_array( $settings['extensions_include'] ) ) {
-            $allowed = array_map( 'strtolower', array_filter( $settings['extensions_include'], 'strlen' ) );
-        }
-
+        $allowed     = [];
         $not_allowed = [];
-        if ( isset( $settings['extensions_exclude'] ) && is_array( $settings['extensions_exclude'] ) ) {
-            $not_allowed = array_map( 'strtolower', array_filter( $settings['extensions_exclude'], 'strlen' ) );
+
+        // Settings UI for these two fields is Pro-only; the values shouldn't apply without a license.
+        if ( self::is_pro_licensed() ) {
+            if (
+                ! empty( $settings['extensions_include_enabled'] ) &&
+                isset( $settings['extensions_include'] ) && is_array( $settings['extensions_include'] )
+            ) {
+                $allowed = array_map( 'strtolower', array_filter( $settings['extensions_include'], 'strlen' ) );
+            }
+
+            if (
+                ! empty( $settings['extensions_exclude_enabled'] ) &&
+                isset( $settings['extensions_exclude'] ) && is_array( $settings['extensions_exclude'] )
+            ) {
+                $not_allowed = array_map( 'strtolower', array_filter( $settings['extensions_exclude'], 'strlen' ) );
+            }
         }
 
         if ( in_array( $ext, $not_allowed, true ) ) {
@@ -713,6 +725,16 @@ class Utils {
     }
 
     
+    /**
+     * Object key used for bucket permission checks.
+     * Uses a .txt extension so CDN edge rules can serve the probe object.
+     * @since 1.3.12
+     * @return string
+     */
+    public static function get_permission_check_object_key() {
+        return self::generate_object_key(WPMCS_TOKEN . '_dummy-object-for-bucket-permission-check.txt', '');
+    }
+
     /**
      * Generate Key for Objects
      * @since 1.0.0
@@ -1135,6 +1157,54 @@ class Utils {
 			'message'             => $data['message'] ?? '',
 			'last_checked'        => $data['last_checked'] ?? 0,
 		];
+	}
+
+	/**
+	 * Whether Pro is installed and currently licensed (active, domain-activated, not expired).
+	 * Single source of truth for this check — must match the frontend's isLicenseValid()
+	 * (app/src/helper/index.js) field-for-field so backend and frontend never disagree about
+	 * whether ajax/mixed sync mode is actually usable.
+	 * @since 1.3.13
+	 * @return bool
+	 */
+	public static function is_pro_licensed() {
+		if (!defined('WPMCS_PRO_VERSION')) {
+			return false;
+		}
+
+		$license = self::get_safe_license_data();
+
+		return ($license['status'] ?? '') === 'active'
+			&& ($license['is_domain_activated'] ?? false) === true
+			&& empty($license['is_expired']);
+	}
+
+	// Cache-Control for newly uploaded objects; 1 month by default, custom duration is Pro-only, no-cache only when duration is explicitly 0.
+	// @since 1.4.0
+	public static function get_cache_control_header() {
+		$duration = 1;
+		$unit = 'months';
+
+		if (self::is_pro_licensed() && self::get_settings('cache_control_enabled', false)) {
+			$duration = (int) self::get_settings('cache_control_duration', 1);
+			$unit = self::get_settings('cache_control_unit', 'months');
+		}
+
+		if ($duration <= 0) {
+			return 'no-cache, no-store, must-revalidate';
+		}
+
+		$unit_seconds = [
+			'seconds' => 1,
+			'minutes' => MINUTE_IN_SECONDS,
+			'hours'   => HOUR_IN_SECONDS,
+			'days'    => DAY_IN_SECONDS,
+			'weeks'   => WEEK_IN_SECONDS,
+			'months'  => MONTH_IN_SECONDS,
+			'years'   => YEAR_IN_SECONDS,
+		];
+
+		return 'public, max-age=' . ($duration * ($unit_seconds[$unit] ?? MONTH_IN_SECONDS));
 	}
 
 }

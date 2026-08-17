@@ -6,6 +6,13 @@ defined('ABSPATH') || exit;
 use Exception;
 use WP_Error;
 
+/**
+ * Media Library integration.
+ *
+ * Loaded by the autoloader; activation is gated via `is_installed()` in Integration::init().
+ *
+ * @since 1.0.0
+ */
 class MediaLibrary {
     private static $instance = null;
     private $assets_url;
@@ -184,6 +191,11 @@ class MediaLibrary {
     public function update_attachment_metadata($attachment_meta, $attachment_id) {
         // Remove Logs
         Logger::instance()->remove_log('sync_to_cloud', $attachment_id, 'media_library');
+
+        // Reachable from three independent, uncoordinated triggers (WP's own
+        // wp_update_attachment_metadata hook, this plugin's bulk sync, Imagify's re-sync).
+        // No lock here — Item::add()'s upsert is what keeps a race safe; skipping instead
+        // would risk dropping a real re-upload request.
         try {
             // Ensure attachment is eligible for upload
             $attachment_meta = is_array($attachment_meta) && !empty($attachment_meta) 
@@ -635,20 +647,24 @@ class MediaLibrary {
 	 * @return null|string
 	 */
 	protected function find_image_size_from_width( $meta, $width, $filename ) {
-        $sizes = $meta['sizes'];
-		foreach ( $sizes as $name => $size ) {
-			if ( $width === absint( $size['width'] ) && $size['file'] === $filename ) {
-				return $name;
+		if ( ! is_array( $meta ) ) {
+			return null;
+		}
+
+		if ( ! empty( $meta['sizes'] ) && is_array( $meta['sizes'] ) ) {
+			foreach ( $meta['sizes'] as $name => $size ) {
+				if ( $width === absint( $size['width'] ?? 0 ) && isset( $size['file'] ) && $size['file'] === $filename ) {
+					return $name;
+				}
 			}
 		}
 
-        // Check for full size
-        if($width === $meta['width']) {
-            $full_file     = wp_basename( $meta['file'] );
-            if($full_file === $filename) {
-                return 'full';
-            }
-        }
+		if ( isset( $meta['width'], $meta['file'] ) && $width === absint( $meta['width'] ) ) {
+			$full_file = wp_basename( $meta['file'] );
+			if ( $full_file === $filename ) {
+				return 'full';
+			}
+		}
 
 		return null;
 	}
@@ -742,7 +758,7 @@ class MediaLibrary {
 	 *
 	 * @return string
 	 */
-	public function get_image_tag( $html, $id, $alt, $title, $align, $size ) {
+	public function get_image_tag( $html, $id, $alt = '', $title = '', $align = '', $size = '' ) {
 		if ( ! is_string( $html ) ) {
 			return $html;
 		}
@@ -757,6 +773,14 @@ class MediaLibrary {
 			// Can't establish img src
 			return $html;
 		}
+
+        if ( empty( $size ) && preg_match( '/\bsize-([^\s"\']+)/', $html, $size_match ) ) {
+            $size = $size_match[1];
+        }
+
+        if ( empty( $size ) ) {
+            $size = 'full';
+        }
 
         $img_src = $matches[1];
         $size = Utils::maybe_convert_size_to_string( $id, $size );
@@ -1020,13 +1044,8 @@ class MediaLibrary {
             $extras['height'] = (isset($attachment_meta['height']) && !empty($attachment_meta['height'])) ? $attachment_meta['height'] : 0;
         }
 
-        // Check whether the extension is enabled for uploading
+        // Excluded by extension settings — an intentional skip, not a sync failure, so no log entry.
         if (!Utils::is_extension_available($file_path)) {
-            Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
-                'message' => __('File extension is not supported', 'media-cloud-sync'),
-                'file'    => $file_path,
-                'code'    => 415
-            ]);
             return false;
         }
 
@@ -1062,10 +1081,11 @@ class MediaLibrary {
         }
 
         if (isset($uploaded['success']) && !$uploaded['success']) {
+            // Prefer the service's own error message/code when it provided one.
             Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
-                'message' => __('File upload failed', 'media-cloud-sync'),
+                'message' => $uploaded['message'] ?? __('File upload failed', 'media-cloud-sync'),
                 'file'    => $file_path,
-                'code'    => 500
+                'code'    => $uploaded['code'] ?? 500
             ]);
         }
 
@@ -1221,9 +1241,9 @@ class MediaLibrary {
 
             if (isset($uploaded_original['success']) && !$uploaded_original['success']) {
                 Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
-                    'message' => __('Original File upload failed', 'media-cloud-sync'),
+                    'message' => $uploaded_original['message'] ?? __('Original File upload failed', 'media-cloud-sync'),
                     'file'    => $original_file_path,
-                    'code'    => 500
+                    'code'    => $uploaded_original['code'] ?? 500
                 ]);
             }
         } else {
@@ -1334,23 +1354,45 @@ class MediaLibrary {
 
 
     /**
+     * Whether an attachment is still waiting on WordPress-generated subsizes — same check
+     * update_attachment_metadata() uses, so callers can tell that apart from a real failure.
+     *
+     * @param int $attachment_id
+     * @return bool
+     */
+    private function is_attachment_not_yet_ready( $attachment_id ) {
+        if ( ! wp_attachment_is_image( $attachment_id ) ) {
+            return false;
+        }
+
+        $attachment_meta = wp_get_attachment_metadata( $attachment_id );
+
+        return $this->should_wait_for_subsizes( $attachment_meta, $attachment_id );
+    }
+
+    /**
      * Upload pending media files.
      *
      * Processes media attachments that are pending and haven't been synced yet.
      *
+     * Paginates by `posts.ID` (a stable cursor) rather than a raw SQL OFFSET,
+     * so a concurrent single-item retry (which can remove an arbitrary item
+     * from the middle of the pending set, not just the front) can't desync
+     * which row gets picked up next.
+     *
      * @param string $source_type Source type for identifying which source..
-     * @param int $limit  Number of media to process. Default is 50.
-     * @param int $offset Offset for media query. Default is 0.
-     * @return array      Status array with success and failed media IDs.
+     * @param int $limit    Number of media to process. Default is 50.
+     * @param int $after_id Only consider attachments with ID greater than this cursor. Default is 0.
+     * @return array      Status array with success, failed count, and the last attachment ID considered.
      */
-    public function upload_pending_media( $source_type, $limit = 50, $offset = 0 ) {
+    public function upload_pending_media( $source_type, $limit = 50, $after_id = 0 ) {
         global $wpdb;
 
         $failed = 0;
 
         $source_type_data = self::$source_types[ $source_type ] ?? false;
         if ( ! $source_type_data ) {
-            return [ 'success' => true, 'failed' => $limit ];
+            return [ 'success' => true, 'failed' => $limit, 'last_id' => $after_id ];
         }
 
         $posts = $wpdb->prefix . $source_type_data['table'];
@@ -1374,6 +1416,12 @@ class MediaLibrary {
             $params[] = $this->region;
         }
 
+        $after_id_sql = '';
+        if ( $after_id > 0 ) {
+            $after_id_sql = 'AND posts.ID > %d';
+            $params[]     = (int) $after_id;
+        }
+
         $sql = "
             SELECT posts.ID
             FROM {$posts} AS posts
@@ -1381,28 +1429,39 @@ class MediaLibrary {
                 ON {$join}
             WHERE posts.post_type = 'attachment'
             AND items.source_id IS NULL
+            {$after_id_sql}
             ORDER BY posts.ID ASC
-            LIMIT %d OFFSET %d
+            LIMIT %d
         ";
 
         $params[] = (int) $limit;
-        $params[] = (int) $offset;
 
         $rows = $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
 
         if ( empty( $rows ) ) {
-            return [ 'success' => true, 'failed' => 0 ];
+            return [ 'success' => true, 'failed' => 0, 'last_id' => $after_id ];
         }
 
+        $last_id = $after_id;
         foreach ( $rows as $row ) {
+            $attachment_id = (int) $row->ID;
+
+            // Still waiting on WordPress to finish generating subsizes — not a failure,
+            // just not ready yet. Leave $last_id alone so it's reconsidered next tick.
+            if ( $this->is_attachment_not_yet_ready( $attachment_id ) ) {
+                break;
+            }
+
+            $last_id = $attachment_id;
+
             try {
-                $this->upload_single_media( (int) $row->ID, $source_type );
+                $this->upload_single_media( $attachment_id, $source_type );
             } catch ( \Throwable $e ) {
                 $failed++;
                 continue;
             }
 
-            if ( ! Item::instance()->get( (int) $row->ID, $source_type ) ) {
+            if ( ! Item::instance()->get( $attachment_id, $source_type ) ) {
                 $failed++;
             }
         }
@@ -1410,6 +1469,7 @@ class MediaLibrary {
         return [
             'success' => true,
             'failed'  => $failed,
+            'last_id' => $last_id,
         ];
     }
 
@@ -1438,7 +1498,7 @@ class MediaLibrary {
         if($provider) { 
             $label = Schema::getServiceLabels($provider); ?>
             <div class="misc-pub-section misc-pub-provider">
-                <?php esc_html_e( 'Provider :', 'media-cloud-sync' ); ?> <strong><?php echo esc_textarea(!empty($label) ? $label : $provider); ?></strong></a>
+                <?php esc_html_e( 'Provider :', 'media-cloud-sync' ); ?> <strong><?php echo esc_textarea(!empty($label) ? $label : $provider); ?></strong>
             </div>
         <?php
         }
@@ -1446,14 +1506,14 @@ class MediaLibrary {
         $region = $wpmcsItem->get_field($attachment_id, 'region', 'media_library');
         if($region) { ?>
             <div class="misc-pub-section misc-pub-provider">
-                <?php esc_html_e( 'Region :', 'media-cloud-sync' ); ?> <strong><?php echo esc_textarea($region); ?></strong></a>
+                <?php esc_html_e( 'Region :', 'media-cloud-sync' ); ?> <strong><?php echo esc_textarea($region); ?></strong>
             </div>
         <?php
         }
         $private = (int)$wpmcsItem->get_field($attachment_id, 'is_private', 'media_library');
         ?>
             <div class="misc-pub-section misc-pub-provider">
-                <?php esc_html_e( 'Access :', 'media-cloud-sync' ); ?> <strong><?php $private ? esc_html_e( 'Private', 'media-cloud-sync' ) : esc_html_e( 'Public', 'media-cloud-sync' ); ?></strong></a>
+                <?php esc_html_e( 'Access :', 'media-cloud-sync' ); ?> <strong><?php $private ? esc_html_e( 'Private', 'media-cloud-sync' ) : esc_html_e( 'Public', 'media-cloud-sync' ); ?></strong>
             </div>
         <?php
 	}
@@ -1461,6 +1521,8 @@ class MediaLibrary {
 
     /**
      * Function to get attachment details by ID
+     *
+     * @since 1.3.12 Added capability checks for attachment access.
      */
     public function ajax_get_attachment_details() {
         $result = array(
@@ -1479,7 +1541,16 @@ class MediaLibrary {
 
 		check_ajax_referer( 'get_media_provider_details', '_nonce' );
 
-		$id= intval( sanitize_text_field( $_POST['id'] ) );
+		if ( ! current_user_can( 'upload_files' ) ) {
+			wp_send_json_error();
+		}
+
+		$id = absint( wp_unslash( $_POST['id'] ) );
+		$post = get_post( $id );
+
+		if ( ! $post || 'attachment' !== $post->post_type || ! current_user_can( 'edit_post', $id ) ) {
+			wp_send_json_success( $result );
+		}
         
         // Return if extension not allowed
         $path = get_attached_file( $id );
@@ -1509,7 +1580,7 @@ class MediaLibrary {
         if($region){
             $item['region'] = $region;
         }
-        $item['private'] = $wpmcsItem->get_field($id, 'private', 'media_library');
+        $item['private'] = (int) $wpmcsItem->get_field($id, 'is_private', 'media_library');
         if($item) {
             $result= array(
                 'status' => true,

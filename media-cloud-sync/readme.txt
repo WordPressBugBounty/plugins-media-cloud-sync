@@ -1,4 +1,4 @@
-﻿=== Media Cloud Sync ===
+=== Media Cloud Sync ===
 Author: Dudlewebs
 Author URI: https://dudlewebs.com
 Contributors: dudlewebs
@@ -8,7 +8,7 @@ License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
 Tested up to: 7.0
-Stable tag: 1.3.11
+Stable tag: 1.3.12
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -68,7 +68,7 @@ Here are the key features of the Media Cloud Sync plugin:
 == Other Useful Links ==
 🔹 [Official website](https://dudlewebs.com)  
 🔹 [Documentation](https://dudlewebs.com/support)  
-🔹 [Pro version coming soon](https://dudlewebs.com)  
+🔹 [Get Media Cloud Sync Pro](https://dudlewebs.com/product/media-cloud-sync/)
 🔹 [Donate Now!! Get PRO version license discounts](https://dudlewebs.com/donate)
 
 == Screenshots ==
@@ -141,6 +141,37 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.3.12 =
+* Tweak: Pro upgrade prompts now link to the live product page and list the actual Pro features (Media Library actions, File Manager, Restore to Server, Move to New Path, Bucket-to-Bucket Migration, faster Ajax/Mixed sync). Added an "Upgrade to Pro" plugin action link on the Plugins screen for non-Pro sites.
+* Feature: File Manager (Pro) — browse your connected cloud bucket, download as zip, restore to server, move, and delete files, with per-item and bulk actions.
+* Feature: Added CDN provider presets (Amazon CloudFront, Bunny.net, Fastly, Cloudflare CDN, Akamai, KeyCDN, Gcore, Edgio, Leaseweb CDN, CDNetworks) to every storage service's CDN settings.
+* Feature: Sync Method toggle (Ajax/Cron/Mixed) on the Sync screen for Pro-licensed users. Controls whether bulk sync runs via the browser, WP-Cron, or both.
+* Bug Fix: Security — SQL injection risk in media path and settings queries. Fixed with $wpdb->prepare.
+* Bug Fix: purge_all_versions() could leave old files undeleted on providers (e.g. Cloudflare R2) that don't support listing object versions.
+* Bug Fix: File Manager's shift-click range selection didn't collapse back down when re-clicking a row inside an existing selection.
+* Bug Fix: Background sync could be slow to respond to Pause/Stop. Concurrent triggers could also duplicate an upload or lose track of its status.
+* Bug Fix: Sync could skip or reprocess items if the media library changed mid-run. Multipart retries were uncapped, file handles could leak on failed uploads, and sync log writes weren't locked.
+* Bug Fix: Images waiting on WordPress-generated thumbnails are now retried instead of marked failed. Upload failures now log the real provider error. Ajax sync mode now resumes correctly after the browser Back button.
+* Bug Fix: Storage credential and connection checks fixed across S3, DigitalOcean Spaces, Google Cloud Storage, Cloudflare R2, and S3-Compatible providers.
+* Bug Fix: S3 Block Public Access status was dropped for partially blocked buckets. Cloudflare R2's CDN check falsely showed "Access Denied" with custom domains.
+* Bug Fix: Several Media Library and attachment-detail bugs — a PHP 8.4 fatal in the image tag filter, a missing capability check, a wrong Access (public/private) value, and Customizer background image lookup for offloaded media.
+* Bug Fix: WooCommerce image resize/regeneration — filter stacking consolidated into one handler, with a fallback to the original file if cloud restore fails.
+* Bug Fix: Imagify optimization now uses a proper CDN adapter instead of stacking filters. WebP integration and Customizer crop actions no longer risk a fatal error.
+* Bug Fix: Settings/Configure pages no longer get stuck loading, verifying, or saving. Validation now catches unset or invalid fields, including bad JSON credential files.
+* Bug Fix: Settings and Dashboard pages no longer crash before a provider is configured. Dashboard media counts now aggregate correctly.
+* Bug Fix: Recursively nested wpmcs_status_data from status writes; repaired via DB upgrade 1.0.6.
+* Bug Fix: ACF cropped image original file wasn't deleted from the server.
+* Tweak: Redesigned plugin deactivation survey with improved validation.
+* Tweak: Database Upgrade progress polling no longer floods the REST API.
+* Feature: Storage layer now supports exact-key uploads, cross-bucket server-side copies, and connections bound to explicit (non-global) credentials — the foundation for Bucket-to-Bucket Migration (Pro).
+* Tweak: Multipart upload threshold is now explicitly honored on every provider, and per-object ACL headers are stripped consistently, matching this plugin's bucket-level (not per-object) visibility model.
+* Bug Fix: The storage "Check Status" read-access check could show a stale "Access Denied" result from CDN caching even after real access was fine — the check's dummy object and request are now marked no-cache.
+* Tweak: File Manager breadcrumb separator icon was rendering with excess built-in padding, making it look tiny — cropped to its actual glyph bounds.
+* Tweak: "Use Existing" credential-source option (reuse the currently-connected account) is now available wherever credentials are configured, including as a migration destination.
+* Feature: Delivery Settings — newly uploaded files get a Cache-Control header, 1 month by default; Pro can set a custom duration (or 0 for no-cache) per storage/CDN choice.
+* Feature: Include/Exclude Extensions fields (Pro) control which file types get uploaded to the bucket.
+* Bug Fix: Ajax/Mixed sync method's tick loop could silently stop after one iteration due to a redux dependency bug — affected all sync types under ajax/mixed mode.
+* Bug Fix: Item::update() could fail with a duplicate-key database error when moving an item to a different provider/bucket/region if a stale row already existed at the target identity.
 = 1.3.11 =
 * Feature: wp-config.php credentials support (WPMCS_CONFIG).
 * Feature: Connection status checks for storage and CDN.

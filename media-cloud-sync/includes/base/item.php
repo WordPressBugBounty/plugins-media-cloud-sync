@@ -91,12 +91,42 @@ class Item {
         // Do some pre-update actions
         $this->pre_update_item($source_id, $data, [], $source_type);
 
-        if ($wpdb->insert(Db::get_table_name(), $data)) {
-            $item_id = $wpdb->insert_id;
+        // Upsert instead of a plain insert — two independent triggers (this plugin's bulk
+        // sync, WordPress's own metadata hook, Imagify's re-sync) can land on the same
+        // attachment around the same time; this converges on one row instead of erroring.
+        $table = Db::get_table_name();
+        $inserted = $wpdb->query($wpdb->prepare(
+            "INSERT INTO {$table}
+                (provider, region, storage, source_id, source_path, source_type, url, `key`, original_source_path, original_key, is_private, extra)
+            VALUES (%s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %d, %s)
+            ON DUPLICATE KEY UPDATE
+                id = LAST_INSERT_ID(id),
+                source_path = VALUES(source_path),
+                url = VALUES(url),
+                `key` = VALUES(`key`),
+                original_source_path = VALUES(original_source_path),
+                original_key = VALUES(original_key),
+                is_private = VALUES(is_private),
+                extra = VALUES(extra)",
+            $data['provider'], $data['region'], $data['storage'], $data['source_id'], $data['source_path'],
+            $data['source_type'], $data['url'], $data['key'], $data['original_source_path'], $data['original_key'],
+            $data['is_private'], $data['extra']
+        ));
+
+        if ($inserted !== false) {
+            // rows_affected: 1 = new row, 2 = existing row updated. Capture before any
+            // other query on $wpdb overwrites it.
+            $is_new_row = (int) $wpdb->rows_affected === 1;
+
+            $item_id = (int) $wpdb->insert_id;
             $data['id'] = $item_id;
             Integration::update_meta($source_id, 'item', $data, false, false, $source_type);
             Cache::update_item_cache($source_id.'_item_'.$source_type, $data);
-            Counter::add( 'uploaded', $source_type );
+
+            // Only count a genuinely new item, not a duplicate-collision update.
+            if ($is_new_row) {
+                Counter::add( 'uploaded', $source_type );
+            }
         }
 
         // Do some post-update actions
@@ -192,13 +222,18 @@ class Item {
      /**
      * Function to update item in data base
      * @since 1.0.0
+     * @param array|null $target_identity Optional ['provider'=>, 'storage'=>, 'region'=>] to
+     *                                     move the row to a different connection's identity.
+     *                                     The WHERE clause still uses this instance's own
+     *                                     (source) binding to locate the row — only the SET
+     *                                     values change. @since 1.4.0
      */
-    public function update($source_id, $data, $source_type = 'media_library') {
+    public function update($source_id, $data, $source_type = 'media_library', $target_identity = null) {
         global $wpdb;
         if (isset($source_id) && !Utils::is_empty($source_id)) {
-            $data['provider'] = $this->service;
-            $data['storage'] = $this->bucket_name;
-            $data['region'] = $this->region;
+            $data['provider'] = $target_identity['provider'] ?? $this->service;
+            $data['storage'] = $target_identity['storage'] ?? $this->bucket_name;
+            $data['region'] = $target_identity['region'] ?? $this->region;
 
             $old_item = $this->get($source_id, $source_type);
 
@@ -213,6 +248,30 @@ class Item {
 
             // Do some pre-update actions
             $this->pre_update_item($source_id, $data, $old_item, $source_type);
+
+            // Moving to a different identity (e.g. bucket_to_bucket migration) can collide
+            // with a stale row already sitting at that target identity — e.g. an interrupted
+            // earlier migration attempt, or the same item independently tracked under a
+            // connection this site used previously. uidx_item_source is UNIQUE on
+            // (source_id, source_type, provider, storage, region), so the UPDATE below would
+            // otherwise fail outright. The row being updated here is the current, live one;
+            // a pre-existing row already at the target is stale by definition — clear it
+            // first rather than letting the whole update silently fail.
+            $is_identity_move = $target_identity !== null && (
+                $data['provider'] !== $this->service ||
+                $data['storage'] !== $this->bucket_name ||
+                $data['region'] !== $this->region
+            );
+            if ($is_identity_move) {
+                $target_where = array(
+                    'source_id'   => $source_id,
+                    'source_type' => $source_type,
+                    'provider'    => $data['provider'],
+                    'storage'     => $data['storage'],
+                    'region'      => $data['region'],
+                );
+                $wpdb->delete(Db::get_table_name(), $target_where);
+            }
 
             $where = array(
                 'source_id'     => $source_id,
@@ -231,8 +290,12 @@ class Item {
             Integration::delete_meta($source_id, 'item', false, $source_type);
             Cache::delete_item_cache($source_id.'_item_'.$source_type);
 
-            // Reset cache
-            $this->get($source_id, $source_type);
+            if ($target_identity === null) {
+                // Reset cache — skipped when moving to a different identity: this instance's
+                // get() would search under the now-stale source identity and cache a false
+                // negative; the delete_item_cache() above is sufficient on its own there.
+                $this->get($source_id, $source_type);
+            }
             // Do some post-update actions
             $this->post_update_item($source_id, $data, $source_type);
 
@@ -366,7 +429,7 @@ class Item {
         }
 
         // Normalize & deduplicate
-        $paths = array_unique( array_map( 'esc_sql', $paths ) );
+        $paths = array_unique( $paths );
 
         $table = Db::get_table_name();
 
@@ -397,10 +460,13 @@ class Item {
         $conditions = [];
 
         if ( $exact_match ) {
-            $in = "'" . implode( "','", $paths ) . "'";
+            $placeholders = implode( ',', array_fill( 0, count( $paths ), '%s' ) );
 
             foreach ( array_keys( $fields ) as $column ) {
-                $conditions[] = "`{$column}` IN ({$in})";
+                $conditions[] = "`{$column}` IN ({$placeholders})";
+                foreach ( $paths as $path ) {
+                    $params[] = $path;
+                }
             }
         } else {
             foreach ( $paths as $path ) {
@@ -410,7 +476,8 @@ class Item {
                     : $path . '%';
 
                 foreach ( array_keys( $fields ) as $column ) {
-                    $conditions[] = "`{$column}` LIKE '{$base}'";
+                    $conditions[] = "`{$column}` LIKE %s";
+                    $params[]     = $base;
                 }
             }
         }
@@ -518,9 +585,7 @@ class Item {
      */
     public function get_url($source_id, $size = 'full', $source_type = 'media_library'){
         if ($data = $this->get($source_id, $source_type)) {
-            $extras = $this->get_extras($source_id, false, $source_type) ?: [];
-            $key    = '';
-            $url    = '';
+            $key = '';
             switch($size) {
                 case 'full':
                     $key = $data['key'];
@@ -531,6 +596,8 @@ class Item {
                     }
                     break;
                 default:
+                    // Only named sizes need extras — skip fetching them for 'full'/'original'.
+                    $extras = $this->get_extras($source_id, false, $source_type) ?: [];
                     if(
                         isset($extras) && !empty($extras) &&
                         isset($extras['sizes']) && !empty($extras['sizes']) &&
@@ -990,7 +1057,7 @@ class Item {
             }
         }
 
-        $this->may_be_delete_server_files_by_item($item, $delete_main_file, $delete_backup);
+        $this->may_be_delete_server_files_by_item($item, $delete_main_file);
 
         return true;
     }

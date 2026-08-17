@@ -377,7 +377,7 @@ class Compatibility {
      * @return int|null
      */
     public function customizer_background_image($post_id, $url) {
-        if (!is_null($post_id)) {
+        if (!empty($post_id)) {
             return $post_id;
         }
 
@@ -392,7 +392,7 @@ class Compatibility {
         } else {
             $path = Utils::get_attachment_source_path($url);
             if (!Utils::is_empty($path)) {
-                $item = Item::instance()->get_items_by_paths($path);
+                $item = Item::instance()->get_items_by_paths( $path, true, true );
                 if (!Utils::is_empty($item)) {
                     // If we found an offloaded Media Library item for that path, job's a good'n'.
                     $post_id = $item['source_id'];

@@ -136,7 +136,8 @@ class Autoloader {
 			'Integration' 	=> 'includes/integrations/integrations.php',
 			'MediaLibrary' 	=> 'includes/integrations/media-library.php',
 			'Acf' 			=> 'includes/integrations/acf.php',
-			'Imagify' 		=> 'includes/integrations/imagify.php',
+			'Imagify' 		=> 'includes/integrations/imagify/imagify.php',
+			'ImagifyPushCDN' => 'includes/integrations/imagify/push-cdn.php',
 			'WooCommerce' 	=> 'includes/integrations/woocommerce.php',
 
 			// Compatibility

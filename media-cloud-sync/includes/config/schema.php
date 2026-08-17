@@ -20,6 +20,9 @@ class Schema {
 			'META_KEY'							=> WPMCS_TOKEN.'_meta_data',
 			'CONTENT_META_KEY'					=> WPMCS_TOKEN.'_post_meta_data',
 			'GLOBAL_SETTINGS_KEY'				=> WPMCS_TOKEN.'_global_settings',
+			'FILE_MANAGER_SETTINGS_KEY'			=> WPMCS_TOKEN.'_file_manager_settings',
+			'BTB_DESTINATION_KEY'				=> WPMCS_TOKEN.'_btb_destination',
+			'BG_RUNNER_SETTINGS_KEY'			=> WPMCS_TOKEN.'_bg_runner_settings',
 			'STATUS_KEY'						=> WPMCS_TOKEN.'_status_data',
 			'COUNTER_KEY'						=> WPMCS_TOKEN.'_counter_data',
 			'UPLOADS'							=> WPMCS_TOKEN.'_uploads'

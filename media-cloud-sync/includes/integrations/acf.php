@@ -6,6 +6,13 @@ defined('ABSPATH') || exit;
 use DirectoryIterator;
 use Exception;
 
+/**
+ * ACF Compatibility.
+ *
+ * Loaded by the autoloader; activation is gated via `is_installed()` in Integration::init().
+ *
+ * @since 1.0.0
+ */
 class Acf {
     private static $instance = null;
     private $assets_url;
@@ -28,10 +35,7 @@ class Acf {
         $this->content_filter = FilterContent::instance();
         $this->compatibility = Compatibility::instance();
 
-		if (self::is_installed()) {
-			// Register actions
-			$this->registerActions();
-		}
+		$this->registerActions();
     }
 
     /**
@@ -136,7 +140,7 @@ class Acf {
 		}
 
 		// Remove the original file from the server
-		Item::instance()->may_be_delete_server_files_by_id($original_attachment_id, true);
+		Item::instance()->may_be_delete_server_files_by_id($original_attachment_id, 'media_library', true);
 
 		// Remove marker
         Utils::delete_meta($original_attachment_id, 'acf_cropped_to_remove');
@@ -254,11 +258,7 @@ class Acf {
      * @return bool
      */
     public static function is_installed(): bool {
-        if ( class_exists( 'acf', false ) ) {
-			return true;
-		}
-
-		return false;
+        return class_exists( 'acf', false );
     }
 
     /**

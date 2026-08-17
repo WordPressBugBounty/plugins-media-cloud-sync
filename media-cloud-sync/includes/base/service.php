@@ -62,15 +62,18 @@ class Service {
         $configSource = isset($data['configSource']) ? $data['configSource'] : 'database';
 
         if($configSource === 'config') {
-            // Credentials are expected from the WPMCS_CONFIG constant in wp-config.php.
-            if(!Utils::is_wp_config_credentials_defined()) {
+            // Credentials come from a wp-config.php constant — WPMCS_CONFIG by default, or
+            // a caller-supplied constant (e.g. Bucket-to-Bucket's destination uses WPMCS_BTB_CONFIG).
+            $constant = !empty($data['wpConfigConstant']) ? $data['wpConfigConstant'] : 'WPMCS_CONFIG';
+            if(!Utils::is_wp_config_credentials_defined($constant)) {
                 return [
                     'success' => false,
-                    'message' => esc_html__('WPMCS_CONFIG is not defined in wp-config.php', 'media-cloud-sync')
+                    /* translators: %s: wp-config.php constant name */
+                    'message' => sprintf(esc_html__('%s is not defined in wp-config.php', 'media-cloud-sync'), $constant)
                 ];
             }
 
-            $config  = Utils::get_wp_config_credentials();
+            $config  = Utils::get_wp_config_credentials($constant);
             $missing = [];
             foreach(self::get_required_config_keys($service) as $key) {
                 if(!isset($config[$key]) || $config[$key] === '') {
@@ -80,8 +83,8 @@ class Service {
             if(!empty($missing)) {
                 return [
                     'success' => false,
-                    /* translators: %s: comma separated list of missing configuration keys */
-                    'message' => sprintf(esc_html__('WPMCS_CONFIG is missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing))
+                    /* translators: 1: wp-config.php constant name, 2: comma separated list of missing configuration keys */
+                    'message' => sprintf(esc_html__('%1$s is missing key(s): %2$s', 'media-cloud-sync'), $constant, implode(', ', $missing))
                 ];
             }
         } else {
@@ -92,9 +95,28 @@ class Service {
     }
 
     /**
-     * Resolve the credential config for a wizard request.
-     * When the request indicates the 'config' source, credentials are pulled
-     * from the WPMCS_CONFIG constant (wp-config.php) instead of the payload.
+     * True if any of the given values is empty.
+     * Shared guard for provider config-validation checks (region/access_key/
+     * secret_key/bucket_name/etc.) so each provider class doesn't reimplement
+     * the same empty() chain.
+     * @since 1.3.11
+     * @param array $fields
+     * @return bool
+     */
+    public static function has_missing_fields(array $fields) {
+        foreach ($fields as $field) {
+            if (empty($field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Resolve the credential config for a wizard request. 'config' pulls credentials from a
+     * wp-config.php constant instead of the payload; 'existing' reuses the site's currently
+     * connected primary connection's credentials (e.g. Bucket-to-Bucket's destination form,
+     * migrating to a different bucket under the same account).
      * @since 1.3.11
      * @param array $data
      * @return array
@@ -102,7 +124,12 @@ class Service {
     private function resolve_config($data) {
         $configSource = isset($data['configSource']) ? $data['configSource'] : 'database';
         if($configSource === 'config') {
-            return Utils::get_wp_config_credentials();
+            $constant = !empty($data['wpConfigConstant']) ? $data['wpConfigConstant'] : 'WPMCS_CONFIG';
+            return Utils::get_wp_config_credentials($constant);
+        }
+        if($configSource === 'existing') {
+            $current = Utils::get_credentials('', []);
+            return isset($current['config']) && is_array($current['config']) ? $current['config'] : [];
         }
         return isset($data['config']) ? $data['config'] : [];
     }
@@ -513,6 +540,9 @@ class Service {
      * @return string The URL of the object.
      */
     public function get_url($key) {
+        if (!$this->service) {
+            return '';
+        }
         return $this->service->generate_file_url($key);
     }
 
@@ -525,6 +555,9 @@ class Service {
      * @return bool True if the URL is from a provider, false otherwise.
      */
     public function is_provider_url($url) {
+        if (!$this->service) {
+            return false;
+        }
         return $this->service->is_provider_url($url);
     }
 
@@ -534,6 +567,9 @@ class Service {
      * @since 1.0.0
      */
     public function get_private_url($path) {
+        if (!$this->service) {
+            return false;
+        }
         $url_result = $this->service->get_private_url($path);
         if(isset($url_result['success']) && $url_result['success']) {
             return isset($url_result['file_url']) ? $url_result['file_url'] : false;
@@ -551,12 +587,33 @@ class Service {
      * @return array The result of the upload operation, including success status and any relevant messages.
      */
     public function uploadSingle($file_path, $relative_source_path, $prefix = '') {
+        if (!$this->service) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+        }
         return $this->service->uploadSingle($file_path, $relative_source_path, $prefix);
     }
 
 
     public function deleteSingle($key) {
+        if (!$this->service) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+        }
         return $this->service->deleteSingle($key);
+    }
+
+    /**
+     * Deletes every version/generation of $key, including delete markers — a plain
+     * deleteSingle() on a versioned bucket only removes the live copy, leaving older
+     * versions (and the storage they use) behind. Used where a key is being permanently
+     * relocated (e.g. moving a folder) and shouldn't leave anything recoverable at the old
+     * path. Safe to call on a non-versioned bucket too — it's then equivalent to deleteSingle().
+     * @since 1.3.14
+     */
+    public function purge_all_versions($key) {
+        if (!$this->service || !method_exists($this->service, 'purge_all_versions')) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+        }
+        return $this->service->purge_all_versions($key);
     }
 
 
@@ -564,11 +621,26 @@ class Service {
      * Move object to server from cloud
      */
     public function object_to_server($key, $save_path) {
+        if (!$this->service) {
+            return false;
+        }
         $path_parts = pathinfo($save_path);
         if (!file_exists($path_parts['dirname'])) {
             mkdir($path_parts['dirname'], 0755, true);
         }
         return $this->service->object_to_server($key, $save_path);
+    }
+
+    /**
+     * Object bytes in memory, no local file — for callers (e.g. zip download) that need
+     * the content itself rather than a copy on the server's filesystem.
+     * @since 1.3.13
+     */
+    public function get_object_content($key) {
+        if (!$this->service) {
+            return false;
+        }
+        return $this->service->get_object_content($key);
     }
 
     /**
@@ -579,13 +651,49 @@ class Service {
      * @return array The result of the copy operation
      */
     public function copy_to_new_path($key, $new_path) {
+        if (!$this->service) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+        }
         return $this->service->copy_to_new_path($key, $new_path);
+    }
+
+    // Cross-bucket server-side copy on the singleton's own (source) connection.
+    public function copy_to_bucket($key, $new_key, $dest_bucket) {
+        if (!$this->service || !method_exists($this->service, 'copy_to_bucket')) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->copy_to_bucket($key, $new_key, $dest_bucket);
+    }
+
+    /**
+     * List objects in the currently configured bucket, one folder level at a time by default.
+     *
+     * @param string $prefix The folder path to list within (empty = bucket root).
+     * @param string|null $continuationToken Provider-issued token for the next page.
+     * @param int $maxKeys Page size.
+     * @param string|null $delimiter '/' for folder-level listing, null for flat/recursive.
+     * @return array {success, code, message, folders, objects, next_token}
+     */
+    public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
+        if (!$this->service) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+        }
+        return $this->service->listObjects($prefix, $continuationToken, $maxKeys, $delimiter);
     }
 
     /**
      * Get Service Handler
+     *
+     * @param string $service
+     * @param array|null $credentials Optional explicit credentials to bind the handler to,
+     *                                instead of the global Utils::get_credentials() default —
+     *                                e.g. a migration destination, independent of this
+     *                                singleton's own source-bound connection. Not a singleton
+     *                                itself — every call constructs a new SDK client; callers
+     *                                reusing one connection across many operations should call
+     *                                this once and hold onto the returned handler.
      */
-    public function get_handler_class($service) {
+    public function get_handler_class($service, $credentials = null) {
         if(isset($this->providers[$service])) {
             $provider = $this->providers[$service];
             if(!empty($provider['sdk'])) {
@@ -593,7 +701,7 @@ class Service {
             }
             $class = __NAMESPACE__ . '\\' . $provider['class'];
             if(class_exists($class)) {
-                return new $class();
+                return new $class($credentials);
             }
         }
         return false;
@@ -625,6 +733,9 @@ class Service {
      * 
      */
     public function get_domain() {
+        if (!$this->service) {
+            return '';
+        }
         return $this->service->get_domain();
     }
 

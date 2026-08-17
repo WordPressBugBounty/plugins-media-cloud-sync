@@ -6,12 +6,10 @@ defined('ABSPATH') || exit;
 /**
  * WooCommerce Compatibility.
  *
+ * Loaded by the autoloader; activation is gated via `is_installed()` in Integration::init().
+ *
  * @since  1.3.7
  */
-if ( ! class_exists( 'WooCommerce' ) ) {
-    return;
-}
-
 class WooCommerce {
 	/**
 	 * The singleton instance.
@@ -20,6 +18,17 @@ class WooCommerce {
 	 * @var    WooCommerce|null
 	 */
 	protected static $instance = null;
+
+	/**
+	 * Whether WooCommerce image resize is active for this request.
+	 *
+	 * Set when `woocommerce_resize_images` runs so `get_attached_file()` returns
+	 * a local path instead of a cloud URL without stacking filters.
+	 *
+	 * @since 1.3.12
+	 * @var bool
+	 */
+	private static $return_local_path = false;
 
 	/**
 	 * The class constructor.
@@ -40,10 +49,7 @@ class WooCommerce {
 		// Return File path for WooCommerce image resizing to prevent url being used and causing issues with image regeneration.
         add_filter( 'woocommerce_resize_images', [ $this, 'resize_images' ] );
 
-		// resize_and_return_image is a WooCommerce function that resizes an image and returns its URL.
-		// it's used in the `wpmcs_get_attached_file` filter.
-		// If it is called from WooCommerce's `resize_and_return_image` function, it will return the original file path without modification.
-		// Also restore file from cloud if the file is missing locally, to prevent woocommerce skipping regeneration of missing images.
+		// Return the local file path (and restore from cloud when missing) during WooCommerce image regeneration.
 		add_filter( 'wpmcs_get_attached_file', array( $this, 'get_attached_file' ), 10, 4 );
 		// Note: There has still been an issue removing the images from local need a look in 
 		// future to see if we can prevent that or handle it better, but this should at least prevent the issue of images 
@@ -55,49 +61,58 @@ class WooCommerce {
 
 
 	/**
-	 * Resize images for WooCommerce.
-	 * Used to add a filter to return the file path instead of the URL for WooCommerce image resizing, 
-	 * to prevent issues with image regeneration when using cloud storage.
-	 * 
+	 * Flag the request so attached files are returned as local paths during WooCommerce resize.
+	 *
 	 * @param bool $resize Whether to resize images or not.
 	 * @return bool The modified value of $resize.
 	 * @since  1.3.7
-	 *
-	 * @return bool The modified value of $resize.
 	 */
 	public function resize_images( $resize ) {
-		add_filter( 'wpmcs_get_attached_file',  function ($url, $file, $attachment_id, $item) {
-			return $file;
-		}, 10, 4 );
-		
+		if ( $resize ) {
+			self::$return_local_path = true;
+		}
+
 		return $resize;
 	}
 
 	/**
-	 * Get attached file URL.
-	 * This method is hooked to the 'wpmcs_get_attached_file' filter and is used to modify the URL of an attached file.
-	 * 
-	 * @param string $url The original file URL.
-	 * @param string $file The file path.
-	 * @param int $attachment_id The attachment ID.
-	 * @param array $item The item data associated with the attachment.
-	 * @return string The modified file URL.
-	 * @since  1.3.7
+	 * Return a local file path during WooCommerce image regeneration.
 	 *
-	 * @return string The modified file URL.
+	 * @param string $url The cloud URL.
+	 * @param string $file The local file path.
+	 * @param int    $attachment_id The attachment ID.
+	 * @param array  $item The item data associated with the attachment.
+	 * @return string The local file path or original cloud URL.
+	 * @since  1.3.7
 	 */
 	public function get_attached_file( $url, $file, $attachment_id, $item ) {
-		// Check if the function 'resize_and_return_image' exists and if the current call is from that function.
-		if ( Utils::is_called_from( 'WC_Regenerate_Images', 'resize_and_return_image' ) ) {
-			// If the call is from 'resize_and_return_image', return the original file path without modification.
-			if ( ! file_exists( $file ) ) {
-				// If the file does not exist locally, attempt to restore it from the cloud.
-				Item::instance()->moveToServerByItem( $item, 'full', true );
-			}
-
-			return $file;
+		if ( ! $this->should_return_local_path_for_woocommerce() ) {
+			return $url;
 		}
-		return $url;
+
+		if ( ! file_exists( $file ) && ! Utils::is_empty( $item ) ) {
+			Item::instance()->moveToServerByItem( $item, 'full', true );
+		}
+
+		return file_exists( $file ) ? $file : $url;
+	}
+
+	/**
+	 * Whether the current request needs a local attached file for WooCommerce image handling.
+	 *
+	 * @return bool
+	 * @since 1.3.12
+	 */
+	private function should_return_local_path_for_woocommerce(): bool {
+		if ( self::$return_local_path ) {
+			return true;
+		}
+
+		if ( Utils::is_called_from( 'WC_Regenerate_Images' ) ) {
+			return true;
+		}
+
+		return Utils::is_called_from( 'WC_Regenerate_Images_Request' );
 	}
 
     /**
@@ -106,17 +121,7 @@ class WooCommerce {
      * @return bool
      */
     public static function is_installed(): bool {
-        // Check if WooCommerce plugin defines its main constant.
-		if ( defined( 'WC_ABSPATH' ) ) {
-			return true;
-		}
-
-		// Alternative: check for WooCommerce version constant.
-		if ( defined( 'WC_VERSION' ) ) {
-			return true;
-		}
-
-		return false;
+        return defined( 'WC_ABSPATH' ) || defined( 'WC_VERSION' ) || class_exists( 'WooCommerce', false );
     }
 
     /**

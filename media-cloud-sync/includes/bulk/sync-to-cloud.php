@@ -17,7 +17,7 @@ class SyncToCloud {
     public function __construct() {
         $this->state_key = WPMCS_TOKEN . '_' . $this->action . '_state';
         $this->runner = BGRunner::instance();
-        $this->runner->set_callback($this->action, [$this, 'sync_to_cloud']);
+        $this->runner->set_callback($this->action, [$this, 'sync_to_cloud'], true);
     }
 
     /**
@@ -37,7 +37,8 @@ class SyncToCloud {
         }
         $state          = $this->get_state();
         $failed_count   = isset($state['failed']) ? $state['failed'] : [];
-        
+        $last_ids       = isset($state['last_ids']) ? $state['last_ids'] : [];
+
         $all_media_count = Counter::get_count( 'all', false );
 
         $is_failed = false;
@@ -52,7 +53,12 @@ class SyncToCloud {
                 if($pending > 0) {
                     $handler = Integration::instance()->get_handler_class($source_type);
                     if ($handler) {
-                        $result = $handler::instance()->upload_pending_media($source_type, 1, $failed);
+                        $after_id = isset($last_ids[$source_type]) ? (int) $last_ids[$source_type] : 0;
+                        $result   = $handler::instance()->upload_pending_media($source_type, 1, $after_id);
+
+                        if (isset($result['last_id'])) {
+                            $last_ids[$source_type] = (int) $result['last_id'];
+                        }
 
                         if(isset($result['failed']) && !empty($result['failed']) && $result['failed'] > 0) {
                             $failed_count[$source_type] = $failed + $result['failed'];
@@ -68,7 +74,8 @@ class SyncToCloud {
             $this->clear_state();
         } else {
             $state = [
-                'failed' => $failed_count
+                'failed'   => $failed_count,
+                'last_ids' => $last_ids,
             ];
             $this->set_state($state);
         }
@@ -95,6 +102,15 @@ class SyncToCloud {
     }
 
     /**
+     * Tick — process a small batch synchronously (ajax/mixed sync mode).
+     * @since 1.3.13
+     */
+    public function tick($batch = 5) {
+        $this->runner->run_all($this->action, $batch);
+        return $this->get_status();
+    }
+
+    /**
      * Pause the action.
      */
     public function pause() {
@@ -106,6 +122,13 @@ class SyncToCloud {
      */
     public function resume() {
         $this->runner->resume($this->action);
+    }
+
+    /**
+     * Set the sync method preference for this type.
+     */
+    public function set_sync_method($method) {
+        return $this->runner->set_sync_method($this->action, $method);
     }
 
     /**
@@ -123,6 +146,11 @@ class SyncToCloud {
         if($status['total'] <= 0) {
             $status['total'] = $this->get_pending_media_count();
         }
+
+        // Signals to the frontend that this action has ajax/mixed sync mode wired up server-side
+        // (see BGRunner::set_callback()'s $supports_tick arg registered in the constructor above).
+        $status['tick_supported'] = true;
+
         return $status;
     }
 

@@ -29,21 +29,24 @@ class GCloud {
      * Admin constructor.
      * @since 1.0.0
      */
-    public function __construct() {
+    public function __construct($credentials = null) {
         $this->assets_url = WPMCS_ASSETS_URL;
         $this->version    = WPMCS_VERSION;
         $this->token      = WPMCS_TOKEN;
 
         // Initialize setup
-        $this->init();
+        $this->init($credentials);
     }
 
     /**
      * Initialise Client
+     *
+     * @param array|null $credentials Optional explicit credentials; falls back to
+     *                                Utils::get_credentials() when omitted.
      */
-    public function init() {
+    public function init($credentials = null) {
         $this->settings     = Utils::get_settings();
-        $this->credentials  = Utils::get_credentials();
+        $this->credentials  = $credentials !== null ? $credentials : Utils::get_credentials();
         $this->config       = isset($this->credentials['config']) && !empty($this->credentials['config']) 
                                 ? $this->credentials['config']
                                 : [];
@@ -96,7 +99,7 @@ class GCloud {
      */
     public function verifyCredentials( $config = [] ){
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
-        if (!empty($config_json)) {
+        if (!Service::has_missing_fields([$config_json])) {
             if(!Utils::is_json($config_json)){
                 return [
                     'success' => false,
@@ -119,7 +122,11 @@ class GCloud {
                     ];
                 }
 
-                
+                $result = [
+                    'success' => false,
+                    'code'    => 200,
+                    'message' => esc_html__('Please check the authorization details', 'media-cloud-sync'),
+                ];
 
                 try {
                     $bucket = $googleClient->bucket($this->token . '_dummy-bucket-for-auth-check');
@@ -189,7 +196,7 @@ class GCloud {
     public function verifyBucketExist( $config = [], $bucketConfig = [] ){
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
-        if ( empty($config_json) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -234,13 +241,6 @@ class GCloud {
                     'success' => false,
                 ];
             }
-            
-
-            if($bucket_found) {
-                    return array('message' => esc_html__('Bucket exist', 'media-cloud-sync'), 'code' => 200, 'success' => true);
-            } else {
-                return array('message' => esc_html__("Bucket choosen does not exist / does not have read permission", 'media-cloud-sync'), 'code' => 200, 'success' => false);
-            }
         } catch (Exception $ex) {
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
@@ -256,7 +256,7 @@ class GCloud {
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $region = isset($bucketConfig['region']) ? $bucketConfig['region'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
-        if ( empty($config_json) || empty($region) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$config_json, $region, $bucket_name]) ) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -336,7 +336,7 @@ class GCloud {
             ];
                
         } catch (Exception $ex) {
-            return ['message' => $e->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -347,7 +347,7 @@ class GCloud {
     public function verifyObjectWritePermission( $config = [], $bucketConfig = [] ) {
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
-        if ( empty($config_json) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
@@ -375,7 +375,7 @@ class GCloud {
                 return ['message' => esc_html__('No Buckets found', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
             if ($bucket_found) {
-                $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+                $object_key = Utils::get_permission_check_object_key();
 
                 // Prepare a temporary file with content to check write permission
                 $stream = fopen('php://temp', 'r+');
@@ -389,18 +389,19 @@ class GCloud {
                         'name' => $object_key,
                     ]
                 );
-                if(is_resource($stream)) {
-                    fclose($stream);
-                }                
 
                 if ($object->exists()) {
-                    return ['message' => esc_html__('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true]; 
+                    return ['message' => esc_html__('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
                 } else {
                     return ['message' => esc_html__('Bucket write permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
                 }
             }
         } catch (Exception $ex) {
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        } finally {
+            if (isset($stream) && is_resource($stream)) {
+                fclose($stream);
+            }
         }
     }
 
@@ -412,7 +413,7 @@ class GCloud {
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
-        if ( empty($config_json) || empty($bucket_name) ) {
+        if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
             return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
         if( !Utils::is_json( $config_json ) ) {
@@ -435,7 +436,7 @@ class GCloud {
 
             $bucket = $googleClient->bucket($bucket_name);
             try {
-                $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+                $object_key = Utils::get_permission_check_object_key();
                 
                 // Try fetching a dummy object to test access
                 $object = $bucket->object($object_key);
@@ -463,7 +464,7 @@ class GCloud {
                 }
             } catch (Exception $ex) {
                 return [
-                    'message' => esc_html__('Object does not exist or credentials are invalid: ', 'media-cloud-sync') . $e->getMessage(),
+                    'message' => esc_html__('Object does not exist or credentials are invalid: ', 'media-cloud-sync') . $ex->getMessage(),
                     'code'    => 200,
                     'success' => false,
                 ];
@@ -484,7 +485,7 @@ class GCloud {
             'message' => '',
             'lastChecked' => time(),
         ];
-        if (empty($this->gcloudClient) || empty($this->bucket_name)) {
+        if (Service::has_missing_fields([$this->gcloudClient, $this->bucket_name])) {
             $result['message'] = esc_html__('Please check the authorization details', 'media-cloud-sync');
             return [
                 'message' => $result['message'],
@@ -495,7 +496,7 @@ class GCloud {
         }
 
         try {   
-            $object_key = Utils::generate_object_key($this->token . '_dummy-object-for-bucket-permission-check', '');
+            $object_key = Utils::get_permission_check_object_key();
 
             // Check if the object was created successfully
             if (!$this->exists($object_key)) {
@@ -507,11 +508,9 @@ class GCloud {
                     $stream,
                     [
                         'name' => $object_key,
+                        'metadata' => ['cacheControl' => 'no-cache, no-store, must-revalidate'],
                     ]
                 );
-                if (is_resource($stream)) {
-                    fclose($stream);
-                }
                 // Re-check if the object was created successfully
                 if (!$this->exists($object_key)) {
                     $result['status'] = false;
@@ -528,22 +527,28 @@ class GCloud {
             $url = $this->generate_file_url($object_key);
             $cdn_url = Cdn::may_generate_cdn_url($url, $object_key);
 
-            $headers = @get_headers($cdn_url);
-            if (strpos($headers[0], '200') !== false) {
+            // Never trust a cached response for this fixed, predictable URL — a stale cached
+            // error would otherwise keep failing the check long after real access is fine.
+            $no_cache_context = stream_context_create(['http' => ['header' => "Cache-Control: no-cache\r\nPragma: no-cache\r\n"]]);
+            $headers = @get_headers($cdn_url, false, $no_cache_context);
+            $status_code = (is_array($headers) && !empty($headers[0]) && preg_match('/\s(\d{3})\s/', $headers[0], $matches))
+                ? (int) $matches[1]
+                : 0;
+
+            if ($status_code === 200) {
                 $result['status'] = true;
                 $result['message'] = esc_html__('Objects are accessible to Read', 'media-cloud-sync');
-            } else if (strpos($headers[0], '403') !== false) {
+            } else if ($status_code === 403) {
                 $result['status'] = false;
-                if($this->cdnConfig['service'] == $this->service) {
+                if(isset($this->cdnConfig['service']) && $this->cdnConfig['service'] == $this->service) {
                     $result['message'] = esc_html__('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
                 } else {
                     $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
                 }
-                $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
-            } else if (strpos($headers[0], '404') !== false) {
+            } else if ($status_code === 404) {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Object not found. Please check your bucket policy', 'media-cloud-sync');
-            } else if (strpos($headers[0], '500') !== false) {
+            } else if ($status_code === 500) {
                 $result['status'] = false;
                 $result['message'] = esc_html__('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
             } else {
@@ -563,6 +568,10 @@ class GCloud {
         } catch (Exception $ex) {
             $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
             return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
+        } finally {
+            if (isset($stream) && is_resource($stream)) {
+                fclose($stream);
+            }
         }
     }
 
@@ -575,7 +584,7 @@ class GCloud {
             try {
                 $bucket = $this->gcloudClient->bucket($this->token . '_dummy-bucket-for-auth-check');
                 $exists = $bucket->exists(); // Triggers the API call
-                return false;
+                return true;
             } catch (ServiceException $e) {
                 $statusCode = $e->getCode();
         
@@ -600,6 +609,7 @@ class GCloud {
      */
     public function toPrivate($key) {
         if(!$key) return false;
+        if(!$this->bucket) return false;
 
         try {
             $object = $this->bucket->object($key);
@@ -625,6 +635,7 @@ class GCloud {
      */
     public function toPublic($key) {
         if(!$key) return false;
+        if(!$this->bucket) return false;
 
         try {
             $object = $this->bucket->object($key);
@@ -671,12 +682,66 @@ class GCloud {
 
 
     /**
+     * List Objects — $delimiter = null gives a flat/recursive listing instead of one folder level.
+     * resultLimit=$maxKeys caps the iterator to this page only (Bucket::objects() would otherwise auto-paginate the whole bucket).
+     * @since 1.3.13
+     */
+    public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+        }
+        try {
+            $options = [
+                'maxResults'  => $maxKeys,
+                'resultLimit' => $maxKeys,
+            ];
+            if (!empty($delimiter)) {
+                $options['delimiter'] = $delimiter;
+            }
+            if (!empty($prefix)) {
+                $options['prefix'] = $prefix;
+            }
+            if (!empty($continuationToken)) {
+                $options['pageToken'] = $continuationToken;
+            }
+
+            $iterator = $this->bucket->objects($options);
+
+            $objects = [];
+            foreach ($iterator as $object) {
+                $key = $object->name();
+                if ($key === $prefix) {
+                    continue; // the folder placeholder object itself, not a file
+                }
+                $info      = $object->info();
+                $objects[] = [
+                    'key'           => $key,
+                    'size'          => isset($info['size']) ? (int) $info['size'] : 0,
+                    'last_modified' => isset($info['updated']) ? $info['updated'] : '',
+                ];
+            }
+
+            return [
+                'success'    => true,
+                'code'       => 200,
+                'message'    => '',
+                'folders'    => $iterator->prefixes(),
+                'objects'    => $objects,
+                'next_token' => $iterator->nextResultToken(),
+            ];
+        } catch (ServiceException $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage(), 'folders' => [], 'objects' => [], 'next_token' => null];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage(), 'folders' => [], 'objects' => [], 'next_token' => null];
+        }
+    }
+
+    /**
      * Upload Single
      * @since 1.0.0
      * @return boolean
      */
     public function uploadSingle($absolute_source_path, $relative_source_path, $prefix=''){
-        $result = array();
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
@@ -684,101 +749,78 @@ class GCloud {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
                 $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
-
-                // Decide Multipart upload or normal put object
-                if (filesize($absolute_source_path) <= Schema::getConstant('GCLOUD_MULTIPART_MIN_FILE_SIZE')) {
-                    // Upload a publicly accessible file. The file size and type are determined by the SDK.
-                    try {
-                        $handle = fopen($absolute_source_path, 'rb');
-                        $upload = $this->bucket->upload(
-                            $handle, [ 'name' => $upload_path ]
-                        );
-                        if (is_resource($handle)) {
-                            fclose($handle);
-                        }
-
-                        if ($upload->exists()) {
-                            $result = array(
-                                'success'   => true,
-                                'code'      => 200,
-                                'file_url'  => $this->generate_file_url($upload_path),
-                                'key'       => $upload_path,
-                                'message'   => esc_html__('File Uploaded Successfully', 'media-cloud-sync'),
-                            );
-                        } else {
-                            $result = array(
-                                'success'   => false,
-                                'code'      => 200,
-                                'message'   => esc_html__('Object not found at server.', 'media-cloud-sync'),
-                            );
-                        }
-                    } catch (Exception $e) {
-                        $result = array(
-                            'success' => false,
-                            'code' => 200,
-                            'message' => $e->getMessage(),
-                        );
-                    }
-                } else {
-                    try {
-                        $handle = fopen($absolute_source_path, 'rb');
-                        $upload = $this->bucket->upload(
-                            $handle,
-                            [
-                                'name' => $upload_path,
-                                'chunkSize' => 262144 * 2,
-                            ]
-                        );
-                        if (is_resource($handle)) {
-                            fclose($handle);
-                        }
-
-                        if ($upload->exists()) {
-                            $result = array(
-                                'success' => true,
-                                'code' => 200,
-                                'file_url' => $this->generate_file_url($upload_path),
-                                'key' => $upload_path,
-                                'message' => esc_html__('File Uploaded Successfully', 'media-cloud-sync'),
-                            );
-                        } else {
-                            $result = array(
-                                'success'   => false,
-                                'code'      => 200,
-                                'message'   => esc_html__('Something happened while uploading to server', 'media-cloud-sync'),
-                            );
-                        }
-                    } catch (Exception $e) {
-                        $result = array(
-                            'success'   => false,
-                            'code'      => 200,
-                            'message'   => $e->getMessage(),
-                        );
-                    }
-                }
-            } else {
-                $result = array(
-                    'success'   => false,
-                    'code'      => 200,
-                    'message'   => esc_html__('Check the file you are trying to upload. Please try again', 'media-cloud-sync'),
-                );
+                return $this->execute_upload($absolute_source_path, $upload_path);
             }
-        } else {
-            $result = array(
+            return [
                 'success'   => false,
                 'code'      => 200,
-                'message'   => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'),
-            );
+                'message'   => esc_html__('Check the file you are trying to upload. Please try again', 'media-cloud-sync'),
+            ];
         }
-        return $result;
+        return [
+            'success'   => false,
+            'code'      => 200,
+            'message'   => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'),
+        ];
     }
 
+    /**
+     * Upload a local file to an exact destination key (no Utils::generate_object_key() derivation).
+     * @since 1.4.0
+     */
+    public function uploadObjectAtKey($absolute_source_path, $key) {
+        return $this->execute_upload($absolute_source_path, $key);
+    }
+
+    // Chunked upload above GCLOUD_MULTIPART_MIN_FILE_SIZE, single request below it — same
+    // threshold uploadSingle() always used, now shared with uploadObjectAtKey().
+    private function execute_upload($absolute_source_path, $key) {
+        $options = ['name' => $key];
+        if (filesize($absolute_source_path) > Schema::getConstant('GCLOUD_MULTIPART_MIN_FILE_SIZE')) {
+            $options['chunkSize'] = 262144 * 2;
+        }
+        $cache_control = Utils::get_cache_control_header();
+        if ($cache_control) {
+            $options['cacheControl'] = $cache_control;
+        }
+
+        try {
+            $handle = fopen($absolute_source_path, 'rb');
+            $upload = $this->bucket->upload($handle, $options);
+
+            if ($upload->exists()) {
+                return [
+                    'success'  => true,
+                    'code'     => 200,
+                    'file_url' => $this->generate_file_url($key),
+                    'key'      => $key,
+                    'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync'),
+                ];
+            }
+            return [
+                'success' => false,
+                'code'    => 200,
+                'message' => esc_html__('Object not found at server.', 'media-cloud-sync'),
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'code'    => 200,
+                'message' => $e->getMessage(),
+            ];
+        } finally {
+            if (isset($handle) && is_resource($handle)) {
+                fclose($handle);
+            }
+        }
+    }
 
     /**
      * Save object to server
      * @since 1.0.0
      */
     public function object_to_server($key, $save_path){
+        if(!$this->bucket) return false;
         try {
             $object = $this->bucket->object($key);
             if ($object->exists()) {
@@ -793,6 +835,62 @@ class GCloud {
         return false;
     }
 
+    /**
+     * Object bytes in memory, no local file — for callers (e.g. zip download) that need
+     * the content itself rather than a copy on the server's filesystem.
+     * @since 1.3.13
+     */
+    public function get_object_content($key) {
+        if(!$this->bucket) return false;
+        try {
+            $object = $this->bucket->object($key);
+            if ($object->exists()) {
+                return $object->downloadAsString();
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Deletes the live generation, then best-effort purges every prior generation too — a
+     * bucket with Object Versioning enabled otherwise keeps old generations (and the storage
+     * they use) around at the old key. The live delete happens unconditionally first, in its
+     * own try/catch, so the object still ends up gone even if the generation-listing call
+     * below fails for any reason.
+     * @since 1.3.14
+     */
+    public function purge_all_versions($key) {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+        }
+
+        try {
+            $this->bucket->object($key)->delete();
+        } catch (ServiceException $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        }
+
+        // Best-effort only from here — the live copy above is already gone regardless of
+        // whether this bucket has Object Versioning enabled or this call succeeds.
+        try {
+            foreach ($this->bucket->objects(['prefix' => $key, 'versions' => true]) as $object) {
+                if ($object->name() === $key) {
+                    $object->delete();
+                }
+            }
+        } catch (ServiceException $e) {
+            // Generation history cleanup failed — not fatal, live object is gone.
+        } catch (\Exception $e) {
+            // Generation history cleanup failed — not fatal, live object is gone.
+        }
+
+        return ['success' => true, 'code' => 200, 'message' => esc_html__('Purged Successfully', 'media-cloud-sync')];
+    }
+
 
     /**
      * Copy an object to a new path in Google Cloud Storage
@@ -802,51 +900,73 @@ class GCloud {
      * @return bool             True if object was copied successfully, false otherwise
      * @since 1.3.4
      */
+    // Trusts copy()'s own success/failure rather than pre/post-verifying with extra
+    // exists() calls — each one is a full network round-trip, and with move/copy processing
+    // keys sequentially, extra round-trips per file add up fast on a folder with many files.
+    // copy() itself throws (caught below) if the source is missing or the copy otherwise
+    // fails, so nothing is lost by not checking first.
     public function copy_to_new_path($key, $new_path) {
+        if (!$this->bucket) {
+            return [
+                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'code'    => 200,
+                'success' => false
+            ];
+        }
         try {
-            // Get the source object
             $sourceObject = $this->bucket->object($key);
-            if (!$sourceObject->exists()) {
-                return [
-                    'message' => esc_html__('Original file not found' , 'media-cloud-sync'),
-                    'code' => 200,
-                    'success' => false
-                ];
-            }
-
-            // Step 1: Copy to new path
-            $destinationObject = $this->bucket->object($new_path);
-            if (!$destinationObject->exists()) {
-                $sourceObject->copy($this->bucket, ['name' => $new_path]);
-                $destinationObject = $this->bucket->object($new_path);
-            }
-
-            // Step 2: Verify new object exists
-            if ($destinationObject->exists()) {
-                return [
-                    'success' => true,
-                    'code' => 200,
-                    'message' => esc_html__('File copied successfully', 'media-cloud-sync')
-                ];
-            }
+            $sourceObject->copy($this->bucket, ['name' => $new_path]);
+            return [
+                'success' => true,
+                'code' => 200,
+                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+            ];
         } catch (ServiceException $e) {
             return [
                 'success' => false,
-                'code' => 200,    
+                'code' => 200,
                 'message' => $e->getMessage()
             ];
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'code' => 200,    
+                'code' => 200,
                 'message' => $e->getMessage()
             ];
         }
-        return [
-            'success' => false,
-            'code' => 200,    
-            'message' => esc_html__('File not copied', 'media-cloud-sync')
-        ];
+    }
+
+    // Like copy_to_new_path() but into an explicit (possibly different) bucket — needs write
+    // access there too, so callers should fall back to download+upload on failure.
+    public function copy_to_bucket($key, $new_key, $dest_bucket) {
+        if (!$this->bucket || !$this->gcloudClient) {
+            return [
+                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'code'    => 200,
+                'success' => false
+            ];
+        }
+        try {
+            $sourceObject = $this->bucket->object($key);
+            $sourceObject->copy($this->gcloudClient->bucket($dest_bucket), ['name' => $new_key]);
+            return [
+                'success' => true,
+                'code' => 200,
+                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+            ];
+        } catch (ServiceException $e) {
+            return [
+                'success' => false,
+                'code' => 200,
+                'message' => $e->getMessage()
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'code' => 200,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
 
@@ -857,6 +977,13 @@ class GCloud {
      */
     public function deleteSingle($key){
         $result = array();
+        if (!$this->bucket) {
+            return array(
+                'success' => false,
+                'code'    => 200,
+                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+            );
+        }
         if (isset($key) && !empty($key)) {
             try {
                 $object = $this->bucket->object($key);
@@ -900,6 +1027,13 @@ class GCloud {
      */
     public function get_private_url($key) {
         $result = array();
+        if (!$this->bucket) {
+            return array(
+                'success' => false,
+                'code'    => 200,
+                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+            );
+        }
         if (isset($key) && !empty($key)) {
             try {
                 $object = $this->bucket->object($key);

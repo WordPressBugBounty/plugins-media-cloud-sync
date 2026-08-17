@@ -259,6 +259,10 @@ class Admin {
             'settings' => '<a href="' . admin_url('admin.php?page=' . $this->token . '-admin-ui/') . '">' . esc_html__('Settings', 'media-cloud-sync') . '</a>',
         );
 
+        if (!Utils::is_pro_licensed()) {
+            $action_links['upgrade'] = '<a href="https://dudlewebs.com/product/media-cloud-sync/" target="_blank" style="color:#d54e21;font-weight:600;">' . esc_html__('Upgrade', 'media-cloud-sync') . '</a>';
+        }
+
         return array_merge($action_links, $links);
     }
 
@@ -434,7 +438,14 @@ class Admin {
                             <p>Need help? <a href="https://dudlewebs.com/" target="_blank">Use live chat support</a></p>
                         </div>
                         
-                        <p id="dw-wpmcs-error" class="dw-wpmcs-error"></p>
+                        <p id="dw-wpmcs-error" class="dw-wpmcs-error">
+                            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M8 2.2L14.6 13.3H1.4L8 2.2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                                <path d="M8 6.7V9.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                <circle cx="8" cy="11.4" r="0.85" fill="currentColor"/>
+                            </svg>
+                            <span id="dw-wpmcs-error-text"></span>
+                        </p>
                         <div class="dw-wpmcs-actions">
                             <button type="button" class="dw-button dw-skip" id="dw-wpmcs-skip">Skip & Deactivate</button>
                             <button type="button" class="dw-button dw-secondary" id="dw-wpmcs-cancel">Cancel</button>

@@ -42,12 +42,10 @@ class Counter {
      */
     public static function remove(  $property = 'uploaded', $source_type = 'media_library' ){
         $settings_key       = Schema::getConstant('COUNTER_KEY');
-        $data               = Utils::maybe_unserialize( Utils::get_option_meta( $settings_key, true, true ) ) ?: [];
+        $data               = Utils::get_option( $source_type, [], $settings_key );
+        $data[$property]    = isset($data[$property]) ? (int)$data[$property] - 1 : -1;
 
-        $source_type_data               = isset($data[$source_type]) ? $data[$source_type] : [];
-        $source_type_data[$property]    = isset($source_type_data[$property]) ? (int)$source_type_data[$property] - 1 : -1;
-
-        return Utils::update_option( $source_type, $source_type_data, $settings_key );
+        return Utils::update_option( $source_type, $data, $settings_key );
     }
 
     /**

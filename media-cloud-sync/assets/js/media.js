@@ -37,22 +37,34 @@ jQuery(function ($) {
 							var data = response.data;
 							var append = [];
 							if (data.provider) {
-								var providerHtml =
-									"<div class='wpmcs_provider'><strong>" +
-									window.wpmcs_media_object.strings.provider +
-									"</strong>" +
-									data.provider +
-									"</div>";
-								append.push(providerHtml);
+								var $providerDiv = $("<div>", {
+									class: "wpmcs_provider",
+								});
+								$providerDiv.append(
+									$("<strong>").text(
+										window.wpmcs_media_object.strings
+											.provider
+									)
+								);
+								$providerDiv.append(
+									document.createTextNode(data.provider)
+								);
+								append.push($providerDiv);
 							}
 							if (data.region) {
-								var regionHtml =
-									"<div class='wpmcs_region'><strong>" +
-									window.wpmcs_media_object.strings.region +
-									"</strong>" +
-									data.region +
-									"</div>";
-								append.push(regionHtml);
+								var $regionDiv = $("<div>", {
+									class: "wpmcs_region",
+								});
+								$regionDiv.append(
+									$("<strong>").text(
+										window.wpmcs_media_object.strings
+											.region
+									)
+								);
+								$regionDiv.append(
+									document.createTextNode(data.region)
+								);
+								append.push($regionDiv);
 							}
 
 							var accessString = data.private
@@ -60,14 +72,18 @@ jQuery(function ($) {
 										.access_private
 								: window.wpmcs_media_object.strings
 										.access_public;
-							var accessHtml =
-								"<div class='wpmcs_access'><strong>" +
-								window.wpmcs_media_object.strings.access +
-								"</strong>" +
-								accessString +
-								"</div>";
-
-							append.push(accessHtml);
+							var $accessDiv = $("<div>", {
+								class: "wpmcs_access",
+							});
+							$accessDiv.append(
+								$("<strong>").text(
+									window.wpmcs_media_object.strings.access
+								)
+							);
+							$accessDiv.append(
+								document.createTextNode(accessString)
+							);
+							append.push($accessDiv);
 
 							if (append.length) {
 								append.forEach((element, key) => {
