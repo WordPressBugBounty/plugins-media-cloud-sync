@@ -2,13 +2,12 @@
 Author: Dudlewebs
 Author URI: https://dudlewebs.com
 Contributors: dudlewebs
-Donate link: https://dudlewebs.com/donate
 Tags: sync, cloud, offload, media, aws
 License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
-Tested up to: 7.0
-Stable tag: 1.3.12
+Tested up to: 7.1
+Stable tag: 1.4.0
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -65,11 +64,23 @@ Here are the key features of the Media Cloud Sync plugin:
 🔹 Access WPML string translation support for seamless multilingual content management.
 🔹 Enjoy seamless compatibility across multisite networks for centralized management and consistent performance.
 
+== Pro Features ==
+[Media Cloud Sync Pro](https://dudlewebs.com/product/media-cloud-sync/) extends the free plugin with cloud-side management tools, faster bulk operations, and per-item control directly from the Media Library:
+
+🔹 **Media Library actions** — Sync to Cloud, Force Re-upload, Remove from Server, Restore from Cloud, Remove from Cloud, and View on Cloud, directly on the single-attachment popup and as bulk dropdowns in both grid and list view, with a cloud-offload status badge/column and a Synced/Not Synced filter.
+🔹 **File Manager** — browse your connected cloud bucket, download as zip, restore to server, move, and delete files, with per-item and bulk actions.
+🔹 **Restore Media to Server** — bulk-restore previously offloaded media from the cloud back to your server.
+🔹 **Move Media to New Path** — bulk-move already-synced media to a newly configured base path.
+🔹 **Bucket-to-Bucket Migration** — copy synced media to a new provider, bucket, or account, including reusing an already-connected credential source as the migration destination.
+🔹 **Ajax/Mixed Sync Method** — run bulk sync live in the browser (Ajax) or with automatic WP-Cron fallback (Mixed), instead of Cron-only.
+🔹 **Delivery Settings: Cache-Control duration** — set a custom Cache-Control max-age (or explicit no-cache) per storage/CDN choice for newly uploaded files.
+🔹 **Include/Exclude Extensions** — control exactly which file types get uploaded to the bucket.
+🔹 And more...
+
 == Other Useful Links ==
 🔹 [Official website](https://dudlewebs.com)  
-🔹 [Documentation](https://dudlewebs.com/support)  
+🔹 [Documentation](https://dudlewebs.com/guideline/media-cloud-sync/)  
 🔹 [Get Media Cloud Sync Pro](https://dudlewebs.com/product/media-cloud-sync/)
-🔹 [Donate Now!! Get PRO version license discounts](https://dudlewebs.com/donate)
 
 == Screenshots ==
 1. Plugin dashboard page, showcasing the main options for configuring the Media Cloud Sync settings.  
@@ -141,6 +152,9 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.4.0 =
+* Compatibility: WordPress 7.1
+* Bug Fix: WooCommerce image regeneration restored offloaded files to the server to resize them but never removed them again, even with "Remove from server" enabled, and could leave stale, un-regenerated images on the cloud since the plugin's "unchanged, skip reupload" check couldn't tell a regenerated file at the same size apart from a real no-op. Regenerated files are now always re-uploaded, and restored copies are cleaned up once WooCommerce is done with them.
 = 1.3.12 =
 * Tweak: Pro upgrade prompts now link to the live product page and list the actual Pro features (Media Library actions, File Manager, Restore to Server, Move to New Path, Bucket-to-Bucket Migration, faster Ajax/Mixed sync). Added an "Upgrade to Pro" plugin action link on the Plugins screen for non-Pro sites.
 * Feature: File Manager (Pro) — browse your connected cloud bucket, download as zip, restore to server, move, and delete files, with per-item and bulk actions.

@@ -88,30 +88,26 @@ msgstr ""
 msgid "Last checked"
 msgstr ""
 
-#: src/components/Header/index.jsx:122
-msgid "Donate"
-msgstr ""
-
-#: src/components/Header/index.jsx:25
+#: src/components/Header/index.jsx:24
 msgid "Dashboard"
 msgstr ""
 
-#: src/components/Header/index.jsx:31
+#: src/components/Header/index.jsx:30
 #: src/schema.js:280
 msgid "Settings"
 msgstr ""
 
-#: src/components/Header/index.jsx:37
+#: src/components/Header/index.jsx:36
 #: src/schema.js:2735
 msgid "Documentation"
 msgstr ""
 
-#: src/components/Header/index.jsx:45
+#: src/components/Header/index.jsx:44
 #: src/pages/License.jsx:139
 msgid "License"
 msgstr ""
 
-#: src/components/Header/index.jsx:68
+#: src/components/Header/index.jsx:67
 msgid "Upgrade to Pro"
 msgstr ""
 
