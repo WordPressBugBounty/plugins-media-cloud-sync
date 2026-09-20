@@ -32,7 +32,10 @@ class MediaLibrary {
 
 
     public static $source_type_prefix = "media";
-	public static $label = 'Media Library';
+
+	public static function get_label() {
+		return __('Media Library', 'media-cloud-sync');
+	}
 
     // Map which meta to be updated
 	public static $source_types = [
@@ -114,6 +117,8 @@ class MediaLibrary {
 		add_filter( 'pre_delete_attachment', [ $this, 'pre_delete_attachment' ], 20  );
         add_filter( 'delete_attachment', [ $this, 'delete_attachment' ], 20 );
 		add_action( 'delete_post',  [$this, 'delete_post'] );
+        // Safety net for code that deletes an attachment bypassing wp_delete_attachment().
+        add_action( 'deleted_post', [ $this, 'deleted_post' ], 10, 2 );
         add_filter( 'update_attached_file', [ $this, 'update_attached_file' ], 100, 2 ); 
 
         add_action( 'wpmcs_do_update_attachment_metadata', [ $this, 'update_attachment_metadata' ], 10, 2 );
@@ -557,7 +562,7 @@ class MediaLibrary {
 			return $file;
 		}
 
-        if (!Utils::is_ok_to_serve($attachment_id)) {
+        if (!Utils::should_serve_from_cloud($attachment_id)) {
             return $file;
         }
 
@@ -612,7 +617,7 @@ class MediaLibrary {
 		}
 
         // Must need $attachment_id other wise not possible to get data from the table
-        if (!Utils::is_ok_to_serve($attachment_id)) {
+        if (!Utils::should_serve_from_cloud($attachment_id)) {
             return $sources;
         }
 
@@ -681,8 +686,8 @@ class MediaLibrary {
      */
     public function wp_get_attachment_image_attributes($attr, $attachment, $size='thumbnail') {
         if (
-            !$attachment || 
-            !Utils::is_ok_to_serve($attachment->ID)
+            !$attachment ||
+            !Utils::should_serve_from_cloud($attachment->ID)
         ) {
             return $attr;
         }
@@ -731,7 +736,7 @@ class MediaLibrary {
      * @return bool|mixed|WP_Error
      */
     public function wp_get_attachment_url($url, $attachment_id) {
-        if (!Utils::is_ok_to_serve($attachment_id)) {
+        if (!Utils::should_serve_from_cloud($attachment_id)) {
             return $url;
         }
 
@@ -763,7 +768,7 @@ class MediaLibrary {
 			return $html;
 		}
 
-        if (!Utils::is_ok_to_serve($id)) {
+        if (!Utils::should_serve_from_cloud($id)) {
             return $html;
         }
 
@@ -805,7 +810,7 @@ class MediaLibrary {
 	 * @return array
 	 */
     public function wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
-        if (!Utils::is_ok_to_serve($attachment_id)) {
+        if (!Utils::should_serve_from_cloud($attachment_id)) {
             return $image;
         }
 		
@@ -833,7 +838,7 @@ class MediaLibrary {
 	 * @return array
 	 */
 	public function wp_prepare_attachment_for_js( $response, $attachment, $meta ) {
-		if (!Utils::is_ok_to_serve($attachment->ID)) {
+		if (!Utils::should_serve_from_cloud($attachment->ID)) {
             return $response;
         }
 
@@ -861,7 +866,7 @@ class MediaLibrary {
 	 * @return array
 	 */
 	public function image_get_intermediate_size( $data, $post_id, $size ) {
-        if (!Utils::is_ok_to_serve($post_id)) {
+        if (!Utils::should_serve_from_cloud($post_id)) {
             return $data;
         }
 		if ( isset( $data['url'] ) ) {
@@ -1013,6 +1018,9 @@ class MediaLibrary {
         $existing           = $wpmcsItem->get($attachment_id, 'media_library');
         $existing_extras    = $wpmcsItem->get_extras($attachment_id, false, 'media_library');
         $has_existing       = !Utils::is_empty($existing);
+        // A reupload of an already-private item must keep writing under the private path —
+        // never true for a genuinely new item, which is exactly right (new uploads stay public).
+        $is_private         = $has_existing && !empty($existing['is_private']);
         $sizes              = [];
         $uploaded           = [];
         $extras             = [];
@@ -1050,22 +1058,35 @@ class MediaLibrary {
         }
 
         // Upload main file first, if that fails no need to attempt the rest
-        $uploaded = $this->uploadFullFile($file_path, $source_path, $do_reupload, $has_existing, $existing, $prefix, $attachment_id);
+        $uploaded = $this->uploadFullFile($file_path, $source_path, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private);
 
         if ($uploaded && isset($uploaded['success']) && $uploaded['success']) {
             // Attempt to upload original file if present. Not critical if this fails so we don't check the result before proceeding.
-            $original = $this->uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id);
+            $original = $this->uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private);
 
             if ($is_image && isset($file_dir) && !empty($file_dir)) {
                 $sizes_to_upload = $this->get_attachment_image_sizes_for_upload($attachment_meta, $attachment_id);
                 if (!empty($sizes_to_upload)) {
                     // Upload image sizes. Again, not critical if this fails so we don't check the result before proceeding.
-                    $sizes = $this->uploadImageSizes($sizes_to_upload, $file_dir, $do_reupload, $existing_extras, $prefix, $attachment_id);
+                    $sizes = $this->uploadImageSizes($sizes_to_upload, $file_dir, $do_reupload, $existing_extras, $prefix, $attachment_id, $is_private);
                 }
             }
 
             if (!empty($sizes)) {
-                $extras['sizes'] = $sizes;
+                // Merge over existing sizes rather than replacing wholesale — a size that
+                // came back empty from uploadImageSizes() (its own fallback included) must
+                // never erase a previously-good, unrelated size's record.
+                $existing_sizes = isset($existing_extras['sizes']) && is_array($existing_extras['sizes'])
+                    ? $existing_extras['sizes']
+                    : [];
+
+                foreach ($sizes as $size_name => $size_data) {
+                    if (Utils::is_empty($size_data) && isset($existing_sizes[$size_name])) {
+                        unset($sizes[$size_name]);
+                    }
+                }
+
+                $extras['sizes'] = array_merge($existing_sizes, $sizes);
             }
 
             return [
@@ -1181,14 +1202,17 @@ class MediaLibrary {
      * @since 1.3.6
      * @param string $file_path
      * @param string $source_path
-     * @param bool   $do_reupload
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
      * @param bool   $has_existing
      * @param array  $existing
      * @param string $prefix
      * @param int    $attachment_id
+     * @param bool   $is_private Keeps a reupload of an already-private item under the private path.
      */
-    private function uploadFullFile($file_path, $source_path, $do_reupload, $has_existing, $existing, $prefix, $attachment_id) {
-        if (!$do_reupload && $has_existing && ($existing['source_path'] == $source_path)) {
+    private function uploadFullFile($file_path, $source_path, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private = false) {
+        // $do_reupload may be an array of size names (force just those sizes) — that
+        // shouldn't force the full file too, only a literal true does.
+        if ($do_reupload !== true && $has_existing && ($existing['source_path'] == $source_path)) {
             return [
                 'success'  => true,
                 'file_url' => $existing['url'],
@@ -1197,7 +1221,7 @@ class MediaLibrary {
         }
 
         if (file_exists($file_path)) {
-            return Service::instance()->uploadSingle($file_path, $source_path, $prefix);
+            return Service::instance()->uploadSingle($file_path, $source_path, $prefix, $is_private);
         }
 
         Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
@@ -1214,13 +1238,14 @@ class MediaLibrary {
      * @since 1.3.6
      * @param string $original_file
      * @param string $file_dir
-     * @param bool   $do_reupload
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
      * @param bool   $has_existing
      * @param array  $existing
      * @param string $prefix
      * @param int    $attachment_id
+     * @param bool   $is_private Keeps a reupload of an already-private item under the private path.
      */
-    private function uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id) {
+    private function uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private = false) {
         $original = [];
         if (empty($original_file)) {
             return $original;
@@ -1229,12 +1254,14 @@ class MediaLibrary {
         $original_file_path = trailingslashit($file_dir) . $original_file;
         $original_file_source_path = Utils::get_attachment_source_path($original_file_path);
 
-        if (!$do_reupload && $has_existing && isset($existing['original_source_path']) && !Utils::is_empty($existing['original_source_path']) && $existing['original_source_path'] === $original_file_source_path) {
+        // $do_reupload may be an array of size names (force just those sizes) — that
+        // shouldn't force the original file too, only a literal true does.
+        if ($do_reupload !== true && $has_existing && isset($existing['original_source_path']) && !Utils::is_empty($existing['original_source_path']) && $existing['original_source_path'] === $original_file_source_path) {
             return [ 'source_path' => $original_file_source_path, 'key' => $existing['original_key'] ];
         }
 
         if (file_exists($original_file_path)) {
-            $uploaded_original = Service::instance()->uploadSingle($original_file_path, $original_file_source_path, $prefix);
+            $uploaded_original = Service::instance()->uploadSingle($original_file_path, $original_file_source_path, $prefix, $is_private);
             if (isset($uploaded_original['success']) && $uploaded_original['success']) {
                 return [ 'source_path' => $original_file_source_path, 'key' => $uploaded_original['key'] ];
             }
@@ -1262,13 +1289,14 @@ class MediaLibrary {
      * @since 1.3.6
      * @param array  $attachment_sizes
      * @param string $file_dir
-     * @param bool   $do_reupload
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
      * @param array  $existing_extras
      * @param string $prefix
      * @param int    $attachment_id
-     * @return array    
+     * @param bool   $is_private Keeps a reupload of an already-private item under the private path.
+     * @return array
      */
-    private function uploadImageSizes($attachment_sizes, $file_dir, $do_reupload, $existing_extras, $prefix, $attachment_id) {
+    private function uploadImageSizes($attachment_sizes, $file_dir, $do_reupload, $existing_extras, $prefix, $attachment_id, $is_private = false) {
         $sizes = [];
 
         foreach ($attachment_sizes as $size => $sub_image) {
@@ -1284,8 +1312,12 @@ class MediaLibrary {
 
             $uploaded_sub_image = [];
 
+            // $do_reupload may be an array naming specific sizes to force (e.g. a
+            // WooCommerce on-the-fly regen of one size only) rather than a plain bool.
+            $force_this_size = ($do_reupload === true) || (is_array($do_reupload) && in_array($size, $do_reupload, true));
+
             if (
-                !$do_reupload &&
+                !$force_this_size &&
                 !Utils::is_empty($existing_extras) &&
                 isset($existing_extras['sizes']) && !Utils::is_empty($existing_extras['sizes']) &&
                 isset($existing_extras['sizes'][$size]) && !Utils::is_empty($existing_extras['sizes'][$size]) &&
@@ -1297,7 +1329,7 @@ class MediaLibrary {
                     'key'      => $existing_extras['sizes'][$size]['key']
                 ];
             } else if (file_exists($sub_file_path)) {
-                $uploaded_sub_image = Service::instance()->uploadSingle($sub_file_path, $sub_file_source_path, $prefix);
+                $uploaded_sub_image = Service::instance()->uploadSingle($sub_file_path, $sub_file_source_path, $prefix, $is_private);
             } else {
                 Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
                     /* translators: %1$s: Image size name (e.g., thumbnail, medium, large). */
@@ -1321,6 +1353,12 @@ class MediaLibrary {
                         'file'    => $sub_file_path,
                         'code'    => 500
                     ]);
+                }
+
+                // A failed (re)upload attempt shouldn't erase a previously-good record —
+                // fall back to what's already stored rather than overwriting it with empty data.
+                if (isset($existing_extras['sizes'][$size]) && !Utils::is_empty($existing_extras['sizes'][$size])) {
+                    $sub_size = $existing_extras['sizes'][$size];
                 }
             }
 
@@ -1617,6 +1655,24 @@ class MediaLibrary {
 	 */
 	public function delete_post() {
 		$this->deleting_attachment = false;
+	}
+
+	/**
+	 * Safety net for deletion that bypasses wp_delete_attachment().
+	 *
+	 * @handles deleted_post
+	 */
+	public function deleted_post( $post_id, $post ) {
+		if ( ! $post || 'attachment' !== $post->post_type ) {
+			return;
+		}
+
+		$item = Item::instance()->get( $post_id, 'media_library' );
+		if ( Utils::is_empty( $item ) ) {
+			return;
+		}
+
+		Item::instance()->delete( $post_id, 'media_library' );
 	}
 
     /**

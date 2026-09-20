@@ -40,19 +40,48 @@ class Integration {
         // Init all integrations
         if (!empty($this->integrations)) {
             foreach ($this->integrations as $integration) {
-                $integration = __NAMESPACE__ . '\\' . $integration;
-                if (class_exists($integration) && $integration::is_installed()) {
-                    if (property_exists($integration, 'source_types')) {
-                        self::$source_types = array_merge(self::$source_types, $integration::$source_types);
-                    }
-                    if (property_exists($integration, 'source_type_prefix') && property_exists($integration, 'label')) {
-                        self::$source_labels[$integration::$source_type_prefix] = $integration::$label;
-                    }
-                    if (Utils::is_service_enabled()) {
-                        $integration::instance();
-                    }
-                }
+                $this->process_integration($integration);
             }
+        }
+    }
+
+    /**
+     * Processes a single integration: registers its source types/labels and
+     * instantiates it if installed and the service is enabled.
+     *
+     * @param string $integration Unqualified integration class name.
+     * @since 1.4.1
+     */
+    private function process_integration($integration) {
+        $integration = __NAMESPACE__ . '\\' . $integration;
+        if (class_exists($integration) && $integration::is_installed()) {
+            if (property_exists($integration, 'source_types')) {
+                self::$source_types = array_merge(self::$source_types, $integration::$source_types);
+            }
+            // get_label() (not a $label property) because a static property default can't
+            // call __() — PHP only allows constant expressions there.
+            if (property_exists($integration, 'source_type_prefix') && method_exists($integration, 'get_label')) {
+                self::$source_labels[$integration::$source_type_prefix] = $integration::get_label();
+            }
+            if (Utils::is_service_enabled()) {
+                $integration::instance();
+            }
+        }
+    }
+
+    /**
+     * Registers additional integration classes after construction, mirroring
+     * Sync::add_sync_classes() — lets Pro register a new integration whenever,
+     * regardless of load order relative to this class's own construction.
+     *
+     * @param array $classes Unqualified integration class names to add.
+     * @since 1.4.1
+     */
+    public function add_integrations($classes = []) {
+        $new_classes = array_diff($classes, $this->integrations);
+        $this->integrations = array_merge($this->integrations, $new_classes);
+        foreach ($new_classes as $integration) {
+            $this->process_integration($integration);
         }
     }
 
@@ -88,13 +117,17 @@ class Integration {
             $meta_key   = (isset($source_type_data['meta_prefix']) ? $source_type_data['meta_prefix'].'_' : '') . $key;
             $table      = isset($source_type_data['table']) ? $source_type_data['table'] : false;
 
+            if (is_array($table)) {
+                return Utils::get_custom_meta($post_id, $meta_key, $default, $meta_name, $expire, $table);
+            }
+
             // Update it -  handle in seperate integration by calling common function
             switch($table) {
-                case 'posts': 
+                case 'posts':
                     return Utils::get_meta($post_id, $meta_key, $default, $meta_name, $expire);
                 case 'users':
                     return Utils::get_user_meta($post_id, $meta_key, $default, $meta_name, $expire);
-                default: null;
+                default: return $default;
             }
         }
     }
@@ -117,8 +150,12 @@ class Integration {
             $meta_key   = (isset($source_type_data['meta_prefix']) ? $source_type_data['meta_prefix'].'_' : '') . $key;
             $table      = isset($source_type_data['table']) ? $source_type_data['table'] : false;
 
+            if (is_array($table)) {
+                return Utils::update_custom_meta($post_id, $meta_key, $options, $meta_name, $expire, $table);
+            }
+
             switch($table) {
-                case 'posts': 
+                case 'posts':
                     return Utils::update_meta($post_id, $meta_key, $options, $meta_name, $expire);
                 case 'users':
                     return Utils::update_user_meta($post_id, $meta_key, $options, $meta_name, $expire);
@@ -146,8 +183,13 @@ class Integration {
                 $meta_key = false;
             }
             $table      = isset($source_type_data['table']) ? $source_type_data['table'] : false;
+
+            if (is_array($table)) {
+                return Utils::delete_custom_meta($post_id, $meta_key, $meta_name, $table);
+            }
+
             switch($table) {
-                case 'posts': 
+                case 'posts':
                     return Utils::delete_meta($post_id, $meta_key, $meta_name);
                 case 'users':
                     return Utils::delete_user_meta($post_id, $meta_key, $meta_name);
@@ -165,8 +207,16 @@ class Integration {
         if (!empty(self::$source_types)) {
             foreach (self::$source_types as $source_type => $source_type_data) {
                 $table      = isset($source_type_data['table']) ? $source_type_data['table'] : false;
+
+                if (is_array($table)) {
+                    // Custom backends (e.g. BuddyBoss groupmeta) aren't bulk-cleared here —
+                    // no generic raw table name to target; individual keys are still
+                    // cleaned up as their owning items are deleted.
+                    continue;
+                }
+
                 switch($table) {
-                    case 'posts': 
+                    case 'posts':
                         Utils::clear_all_meta(false, 'postmeta', $flush_cache);
                         break;
                     case 'users':

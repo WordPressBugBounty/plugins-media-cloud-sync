@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Imagify Push CDN adapter for offloaded media.
  *
- * Implements Imagify's PushCDNInterface the same way the official AS3CF integration does.
+ * Implements Imagify's PushCDNInterface the same way an official offload-plugin integration does.
  * Loaded by the autoloader when `register_cdn()` runs for an offloaded attachment.
  *
  * @since 1.3.12

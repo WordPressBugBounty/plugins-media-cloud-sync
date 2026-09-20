@@ -609,14 +609,21 @@ class CloudflareR2 {
      * Upload Single
      * @since 1.0.0
      */
-    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='') {
+    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='', $is_private = false) {
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
         ) {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
-                $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
+                $upload_path = Utils::generate_object_key($relative_source_path, $prefix, $is_private);
+                if ($upload_path === false) {
+                    return [
+                        'success' => false,
+                        'code'    => 200,
+                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                    ];
+                }
                 return $this->execute_upload($absolute_source_path, $upload_path);
             }
         }

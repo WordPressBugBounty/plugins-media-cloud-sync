@@ -73,6 +73,8 @@ class BGRunner {
 
         // reset control flags
         $this->save_type_control($type, $this->default_control_state());
+
+        do_action("wpmcs_{$type}_started", $type);
     }
 
     public function pause(string $type) {
@@ -114,7 +116,9 @@ class BGRunner {
             ( isset($c['time']) && ( $c['time'] > 0 ) && ( ( time() - $c['time'] ) > self::$lock_duration ) ) &&
             ($c['pause_requested'] === true || $c['stop_requested'] === true)
         ) {
-            if($c['stop_requested'] === true) {
+            $was_stop_requested = $c['stop_requested'] === true;
+
+            if($was_stop_requested) {
                 $s = $this->default_type_state();
             } else {
                 $s['status'] = 'paused';
@@ -126,6 +130,13 @@ class BGRunner {
             $c['stop_requested'] = false;
             $c['time'] = time();
             $this->save_type_control($type, $c);
+
+            // Stale-lock self-heal is a second cancellation path, separate from
+            // process_iterations()'s own — a job cancelled via a stalled lock
+            // (e.g. cron stopped ticking) still needs to fire the same hook.
+            if ($was_stop_requested) {
+                do_action("wpmcs_{$type}_cancelled", $type);
+            }
         }
 
         return $this->format_status($type, $s);
@@ -137,6 +148,11 @@ class BGRunner {
             $statuses[$type] = $this->status($type);
         }
         return $statuses;
+    }
+
+    /** Job type keys registered so far via set_callback() — e.g. for an integration to hook every type's lifecycle actions. */
+    public function get_registered_types() {
+        return array_keys($this->callback_map);
     }
 
     private function format_status(string $type, array $s) {
@@ -373,7 +389,9 @@ class BGRunner {
 
         // Update state if completed, paused or stopped
         if ($is_completed || ($latest_c['stop_requested'] ?? false) || ($latest_c['pause_requested'] ?? false)) {
-            $latest_s['status'] = $is_completed || ($latest_c['stop_requested'] ?? false) ? 'stopped' : 'paused';
+            $was_stop_requested = $latest_c['stop_requested'] ?? false;
+
+            $latest_s['status'] = $is_completed || $was_stop_requested ? 'stopped' : 'paused';
             $latest_s['completed'] = $is_completed;
             $this->save_type_state($type, $latest_s);
 
@@ -381,6 +399,12 @@ class BGRunner {
             $latest_c['stop_requested'] = false;
             $latest_c['time'] = time();
             $this->save_type_control($type, $latest_c);
+
+            if ($is_completed) {
+                do_action("wpmcs_{$type}_completed", $type);
+            } elseif ($was_stop_requested) {
+                do_action("wpmcs_{$type}_cancelled", $type);
+            }
         }
 
         gc_collect_cycles();

@@ -6,6 +6,7 @@ defined('ABSPATH') || exit;
 // Libraries
 use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\StorageClient;
 use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
+use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
 
 use Exception;
 
@@ -631,7 +632,7 @@ class GCloud {
     /**
      * Make Object Public
      * @since 1.0.0
-     * 
+     *
      */
     public function toPublic($key) {
         if(!$key) return false;
@@ -653,9 +654,299 @@ class GCloud {
         }
     }
 
+    /**
+     * Fetch the bucket's IAM policy with the plugin's own
+     * allUsers:roles/storage.objectViewer binding(s) dropped — shared by
+     * both drop_bucket_level_grant() and restore_bucket_level_grant() so
+     * the find-and-drop logic isn't written twice. Every other binding
+     * (project owners/editors, other service accounts, etc.) is left
+     * exactly as found, unlike S3 where the whole policy is safely one
+     * plugin-owned statement.
+     * @since 1.4.1
+     */
+    private function bucket_policy_without_own_binding() {
+        $iam    = $this->bucket->iam();
+        $policy = $iam->policy(['requestedPolicyVersion' => 3]);
+
+        $bindings = [];
+        foreach (($policy['bindings'] ?? []) as $binding) {
+            if (
+                isset($binding['role'], $binding['members']) &&
+                $binding['role'] === 'roles/storage.objectViewer' &&
+                in_array('allUsers', (array) $binding['members'], true)
+            ) {
+                continue;
+            }
+            $bindings[] = $binding;
+        }
+
+        return ['iam' => $iam, 'policy' => $policy, 'bindings' => $bindings];
+    }
 
     /**
-     * Check the object exist 
+     * Drop the plugin's bucket-wide allUsers:objectViewer binding, if any,
+     * and do not re-add it — used by the enable path, once the
+     * Managed-Folder-scoped grant is already confirmed in effect.
+     * @since 1.4.1
+     */
+    private function drop_bucket_level_grant() {
+        $state                        = $this->bucket_policy_without_own_binding();
+        $state['policy']['bindings']  = $state['bindings'];
+        $state['policy']['version']   = 3;
+        $state['iam']->setPolicy($state['policy'], ['requestedPolicyVersion' => 3]);
+    }
+
+    /**
+     * Find-and-drop then re-add exactly one bucket-wide
+     * allUsers:objectViewer binding — mirrors createBucket()'s original
+     * grant. Used by the disable path to restore the plugin's original,
+     * pre-private-media public-access mechanism; find-and-drop-first
+     * guarantees a repeated apply/remove cycle never accumulates
+     * duplicate bindings.
+     * @since 1.4.1
+     */
+    private function restore_bucket_level_grant() {
+        $state = $this->bucket_policy_without_own_binding();
+        $state['bindings'][] = [
+            'role'    => 'roles/storage.objectViewer',
+            'members' => ['allUsers'],
+        ];
+        $state['policy']['bindings'] = $state['bindings'];
+        $state['policy']['version']  = 3;
+        $state['iam']->setPolicy($state['policy'], ['requestedPolicyVersion' => 3]);
+    }
+
+    /**
+     * Hand-written, authenticated REST call against GCS's Managed Folders
+     * API (storage/v1/b/{bucket}/managedFolders/...) — the vendored SDK has
+     * no native class for this resource. Mints a fresh Guzzle client from
+     * the same service-account JSON already trusted for the ordinary
+     * StorageClient, since Bucket::$connection/StorageClient::$connection
+     * have no public accessor into their internal auth machinery.
+     *
+     * $http_errors is disabled so 4xx/5xx responses are returned (not
+     * thrown) — callers need to distinguish e.g. 409 (already exists) and
+     * 404 (already gone) from genuine failures, which is far cleaner done
+     * by inspecting the status code than by parsing exception messages.
+     * @since 1.4.1
+     */
+    private function managed_folder_iam_request($method, $path, $body = null) {
+        $keyArray = json_decode($this->config['config_json'], true);
+        $fetcher  = CredentialsLoader::makeCredentials(
+            // Matches the vendored StorageClient's own implicit default scope list
+            // (StorageClient.php:166-167) — every StorageClient construction in this
+            // file omits `scopes` and gets this same pair; FULL_CONTROL_SCOPE alone
+            // is narrower and risks a 403 at the OAuth-scope layer, independent of
+            // and prior to whatever IAM role/permission the service account holds.
+            ['https://www.googleapis.com/auth/iam', StorageClient::FULL_CONTROL_SCOPE],
+            $keyArray
+        );
+        $httpClient = CredentialsLoader::makeHttpClient($fetcher, [
+            'timeout'         => 15,
+            'connect_timeout' => 5,
+        ]);
+
+        $url = 'https://storage.googleapis.com/storage/v1/b/' . rawurlencode($this->bucket_name) . '/managedFolders' . $path;
+
+        $options = ['http_errors' => false];
+        if ($body !== null) {
+            $options['json'] = $body;
+        }
+
+        $response = $httpClient->request($method, $url, $options);
+
+        return [
+            'status' => $response->getStatusCode(),
+            'body'   => json_decode((string) $response->getBody(), true),
+        ];
+    }
+
+    /**
+     * Apply (or, with an empty $private_prefix, un-apply) the private-path
+     * carve-out via GCS Managed Folders.
+     *
+     * Google Cloud permanently disallows attaching an IAM Condition to a
+     * binding whose principal is allUsers, so the previous CEL-conditional
+     * approach here could never succeed. Managed Folders let a role be
+     * granted to allUsers scoped to one prefix with no condition at all —
+     * but the grant is purely additive (it can only add access, never
+     * restrict it), so exclusion only works because private_path is a
+     * sibling of base_path, not nested inside it: the Managed Folder is
+     * always scoped to base_path (read directly from settings, not derived
+     * from $private_prefix, which is the *private*-path prefix).
+     * @since 1.4.1
+     */
+    public function applyPrivatePathPolicy($private_prefix) {
+        if (!$this->bucket || empty($this->bucket_name)) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+        }
+
+        $base_path   = isset($this->settings['base_path']) ? trim($this->settings['base_path'], " \n\r\t\v\x00\/ ") : '';
+        // Trailing slash: unverified against a live GCS project — Google's own
+        // managedFolder.insert REST reference shows no trailing slash in its
+        // examples, while its separate CLI guide uses one. Captured once here and
+        // reused verbatim (URL-encoded) at every call site below so insert/
+        // setIamPolicy/delete always address the exact same resource name.
+        $folder_name = $base_path . '/';
+
+        try {
+            if (empty($private_prefix)) {
+                // Disable: restore the bucket-wide public grant FIRST, so there's
+                // never a window where base_path content has no public grant at
+                // all — then clean up the now-redundant Managed Folder
+                // (best-effort, not security-critical: the grant that actually
+                // matters is already restored by the time this runs).
+                $this->restore_bucket_level_grant();
+
+                if (!empty($base_path)) {
+                    $delete = $this->managed_folder_iam_request('DELETE', '/' . rawurlencode($folder_name) . '?allowNonEmpty=true');
+                    if ($delete['status'] >= 300 && $delete['status'] !== 404) {
+                        error_log('Media Cloud Sync: failed to delete the GCS Managed Folder for base_path while disabling private media — ' . wp_json_encode($delete['body']));
+                    }
+                }
+
+                return ['success' => true, 'code' => 200, 'message' => esc_html__('Policy removed successfully', 'media-cloud-sync')];
+            }
+
+            if (empty($base_path)) {
+                return ['success' => false, 'code' => 200, 'message' => esc_html__('Google Cloud Storage private media requires a base path — enable it in Storage Settings first.', 'media-cloud-sync')];
+            }
+
+            // Uniform Bucket-Level Access and Public Access Prevention need a live
+            // $bucket->info() call, which is why these checks live here rather than
+            // in ProPrivateMedia::apply_policy() (which only has settings, not the
+            // bucket) — the enable_base_path / outside-base_path checks that DON'T
+            // need a live call already ran there, before this method was reached.
+            $info        = $this->bucket->info();
+            $iamConfig   = isset($info['iamConfiguration']) ? $info['iamConfiguration'] : [];
+            $ublaEnabled = !empty($iamConfig['uniformBucketLevelAccess']['enabled']);
+            $pap         = isset($iamConfig['publicAccessPrevention']) ? $iamConfig['publicAccessPrevention'] : 'inherited';
+
+            if (!$ublaEnabled) {
+                return ['success' => false, 'code' => 200, 'message' => esc_html__("This bucket doesn't have Uniform Bucket-Level Access enabled — enable it in your Google Cloud Storage bucket settings first.", 'media-cloud-sync')];
+            }
+            if ($pap === 'enforced') {
+                return ['success' => false, 'code' => 200, 'message' => esc_html__('Public Access Prevention is enabled for this bucket — disable it first in Bucket Security, since it blocks the public side of this feature too.', 'media-cloud-sync')];
+            }
+
+            // Enable, in an order that never leaves a window with no public access:
+            // create + set the Managed Folder's grant first (purely additive — safe
+            // to briefly overlap with the still-present bucket-wide grant), only
+            // then drop the bucket-wide grant.
+            $insert = $this->managed_folder_iam_request('POST', '', ['name' => $folder_name]);
+            if ($insert['status'] >= 300 && $insert['status'] !== 409) {
+                $message = isset($insert['body']['error']['message']) ? $insert['body']['error']['message'] : esc_html__('Failed to create the Managed Folder for your base path.', 'media-cloud-sync');
+                return ['success' => false, 'code' => 200, 'message' => $message];
+            }
+
+            $setIam = $this->managed_folder_iam_request('PUT', '/' . rawurlencode($folder_name) . '/iam', [
+                'bindings' => [
+                    [
+                        'role'    => 'roles/storage.objectViewer',
+                        'members' => ['allUsers'],
+                    ],
+                ],
+            ]);
+            if ($setIam['status'] >= 300) {
+                $message = isset($setIam['body']['error']['message']) ? $setIam['body']['error']['message'] : esc_html__('Failed to grant public access on the Managed Folder.', 'media-cloud-sync');
+                return ['success' => false, 'code' => 200, 'message' => $message];
+            }
+
+            // Only once the Managed Folder grant is confirmed in effect (both calls
+            // above succeeded): drop the bucket-wide grant so nothing is public
+            // bucket-wide anymore. If either call above failed, we stop before this
+            // line — the bucket is left exactly as it was (bucket-level grant still
+            // in place, no Managed Folder actively granting anything since its IAM
+            // policy was never successfully set), a safe, easily-retried state.
+            $this->drop_bucket_level_grant();
+
+            return ['success' => true, 'code' => 200, 'message' => esc_html__('Policy applied successfully', 'media-cloud-sync')];
+        } catch (ServiceException $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Read the bucket's Public Access Prevention state — GCS's closest
+     * analog to S3's Block Public Access. Built from a fresh StorageClient/
+     * Bucket from the passed params (not $this->gcloudClient/$this->bucket)
+     * so this works during initial setup in the Configure wizard, before
+     * the connection being configured is the saved/active one — matching
+     * S3's own getBucketSecuritySettings() pattern.
+     * @since 1.4.1
+     */
+    public function getBucketSecuritySettings($config = [], $bucketConfig = []) {
+        $config_json = isset($config['config_json']) ? $config['config_json'] : '';
+        $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
+
+        if (empty($config_json) || empty($bucket_name) || !Utils::is_json($config_json)) {
+            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        }
+
+        try {
+            $keyArray = json_decode($config_json, true);
+            if (!is_array($keyArray)) {
+                return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            }
+
+            $client = new StorageClient(['keyFile' => $keyArray]);
+            $bucket = $client->bucket($bucket_name);
+            $info   = $bucket->info();
+            $pap    = isset($info['iamConfiguration']['publicAccessPrevention']) ? $info['iamConfiguration']['publicAccessPrevention'] : 'inherited';
+
+            $security = ['block_public_access' => $pap === 'enforced'];
+
+            return ['message' => '', 'code' => 200, 'success' => true, 'security' => $security];
+        } catch (ServiceException $e) {
+            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        } catch (Exception $e) {
+            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        }
+    }
+
+    /**
+     * Set the bucket's Public Access Prevention state. Built from a fresh
+     * StorageClient/Bucket from the passed params — same reasoning as
+     * getBucketSecuritySettings() above. No changeObjectOwnership()
+     * equivalent here — GCS has no matching concept; the generic dispatcher
+     * simply hides that field via method_exists() when it's undefined.
+     * @since 1.4.1
+     */
+    public function changePublicAccess($config = [], $bucketConfig = [], $value = false) {
+        $config_json = isset($config['config_json']) ? $config['config_json'] : '';
+        $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
+
+        if (empty($config_json) || empty($bucket_name) || !Utils::is_json($config_json)) {
+            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        }
+
+        try {
+            $keyArray = json_decode($config_json, true);
+            if (!is_array($keyArray)) {
+                return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            }
+
+            $client = new StorageClient(['keyFile' => $keyArray]);
+            $bucket = $client->bucket($bucket_name);
+            $bucket->update([
+                'iamConfiguration' => [
+                    'publicAccessPrevention' => $value ? 'enforced' : 'inherited',
+                ],
+            ]);
+
+            return ['message' => '', 'code' => 200, 'success' => true];
+        } catch (ServiceException $e) {
+            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        } catch (Exception $e) {
+            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+        }
+    }
+
+
+    /**
+     * Check the object exist
      * @since 1.1.8
      */
     public function exists($key, $bucket = null) {
@@ -741,14 +1032,21 @@ class GCloud {
      * @since 1.0.0
      * @return boolean
      */
-    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix=''){
+    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='', $is_private = false){
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
         ) {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
-                $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
+                $upload_path = Utils::generate_object_key($relative_source_path, $prefix, $is_private);
+                if ($upload_path === false) {
+                    return [
+                        'success' => false,
+                        'code'    => 200,
+                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                    ];
+                }
                 return $this->execute_upload($absolute_source_path, $upload_path);
             }
             return [

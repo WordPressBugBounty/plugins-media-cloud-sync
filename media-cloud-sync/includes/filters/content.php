@@ -406,6 +406,10 @@ class FilterContent {
 			return false;
 		}
 
+		if ( ! apply_filters( 'wpmcs_push_to_url_pairs', true, $item_source['id'], $item_source['source_type'] ) ) {
+			return false;
+		}
+
 		$base 					= trailingslashit($upload_dir['baseurl']);
 		$backward_replacement 	= apply_filters('wpmcs_enable_backward_url_replacement', false);
 
@@ -627,16 +631,21 @@ class FilterContent {
 
 			if ( ! empty( $wpmcsItems ) ) {
 				foreach ( $wpmcsItems as $item ) {
-					// Each returned item may have matched on either the source_path or original_source_path.
+					// Each returned item may have matched on either the source_path or original_source_path
+					// (or, in backward-compatibility mode, key or original_key — $paths above is keyed by
+					// whichever field type get_attachment_source_path() was asked for, so the lookup below
+					// must compare against that same field, not always source_path).
 					// Because the base image file name of a thumbnail might match the primary rather scaled or rotated full image
 					// it's possible that both source paths are used by separate URLs.
 					$source_id		= (int)$item['source_id'];
 					$source_type	= $item['source_type'];
-					$source_paths 	= [ $item['source_path'] ];
+					$path_field		= $reverse_compatibility ? 'key' : 'source_path';
+					$original_field	= $reverse_compatibility ? 'original_key' : 'original_source_path';
+					$source_paths 	= [ $item[ $path_field ] ];
 
-					// If original_source_path is set, add it to source_paths.
-					if(isset($item['original_source_path']) && !Utils::is_empty($item['original_source_path'])) {
-						$source_paths[] = $item['original_source_path'];
+					// If the original path/key is set, add it to source_paths.
+					if(isset($item[ $original_field ]) && !Utils::is_empty($item[ $original_field ])) {
+						$source_paths[] = $item[ $original_field ];
 					}
 
 					foreach ( $source_paths as $source_path ) {

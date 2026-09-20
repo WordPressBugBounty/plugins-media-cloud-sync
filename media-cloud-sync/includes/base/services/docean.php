@@ -312,44 +312,58 @@ class DOcean {
 
     /**
      * Add Bucket Policy
+     *
+     * $private_prefix, when non-empty, carves that path out of the public
+     * grant entirely — every action in the list, not just reads, so an
+     * anonymous caller can't read, write, or delete anything under it. Same
+     * NotResource approach as S3::putBucketPolicy() — Spaces' policy API is
+     * S3-compatible, so the identical fix applies unchanged.
+     * @since 1.0.0
      */
-    private function putBucketPolicy($bucket, $DOClient = false) {
+    private function putBucketPolicy($bucket, $DOClient = false, $private_prefix = '') {
         if($DOClient == false) {
             $DOClient = $this->DOClient;
         }
 
         if(empty($bucket)) return false;
 
+        $actions = [
+            "s3:DeleteObjectTagging",
+            "s3:ListBucketMultipartUploads",
+            "s3:DeleteObjectVersion",
+            "s3:ListBucket",
+            "s3:DeleteObjectVersionTagging",
+            "s3:GetBucketAcl",
+            "s3:ListMultipartUploadParts",
+            "s3:PutObject",
+            "s3:GetObjectAcl",
+            "s3:GetObject",
+            "s3:AbortMultipartUpload",
+            "s3:DeleteObject",
+            "s3:GetBucketLocation",
+            "s3:PutObjectAcl",
+            "s3:putBucketOwnershipControls",
+            "s3:putBucketPolicy"
+        ];
+
+        $statement = [
+            "Effect"    => "Allow",
+            "Principal" => "*",
+            "Action"    => $actions,
+        ];
+
+        if (!empty($private_prefix)) {
+            $statement["NotResource"] = ["arn:aws:s3:::$bucket/$private_prefix/*"];
+        } else {
+            $statement["Resource"] = [
+                "arn:aws:s3:::$bucket/*",
+                "arn:aws:s3:::$bucket"
+            ];
+        }
+
         $policy = json_encode([
-            "Version" => "2012-10-17",
-            "Statement" => [
-                [
-                    "Effect" => "Allow",
-                    "Principal" => "*",
-                    "Action" => [
-                        "s3:DeleteObjectTagging",
-                        "s3:ListBucketMultipartUploads",
-                        "s3:DeleteObjectVersion",
-                        "s3:ListBucket",
-                        "s3:DeleteObjectVersionTagging",
-                        "s3:GetBucketAcl",
-                        "s3:ListMultipartUploadParts",
-                        "s3:PutObject",
-                        "s3:GetObjectAcl",
-                        "s3:GetObject",
-                        "s3:AbortMultipartUpload",
-                        "s3:DeleteObject",
-                        "s3:GetBucketLocation",
-                        "s3:PutObjectAcl",
-                        "s3:putBucketOwnershipControls",
-                        "s3:putBucketPolicy"
-                    ],
-                    "Resource" => [
-                        "arn:aws:s3:::$bucket/*",
-                        "arn:aws:s3:::$bucket"
-                    ]
-                ]
-            ]
+            "Version"   => "2012-10-17",
+            "Statement" => [$statement]
         ]);
 
         try {
@@ -364,6 +378,23 @@ class DOcean {
         } catch (Exception $ex) {
             return false; // Handle general exceptions
         }
+    }
+
+    /**
+     * Apply (or, with an empty $private_prefix, un-apply) the private-path
+     * bucket policy carve-out.
+     * @since 1.0.0
+     */
+    public function applyPrivatePathPolicy($private_prefix) {
+        if (!$this->DOClient || empty($this->bucket_name)) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+        }
+
+        $ok = $this->putBucketPolicy($this->bucket_name, $this->DOClient, $private_prefix);
+
+        return $ok
+            ? ['success' => true, 'code' => 200, 'message' => esc_html__('Policy applied successfully', 'media-cloud-sync')]
+            : ['success' => false, 'code' => 200, 'message' => esc_html__('Failed to apply bucket policy', 'media-cloud-sync')];
     }
 
 
@@ -725,14 +756,21 @@ class DOcean {
      * @since 1.0.0
      * @return boolean
      */
-    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='') {
+    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='', $is_private = false) {
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
         ) {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
-                $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
+                $upload_path = Utils::generate_object_key($relative_source_path, $prefix, $is_private);
+                if ($upload_path === false) {
+                    return [
+                        'success' => false,
+                        'code'    => 200,
+                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                    ];
+                }
                 return $this->execute_upload($absolute_source_path, $upload_path);
             }
             return [

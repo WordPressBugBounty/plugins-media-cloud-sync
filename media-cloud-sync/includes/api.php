@@ -202,14 +202,33 @@ class Api {
 		$settingsOk 	= true;
 		
 		if( $action === 'cdn' ){
+			// Switching delivery provider resets the previously selected one's own fields
+			// back to their defaults (see ChooseCDN.jsx) — that can include private_path/
+			// enable_private_media, since those live in a delivery entry's own field list,
+			// so this write needs the same guard the plain settings save uses below.
+			$validation = apply_filters( 'wpmcs_validate_settings_save', ['ok' => true, 'message' => ''], $settings, $action );
+			if ( empty( $validation['ok'] ) ) {
+				return new WP_REST_Response( [
+					'success' => false,
+					'message' => !empty($validation['message']) ? $validation['message'] : esc_html__('Settings could not be saved.', 'media-cloud-sync')
+				], 200 );
+			}
+
 			$existing = Utils::get_credentials();
 			$existing['cdn'] = $cdn;
-			
+
 			$updated = Utils::update_option('credentials', $existing, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 
 			if(!$updated) $serviceOk = false;
 			if(!$updatedSettings) $settingsOk = false;
+
+			// Only once both writes actually persisted — a failed credentials write can
+			// leave the object cache holding an unpersisted bucket identity (see
+			// Cache::set_object_cache()), so gating on $settingsOk alone isn't enough.
+			if ($serviceOk && $settingsOk) {
+				do_action('wpmcs_after_settings_save', $settings, $action);
+			}
 		}
 
 
@@ -248,8 +267,27 @@ class Api {
 		} 
 		
 		if(($action === 'all' || $action === 'settings')) {
+			// Extension point for a pro-only settings-save guard (e.g. private media
+			// refusing a private_path/base_path change while items are still private
+			// under the currently-applied path) — free has no opinion here, default
+			// is "allow". ['ok' => bool, 'message' => string].
+			$validation = apply_filters( 'wpmcs_validate_settings_save', ['ok' => true, 'message' => ''], $settings, $action );
+			if ( empty( $validation['ok'] ) ) {
+				return new WP_REST_Response( [
+					'success' => false,
+					'message' => !empty($validation['message']) ? $validation['message'] : esc_html__('Settings could not be saved.', 'media-cloud-sync')
+				], 200 );
+			}
+
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 			if(!$updatedSettings) $settingsOk = false;
+
+			// Only once both writes actually persisted — a failed credentials write can
+			// leave the object cache holding an unpersisted bucket identity (see
+			// Cache::set_object_cache()), so gating on $settingsOk alone isn't enough.
+			if ($serviceOk && $settingsOk) {
+				do_action('wpmcs_after_settings_save', $settings, $action);
+			}
 		}
 
 		// Clear plugin caches and refresh counts after any configuration save.
@@ -414,7 +452,8 @@ class Api {
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-		$status = Sync::instance()->start($action);
+		$options = isset($data->get_params()['options']) && is_array($data->get_params()['options']) ? $data->get_params()['options'] : [];
+		$status = Sync::instance()->start($action, $options);
 
 		// Sync::start() passes a job's own precondition-failure array straight through
 		// (e.g. no destination configured) instead of masking it as a started status.

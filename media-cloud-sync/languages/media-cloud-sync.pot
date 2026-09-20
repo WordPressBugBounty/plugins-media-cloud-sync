@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Media Cloud Sync 1.4.0\n"
+"Project-Id-Version: Media Cloud Sync 1.4.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/media-cloud-sync\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-29T11:38:30+00:00\n"
+"POT-Creation-Date: 2026-09-20T19:36:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: media-cloud-sync\n"
@@ -18,9 +18,9 @@ msgstr ""
 #: media-cloud-sync.php
 #: includes/admin.php:277
 #: includes/admin.php:278
-#: includes/base/services/gcloud.php:86
+#: includes/base/services/gcloud.php:87
 #: app/src/pages/configure/welcome.jsx:10
-#: assets/js/backend.js:67984
+#: assets/js/backend.js:68262
 msgid "Media Cloud Sync"
 msgstr ""
 
@@ -48,9 +48,9 @@ msgstr ""
 #: includes/admin.php:299
 #: app/src/components/Header/index.jsx:30
 #: app/src/pages/settings/Settings.jsx:125
-#: app/src/schema.js:280
-#: assets/js/backend.js:59341
-#: assets/js/backend.js:70243
+#: app/src/schema.js:337
+#: assets/js/backend.js:59346
+#: assets/js/backend.js:70673
 msgid "Settings"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 #: includes/admin.php:288
 #: includes/admin.php:289
 #: app/src/components/Header/index.jsx:24
-#: assets/js/backend.js:59335
+#: assets/js/backend.js:59340
 msgid "Dashboard"
 msgstr ""
 
@@ -69,12 +69,12 @@ msgstr ""
 #: includes/admin.php:308
 #: app/src/components/ConnectionCard/index.jsx:103
 #: app/src/components/ConnectionCard/index.jsx:138
-#: app/src/pages/Configure.jsx:89
-#: app/src/schema.js:405
-#: assets/js/backend.js:59080
-#: assets/js/backend.js:59115
-#: assets/js/backend.js:62869
-#: assets/js/backend.js:70368
+#: app/src/pages/Configure.jsx:94
+#: app/src/schema.js:478
+#: assets/js/backend.js:59086
+#: assets/js/backend.js:59121
+#: assets/js/backend.js:62919
+#: assets/js/backend.js:70814
 msgid "Configure"
 msgstr ""
 
@@ -103,12 +103,12 @@ msgid "Access: "
 msgstr ""
 
 #: includes/admin.php:396
-#: includes/integrations/media-library.php:1516
+#: includes/integrations/media-library.php:1554
 msgid "Private"
 msgstr ""
 
 #: includes/admin.php:397
-#: includes/integrations/media-library.php:1516
+#: includes/integrations/media-library.php:1554
 msgid "Public"
 msgstr ""
 
@@ -116,147 +116,92 @@ msgstr ""
 msgid "Something went wrong. Invalid data recieved"
 msgstr ""
 
-#: includes/api.php:273
+#: includes/api.php:213
+#: includes/api.php:278
+msgid "Settings could not be saved."
+msgstr ""
+
+#: includes/api.php:311
 msgid "Configuration saved successfully"
 msgstr ""
 
-#: includes/api.php:296
+#: includes/api.php:334
 msgid "Media counts refreshed successfully"
 msgstr ""
 
-#: includes/api.php:340
+#: includes/api.php:378
 msgid "Error logs fetched successfully"
 msgstr ""
 
-#: includes/api.php:356
-#: includes/api.php:406
-#: includes/api.php:443
-#: includes/api.php:470
-#: includes/api.php:499
-#: includes/api.php:523
-#: includes/api.php:553
-#: includes/api.php:622
+#: includes/api.php:394
+#: includes/api.php:444
+#: includes/api.php:482
+#: includes/api.php:509
+#: includes/api.php:538
+#: includes/api.php:562
+#: includes/api.php:592
+#: includes/api.php:661
 msgid "Invalid action"
 msgstr ""
 
-#: includes/api.php:364
+#: includes/api.php:402
 msgid "Error logs cleared"
 msgstr ""
 
-#: includes/api.php:390
+#: includes/api.php:428
 msgid "Status fetched successfully"
 msgstr ""
 
-#: includes/api.php:413
+#: includes/api.php:451
 msgid "Storage is not configured correctly."
 msgstr ""
 
-#: includes/api.php:428
+#: includes/api.php:467
 msgid "Sync started successfully"
 msgstr ""
 
-#: includes/api.php:452
+#: includes/api.php:491
 msgid "Sync paused successfully"
 msgstr ""
 
-#: includes/api.php:478
+#: includes/api.php:517
 msgid "Invalid sync method"
 msgstr ""
 
-#: includes/api.php:508
+#: includes/api.php:547
 msgid "Sync resumed successfully"
 msgstr ""
 
-#: includes/api.php:536
+#: includes/api.php:575
 msgid "Sync stopped successfully"
 msgstr ""
 
-#: includes/api.php:564
+#: includes/api.php:603
 msgid "Ajax sync requires an active Pro license"
 msgstr ""
 
-#: includes/api.php:580
+#: includes/api.php:619
 msgid "Sync ticked successfully"
 msgstr ""
 
-#: includes/api.php:613
+#: includes/api.php:652
 msgid "Invalid parameters"
 msgstr ""
 
-#: includes/api.php:629
+#: includes/api.php:668
 msgid "Retry is not available for this sync type."
 msgstr ""
 
-#: includes/api.php:639
+#: includes/api.php:678
 msgid "Media synced successfully"
 msgstr ""
 
-#: includes/api.php:639
+#: includes/api.php:678
 msgid "Media sync failed"
 msgstr ""
 
-#: includes/base/item.php:854
+#: includes/base/item.php:925
 msgid "The file could not be copied to the server. Please try again."
-msgstr ""
-
-#: includes/base/service.php:48
-#: includes/base/service.php:297
-#: includes/base/service.php:325
-#: includes/base/service.php:353
-#: includes/base/service.php:386
-#: includes/base/service.php:418
-#: includes/base/service.php:460
-#: includes/base/service.php:500
-msgid "Something went wrong"
-msgstr ""
-
-#: includes/base/service.php:57
-#: includes/base/service.php:226
-#: includes/base/service.php:306
-#: includes/base/service.php:334
-#: includes/base/service.php:362
-#: includes/base/service.php:395
-#: includes/base/service.php:427
-#: includes/base/service.php:469
-#: includes/base/service.php:509
-msgid "No service selected"
-msgstr ""
-
-#. translators: %s: wp-config.php constant name
-#: includes/base/service.php:72
-#, php-format
-msgid "%s is not defined in wp-config.php"
-msgstr ""
-
-#. translators: 1: wp-config.php constant name, 2: comma separated list of missing configuration keys
-#: includes/base/service.php:87
-#, php-format
-msgid "%1$s is missing key(s): %2$s"
-msgstr ""
-
-#: includes/base/service.php:269
-msgid "Invalid status check type"
-msgstr ""
-
-#: includes/base/service.php:435
-msgid "Service does not have getBucketSecuritySettings method"
-msgstr ""
-
-#: includes/base/service.php:477
-#: includes/base/service.php:517
-msgid "Method not supported for this service"
-msgstr ""
-
-#: includes/base/service.php:591
-#: includes/base/service.php:599
-#: includes/base/service.php:614
-#: includes/base/service.php:655
-#: includes/base/service.php:679
-msgid "No storage service configured"
-msgstr ""
-
-#: includes/base/service.php:663
-msgid "Not supported for this service"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:120
@@ -276,8 +221,8 @@ msgstr ""
 #: includes/base/services/cloudflare-r2.php:484
 #: includes/base/services/cloudflare-r2.php:486
 #: includes/base/services/cloudflare-r2.php:487
-#: includes/base/services/cloudflare-r2.php:1005
-#: includes/base/services/cloudflare-r2.php:1011
+#: includes/base/services/cloudflare-r2.php:1012
+#: includes/base/services/cloudflare-r2.php:1018
 #: includes/base/services/docean.php:119
 #: includes/base/services/docean.php:182
 #: includes/base/services/docean.php:184
@@ -285,27 +230,31 @@ msgstr ""
 #: includes/base/services/docean.php:242
 #: includes/base/services/docean.php:306
 #: includes/base/services/docean.php:308
-#: includes/base/services/docean.php:420
-#: includes/base/services/docean.php:422
-#: includes/base/services/docean.php:476
-#: includes/base/services/docean.php:478
-#: includes/base/services/docean.php:553
-#: includes/base/services/docean.php:554
-#: includes/base/services/docean.php:556
-#: includes/base/services/docean.php:557
-#: includes/base/services/docean.php:559
-#: includes/base/services/docean.php:560
-#: includes/base/services/gcloud.php:128
-#: includes/base/services/gcloud.php:184
-#: includes/base/services/gcloud.php:245
-#: includes/base/services/gcloud.php:339
-#: includes/base/services/gcloud.php:400
-#: includes/base/services/gcloud.php:474
-#: includes/base/services/gcloud.php:489
-#: includes/base/services/gcloud.php:566
+#: includes/base/services/docean.php:451
+#: includes/base/services/docean.php:453
+#: includes/base/services/docean.php:507
+#: includes/base/services/docean.php:509
+#: includes/base/services/docean.php:584
+#: includes/base/services/docean.php:585
+#: includes/base/services/docean.php:587
+#: includes/base/services/docean.php:588
+#: includes/base/services/docean.php:590
+#: includes/base/services/docean.php:591
+#: includes/base/services/gcloud.php:129
+#: includes/base/services/gcloud.php:185
+#: includes/base/services/gcloud.php:246
+#: includes/base/services/gcloud.php:340
+#: includes/base/services/gcloud.php:401
+#: includes/base/services/gcloud.php:475
+#: includes/base/services/gcloud.php:490
 #: includes/base/services/gcloud.php:567
-#: includes/base/services/gcloud.php:569
+#: includes/base/services/gcloud.php:568
 #: includes/base/services/gcloud.php:570
+#: includes/base/services/gcloud.php:571
+#: includes/base/services/gcloud.php:903
+#: includes/base/services/gcloud.php:905
+#: includes/base/services/gcloud.php:941
+#: includes/base/services/gcloud.php:943
 #: includes/base/services/s3.php:112
 #: includes/base/services/s3.php:177
 #: includes/base/services/s3.php:179
@@ -350,8 +299,8 @@ msgstr ""
 #: includes/base/services/s3compatible.php:465
 #: includes/base/services/s3compatible.php:467
 #: includes/base/services/s3compatible.php:468
-#: includes/base/services/s3compatible.php:1022
-#: includes/base/services/s3compatible.php:1028
+#: includes/base/services/s3compatible.php:1029
+#: includes/base/services/s3compatible.php:1035
 msgid "Please check the authorization details"
 msgstr ""
 
@@ -359,8 +308,8 @@ msgstr ""
 #: includes/base/services/cloudflare-r2.php:151
 #: includes/base/services/docean.php:131
 #: includes/base/services/docean.php:150
-#: includes/base/services/gcloud.php:139
-#: includes/base/services/gcloud.php:151
+#: includes/base/services/gcloud.php:140
+#: includes/base/services/gcloud.php:152
 #: includes/base/services/s3.php:124
 #: includes/base/services/s3.php:143
 #: includes/base/services/s3compatible.php:129
@@ -370,7 +319,7 @@ msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:171
 #: includes/base/services/docean.php:169
-#: includes/base/services/gcloud.php:175
+#: includes/base/services/gcloud.php:176
 #: includes/base/services/s3.php:163
 #: includes/base/services/s3compatible.php:157
 msgid "Buckets listed successfully"
@@ -380,7 +329,7 @@ msgstr ""
 #: includes/base/services/cloudflare-r2.php:179
 #: includes/base/services/docean.php:173
 #: includes/base/services/docean.php:177
-#: includes/base/services/gcloud.php:179
+#: includes/base/services/gcloud.php:180
 #: includes/base/services/s3.php:167
 #: includes/base/services/s3.php:171
 msgid "Unable to list buckets, Please check the bucket listing permission"
@@ -391,25 +340,27 @@ msgstr ""
 #: includes/base/services/cloudflare-r2.php:262
 #: includes/base/services/cloudflare-r2.php:313
 #: includes/base/services/cloudflare-r2.php:368
-#: includes/base/services/cloudflare-r2.php:627
-#: includes/base/services/cloudflare-r2.php:951
-#: includes/base/services/cloudflare-r2.php:1018
+#: includes/base/services/cloudflare-r2.php:634
+#: includes/base/services/cloudflare-r2.php:958
+#: includes/base/services/cloudflare-r2.php:1025
 #: includes/base/services/docean.php:187
 #: includes/base/services/docean.php:245
 #: includes/base/services/docean.php:260
-#: includes/base/services/docean.php:382
-#: includes/base/services/docean.php:439
-#: includes/base/services/docean.php:747
-#: includes/base/services/docean.php:1056
-#: includes/base/services/docean.php:1112
-#: includes/base/services/gcloud.php:187
-#: includes/base/services/gcloud.php:200
-#: includes/base/services/gcloud.php:260
-#: includes/base/services/gcloud.php:351
-#: includes/base/services/gcloud.php:417
-#: includes/base/services/gcloud.php:763
-#: includes/base/services/gcloud.php:1016
-#: includes/base/services/gcloud.php:1070
+#: includes/base/services/docean.php:413
+#: includes/base/services/docean.php:470
+#: includes/base/services/docean.php:785
+#: includes/base/services/docean.php:1094
+#: includes/base/services/docean.php:1150
+#: includes/base/services/gcloud.php:188
+#: includes/base/services/gcloud.php:201
+#: includes/base/services/gcloud.php:261
+#: includes/base/services/gcloud.php:352
+#: includes/base/services/gcloud.php:418
+#: includes/base/services/gcloud.php:885
+#: includes/base/services/gcloud.php:922
+#: includes/base/services/gcloud.php:1061
+#: includes/base/services/gcloud.php:1314
+#: includes/base/services/gcloud.php:1368
 #: includes/base/services/s3.php:182
 #: includes/base/services/s3.php:237
 #: includes/base/services/s3.php:253
@@ -418,17 +369,17 @@ msgstr ""
 #: includes/base/services/s3.php:519
 #: includes/base/services/s3.php:602
 #: includes/base/services/s3.php:652
-#: includes/base/services/s3.php:1019
-#: includes/base/services/s3.php:1329
-#: includes/base/services/s3.php:1385
+#: includes/base/services/s3.php:1061
+#: includes/base/services/s3.php:1371
+#: includes/base/services/s3.php:1427
 #: includes/base/services/s3compatible.php:166
 #: includes/base/services/s3compatible.php:223
 #: includes/base/services/s3compatible.php:239
 #: includes/base/services/s3compatible.php:292
 #: includes/base/services/s3compatible.php:348
-#: includes/base/services/s3compatible.php:656
-#: includes/base/services/s3compatible.php:967
-#: includes/base/services/s3compatible.php:1035
+#: includes/base/services/s3compatible.php:663
+#: includes/base/services/s3compatible.php:974
+#: includes/base/services/s3compatible.php:1042
 msgid "Insufficient Data. Please try again"
 msgstr ""
 
@@ -445,36 +396,36 @@ msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:284
 #: includes/base/services/docean.php:291
-#: includes/base/services/gcloud.php:329
+#: includes/base/services/gcloud.php:330
 #: includes/base/services/s3compatible.php:262
 msgid "Bucket created successfully."
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:342
-#: includes/base/services/docean.php:412
-#: includes/base/services/gcloud.php:394
+#: includes/base/services/docean.php:443
+#: includes/base/services/gcloud.php:395
 #: includes/base/services/s3.php:355
 #: includes/base/services/s3compatible.php:320
 msgid "Bucket write permission verified successfully"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:344
-#: includes/base/services/docean.php:414
-#: includes/base/services/gcloud.php:396
+#: includes/base/services/docean.php:445
+#: includes/base/services/gcloud.php:397
 #: includes/base/services/s3.php:357
 #: includes/base/services/s3compatible.php:322
 msgid "Bucket write permission not verified"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:396
-#: includes/base/services/docean.php:468
+#: includes/base/services/docean.php:499
 #: includes/base/services/s3.php:410
 #: includes/base/services/s3compatible.php:375
 msgid "Bucket delete permission verified successfully"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:398
-#: includes/base/services/docean.php:470
+#: includes/base/services/docean.php:501
 #: includes/base/services/s3.php:412
 #: includes/base/services/s3compatible.php:377
 msgid "Bucket delete permission not verified"
@@ -482,8 +433,8 @@ msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:422
 #: includes/base/services/cloudflare-r2.php:423
-#: includes/base/services/docean.php:494
-#: includes/base/services/docean.php:495
+#: includes/base/services/docean.php:525
+#: includes/base/services/docean.php:526
 #: includes/base/services/s3.php:437
 #: includes/base/services/s3.php:438
 #: includes/base/services/s3compatible.php:402
@@ -492,141 +443,152 @@ msgid "Invalid Request"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:453
-#: includes/base/services/docean.php:526
-#: includes/base/services/gcloud.php:540
+#: includes/base/services/docean.php:557
+#: includes/base/services/gcloud.php:541
 #: includes/base/services/s3.php:469
 #: includes/base/services/s3compatible.php:434
 msgid "Objects are accessible to Read"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:457
-#: includes/base/services/docean.php:530
-#: includes/base/services/gcloud.php:544
+#: includes/base/services/docean.php:561
+#: includes/base/services/gcloud.php:545
 #: includes/base/services/s3.php:473
 #: includes/base/services/s3compatible.php:438
 msgid "Access Denied. Please check your bucket policy. Public Read Access is required."
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:459
-#: includes/base/services/docean.php:532
-#: includes/base/services/gcloud.php:546
+#: includes/base/services/docean.php:563
+#: includes/base/services/gcloud.php:547
 #: includes/base/services/s3.php:475
 #: includes/base/services/s3compatible.php:440
 msgid "Access Denied. Please check your bucket policy"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:463
-#: includes/base/services/docean.php:536
-#: includes/base/services/gcloud.php:550
+#: includes/base/services/docean.php:567
+#: includes/base/services/gcloud.php:551
 #: includes/base/services/s3.php:479
 #: includes/base/services/s3compatible.php:444
 msgid "Object not found. Please check your bucket policy"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:466
-#: includes/base/services/docean.php:539
-#: includes/base/services/gcloud.php:553
+#: includes/base/services/docean.php:570
+#: includes/base/services/gcloud.php:554
 #: includes/base/services/s3.php:482
 #: includes/base/services/s3compatible.php:447
 msgid "Internal Server error. Please check your bucket policy"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:469
-#: includes/base/services/docean.php:542
-#: includes/base/services/gcloud.php:556
+#: includes/base/services/docean.php:573
+#: includes/base/services/gcloud.php:557
 #: includes/base/services/s3.php:485
 #: includes/base/services/s3compatible.php:450
 msgid "Objects are not accessible to read"
 msgstr ""
 
 #: includes/base/services/cloudflare-r2.php:560
-#: includes/base/services/cloudflare-r2.php:791
-#: includes/base/services/cloudflare-r2.php:850
-#: includes/base/services/cloudflare-r2.php:881
-#: includes/base/services/cloudflare-r2.php:917
-#: includes/base/services/cloudflare-r2.php:967
-#: includes/base/services/docean.php:675
-#: includes/base/services/docean.php:894
-#: includes/base/services/docean.php:953
-#: includes/base/services/docean.php:984
+#: includes/base/services/cloudflare-r2.php:798
+#: includes/base/services/cloudflare-r2.php:857
+#: includes/base/services/cloudflare-r2.php:888
+#: includes/base/services/cloudflare-r2.php:924
+#: includes/base/services/cloudflare-r2.php:974
+#: includes/base/services/docean.php:390
+#: includes/base/services/docean.php:706
+#: includes/base/services/docean.php:932
+#: includes/base/services/docean.php:991
 #: includes/base/services/docean.php:1022
-#: includes/base/services/docean.php:1073
-#: includes/base/services/gcloud.php:691
-#: includes/base/services/gcloud.php:866
-#: includes/base/services/gcloud.php:911
-#: includes/base/services/gcloud.php:944
-#: includes/base/services/gcloud.php:984
-#: includes/base/services/gcloud.php:1034
-#: includes/base/services/s3.php:949
-#: includes/base/services/s3.php:1166
-#: includes/base/services/s3.php:1226
-#: includes/base/services/s3.php:1257
-#: includes/base/services/s3.php:1295
-#: includes/base/services/s3.php:1346
+#: includes/base/services/docean.php:1060
+#: includes/base/services/docean.php:1111
+#: includes/base/services/gcloud.php:781
+#: includes/base/services/gcloud.php:982
+#: includes/base/services/gcloud.php:1164
+#: includes/base/services/gcloud.php:1209
+#: includes/base/services/gcloud.php:1242
+#: includes/base/services/gcloud.php:1282
+#: includes/base/services/gcloud.php:1332
+#: includes/base/services/s3.php:801
+#: includes/base/services/s3.php:981
+#: includes/base/services/s3.php:1208
+#: includes/base/services/s3.php:1268
+#: includes/base/services/s3.php:1299
+#: includes/base/services/s3.php:1337
+#: includes/base/services/s3.php:1388
 #: includes/base/services/s3compatible.php:586
-#: includes/base/services/s3compatible.php:803
-#: includes/base/services/s3compatible.php:863
-#: includes/base/services/s3compatible.php:895
-#: includes/base/services/s3compatible.php:933
-#: includes/base/services/s3compatible.php:984
+#: includes/base/services/s3compatible.php:810
+#: includes/base/services/s3compatible.php:870
+#: includes/base/services/s3compatible.php:902
+#: includes/base/services/s3compatible.php:940
+#: includes/base/services/s3compatible.php:991
 msgid "Client not configured"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:691
-#: includes/base/services/docean.php:817
-#: includes/base/services/gcloud.php:797
-#: includes/base/services/s3.php:1089
-#: includes/base/services/s3compatible.php:726
+#: includes/base/services/cloudflare-r2.php:624
+#: includes/base/services/docean.php:771
+#: includes/base/services/gcloud.php:1047
+#: includes/base/services/s3.php:1047
+#: includes/base/services/s3compatible.php:649
+msgid "This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it."
+msgstr ""
+
+#: includes/base/services/cloudflare-r2.php:698
+#: includes/base/services/docean.php:855
+#: includes/base/services/gcloud.php:1095
+#: includes/base/services/s3.php:1131
+#: includes/base/services/s3compatible.php:733
 msgid "File Uploaded Successfully"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:835
-#: includes/base/services/docean.php:938
-#: includes/base/services/gcloud.php:891
-#: includes/base/services/s3.php:1210
-#: includes/base/services/s3compatible.php:847
+#: includes/base/services/cloudflare-r2.php:842
+#: includes/base/services/docean.php:976
+#: includes/base/services/gcloud.php:1189
+#: includes/base/services/s3.php:1252
+#: includes/base/services/s3compatible.php:854
 msgid "Purged Successfully"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:865
-#: includes/base/services/cloudflare-r2.php:896
-#: includes/base/services/docean.php:968
-#: includes/base/services/docean.php:999
-#: includes/base/services/gcloud.php:922
-#: includes/base/services/gcloud.php:955
-#: includes/base/services/s3.php:1241
-#: includes/base/services/s3.php:1272
-#: includes/base/services/s3compatible.php:878
-#: includes/base/services/s3compatible.php:910
+#: includes/base/services/cloudflare-r2.php:872
+#: includes/base/services/cloudflare-r2.php:903
+#: includes/base/services/docean.php:1006
+#: includes/base/services/docean.php:1037
+#: includes/base/services/gcloud.php:1220
+#: includes/base/services/gcloud.php:1253
+#: includes/base/services/s3.php:1283
+#: includes/base/services/s3.php:1314
+#: includes/base/services/s3compatible.php:885
+#: includes/base/services/s3compatible.php:917
 msgid "File copied successfully"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:931
-#: includes/base/services/docean.php:1036
-#: includes/base/services/gcloud.php:996
-#: includes/base/services/s3.php:1309
-#: includes/base/services/s3compatible.php:947
+#: includes/base/services/cloudflare-r2.php:938
+#: includes/base/services/docean.php:1074
+#: includes/base/services/gcloud.php:1294
+#: includes/base/services/s3.php:1351
+#: includes/base/services/s3compatible.php:954
 msgid "Deleted Successfully"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:937
-#: includes/base/services/docean.php:1042
-#: includes/base/services/gcloud.php:1002
-#: includes/base/services/s3.php:1315
-#: includes/base/services/s3compatible.php:953
+#: includes/base/services/cloudflare-r2.php:944
+#: includes/base/services/docean.php:1080
+#: includes/base/services/gcloud.php:1300
+#: includes/base/services/s3.php:1357
+#: includes/base/services/s3compatible.php:960
 msgid "File not deleted"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:986
-#: includes/base/services/docean.php:1092
-#: includes/base/services/gcloud.php:1050
-#: includes/base/services/s3.php:1365
-#: includes/base/services/s3compatible.php:1003
+#: includes/base/services/cloudflare-r2.php:993
+#: includes/base/services/docean.php:1130
+#: includes/base/services/gcloud.php:1348
+#: includes/base/services/s3.php:1407
+#: includes/base/services/s3compatible.php:1010
 msgid "Got Private URL Successfully"
 msgstr ""
 
-#: includes/base/services/cloudflare-r2.php:992
-#: includes/base/services/docean.php:1098
+#: includes/base/services/cloudflare-r2.php:999
+#: includes/base/services/docean.php:1136
 msgid "Error getting Private URL"
 msgstr ""
 
@@ -641,74 +603,111 @@ msgstr ""
 msgid "Bucket created. But the following error happened while setting the public access,"
 msgstr ""
 
-#: includes/base/services/docean.php:741
-#: includes/base/services/gcloud.php:757
-#: includes/base/services/s3.php:1013
-#: includes/base/services/s3compatible.php:650
+#: includes/base/services/docean.php:396
+#: includes/base/services/gcloud.php:863
+#: includes/base/services/s3.php:807
+msgid "Policy applied successfully"
+msgstr ""
+
+#: includes/base/services/docean.php:397
+#: includes/base/services/s3.php:808
+msgid "Failed to apply bucket policy"
+msgstr ""
+
+#: includes/base/services/docean.php:779
+#: includes/base/services/gcloud.php:1055
+#: includes/base/services/s3.php:1055
+#: includes/base/services/s3compatible.php:657
 msgid "Check the file you are trying to upload. Please try again"
 msgstr ""
 
-#: includes/base/services/gcloud.php:107
+#: includes/base/services/gcloud.php:108
 msgid "Invalid JSON configuration, please try again"
 msgstr ""
 
-#: includes/base/services/gcloud.php:121
-#: includes/base/services/gcloud.php:204
-#: includes/base/services/gcloud.php:217
-#: includes/base/services/gcloud.php:264
-#: includes/base/services/gcloud.php:277
-#: includes/base/services/gcloud.php:355
-#: includes/base/services/gcloud.php:368
-#: includes/base/services/gcloud.php:420
-#: includes/base/services/gcloud.php:433
+#: includes/base/services/gcloud.php:122
+#: includes/base/services/gcloud.php:205
+#: includes/base/services/gcloud.php:218
+#: includes/base/services/gcloud.php:265
+#: includes/base/services/gcloud.php:278
+#: includes/base/services/gcloud.php:356
+#: includes/base/services/gcloud.php:369
+#: includes/base/services/gcloud.php:421
+#: includes/base/services/gcloud.php:434
+#: includes/base/services/gcloud.php:891
+#: includes/base/services/gcloud.php:928
 msgid "JSON Configuration is invalid"
 msgstr ""
 
-#: includes/base/services/gcloud.php:226
-#: includes/base/services/gcloud.php:447
+#: includes/base/services/gcloud.php:227
+#: includes/base/services/gcloud.php:448
 msgid "Bucket exists"
 msgstr ""
 
-#: includes/base/services/gcloud.php:232
+#: includes/base/services/gcloud.php:233
 msgid "Bucket does not exist"
 msgstr ""
 
-#: includes/base/services/gcloud.php:239
+#: includes/base/services/gcloud.php:240
 msgid "Bucket does not exist or credentials are invalid: "
 msgstr ""
 
-#: includes/base/services/gcloud.php:308
-#: includes/base/services/gcloud.php:318
+#: includes/base/services/gcloud.php:309
+#: includes/base/services/gcloud.php:319
 msgid "Bucket created successfully. But failed to set IAM policy."
 msgstr ""
 
-#: includes/base/services/gcloud.php:375
+#: includes/base/services/gcloud.php:376
 msgid "No Buckets found"
 msgstr ""
 
-#: includes/base/services/gcloud.php:453
+#: includes/base/services/gcloud.php:454
 msgid "You do not have permission to delete object"
 msgstr ""
 
-#: includes/base/services/gcloud.php:460
+#: includes/base/services/gcloud.php:461
 msgid "Object does not exist"
 msgstr ""
 
-#: includes/base/services/gcloud.php:467
+#: includes/base/services/gcloud.php:468
 msgid "Object does not exist or credentials are invalid: "
 msgstr ""
 
-#: includes/base/services/gcloud.php:517
+#: includes/base/services/gcloud.php:518
 msgid "Failed to create an object for read permission check, please check service configuration"
 msgstr ""
 
-#: includes/base/services/gcloud.php:803
+#: includes/base/services/gcloud.php:808
+msgid "Policy removed successfully"
+msgstr ""
+
+#: includes/base/services/gcloud.php:812
+msgid "Google Cloud Storage private media requires a base path — enable it in Storage Settings first."
+msgstr ""
+
+#: includes/base/services/gcloud.php:826
+msgid "This bucket doesn't have Uniform Bucket-Level Access enabled — enable it in your Google Cloud Storage bucket settings first."
+msgstr ""
+
+#: includes/base/services/gcloud.php:829
+msgid "Public Access Prevention is enabled for this bucket — disable it first in Bucket Security, since it blocks the public side of this feature too."
+msgstr ""
+
+#: includes/base/services/gcloud.php:838
+msgid "Failed to create the Managed Folder for your base path."
+msgstr ""
+
+#: includes/base/services/gcloud.php:851
+msgid "Failed to grant public access on the Managed Folder."
+msgstr ""
+
+#: includes/base/services/gcloud.php:1101
 msgid "Object not found at server."
 msgstr ""
 
-#: includes/base/services/gcloud.php:1056
-#: includes/base/services/s3.php:1371
-#: includes/base/services/s3compatible.php:1009
+#: includes/base/services/gcloud.php:1354
+#: includes/base/services/s3.php:1413
+#: includes/base/services/s3compatible.php:1016
 msgid "Error getting private URL"
 msgstr ""
 
@@ -718,6 +717,66 @@ msgstr ""
 
 #: includes/base/services/s3.php:301
 msgid "Bucket created and made public. But the following error happened while setting the transfer accilaration,"
+msgstr ""
+
+#: includes/base/services/service.php:48
+#: includes/base/services/service.php:297
+#: includes/base/services/service.php:325
+#: includes/base/services/service.php:353
+#: includes/base/services/service.php:386
+#: includes/base/services/service.php:418
+#: includes/base/services/service.php:460
+#: includes/base/services/service.php:500
+msgid "Something went wrong"
+msgstr ""
+
+#: includes/base/services/service.php:57
+#: includes/base/services/service.php:226
+#: includes/base/services/service.php:306
+#: includes/base/services/service.php:334
+#: includes/base/services/service.php:362
+#: includes/base/services/service.php:395
+#: includes/base/services/service.php:427
+#: includes/base/services/service.php:469
+#: includes/base/services/service.php:509
+msgid "No service selected"
+msgstr ""
+
+#. translators: %s: wp-config.php constant name
+#: includes/base/services/service.php:72
+#, php-format
+msgid "%s is not defined in wp-config.php"
+msgstr ""
+
+#. translators: 1: wp-config.php constant name, 2: comma separated list of missing configuration keys
+#: includes/base/services/service.php:87
+#, php-format
+msgid "%1$s is missing key(s): %2$s"
+msgstr ""
+
+#: includes/base/services/service.php:269
+msgid "Invalid status check type"
+msgstr ""
+
+#: includes/base/services/service.php:435
+msgid "Service does not have getBucketSecuritySettings method"
+msgstr ""
+
+#: includes/base/services/service.php:477
+#: includes/base/services/service.php:517
+msgid "Method not supported for this service"
+msgstr ""
+
+#: includes/base/services/service.php:592
+#: includes/base/services/service.php:600
+#: includes/base/services/service.php:615
+#: includes/base/services/service.php:656
+#: includes/base/services/service.php:680
+msgid "No storage service configured"
+msgstr ""
+
+#: includes/base/services/service.php:664
+msgid "Not supported for this service"
 msgstr ""
 
 #. translators: %s: the action that is currently running
@@ -742,126 +801,130 @@ msgid "AWS/S3"
 msgstr ""
 
 #: includes/config/schema.php:33
-#: app/src/schema.js:921
-#: app/src/schema.js:925
-#: app/src/schema.js:2392
-#: app/src/schema.js:2396
-#: assets/js/backend.js:70884
-#: assets/js/backend.js:70888
-#: assets/js/backend.js:72355
-#: assets/js/backend.js:72359
+#: app/src/schema.js:994
+#: app/src/schema.js:998
+#: app/src/schema.js:2491
+#: app/src/schema.js:2495
+#: assets/js/backend.js:71330
+#: assets/js/backend.js:71334
+#: assets/js/backend.js:72827
+#: assets/js/backend.js:72831
 msgid "Google Cloud Storage"
 msgstr ""
 
 #: includes/config/schema.php:34
-#: app/src/schema.js:1347
-#: app/src/schema.js:1351
-#: app/src/schema.js:2497
-#: app/src/schema.js:2501
-#: assets/js/backend.js:71310
-#: assets/js/backend.js:71314
-#: assets/js/backend.js:72460
-#: assets/js/backend.js:72464
+#: app/src/schema.js:1439
+#: app/src/schema.js:1443
+#: app/src/schema.js:2597
+#: app/src/schema.js:2601
+#: assets/js/backend.js:71775
+#: assets/js/backend.js:71779
+#: assets/js/backend.js:72933
+#: assets/js/backend.js:72937
 msgid "Digital Ocean Spaces"
 msgstr ""
 
 #: includes/config/schema.php:35
-#: app/src/schema.js:1623
-#: app/src/schema.js:1624
-#: app/src/schema.js:2602
-#: app/src/schema.js:2603
-#: assets/js/backend.js:71586
-#: assets/js/backend.js:71587
-#: assets/js/backend.js:72565
-#: assets/js/backend.js:72566
+#: app/src/schema.js:1715
+#: app/src/schema.js:1716
+#: app/src/schema.js:2703
+#: app/src/schema.js:2704
+#: assets/js/backend.js:72051
+#: assets/js/backend.js:72052
+#: assets/js/backend.js:73039
+#: assets/js/backend.js:73040
 msgid "Cloudflare R2"
 msgstr ""
 
 #: includes/config/schema.php:36
-#: app/src/schema.js:1892
-#: assets/js/backend.js:71855
+#: app/src/schema.js:1984
+#: assets/js/backend.js:72320
 msgid "S3 Compatible"
 msgstr ""
 
-#: includes/config/utils.php:483
+#: includes/config/utils.php:531
 msgid "Bucket name is not configured."
 msgstr ""
 
-#: includes/config/utils.php:490
+#: includes/config/utils.php:538
 msgid "WPMCS_CONFIG is not defined in wp-config.php"
 msgstr ""
 
 #. translators: %s: comma separated list of missing configuration keys
-#: includes/config/utils.php:502
+#: includes/config/utils.php:550
 #, php-format
 msgid "WPMCS_CONFIG is missing key(s): %s"
 msgstr ""
 
 #. translators: %s: comma separated list of missing configuration keys
-#: includes/config/utils.php:514
+#: includes/config/utils.php:562
 #, php-format
 msgid "Storage credentials are incomplete. Missing key(s): %s"
 msgstr ""
 
-#: includes/integrations/imagify/imagify.php:343
+#: includes/integrations/imagify/imagify.php:344
 msgid "Invalid attachment ID."
 msgstr ""
 
-#: includes/integrations/imagify/imagify.php:381
-#: includes/integrations/imagify/imagify.php:463
+#: includes/integrations/imagify/imagify.php:382
+#: includes/integrations/imagify/imagify.php:464
 msgid "Cloud storage is not set up."
 msgstr ""
 
-#: includes/integrations/imagify/imagify.php:388
-#: includes/integrations/imagify/imagify.php:470
+#: includes/integrations/imagify/imagify.php:389
+#: includes/integrations/imagify/imagify.php:471
 msgid "This media could not be found in cloud storage."
 msgstr ""
 
 #. translators: %s is a list of file paths.
-#: includes/integrations/imagify/imagify.php:419
+#: includes/integrations/imagify/imagify.php:420
 #, php-format
 msgid "The following file could not be retrieved from cloud storage: %s."
 msgid_plural "The following files could not be retrieved from cloud storage: %s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/integrations/media-library.php:1086
+#: includes/integrations/media-library.php:37
+msgid "Media Library"
+msgstr ""
+
+#: includes/integrations/media-library.php:1107
 msgid "File upload failed"
 msgstr ""
 
-#: includes/integrations/media-library.php:1204
+#: includes/integrations/media-library.php:1228
 msgid "File not found"
 msgstr ""
 
-#: includes/integrations/media-library.php:1244
+#: includes/integrations/media-library.php:1271
 msgid "Original File upload failed"
 msgstr ""
 
-#: includes/integrations/media-library.php:1251
+#: includes/integrations/media-library.php:1278
 msgid "Original File not found"
 msgstr ""
 
 #. translators: %1$s: Image size name (e.g., thumbnail, medium, large).
-#: includes/integrations/media-library.php:1304
+#: includes/integrations/media-library.php:1336
 #, php-format
 msgid "Image size %1$s not found"
 msgstr ""
 
 #. translators: %1$s: Image size name (e.g., thumbnail, medium, large).
-#: includes/integrations/media-library.php:1320
+#: includes/integrations/media-library.php:1352
 #, php-format
 msgid "Image size %1$s upload failed"
 msgstr ""
 
-#: includes/integrations/media-library.php:1501
+#: includes/integrations/media-library.php:1539
 msgid "Provider :"
 msgstr ""
 
-#: includes/integrations/media-library.php:1509
+#: includes/integrations/media-library.php:1547
 msgid "Region :"
 msgstr ""
 
-#: includes/integrations/media-library.php:1516
+#: includes/integrations/media-library.php:1554
 msgid "Access :"
 msgstr ""
 
@@ -885,21 +948,21 @@ msgstr ""
 #: app/src/components/Buttons/index.jsx:9
 #: app/src/components/Buttons/index.jsx:81
 #: app/src/components/Buttons/index.jsx:143
-#: assets/js/backend.js:58585
-#: assets/js/backend.js:58657
-#: assets/js/backend.js:58719
+#: assets/js/backend.js:58591
+#: assets/js/backend.js:58663
+#: assets/js/backend.js:58725
 msgid "Button"
 msgstr ""
 
 #: app/src/components/Buttons/index.jsx:193
 #: app/src/components/Buttons/index.jsx:205
-#: assets/js/backend.js:58769
-#: assets/js/backend.js:58781
+#: assets/js/backend.js:58775
+#: assets/js/backend.js:58787
 msgid "PURCHASE PREMIUM"
 msgstr ""
 
 #: app/src/components/ConfirmDialog/index.jsx:12
-#: assets/js/backend.js:58899
+#: assets/js/backend.js:58905
 msgid "Confirm"
 msgstr ""
 
@@ -907,10 +970,10 @@ msgstr ""
 #: app/src/pages/ChooseCDN.jsx:341
 #: app/src/pages/FileManager/SettingsPanel.jsx:89
 #: app/src/pages/sync/DestinationConfigForm.jsx:473
-#: assets/js/backend.js:58900
-#: assets/js/backend.js:62764
-#: assets/js/backend.js:65283
-#: assets/js/backend.js:68779
+#: assets/js/backend.js:58906
+#: assets/js/backend.js:62809
+#: assets/js/backend.js:65343
+#: assets/js/backend.js:69057
 msgid "Cancel"
 msgstr ""
 
@@ -919,66 +982,66 @@ msgstr ""
 #: app/src/components/ImagePreview/index.jsx:225
 #: app/src/components/ImagePreview/index.jsx:235
 #: app/src/pages/FileManager/SettingsPanel.jsx:37
-#: assets/js/backend.js:58934
-#: assets/js/backend.js:60059
-#: assets/js/backend.js:60060
-#: assets/js/backend.js:60070
-#: assets/js/backend.js:65231
+#: assets/js/backend.js:58940
+#: assets/js/backend.js:60047
+#: assets/js/backend.js:60048
+#: assets/js/backend.js:60058
+#: assets/js/backend.js:65291
 msgid "Close"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:38
-#: app/src/schema.js:701
-#: app/src/schema.js:990
-#: app/src/schema.js:1756
-#: app/src/schema.js:2008
-#: assets/js/backend.js:59015
-#: assets/js/backend.js:70664
-#: assets/js/backend.js:70953
-#: assets/js/backend.js:71719
-#: assets/js/backend.js:71971
+#: app/src/schema.js:774
+#: app/src/schema.js:1063
+#: app/src/schema.js:1848
+#: app/src/schema.js:2100
+#: assets/js/backend.js:59021
+#: assets/js/backend.js:71110
+#: assets/js/backend.js:71399
+#: assets/js/backend.js:72184
+#: assets/js/backend.js:72436
 msgid "Bucket"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:61
-#: assets/js/backend.js:59038
+#: assets/js/backend.js:59044
 msgid "Connect to cloud"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:67
-#: assets/js/backend.js:59044
+#: assets/js/backend.js:59050
 msgid "Get started with syncing your media files to the cloud."
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:80
 #: app/src/pages/sync/DestinationConfigForm.jsx:463
-#: assets/js/backend.js:59057
-#: assets/js/backend.js:68769
+#: assets/js/backend.js:59063
+#: assets/js/backend.js:69047
 msgid "Connected"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:95
-#: assets/js/backend.js:59072
+#: assets/js/backend.js:59078
 msgid "Needs attention"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:119
-#: assets/js/backend.js:59096
+#: assets/js/backend.js:59102
 msgid "Storage is not fully configured"
 msgstr ""
 
 #: app/src/components/ConnectionCard/index.jsx:129
-#: assets/js/backend.js:59106
+#: assets/js/backend.js:59112
 msgid "Review your storage credentials and bucket configuration."
 msgstr ""
 
 #: app/src/components/ConnectionStatusCheck/index.jsx:30
-#: assets/js/backend.js:59159
+#: assets/js/backend.js:59165
 msgid "Check Status"
 msgstr ""
 
 #: app/src/components/ConnectionStatusCheck/index.jsx:37
-#: assets/js/backend.js:59166
+#: assets/js/backend.js:59172
 msgid "Fetching..."
 msgstr ""
 
@@ -987,16 +1050,16 @@ msgstr ""
 #: app/src/components/Statistics/index.jsx:52
 #: app/src/components/Statistics/index.jsx:55
 #: app/src/pages/FileManager/FileManager.jsx:1217
-#: assets/js/backend.js:59167
-#: assets/js/backend.js:59175
-#: assets/js/backend.js:60537
-#: assets/js/backend.js:60540
-#: assets/js/backend.js:64785
+#: assets/js/backend.js:59173
+#: assets/js/backend.js:59181
+#: assets/js/backend.js:60562
+#: assets/js/backend.js:60565
+#: assets/js/backend.js:64845
 msgid "Refresh"
 msgstr ""
 
 #: app/src/components/ConnectionStatusCheck/index.jsx:54
-#: assets/js/backend.js:59183
+#: assets/js/backend.js:59189
 msgid "Last checked"
 msgstr ""
 
@@ -1009,212 +1072,212 @@ msgid "DONATE"
 msgstr ""
 
 #: app/src/components/Header/index.jsx:36
-#: app/src/schema.js:207
-#: app/src/schema.js:309
-#: app/src/schema.js:2328
-#: app/src/schema.js:2433
-#: app/src/schema.js:2538
-#: app/src/schema.js:2666
-#: app/src/schema.js:2735
-#: assets/js/backend.js:59347
-#: assets/js/backend.js:70170
-#: assets/js/backend.js:70272
-#: assets/js/backend.js:72291
-#: assets/js/backend.js:72396
-#: assets/js/backend.js:72501
-#: assets/js/backend.js:72629
-#: assets/js/backend.js:72698
+#: app/src/schema.js:264
+#: app/src/schema.js:366
+#: app/src/schema.js:2427
+#: app/src/schema.js:2533
+#: app/src/schema.js:2639
+#: app/src/schema.js:2767
+#: app/src/schema.js:2836
+#: assets/js/backend.js:59352
+#: assets/js/backend.js:70600
+#: assets/js/backend.js:70702
+#: assets/js/backend.js:72763
+#: assets/js/backend.js:72869
+#: assets/js/backend.js:72975
+#: assets/js/backend.js:73103
+#: assets/js/backend.js:73172
 msgid "Documentation"
 msgstr ""
 
 #: app/src/components/Header/index.jsx:44
 #: app/src/pages/License.jsx:139
-#: assets/js/backend.js:59355
-#: assets/js/backend.js:65807
+#: assets/js/backend.js:59360
+#: assets/js/backend.js:65867
 msgid "License"
 msgstr ""
 
 #: app/src/components/Header/index.jsx:67
-#: assets/js/backend.js:59378
+#: assets/js/backend.js:59383
 msgid "Upgrade to Pro"
 msgstr ""
 
 #: app/src/components/HeaderPrgressIndicator/index.jsx:46
-#: assets/js/backend.js:59490
+#: assets/js/backend.js:59478
 msgid "Progress indicator"
 msgstr ""
 
 #: app/src/components/HeaderPrgressIndicator/index.jsx:57
 #: app/src/components/HeaderPrgressIndicator/index.jsx:87
-#: app/src/pages/sync/SyncScreen.jsx:370
-#: app/src/pages/sync/SyncScreen.jsx:400
-#: assets/js/backend.js:59501
-#: assets/js/backend.js:59531
-#: assets/js/backend.js:69250
-#: assets/js/backend.js:69280
+#: app/src/pages/sync/SyncScreen.jsx:372
+#: app/src/pages/sync/SyncScreen.jsx:402
+#: assets/js/backend.js:59489
+#: assets/js/backend.js:59519
+#: assets/js/backend.js:69623
+#: assets/js/backend.js:69653
 msgid "Syncing"
 msgstr ""
 
 #: app/src/components/HeaderPrgressIndicator/index.jsx:124
-#: assets/js/backend.js:59568
+#: assets/js/backend.js:59556
 msgid "View Details"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:117
 #: app/src/pages/FileManager/FileManager.jsx:297
-#: assets/js/backend.js:59952
-#: assets/js/backend.js:63865
+#: assets/js/backend.js:59940
+#: assets/js/backend.js:63925
 msgid "Copied to clipboard"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:136
 #: app/src/components/ImagePreview/index.jsx:137
-#: assets/js/backend.js:59971
-#: assets/js/backend.js:59972
+#: assets/js/backend.js:59959
+#: assets/js/backend.js:59960
 msgid "Zoom out"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:146
 #: app/src/components/ImagePreview/index.jsx:147
-#: assets/js/backend.js:59981
-#: assets/js/backend.js:59982
+#: assets/js/backend.js:59969
+#: assets/js/backend.js:59970
 msgid "Zoom in"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:155
 #: app/src/components/ImagePreview/index.jsx:156
-#: assets/js/backend.js:59990
-#: assets/js/backend.js:59991
+#: assets/js/backend.js:59978
+#: assets/js/backend.js:59979
 msgid "Rotate left"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:163
 #: app/src/components/ImagePreview/index.jsx:164
-#: assets/js/backend.js:59998
-#: assets/js/backend.js:59999
+#: assets/js/backend.js:59986
+#: assets/js/backend.js:59987
 msgid "Rotate right"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:171
 #: app/src/components/ImagePreview/index.jsx:172
-#: assets/js/backend.js:60006
-#: assets/js/backend.js:60007
+#: assets/js/backend.js:59994
+#: assets/js/backend.js:59995
 msgid "Reset"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:180
 #: app/src/components/ImagePreview/index.jsx:181
 #: app/src/pages/FileManager/FileManager.jsx:402
-#: assets/js/backend.js:60015
-#: assets/js/backend.js:60016
-#: assets/js/backend.js:63970
+#: assets/js/backend.js:60003
+#: assets/js/backend.js:60004
+#: assets/js/backend.js:64030
 msgid "Open in new tab"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:188
 #: app/src/components/ImagePreview/index.jsx:189
 #: app/src/pages/FileManager/FileManager.jsx:410
-#: assets/js/backend.js:60023
-#: assets/js/backend.js:60024
-#: assets/js/backend.js:63978
+#: assets/js/backend.js:60011
+#: assets/js/backend.js:60012
+#: assets/js/backend.js:64038
 msgid "Copy URL"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:198
 #: app/src/components/ImagePreview/index.jsx:199
 #: app/src/pages/FileManager/FileManager.jsx:418
-#: assets/js/backend.js:60033
-#: assets/js/backend.js:60034
-#: assets/js/backend.js:63986
+#: assets/js/backend.js:60021
+#: assets/js/backend.js:60022
+#: assets/js/backend.js:64046
 msgid "Download"
 msgstr ""
 
 #: app/src/components/ImagePreview/index.jsx:208
 #: app/src/components/ImagePreview/index.jsx:212
 #: app/src/pages/FileManager/FileManager.jsx:428
-#: assets/js/backend.js:60043
-#: assets/js/backend.js:60047
-#: assets/js/backend.js:63996
+#: assets/js/backend.js:60031
+#: assets/js/backend.js:60035
+#: assets/js/backend.js:64056
 msgid "View in Media Library"
 msgstr ""
 
 #: app/src/components/JsonReader/index.jsx:27
-#: assets/js/backend.js:60125
+#: assets/js/backend.js:60150
 msgid "The selected file is not valid JSON."
 msgstr ""
 
 #: app/src/components/JsonReader/index.jsx:53
-#: assets/js/backend.js:60151
+#: assets/js/backend.js:60176
 msgid "Read JSON from file"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:14
-#: assets/js/backend.js:60175
+#: assets/js/backend.js:60200
 msgid "Active"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:16
-#: assets/js/backend.js:60177
+#: assets/js/backend.js:60202
 msgid "Expired"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:18
-#: assets/js/backend.js:60179
+#: assets/js/backend.js:60204
 msgid "Revoked"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:20
-#: assets/js/backend.js:60181
+#: assets/js/backend.js:60206
 msgid "Inactive"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:22
-#: assets/js/backend.js:60183
+#: assets/js/backend.js:60208
 msgid "Limit Reached"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:24
-#: assets/js/backend.js:60185
+#: assets/js/backend.js:60210
 msgid "Not Found"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:25
-#: assets/js/backend.js:60186
+#: assets/js/backend.js:60211
 msgid "Unknown"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:31
-#: assets/js/backend.js:60192
+#: assets/js/backend.js:60217
 msgid "Just now"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:34
-#: assets/js/backend.js:60195
+#: assets/js/backend.js:60220
 msgid "min ago"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:37
-#: assets/js/backend.js:60198
+#: assets/js/backend.js:60223
 msgid "hours ago"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:39
-#: assets/js/backend.js:60200
+#: assets/js/backend.js:60225
 msgid "days ago"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:53
-#: assets/js/backend.js:60214
+#: assets/js/backend.js:60239
 msgid "License Details"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:65
-#: assets/js/backend.js:60226
+#: assets/js/backend.js:60251
 msgid "License Key"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:74
-#: assets/js/backend.js:60235
+#: assets/js/backend.js:60260
 msgid "Expiry"
 msgstr ""
 
@@ -1222,122 +1285,122 @@ msgstr ""
 #: app/src/helper/index.js:164
 #: app/src/helper/index.js:169
 #: app/src/helper/index.js:178
-#: assets/js/backend.js:60239
-#: assets/js/backend.js:61946
-#: assets/js/backend.js:61951
-#: assets/js/backend.js:61960
+#: assets/js/backend.js:60264
+#: assets/js/backend.js:61991
+#: assets/js/backend.js:61996
+#: assets/js/backend.js:62005
 msgid "Never"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:84
-#: assets/js/backend.js:60245
+#: assets/js/backend.js:60270
 msgid "Last Checked"
 msgstr ""
 
 #: app/src/components/LicenseCard/index.jsx:93
-#: assets/js/backend.js:60254
+#: assets/js/backend.js:60279
 msgid "Status Message"
 msgstr ""
 
 #: app/src/components/LicenseExpiredNotice/index.jsx:9
-#: assets/js/backend.js:60276
+#: assets/js/backend.js:60301
 msgid "License Expired:"
 msgstr ""
 
 #: app/src/components/LicenseExpiredNotice/index.jsx:11
-#: assets/js/backend.js:60278
+#: assets/js/backend.js:60303
 msgid "Renew your license to continue using PRO features."
 msgstr ""
 
 #: app/src/components/LicenseExpiredNotice/index.jsx:22
-#: assets/js/backend.js:60289
+#: assets/js/backend.js:60314
 msgid "Renew Now"
 msgstr ""
 
 #: app/src/components/Loading/index.jsx:13
-#: assets/js/backend.js:60309
+#: assets/js/backend.js:60334
 msgid "Failed to load Media Cloud Sync"
 msgstr ""
 
 #: app/src/components/Loading/index.jsx:25
-#: assets/js/backend.js:60321
+#: assets/js/backend.js:60346
 msgid "Try again"
 msgstr ""
 
 #: app/src/components/Loading/index.jsx:35
-#: assets/js/backend.js:60331
+#: assets/js/backend.js:60356
 msgid "Media Cloud Sync is loading please wait..."
 msgstr ""
 
 #: app/src/components/PremiumBanner/index.jsx:9
-#: assets/js/backend.js:60401
+#: assets/js/backend.js:60426
 msgid "Unlock the full power of Media Cloud Sync!"
 msgstr ""
 
 #: app/src/components/PremiumBanner/index.jsx:15
-#: assets/js/backend.js:60407
+#: assets/js/backend.js:60432
 msgid "Premium version is now available. Upgrade to unlock all features."
 msgstr ""
 
 #: app/src/components/PremiumBanner/index.jsx:21
-#: assets/js/backend.js:60413
+#: assets/js/backend.js:60438
 msgid "UPGRADE TO PRO"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:35
-#: assets/js/backend.js:60520
+#: assets/js/backend.js:60545
 msgid "Refreshing Counts"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:66
-#: assets/js/backend.js:60551
+#: assets/js/backend.js:60576
 msgid "Progress Graph"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:98
-#: assets/js/backend.js:60583
+#: assets/js/backend.js:60608
 msgid "out of"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:110
-#: assets/js/backend.js:60595
+#: assets/js/backend.js:60620
 msgid "Synced"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:111
-#: assets/js/backend.js:60596
+#: assets/js/backend.js:60621
 msgid "Total"
 msgstr ""
 
 #: app/src/components/Statistics/index.jsx:112
-#: assets/js/backend.js:60597
+#: assets/js/backend.js:60622
 msgid "Pending"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:116
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:135
-#: assets/js/backend.js:60754
-#: assets/js/backend.js:60773
+#: assets/js/backend.js:60779
+#: assets/js/backend.js:60798
 msgid "Errors"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:125
-#: assets/js/backend.js:60763
+#: assets/js/backend.js:60788
 msgid "Clearing…"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:126
-#: assets/js/backend.js:60764
+#: assets/js/backend.js:60789
 msgid "Clear Logs"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:134
-#: assets/js/backend.js:60772
+#: assets/js/backend.js:60797
 msgid "ID"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:138
-#: assets/js/backend.js:60776
+#: assets/js/backend.js:60801
 msgid "Actions"
 msgstr ""
 
@@ -1345,757 +1408,762 @@ msgstr ""
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:236
 #: app/src/pages/configure/verifyPermissions.jsx:264
 #: app/src/pages/FileManager/FileManager.jsx:1304
-#: assets/js/backend.js:60788
-#: assets/js/backend.js:60874
-#: assets/js/backend.js:64872
-#: assets/js/backend.js:67931
+#: assets/js/backend.js:60813
+#: assets/js/backend.js:60899
+#: assets/js/backend.js:64932
+#: assets/js/backend.js:68209
 msgid "Loading"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:204
-#: assets/js/backend.js:60842
+#: assets/js/backend.js:60867
 msgid "No errors"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:227
-#: assets/js/backend.js:60865
+#: assets/js/backend.js:60890
 msgid "Retry"
 msgstr ""
 
 #: app/src/components/SyncScreen/ErrorListing/index.jsx:250
-#: assets/js/backend.js:60888
+#: assets/js/backend.js:60913
 msgid "No errors found"
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:16
-#: assets/js/backend.js:61009
+#: assets/js/backend.js:61034
 msgid "Your plugin settings are not configured properly. Please ensure Service is enabled and Copy files to bucket is enabled."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:35
 #: app/src/components/SyncScreen/InfoBox/index.jsx:52
-#: assets/js/backend.js:61028
-#: assets/js/backend.js:61045
+#: assets/js/backend.js:61053
+#: assets/js/backend.js:61070
 msgid "All your existing media are synced successfully."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:65
-#: assets/js/backend.js:61058
+#: assets/js/backend.js:61083
 msgid "Sync is paused. You can resume it by clicking the \"Resume\" button or stop it by clicking the \"Stop\" button."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:82
-#: assets/js/backend.js:61075
+#: assets/js/backend.js:61100
 msgid "Stopping your sync — it will stop as soon as the item currently in progress finishes."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:86
-#: assets/js/backend.js:61079
+#: assets/js/backend.js:61104
 msgid "Pausing your sync — it will pause as soon as the item currently in progress finishes."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:106
-#: assets/js/backend.js:61099
+#: assets/js/backend.js:61124
 msgid "Your sync is running live in this browser. Stay in the Media Cloud Sync admin — closing this tab or navigating away will pause it, and it picks back up automatically when you return."
 msgstr ""
 
 #: app/src/components/SyncScreen/InfoBox/index.jsx:110
-#: assets/js/backend.js:61103
+#: assets/js/backend.js:61128
 msgid "Your sync is running in the background. It may take some time, and regular site visits help it complete. Your site will stay online, and you can safely close this window."
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:8
-#: assets/js/backend.js:61127
+#: assets/js/backend.js:61152
 msgid "Upgrade To Premium"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:11
-#: assets/js/backend.js:61130
+#: assets/js/backend.js:61155
 msgid "Manage synced media from the Media Library"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:17
-#: assets/js/backend.js:61136
+#: assets/js/backend.js:61161
 msgid "File Manager to browse and manage your cloud bucket"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:23
-#: assets/js/backend.js:61142
+#: assets/js/backend.js:61167
 msgid "Restore media back to your server"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:29
-#: assets/js/backend.js:61148
+#: assets/js/backend.js:61173
 msgid "Move media to a new path"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:35
-#: assets/js/backend.js:61154
+#: assets/js/backend.js:61179
 msgid "Bucket-to-bucket migration"
 msgstr ""
 
 #: app/src/components/SyncScreen/PremiumCard/index.jsx:41
-#: assets/js/backend.js:61160
+#: assets/js/backend.js:61185
 msgid "Faster Ajax/Mixed bulk sync"
 msgstr ""
 
-#: app/src/components/SyncScreen/PremiumCard/index.jsx:46
-#: assets/js/backend.js:61165
+#: app/src/components/SyncScreen/PremiumCard/index.jsx:47
+#: assets/js/backend.js:61191
+msgid "Works with WooCommerce, EDD, Elementor, Divi, WPML, and more"
+msgstr ""
+
+#: app/src/components/SyncScreen/PremiumCard/index.jsx:52
+#: assets/js/backend.js:61196
 msgid "And much more"
 msgstr ""
 
-#: app/src/components/SyncScreen/PremiumCard/index.jsx:54
-#: assets/js/backend.js:61173
+#: app/src/components/SyncScreen/PremiumCard/index.jsx:60
+#: assets/js/backend.js:61204
 msgid "View All Features"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:9
-#: assets/js/backend.js:61189
+#: assets/js/backend.js:61220
 msgid "Ajax"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:11
-#: assets/js/backend.js:61191
+#: assets/js/backend.js:61222
 msgid "Fastest. Runs live in your browser — stay in the plugin admin while it syncs."
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:18
-#: assets/js/backend.js:61198
+#: assets/js/backend.js:61229
 msgid "Cron"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:20
-#: assets/js/backend.js:61200
+#: assets/js/backend.js:61231
 msgid "Runs entirely in the background via WP-Cron. No need to keep this page open."
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:27
-#: assets/js/backend.js:61207
+#: assets/js/backend.js:61238
 msgid "Mixed"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:29
-#: assets/js/backend.js:61209
+#: assets/js/backend.js:61240
 msgid "Fastest while you stay here, and automatically falls back to WP-Cron if you leave."
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:51
-#: assets/js/backend.js:61231
+#: assets/js/backend.js:61262
 msgid "Sync Method"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:79
-#: assets/js/backend.js:61259
+#: assets/js/backend.js:61290
 msgid "Available in Pro"
 msgstr ""
 
 #: app/src/components/SyncScreen/SyncMethodToggle/index.jsx:93
-#: assets/js/backend.js:61273
+#: assets/js/backend.js:61304
 msgid "PRO"
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:30
-#: assets/js/backend.js:61529
+#: assets/js/backend.js:61574
 msgid "Database upgrade completed successfully."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:55
-#: assets/js/backend.js:61554
+#: assets/js/backend.js:61599
 msgid "Database upgrade started successfully."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:64
-#: assets/js/backend.js:61563
+#: assets/js/backend.js:61608
 msgid "Failed to start database upgrade."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:91
-#: assets/js/backend.js:61590
+#: assets/js/backend.js:61635
 msgid "Database Upgrade Required"
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:100
-#: assets/js/backend.js:61599
+#: assets/js/backend.js:61644
 msgid "Database upgrade in progress. Please wait for the process to complete. Do not close or refresh this page during the upgrade."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:121
-#: assets/js/backend.js:61620
+#: assets/js/backend.js:61665
 msgid "To ensure compatibility with the latest version of Media Cloud Sync, a database upgrade is necessary."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:126
-#: assets/js/backend.js:61625
+#: assets/js/backend.js:61670
 msgid "It is recommended to back up your database before proceeding with the upgrade."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:132
-#: assets/js/backend.js:61631
+#: assets/js/backend.js:61676
 msgid "Please click the button below to initiate the upgrade process."
 msgstr ""
 
 #: app/src/components/UpgradeNotice/index.jsx:138
-#: assets/js/backend.js:61637
+#: assets/js/backend.js:61682
 msgid "Upgrade Database"
 msgstr ""
 
 #: app/src/components/WelcomeContent/index.jsx:7
-#: assets/js/backend.js:61663
+#: assets/js/backend.js:61708
 msgid "Hey There,"
 msgstr ""
 
 #: app/src/components/WelcomeContent/index.jsx:9
-#: assets/js/backend.js:61665
+#: assets/js/backend.js:61710
 msgid "Welcome to Media Cloud Sync Dashboard"
 msgstr ""
 
 #: app/src/helper/connectionStatus.js:12
-#: assets/js/backend.js:61687
+#: assets/js/backend.js:61732
 msgid "Click the button to verify storage credentials and write access."
 msgstr ""
 
 #: app/src/helper/connectionStatus.js:21
-#: assets/js/backend.js:61696
+#: assets/js/backend.js:61741
 msgid "Click the button to check the read status of your Provider."
 msgstr ""
 
 #: app/src/helper/index.js:114
-#: assets/js/backend.js:61896
+#: assets/js/backend.js:61941
 msgid "This field is required"
 msgstr ""
 
 #: app/src/helper/index.js:126
-#: assets/js/backend.js:61908
+#: assets/js/backend.js:61953
 msgid "Maximum length exceeded"
 msgstr ""
 
 #: app/src/helper/index.js:136
 #: app/src/helper/index.js:143
-#: assets/js/backend.js:61918
-#: assets/js/backend.js:61925
+#: assets/js/backend.js:61963
+#: assets/js/backend.js:61970
 msgid "Invalid Format"
 msgstr ""
 
 #: app/src/hooks/useSyncTicking.js:159
-#: assets/js/backend.js:62296
+#: assets/js/backend.js:62341
 msgid "Ajax sync stopped due to a network error. It will continue at normal speed via WP-Cron."
 msgstr ""
 
-#: app/src/Main.js:46
-#: assets/js/backend.js:58280
+#: app/src/Main.js:47
+#: assets/js/backend.js:58281
 msgid "Unable to load plugin settings. Please refresh the page or check your connection."
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:50
 #: app/src/pages/ChooseCDN.jsx:324
-#: assets/js/backend.js:62473
-#: assets/js/backend.js:62747
+#: assets/js/backend.js:62518
+#: assets/js/backend.js:62792
 msgid "Please enter a provider name"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:67
-#: app/src/pages/MediaSettings.jsx:306
-#: assets/js/backend.js:62490
-#: assets/js/backend.js:66200
+#: app/src/pages/MediaSettings.jsx:325
+#: assets/js/backend.js:62535
+#: assets/js/backend.js:66279
 msgid "Please fix the highlighted errors before proceeding"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:132
-#: assets/js/backend.js:62555
+#: assets/js/backend.js:62600
 msgid "Failed to save provider. Please try again."
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:143
-#: assets/js/backend.js:62566
+#: assets/js/backend.js:62611
 msgid "Saving Provider"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:151
 #: app/src/pages/ChooseCDN.jsx:191
-#: app/src/pages/Configure.jsx:591
-#: assets/js/backend.js:62574
-#: assets/js/backend.js:62614
-#: assets/js/backend.js:63371
+#: app/src/pages/Configure.jsx:605
+#: assets/js/backend.js:62619
+#: assets/js/backend.js:62659
+#: assets/js/backend.js:63430
 msgid "Back to Settings"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:161
 #: app/src/pages/ChooseCDN.jsx:198
-#: assets/js/backend.js:62584
-#: assets/js/backend.js:62621
+#: assets/js/backend.js:62629
+#: assets/js/backend.js:62666
 msgid "Choose your Media Delivery Provider"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:167
-#: assets/js/backend.js:62590
+#: assets/js/backend.js:62635
 msgid "Configure storage before choosing a delivery provider."
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:176
-#: assets/js/backend.js:62599
+#: assets/js/backend.js:62644
 msgid "Configure Storage"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:204
-#: assets/js/backend.js:62627
+#: assets/js/backend.js:62672
 msgid "Choose your media delivery provider from here"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:283
-#: assets/js/backend.js:62706
+#: assets/js/backend.js:62751
 msgid "Private Media Supported"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:287
-#: assets/js/backend.js:62710
+#: assets/js/backend.js:62755
 msgid "Private Media Not Supported"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:303
-#: assets/js/backend.js:62726
+#: assets/js/backend.js:62771
 msgid "Provider Name"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:308
-#: assets/js/backend.js:62731
+#: assets/js/backend.js:62776
 msgid "Enter Provider Name"
 msgstr ""
 
 #: app/src/pages/ChooseCDN.jsx:342
-#: app/src/pages/Configure.jsx:99
+#: app/src/pages/Configure.jsx:104
 #: app/src/pages/FileManager/SettingsPanel.jsx:94
-#: app/src/schema.js:465
-#: assets/js/backend.js:62765
-#: assets/js/backend.js:62879
-#: assets/js/backend.js:65288
-#: assets/js/backend.js:70428
+#: app/src/schema.js:538
+#: assets/js/backend.js:62810
+#: assets/js/backend.js:62929
+#: assets/js/backend.js:65348
+#: assets/js/backend.js:70874
 msgid "Save"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:78
-#: assets/js/backend.js:62858
+#: app/src/pages/Configure.jsx:83
+#: assets/js/backend.js:62908
 msgid "Hey, There"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:79
-#: assets/js/backend.js:62859
+#: app/src/pages/Configure.jsx:84
+#: assets/js/backend.js:62909
 msgid "Welcome to Media Cloud Sync"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:82
-#: assets/js/backend.js:62862
+#: app/src/pages/Configure.jsx:87
+#: assets/js/backend.js:62912
 msgid "Configure Cloud Service"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:83
-#: assets/js/backend.js:62863
+#: app/src/pages/Configure.jsx:88
+#: assets/js/backend.js:62913
 msgid "Choose your cloud service to connect to cloud."
 msgstr ""
 
-#: app/src/pages/Configure.jsx:93
-#: assets/js/backend.js:62873
+#: app/src/pages/Configure.jsx:98
+#: assets/js/backend.js:62923
 msgid "Trouble finding the credentials? View our <documentation_link>"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:102
-#: assets/js/backend.js:62882
+#: app/src/pages/Configure.jsx:107
+#: assets/js/backend.js:62932
 msgid "Configuration"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:106
-#: assets/js/backend.js:62886
+#: app/src/pages/Configure.jsx:111
+#: assets/js/backend.js:62936
 msgid "Save the credentials."
 msgstr ""
 
-#: app/src/pages/Configure.jsx:124
-#: assets/js/backend.js:62904
+#: app/src/pages/Configure.jsx:129
+#: assets/js/backend.js:62954
 msgid "Please enter a service name"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:223
-#: assets/js/backend.js:63003
+#: app/src/pages/Configure.jsx:228
+#: assets/js/backend.js:63053
 msgid "Credentials"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:284
-#: app/src/pages/Configure.jsx:441
+#: app/src/pages/Configure.jsx:289
+#: app/src/pages/Configure.jsx:455
 #: app/src/pages/sync/BucketToBucket.jsx:143
 #: app/src/pages/sync/DestinationConfigForm.jsx:198
 #: app/src/pages/sync/DestinationConfigForm.jsx:292
-#: app/src/pages/sync/SyncScreen.jsx:217
-#: app/src/pages/sync/SyncScreen.jsx:252
-#: app/src/pages/sync/SyncScreen.jsx:287
-#: app/src/pages/sync/SyncScreen.jsx:327
-#: assets/js/backend.js:63064
-#: assets/js/backend.js:63221
-#: assets/js/backend.js:68145
-#: assets/js/backend.js:68504
-#: assets/js/backend.js:68598
-#: assets/js/backend.js:69097
-#: assets/js/backend.js:69132
-#: assets/js/backend.js:69167
-#: assets/js/backend.js:69207
+#: app/src/pages/sync/SyncScreen.jsx:219
+#: app/src/pages/sync/SyncScreen.jsx:254
+#: app/src/pages/sync/SyncScreen.jsx:289
+#: app/src/pages/sync/SyncScreen.jsx:329
+#: assets/js/backend.js:63114
+#: assets/js/backend.js:63280
+#: assets/js/backend.js:68423
+#: assets/js/backend.js:68782
+#: assets/js/backend.js:68876
+#: assets/js/backend.js:69470
+#: assets/js/backend.js:69505
+#: assets/js/backend.js:69540
+#: assets/js/backend.js:69580
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: app/src/pages/Configure.jsx:595
-#: assets/js/backend.js:63375
+#: app/src/pages/Configure.jsx:609
+#: assets/js/backend.js:63434
 msgid "Exit to Dashboard"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:623
-#: app/src/pages/Configure.jsx:629
-#: assets/js/backend.js:63403
-#: assets/js/backend.js:63409
+#: app/src/pages/Configure.jsx:637
+#: app/src/pages/Configure.jsx:643
+#: assets/js/backend.js:63462
+#: assets/js/backend.js:63468
 msgid "documentation"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:641
-#: assets/js/backend.js:63421
+#: app/src/pages/Configure.jsx:655
+#: assets/js/backend.js:63480
 msgid "Verifying"
 msgstr ""
 
-#: app/src/pages/Configure.jsx:645
-#: assets/js/backend.js:63425
+#: app/src/pages/Configure.jsx:659
+#: assets/js/backend.js:63484
 msgid "Verifying your"
 msgstr ""
 
 #: app/src/pages/configure/Footer/index.jsx:13
 #: app/src/pages/settings/Footer/index.jsx:13
 #: app/src/pages/sync/DestinationConfigForm.jsx:560
-#: app/src/schema.js:429
-#: app/src/schema.js:436
-#: app/src/schema.js:444
-#: app/src/schema.js:448
-#: app/src/schema.js:452
-#: app/src/schema.js:456
-#: app/src/schema.js:464
-#: assets/js/backend.js:66534
-#: assets/js/backend.js:68866
-#: assets/js/backend.js:70392
-#: assets/js/backend.js:70399
-#: assets/js/backend.js:70407
-#: assets/js/backend.js:70411
-#: assets/js/backend.js:70415
-#: assets/js/backend.js:70419
-#: assets/js/backend.js:70427
+#: app/src/schema.js:502
+#: app/src/schema.js:509
+#: app/src/schema.js:517
+#: app/src/schema.js:521
+#: app/src/schema.js:525
+#: app/src/schema.js:529
+#: app/src/schema.js:537
+#: assets/js/backend.js:66812
+#: assets/js/backend.js:69144
+#: assets/js/backend.js:70838
+#: assets/js/backend.js:70845
+#: assets/js/backend.js:70853
+#: assets/js/backend.js:70857
+#: assets/js/backend.js:70861
+#: assets/js/backend.js:70865
+#: assets/js/backend.js:70873
 msgid "Back"
 msgstr ""
 
 #: app/src/pages/configure/Footer/index.jsx:14
 #: app/src/pages/settings/Footer/index.jsx:14
 #: app/src/pages/sync/DestinationConfigForm.jsx:362
-#: app/src/schema.js:430
-#: app/src/schema.js:437
-#: app/src/schema.js:453
-#: app/src/schema.js:457
-#: assets/js/backend.js:66535
-#: assets/js/backend.js:68668
-#: assets/js/backend.js:70393
-#: assets/js/backend.js:70400
-#: assets/js/backend.js:70416
-#: assets/js/backend.js:70420
+#: app/src/schema.js:503
+#: app/src/schema.js:510
+#: app/src/schema.js:526
+#: app/src/schema.js:530
+#: assets/js/backend.js:66813
+#: assets/js/backend.js:68946
+#: assets/js/backend.js:70839
+#: assets/js/backend.js:70846
+#: assets/js/backend.js:70862
+#: assets/js/backend.js:70866
 msgid "Next"
 msgstr ""
 
 #: app/src/pages/configure/provider.jsx:147
-#: assets/js/backend.js:66733
+#: assets/js/backend.js:67011
 msgid "Enter Provider label"
 msgstr ""
 
 #: app/src/pages/configure/provider.jsx:151
-#: assets/js/backend.js:66737
+#: assets/js/backend.js:67015
 msgid "Enter label"
 msgstr ""
 
 #: app/src/pages/configure/saveSettings.jsx:17
-#: assets/js/backend.js:66767
+#: assets/js/backend.js:67045
 msgid "Successfully connected to"
 msgstr ""
 
 #: app/src/pages/configure/saveSettings.jsx:22
-#: assets/js/backend.js:66772
+#: assets/js/backend.js:67050
 msgid "Click Save button to save the configuration"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:69
-#: assets/js/backend.js:66849
+#: assets/js/backend.js:67127
 msgid "Choose a"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:99
-#: assets/js/backend.js:66879
+#: assets/js/backend.js:67157
 msgid "Choose Existing"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:138
-#: assets/js/backend.js:66918
+#: assets/js/backend.js:67196
 msgid "Create New"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:173
-#: assets/js/backend.js:66953
+#: assets/js/backend.js:67231
 msgid "Choose"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:194
-#: assets/js/backend.js:66974
+#: assets/js/backend.js:67252
 msgid "Enter"
 msgstr ""
 
 #: app/src/pages/configure/setBucket.jsx:199
 #: app/src/pages/FileManager/FileManager.jsx:1285
-#: assets/js/backend.js:64853
-#: assets/js/backend.js:66979
+#: assets/js/backend.js:64913
+#: assets/js/backend.js:67257
 msgid "Name"
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:157
-#: assets/js/backend.js:67165
+#: assets/js/backend.js:67443
 msgid "Use Existing"
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:158
-#: assets/js/backend.js:67166
+#: assets/js/backend.js:67444
 msgid "Reuse the credentials from your currently connected account — no need to re-enter them. Pick a different bucket in the next step."
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:201
-#: assets/js/backend.js:67209
+#: assets/js/backend.js:67487
 msgid "Recommended"
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:227
-#: assets/js/backend.js:67235
+#: assets/js/backend.js:67513
 msgid "No credentials to enter — this destination will reuse your currently connected account."
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:251
 #: app/src/pages/configure/setCredentials.jsx:297
-#: assets/js/backend.js:67259
-#: assets/js/backend.js:67305
+#: assets/js/backend.js:67537
+#: assets/js/backend.js:67583
 msgid "Copied!"
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:252
-#: assets/js/backend.js:67260
+#: assets/js/backend.js:67538
 msgid "Copy"
 msgstr ""
 
 #: app/src/pages/configure/setCredentials.jsx:288
-#: assets/js/backend.js:67296
+#: assets/js/backend.js:67574
 msgid "Copy region value"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:30
-#: assets/js/backend.js:67697
+#: assets/js/backend.js:67975
 msgid "Adding new"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:33
-#: assets/js/backend.js:67700
+#: assets/js/backend.js:67978
 msgid "Checking"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:35
-#: assets/js/backend.js:67702
+#: assets/js/backend.js:67980
 msgid "exists"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:46
-#: assets/js/backend.js:67713
+#: assets/js/backend.js:67991
 msgid "Checking write permissions"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:60
-#: assets/js/backend.js:67727
+#: assets/js/backend.js:68005
 msgid "Checking delete permissions"
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:102
-#: assets/js/backend.js:67769
+#: assets/js/backend.js:68047
 msgid "Permission check failed. Please try again."
 msgstr ""
 
 #: app/src/pages/configure/verifyPermissions.jsx:299
-#: assets/js/backend.js:67966
+#: assets/js/backend.js:68244
 msgid "Skipped"
 msgstr ""
 
 #: app/src/pages/configure/welcome.jsx:12
-#: assets/js/backend.js:67986
+#: assets/js/backend.js:68264
 msgid "Media Cloud Sync helps to sync the Wordpress media to cloud services like Amazon S3, Google  Cloud Storage and Digital Ocean Services "
 msgstr ""
 
 #: app/src/pages/configure/welcome.jsx:18
-#: assets/js/backend.js:67992
+#: assets/js/backend.js:68270
 msgid "Configure your cloud storage by  following steps, click Next to start configuring"
 msgstr ""
 
 #: app/src/pages/FileManager/api.js:79
 #: app/src/pages/FileManager/FileManager.jsx:488
 #: app/src/pages/FileManager/FileManager.jsx:527
-#: assets/js/backend.js:64056
-#: assets/js/backend.js:64095
-#: assets/js/backend.js:65377
+#: assets/js/backend.js:64116
+#: assets/js/backend.js:64155
+#: assets/js/backend.js:65437
 msgid "Unable to build zip"
 msgstr ""
 
 #: app/src/pages/FileManager/api.js:115
 #: app/src/pages/FileManager/FileManager.jsx:857
 #: app/src/pages/FileManager/FileManager.jsx:912
-#: assets/js/backend.js:64425
-#: assets/js/backend.js:64480
-#: assets/js/backend.js:65413
+#: assets/js/backend.js:64485
+#: assets/js/backend.js:64540
+#: assets/js/backend.js:65473
 msgid "Unable to delete files"
 msgstr ""
 
 #: app/src/pages/FileManager/api.js:138
 #: app/src/pages/FileManager/FileManager.jsx:598
 #: app/src/pages/FileManager/FileManager.jsx:658
-#: assets/js/backend.js:64166
 #: assets/js/backend.js:64226
-#: assets/js/backend.js:65436
+#: assets/js/backend.js:64286
+#: assets/js/backend.js:65496
 msgid "Unable to restore media"
 msgstr ""
 
 #: app/src/pages/FileManager/api.js:164
 #: app/src/pages/FileManager/FileManager.jsx:717
 #: app/src/pages/FileManager/FileManager.jsx:772
-#: assets/js/backend.js:64285
-#: assets/js/backend.js:64340
-#: assets/js/backend.js:65462
+#: assets/js/backend.js:64345
+#: assets/js/backend.js:64400
+#: assets/js/backend.js:65522
 msgid "Unable to move folder"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:95
 #: app/src/pages/FileManager/FileManager.jsx:140
-#: assets/js/backend.js:63663
-#: assets/js/backend.js:63708
+#: assets/js/backend.js:63723
+#: assets/js/backend.js:63768
 msgid "Unable to load files"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:206
-#: assets/js/backend.js:63774
+#: assets/js/backend.js:63834
 msgid "Root"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:309
 #: app/src/pages/FileManager/FileManager.jsx:323
-#: assets/js/backend.js:63877
-#: assets/js/backend.js:63891
+#: assets/js/backend.js:63937
+#: assets/js/backend.js:63951
 msgid "Unable to open this file — no URL is available."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:353
 #: app/src/pages/FileManager/FileManager.jsx:393
-#: assets/js/backend.js:63921
-#: assets/js/backend.js:63961
+#: assets/js/backend.js:63981
+#: assets/js/backend.js:64021
 msgid "Open"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:359
-#: assets/js/backend.js:63927
+#: assets/js/backend.js:63987
 msgid "Copy path"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:365
 #: app/src/pages/FileManager/FileManager.jsx:1167
-#: assets/js/backend.js:63933
-#: assets/js/backend.js:64735
+#: assets/js/backend.js:63993
+#: assets/js/backend.js:64795
 msgid "Download as zip"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:371
 #: app/src/pages/FileManager/FileManager.jsx:437
 #: app/src/pages/FileManager/FileManager.jsx:1185
-#: assets/js/backend.js:63939
-#: assets/js/backend.js:64005
-#: assets/js/backend.js:64753
+#: assets/js/backend.js:63999
+#: assets/js/backend.js:64065
+#: assets/js/backend.js:64813
 msgid "Restore to server"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:381
 #: app/src/pages/FileManager/FileManager.jsx:1583
-#: assets/js/backend.js:63949
-#: assets/js/backend.js:65151
+#: assets/js/backend.js:64009
+#: assets/js/backend.js:65211
 msgid "Move to new path"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:541
-#: assets/js/backend.js:64109
+#: assets/js/backend.js:64169
 msgid "Unable to download zip"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:557
-#: assets/js/backend.js:64125
+#: assets/js/backend.js:64185
 msgid "Unable to download files"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:641
-#: assets/js/backend.js:64209
+#: assets/js/backend.js:64269
 msgid "restored"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:644
 #: app/src/pages/FileManager/FileManager.jsx:758
-#: assets/js/backend.js:64212
-#: assets/js/backend.js:64326
+#: assets/js/backend.js:64272
+#: assets/js/backend.js:64386
 msgid "failed"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:648
-#: assets/js/backend.js:64216
+#: assets/js/backend.js:64276
 msgid "media restored to server"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:703
-#: assets/js/backend.js:64271
+#: assets/js/backend.js:64331
 msgid "Enter a destination path"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:755
-#: assets/js/backend.js:64323
+#: assets/js/backend.js:64383
 msgid "moved"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:762
-#: assets/js/backend.js:64330
+#: assets/js/backend.js:64390
 msgid "file(s) moved"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:864
-#: assets/js/backend.js:64432
+#: assets/js/backend.js:64492
 msgid "Nothing to delete"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:903
-#: assets/js/backend.js:64471
+#: assets/js/backend.js:64531
 msgid "item(s) deleted"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:935
-#: assets/js/backend.js:64503
+#: assets/js/backend.js:64563
 msgid "Settings saved"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:944
-#: assets/js/backend.js:64512
+#: assets/js/backend.js:64572
 msgid "Unable to save settings"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:962
-#: assets/js/backend.js:64530
+#: assets/js/backend.js:64590
 msgid "Zipping"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:967
-#: assets/js/backend.js:64535
+#: assets/js/backend.js:64595
 msgid "Restoring"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:980
-#: assets/js/backend.js:64548
+#: assets/js/backend.js:64608
 msgid "Delete file?"
 msgstr ""
 
@@ -2104,294 +2172,349 @@ msgstr ""
 #: app/src/pages/FileManager/FileManager.jsx:1526
 #: app/src/pages/FileManager/FileManager.jsx:1530
 #: app/src/pages/FileManager/FileManager.jsx:1542
-#: assets/js/backend.js:64549
-#: assets/js/backend.js:64578
-#: assets/js/backend.js:65094
-#: assets/js/backend.js:65098
-#: assets/js/backend.js:65110
+#: assets/js/backend.js:64609
+#: assets/js/backend.js:64638
+#: assets/js/backend.js:65154
+#: assets/js/backend.js:65158
+#: assets/js/backend.js:65170
 msgid "Delete"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:984
-#: assets/js/backend.js:64552
+#: assets/js/backend.js:64612
 msgid "files?"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:993
-#: assets/js/backend.js:64561
+#: assets/js/backend.js:64621
 msgid "1 folder"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:994
-#: assets/js/backend.js:64562
+#: assets/js/backend.js:64622
 msgid "folders"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1003
-#: assets/js/backend.js:64571
+#: assets/js/backend.js:64631
 msgid "1 file"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1004
-#: assets/js/backend.js:64572
+#: assets/js/backend.js:64632
 msgid "files"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1019
-#: assets/js/backend.js:64587
+#: assets/js/backend.js:64647
 msgid "Deleting"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1024
-#: assets/js/backend.js:64592
+#: assets/js/backend.js:64652
 msgid "Deleting…"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1027
-#: assets/js/backend.js:64595
+#: assets/js/backend.js:64655
 msgid "Folders are deleted recursively — everything inside them (including nested subfolders and any WordPress media) is permanently removed. This cannot be undone."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1033
-#: assets/js/backend.js:64601
+#: assets/js/backend.js:64661
 msgid "Some of these files are WordPress media with no local copy on this server — deleting the cloud copy will orphan them in your Media Library."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1038
-#: assets/js/backend.js:64606
+#: assets/js/backend.js:64666
 msgid "This cannot be undone."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1044
-#: app/src/pages/MediaSettings.jsx:419
+#: app/src/pages/MediaSettings.jsx:475
 #: app/src/pages/settings/Settings.jsx:121
 #: app/src/pages/sync/BucketToBucket.jsx:251
-#: app/src/pages/sync/SyncScreen.jsx:341
-#: assets/js/backend.js:64612
-#: assets/js/backend.js:66313
-#: assets/js/backend.js:68253
-#: assets/js/backend.js:69221
+#: app/src/pages/sync/SyncScreen.jsx:343
+#: assets/js/backend.js:64672
+#: assets/js/backend.js:66429
+#: assets/js/backend.js:68531
+#: assets/js/backend.js:69594
 msgid "Back to Dashboard"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1049
-#: app/src/schema.js:356
-#: assets/js/backend.js:64617
-#: assets/js/backend.js:70319
+#: app/src/schema.js:413
+#: assets/js/backend.js:64677
+#: assets/js/backend.js:70749
 msgid "File Manager"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1110
-#: assets/js/backend.js:64678
+#: assets/js/backend.js:64738
 msgid "selected"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1115
-#: assets/js/backend.js:64683
+#: assets/js/backend.js:64743
 msgid "Clear selection"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1205
-#: assets/js/backend.js:64773
+#: assets/js/backend.js:64833
 msgid "Delete selected"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1228
-#: assets/js/backend.js:64796
+#: assets/js/backend.js:64856
 msgid "Advanced settings"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1287
-#: assets/js/backend.js:64855
+#: assets/js/backend.js:64915
 msgid "Size"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1290
-#: assets/js/backend.js:64858
+#: assets/js/backend.js:64918
 msgid "Last Modified"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1318
-#: assets/js/backend.js:64886
+#: assets/js/backend.js:64946
 msgid "This folder is empty"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1342
-#: assets/js/backend.js:64910
+#: assets/js/backend.js:64970
 msgid "Double-click to open"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1451
 #: app/src/pages/sync/BucketToBucket.jsx:176
-#: assets/js/backend.js:65019
-#: assets/js/backend.js:68178
+#: assets/js/backend.js:65079
+#: assets/js/backend.js:68456
 msgid "Loading…"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1455
-#: assets/js/backend.js:65023
+#: assets/js/backend.js:65083
 msgid "Load more"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1553
-#: assets/js/backend.js:65121
+#: assets/js/backend.js:65181
 msgid "Restore to server first (recommended)"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1564
-#: assets/js/backend.js:65132
+#: assets/js/backend.js:65192
 msgid "Enable file deletion?"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1565
-#: assets/js/backend.js:65133
+#: assets/js/backend.js:65193
 msgid "This permanently removes files from cloud storage and cannot be undone. And If any media linked to the deleting cloud file will be orphaned. Delete actions will become available from the row context menu."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1569
-#: app/src/pages/MediaSettings.jsx:613
-#: assets/js/backend.js:65137
-#: assets/js/backend.js:66507
+#: app/src/pages/MediaSettings.jsx:831
+#: assets/js/backend.js:65197
+#: assets/js/backend.js:66785
 msgid "Enable"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1584
-#: assets/js/backend.js:65152
+#: assets/js/backend.js:65212
 msgid "Enter the destination folder to move this folder into (its own name is kept). Use \"/\" for the bucket root."
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1588
-#: assets/js/backend.js:65156
+#: assets/js/backend.js:65216
 msgid "Move"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1597
-#: assets/js/backend.js:65165
+#: assets/js/backend.js:65225
 msgid "Destination folder"
 msgstr ""
 
 #: app/src/pages/FileManager/FileManager.jsx:1610
-#: assets/js/backend.js:65178
+#: assets/js/backend.js:65238
 msgid "Moving"
 msgstr ""
 
 #: app/src/pages/FileManager/SettingsPanel.jsx:31
-#: assets/js/backend.js:65225
+#: assets/js/backend.js:65285
 msgid "Advanced Settings"
 msgstr ""
 
 #: app/src/pages/FileManager/SettingsPanel.jsx:46
-#: assets/js/backend.js:65240
+#: assets/js/backend.js:65300
 msgid "Enable file deletion"
 msgstr ""
 
 #: app/src/pages/FileManager/SettingsPanel.jsx:66
-#: assets/js/backend.js:65260
+#: assets/js/backend.js:65320
 msgid "Root folder"
 msgstr ""
 
 #: app/src/pages/FileManager/SettingsPanel.jsx:72
-#: assets/js/backend.js:65266
+#: assets/js/backend.js:65326
 msgid "Defaults to your configured upload folder"
 msgstr ""
 
 #: app/src/pages/License.jsx:33
-#: assets/js/backend.js:65701
+#: assets/js/backend.js:65761
 msgid "Please enter a license key."
 msgstr ""
 
 #: app/src/pages/License.jsx:48
-#: assets/js/backend.js:65716
+#: assets/js/backend.js:65776
 msgid "License activated!"
 msgstr ""
 
 #: app/src/pages/License.jsx:59
 #: app/src/pages/License.jsx:68
-#: assets/js/backend.js:65727
-#: assets/js/backend.js:65736
+#: assets/js/backend.js:65787
+#: assets/js/backend.js:65796
 msgid "Activation failed."
 msgstr ""
 
 #: app/src/pages/License.jsx:83
-#: assets/js/backend.js:65751
+#: assets/js/backend.js:65811
 msgid "License deactivated."
 msgstr ""
 
 #: app/src/pages/License.jsx:92
-#: assets/js/backend.js:65760
+#: assets/js/backend.js:65820
 msgid "Deactivation failed."
 msgstr ""
 
 #: app/src/pages/License.jsx:110
-#: assets/js/backend.js:65778
+#: assets/js/backend.js:65838
 msgid "License status refreshed."
 msgstr ""
 
 #: app/src/pages/License.jsx:125
-#: assets/js/backend.js:65793
+#: assets/js/backend.js:65853
 msgid "Failed to refresh status."
 msgstr ""
 
 #: app/src/pages/License.jsx:142
-#: assets/js/backend.js:65810
+#: assets/js/backend.js:65870
 msgid "Activate your license to unlock PRO features."
 msgstr ""
 
 #: app/src/pages/License.jsx:158
-#: assets/js/backend.js:65826
+#: assets/js/backend.js:65886
 msgid "Enter License Key"
 msgstr ""
 
 #: app/src/pages/License.jsx:168
-#: assets/js/backend.js:65836
+#: assets/js/backend.js:65896
 msgid "e.g. MCS-XXXX-XXXX-XXXX-XXXX-XXXX"
 msgstr ""
 
 #: app/src/pages/License.jsx:182
-#: assets/js/backend.js:65850
+#: assets/js/backend.js:65910
 msgid "Activate License"
 msgstr ""
 
 #: app/src/pages/License.jsx:199
-#: assets/js/backend.js:65867
+#: assets/js/backend.js:65927
 msgid "Refresh Status"
 msgstr ""
 
 #: app/src/pages/License.jsx:209
-#: assets/js/backend.js:65877
+#: assets/js/backend.js:65937
 msgid "Deactivate License"
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:337
-#: assets/js/backend.js:66231
+#: app/src/pages/MediaSettings.jsx:356
+#: assets/js/backend.js:66310
 msgid "Failed to save settings. Please try again."
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:348
+#: app/src/pages/MediaSettings.jsx:367
 #: app/src/pages/settings/Settings.jsx:79
-#: assets/js/backend.js:66242
+#: assets/js/backend.js:66321
 msgid "Saving configuration"
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:424
-#: assets/js/backend.js:66318
+#: app/src/pages/MediaSettings.jsx:394
+#: assets/js/backend.js:66348
+msgid "Failed to remove the policy. Please try again."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:398
+#: assets/js/backend.js:66352
+msgid "Failed to apply the policy. Please try again."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:480
+#: assets/js/backend.js:66434
 msgid "Storage Settings"
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:454
-#: app/src/pages/MediaSettings.jsx:525
-#: assets/js/backend.js:66348
-#: assets/js/backend.js:66419
+#: app/src/pages/MediaSettings.jsx:510
+#: app/src/pages/MediaSettings.jsx:581
+#: assets/js/backend.js:66464
+#: assets/js/backend.js:66535
 msgid "Change"
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:500
-#: assets/js/backend.js:66394
+#: app/src/pages/MediaSettings.jsx:556
+#: assets/js/backend.js:66510
 msgid "Delivery Settings"
 msgstr ""
 
-#: app/src/pages/MediaSettings.jsx:576
-#: assets/js/backend.js:66470
+#: app/src/pages/MediaSettings.jsx:631
+#: assets/js/backend.js:66585
+msgid "Apply Bucket Policy"
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:655
+#: assets/js/backend.js:66609
+msgid "Applied"
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:659
+#: assets/js/backend.js:66613
+msgid "Not Applied"
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:680
+#: assets/js/backend.js:66634
+msgid "Private files are currently excluded from public access on your bucket."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:684
+#: assets/js/backend.js:66638
+msgid "Saving the settings above does not change anything on your bucket by itself. Click Apply Policy for private files to actually be excluded from public access."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:698
+#: assets/js/backend.js:66652
+msgid "Google Cloud Storage: enabling this removes public access from anything in the bucket outside the configured base path, including content this plugin did not upload."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:713
+#: assets/js/backend.js:66667
+msgid "Apply Policy"
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:740
+#: assets/js/backend.js:66694
+msgid "Remove Policy"
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:771
+#: assets/js/backend.js:66725
+msgid "Save your settings above first — Apply Policy acts on what is saved, not on unsaved changes."
+msgstr ""
+
+#: app/src/pages/MediaSettings.jsx:794
+#: assets/js/backend.js:66748
 msgid "Sync in progress. Please wait until it completes before saving changes."
 msgstr ""
 
@@ -2412,1164 +2535,1247 @@ msgid "Save Changes"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:48
-#: assets/js/backend.js:68050
+#: assets/js/backend.js:68328
 msgid "Unable to load the saved destination. Please refresh and try again."
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:197
-#: assets/js/backend.js:68199
+#: assets/js/backend.js:68477
 msgid "Destination"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:210
-#: assets/js/backend.js:68212
+#: assets/js/backend.js:68490
 msgid "Edit Destination"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:215
-#: assets/js/backend.js:68217
+#: assets/js/backend.js:68495
 msgid "Stop or finish the current run before editing the destination."
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:225
 #: app/src/pages/sync/BucketToBucket.jsx:297
-#: assets/js/backend.js:68227
-#: assets/js/backend.js:68299
+#: assets/js/backend.js:68505
+#: assets/js/backend.js:68577
 msgid "Reset Destination"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:230
-#: assets/js/backend.js:68232
+#: assets/js/backend.js:68510
 msgid "Stop or finish the current run before resetting the destination."
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:258
-#: assets/js/backend.js:68260
+#: assets/js/backend.js:68538
 msgid "Confirm source cleanup"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:259
-#: assets/js/backend.js:68261
+#: assets/js/backend.js:68539
 msgid "\"Delete source files\" is enabled for this destination — each file will be permanently removed from the source bucket once verified copied. Type the destination bucket name below to confirm this run."
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:263
-#: assets/js/backend.js:68265
+#: assets/js/backend.js:68543
 msgid "Start Migration"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:280
-#: assets/js/backend.js:68282
+#: assets/js/backend.js:68560
 msgid "That doesn't match the destination bucket name."
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:292
-#: assets/js/backend.js:68294
+#: assets/js/backend.js:68572
 msgid "Reset destination"
 msgstr ""
 
 #: app/src/pages/sync/BucketToBucket.jsx:293
-#: assets/js/backend.js:68295
+#: assets/js/backend.js:68573
 msgid "This forgets the saved destination connection — files already migrated are not affected. You can configure a new destination afterward."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:187
-#: assets/js/backend.js:68493
+#: assets/js/backend.js:68771
 msgid "Connection verified."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:227
-#: assets/js/backend.js:68533
+#: assets/js/backend.js:68811
 msgid "Bucket created."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:237
-#: assets/js/backend.js:68543
+#: assets/js/backend.js:68821
 msgid "Something went wrong creating the bucket. Please try again."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:315
-#: assets/js/backend.js:68621
+#: assets/js/backend.js:68899
 msgid "Choose a destination provider to continue."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:356
-#: app/src/schema.js:395
-#: assets/js/backend.js:68662
-#: assets/js/backend.js:70358
+#: app/src/schema.js:468
+#: assets/js/backend.js:68940
+#: assets/js/backend.js:70804
 msgid "Choose Provider"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:357
-#: assets/js/backend.js:68663
+#: assets/js/backend.js:68941
 msgid "Connect"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:358
-#: assets/js/backend.js:68664
+#: assets/js/backend.js:68942
 msgid "Select Bucket"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:359
-#: assets/js/backend.js:68665
+#: assets/js/backend.js:68943
 msgid "Options"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:364
-#: assets/js/backend.js:68670
+#: assets/js/backend.js:68948
 msgid "Verify Connection"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:366
-#: assets/js/backend.js:68672
+#: assets/js/backend.js:68950
 msgid "Create Bucket"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:368
-#: assets/js/backend.js:68674
+#: assets/js/backend.js:68952
 msgid "Save & Verify"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:377
-#: assets/js/backend.js:68683
+#: assets/js/backend.js:68961
 msgid "Requires \"Update database records\" above."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:383
-#: assets/js/backend.js:68689
+#: assets/js/backend.js:68967
 msgid "Update database records"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:384
-#: assets/js/backend.js:68690
+#: assets/js/backend.js:68968
 msgid "On by default: each migrated item's record is repointed to the destination. Turn this off to copy files only, leaving your database untouched."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:392
-#: assets/js/backend.js:68698
+#: assets/js/backend.js:68976
 msgid "Also copy untracked files (objects in the bucket with no synced media record)"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:396
-#: assets/js/backend.js:68702
+#: assets/js/backend.js:68980
 msgid "Off by default: only your synced media is migrated. Turn this on for a full copy of everything in the bucket, tracked or not."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:404
-#: assets/js/backend.js:68710
+#: assets/js/backend.js:68988
 msgid "Automatically switch to the new connection when migration completes"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:414
-#: assets/js/backend.js:68720
+#: assets/js/backend.js:68998
 msgid "Delete source files after they are copied"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:416
-#: assets/js/backend.js:68722
+#: assets/js/backend.js:69000
 msgid "Each file is permanently deleted from the source bucket once it's confirmed copied to the destination — this turns the migration into a move, not a copy. You'll be asked to type the destination bucket name to confirm every time you start a run with this enabled."
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:480
-#: assets/js/backend.js:68786
+#: assets/js/backend.js:69064
 msgid "Choose Destination Provider"
 msgstr ""
 
 #: app/src/pages/sync/DestinationConfigForm.jsx:506
-#: assets/js/backend.js:68812
+#: assets/js/backend.js:69090
 msgid "Leave the secret key / JSON credential field blank to keep your current destination credentials."
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:177
-#: assets/js/backend.js:69057
+#: app/src/pages/sync/RemoveFromCloud.jsx:38
+#: app/src/pages/sync/RemoveFromCloud.jsx:43
+#: assets/js/backend.js:69196
+#: assets/js/backend.js:69201
+msgid "Remove from Cloud"
+msgstr ""
+
+#: app/src/pages/sync/RemoveFromCloud.jsx:39
+#: assets/js/backend.js:69197
+msgid "This will permanently delete the selected media from your cloud storage."
+msgstr ""
+
+#: app/src/pages/sync/RemoveFromCloud.jsx:48
+#: assets/js/backend.js:69206
+msgid "Restore files to the server before removing them from the cloud"
+msgstr ""
+
+#: app/src/pages/sync/RemoveFromCloud.jsx:82
+#: assets/js/backend.js:69240
+msgid "Unchecked: files will be deleted from the cloud without restoring a local copy first. Only do this if the local files already exist on your server."
+msgstr ""
+
+#: app/src/pages/sync/SyncScreen.jsx:178
+#: assets/js/backend.js:69429
 msgid "Failed to save the sync method. Please try again."
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:419
-#: assets/js/backend.js:69299
+#: app/src/pages/sync/SyncScreen.jsx:421
+#: assets/js/backend.js:69672
 msgid "Total Medias"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:432
-#: assets/js/backend.js:69312
+#: app/src/pages/sync/SyncScreen.jsx:434
+#: assets/js/backend.js:69685
 msgid "Completed"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:447
-#: assets/js/backend.js:69327
+#: app/src/pages/sync/SyncScreen.jsx:449
+#: assets/js/backend.js:69700
 msgid "Failed"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:466
-#: assets/js/backend.js:69346
+#: app/src/pages/sync/SyncScreen.jsx:468
+#: assets/js/backend.js:69719
 msgid "Another sync process is currently in progress. Please make sure that is finished or stop it before starting a new one."
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:481
-#: assets/js/backend.js:69361
+#: app/src/pages/sync/SyncScreen.jsx:483
+#: assets/js/backend.js:69734
 msgid "WP-Cron is not enabled on your site. Please enable WP-Cron or configure a server-level cron job to ensure the sync feature operates correctly. Without an active cron process, the sync will not run even if it is initiated."
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:516
-#: assets/js/backend.js:69396
+#: app/src/pages/sync/SyncScreen.jsx:518
+#: assets/js/backend.js:69769
 msgid "START"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:551
-#: assets/js/backend.js:69431
+#: app/src/pages/sync/SyncScreen.jsx:553
+#: assets/js/backend.js:69804
 msgid "STOP"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:586
-#: assets/js/backend.js:69466
+#: app/src/pages/sync/SyncScreen.jsx:588
+#: assets/js/backend.js:69839
 msgid "PAUSE"
 msgstr ""
 
-#: app/src/pages/sync/SyncScreen.jsx:621
-#: assets/js/backend.js:69501
+#: app/src/pages/sync/SyncScreen.jsx:623
+#: assets/js/backend.js:69874
 msgid "RESUME"
 msgstr ""
 
-#: app/src/schema.js:34
-#: assets/js/backend.js:69997
+#: app/src/schema.js:35
+#: assets/js/backend.js:70371
 msgid "<p>This setting permanently deletes files from the server once they're uploaded to your bucket — be careful before enabling it.</p><p>If you stop using this plugin, you will need to restore these files manually, by downloading them from the cloud and re-uploading via FTP, or automatically using our PRO version's restore feature.</p>"
 msgstr ""
 
-#: app/src/schema.js:45
-#: app/src/schema.js:2308
-#: app/src/schema.js:2338
-#: app/src/schema.js:2413
-#: app/src/schema.js:2443
-#: app/src/schema.js:2518
-#: app/src/schema.js:2548
-#: app/src/schema.js:2619
-#: app/src/schema.js:2676
-#: app/src/schema.js:2745
-#: assets/js/backend.js:70008
-#: assets/js/backend.js:72271
-#: assets/js/backend.js:72301
-#: assets/js/backend.js:72376
-#: assets/js/backend.js:72406
-#: assets/js/backend.js:72481
-#: assets/js/backend.js:72511
-#: assets/js/backend.js:72582
-#: assets/js/backend.js:72639
-#: assets/js/backend.js:72708
+#: app/src/schema.js:46
+#: app/src/schema.js:2406
+#: app/src/schema.js:2437
+#: app/src/schema.js:2512
+#: app/src/schema.js:2543
+#: app/src/schema.js:2618
+#: app/src/schema.js:2649
+#: app/src/schema.js:2720
+#: app/src/schema.js:2777
+#: app/src/schema.js:2846
+#: assets/js/backend.js:70382
+#: assets/js/backend.js:72742
+#: assets/js/backend.js:72773
+#: assets/js/backend.js:72848
+#: assets/js/backend.js:72879
+#: assets/js/backend.js:72954
+#: assets/js/backend.js:72985
+#: assets/js/backend.js:73056
+#: assets/js/backend.js:73113
+#: assets/js/backend.js:73182
 msgid "Deliver Synced Media"
 msgstr ""
 
-#: app/src/schema.js:46
-#: app/src/schema.js:2312
-#: app/src/schema.js:2342
-#: app/src/schema.js:2447
-#: app/src/schema.js:2552
-#: app/src/schema.js:2680
-#: app/src/schema.js:2749
-#: assets/js/backend.js:70009
-#: assets/js/backend.js:72275
-#: assets/js/backend.js:72305
-#: assets/js/backend.js:72410
-#: assets/js/backend.js:72515
-#: assets/js/backend.js:72643
-#: assets/js/backend.js:72712
+#: app/src/schema.js:47
+#: app/src/schema.js:2410
+#: app/src/schema.js:2441
+#: app/src/schema.js:2547
+#: app/src/schema.js:2653
+#: app/src/schema.js:2781
+#: app/src/schema.js:2850
+#: assets/js/backend.js:70383
+#: assets/js/backend.js:72746
+#: assets/js/backend.js:72777
+#: assets/js/backend.js:72883
+#: assets/js/backend.js:72989
+#: assets/js/backend.js:73117
+#: assets/js/backend.js:73186
 msgid "For media library files that have been copied to the bucket, Enable this option to serve media from provider, so that they are served from the bucket instead of your server."
 msgstr ""
 
-#: app/src/schema.js:54
-#: app/src/schema.js:2355
-#: app/src/schema.js:2460
-#: app/src/schema.js:2565
-#: app/src/schema.js:2631
-#: app/src/schema.js:2693
-#: app/src/schema.js:2762
-#: assets/js/backend.js:70017
-#: assets/js/backend.js:72318
-#: assets/js/backend.js:72423
-#: assets/js/backend.js:72528
-#: assets/js/backend.js:72594
-#: assets/js/backend.js:72656
-#: assets/js/backend.js:72725
+#: app/src/schema.js:55
+#: app/src/schema.js:2454
+#: app/src/schema.js:2560
+#: app/src/schema.js:2666
+#: app/src/schema.js:2732
+#: app/src/schema.js:2794
+#: app/src/schema.js:2863
+#: assets/js/backend.js:70391
+#: assets/js/backend.js:72790
+#: assets/js/backend.js:72896
+#: assets/js/backend.js:73002
+#: assets/js/backend.js:73068
+#: assets/js/backend.js:73130
+#: assets/js/backend.js:73199
 msgid "Use Custom Domain Name (CNAME)"
 msgstr ""
 
-#: app/src/schema.js:58
-#: app/src/schema.js:2359
-#: app/src/schema.js:2464
-#: app/src/schema.js:2569
-#: app/src/schema.js:2697
-#: app/src/schema.js:2766
-#: assets/js/backend.js:70021
-#: assets/js/backend.js:72322
-#: assets/js/backend.js:72427
-#: assets/js/backend.js:72532
-#: assets/js/backend.js:72660
-#: assets/js/backend.js:72729
+#: app/src/schema.js:59
+#: app/src/schema.js:2458
+#: app/src/schema.js:2564
+#: app/src/schema.js:2670
+#: app/src/schema.js:2798
+#: app/src/schema.js:2867
+#: assets/js/backend.js:70395
+#: assets/js/backend.js:72794
+#: assets/js/backend.js:72900
+#: assets/js/backend.js:73006
+#: assets/js/backend.js:73134
+#: assets/js/backend.js:73203
 msgid "Serves media from a custom domain that has been pointed to your media storage."
 msgstr ""
 
-#: app/src/schema.js:72
-#: app/src/schema.js:2378
-#: app/src/schema.js:2483
-#: app/src/schema.js:2588
-#: app/src/schema.js:2649
-#: app/src/schema.js:2716
-#: app/src/schema.js:2785
-#: assets/js/backend.js:70035
-#: assets/js/backend.js:72341
-#: assets/js/backend.js:72446
-#: assets/js/backend.js:72551
-#: assets/js/backend.js:72612
-#: assets/js/backend.js:72679
-#: assets/js/backend.js:72748
+#: app/src/schema.js:73
+#: app/src/schema.js:2477
+#: app/src/schema.js:2583
+#: app/src/schema.js:2689
+#: app/src/schema.js:2750
+#: app/src/schema.js:2817
+#: app/src/schema.js:2886
+#: assets/js/backend.js:70409
+#: assets/js/backend.js:72813
+#: assets/js/backend.js:72919
+#: assets/js/backend.js:73025
+#: assets/js/backend.js:73086
+#: assets/js/backend.js:73153
+#: assets/js/backend.js:73222
 msgid "Enter Domain"
 msgstr ""
 
-#: app/src/schema.js:85
-#: assets/js/backend.js:70048
+#: app/src/schema.js:86
+#: assets/js/backend.js:70422
 msgid "Cache-Control Duration"
 msgstr ""
 
-#: app/src/schema.js:86
-#: assets/js/backend.js:70049
+#: app/src/schema.js:87
+#: assets/js/backend.js:70423
 msgid "Sets a Cache-Control header on newly uploaded files, telling browsers and CDNs how long to cache them. Applies to new uploads only — existing files already on the bucket keep whatever header they were uploaded with."
 msgstr ""
 
-#: app/src/schema.js:101
-#: assets/js/backend.js:70064
+#: app/src/schema.js:102
+#: assets/js/backend.js:70438
 msgid "Duration"
 msgstr ""
 
-#: app/src/schema.js:115
-#: assets/js/backend.js:70078
+#: app/src/schema.js:116
+#: assets/js/backend.js:70452
 msgid "Seconds"
 msgstr ""
 
-#: app/src/schema.js:119
-#: assets/js/backend.js:70082
+#: app/src/schema.js:120
+#: app/src/schema.js:193
+#: assets/js/backend.js:70456
+#: assets/js/backend.js:70529
 msgid "Minutes"
 msgstr ""
 
-#: app/src/schema.js:123
-#: assets/js/backend.js:70086
+#: app/src/schema.js:124
+#: assets/js/backend.js:70460
 msgid "Hours"
 msgstr ""
 
-#: app/src/schema.js:127
-#: assets/js/backend.js:70090
+#: app/src/schema.js:128
+#: assets/js/backend.js:70464
 msgid "Days"
 msgstr ""
 
-#: app/src/schema.js:131
-#: assets/js/backend.js:70094
+#: app/src/schema.js:132
+#: assets/js/backend.js:70468
 msgid "Weeks"
 msgstr ""
 
-#: app/src/schema.js:135
-#: assets/js/backend.js:70098
+#: app/src/schema.js:136
+#: assets/js/backend.js:70472
 msgid "Months"
 msgstr ""
 
-#: app/src/schema.js:139
-#: assets/js/backend.js:70102
+#: app/src/schema.js:140
+#: assets/js/backend.js:70476
 msgid "Years"
 msgstr ""
 
-#: app/src/schema.js:153
-#: assets/js/backend.js:70116
-msgid "Include Extensions"
+#: app/src/schema.js:157
+#: assets/js/backend.js:70493
+msgid "Private Media"
 msgstr ""
 
-#: app/src/schema.js:154
-#: assets/js/backend.js:70117
-msgid "Only upload files with these extensions. Leave empty to allow all (except any excluded below). Enter without the leading dot, e.g. \"zip\" not \".zip\"."
+#: app/src/schema.js:158
+#: assets/js/backend.js:70494
+msgid "Let individual media items be marked private — moved under a separate path and served through short-lived signed URLs instead of a public link."
+msgstr ""
+
+#: app/src/schema.js:167
+#: assets/js/backend.js:70503
+msgid "Private Path"
 msgstr ""
 
 #: app/src/schema.js:168
-#: app/src/schema.js:191
-#: assets/js/backend.js:70131
-#: assets/js/backend.js:70154
+#: assets/js/backend.js:70504
+msgid "Private files are stored under this path, separate from your bucket path above (not nested inside it)."
+msgstr ""
+
+#: app/src/schema.js:175
+#: assets/js/backend.js:70511
+msgid "Enter private path"
+msgstr ""
+
+#: app/src/schema.js:182
+#: assets/js/backend.js:70518
+msgid "Private URL Lifetime (minutes)"
+msgstr ""
+
+#: app/src/schema.js:186
+#: assets/js/backend.js:70522
+msgid "How long a signed private-file URL stays valid before it expires."
+msgstr ""
+
+#: app/src/schema.js:210
+#: assets/js/backend.js:70546
+msgid "Include Extensions"
+msgstr ""
+
+#: app/src/schema.js:211
+#: assets/js/backend.js:70547
+msgid "Only upload files with these extensions. Leave empty to allow all (except any excluded below). Enter without the leading dot, e.g. \"zip\" not \".zip\"."
+msgstr ""
+
+#: app/src/schema.js:225
+#: app/src/schema.js:248
+#: assets/js/backend.js:70561
+#: assets/js/backend.js:70584
 msgid "Enter extension and press Enter"
 msgstr ""
 
-#: app/src/schema.js:176
-#: assets/js/backend.js:70139
+#: app/src/schema.js:233
+#: assets/js/backend.js:70569
 msgid "Exclude Extensions"
 msgstr ""
 
-#: app/src/schema.js:177
-#: assets/js/backend.js:70140
+#: app/src/schema.js:234
+#: assets/js/backend.js:70570
 msgid "Never upload files with these extensions. Enter without the leading dot, e.g. \"zip\" not \".zip\"."
 msgstr ""
 
-#: app/src/schema.js:209
-#: app/src/schema.js:2333
-#: app/src/schema.js:2438
-#: app/src/schema.js:2543
-#: app/src/schema.js:2671
-#: app/src/schema.js:2740
-#: assets/js/backend.js:70172
-#: assets/js/backend.js:72296
-#: assets/js/backend.js:72401
-#: assets/js/backend.js:72506
-#: assets/js/backend.js:72634
-#: assets/js/backend.js:72703
+#: app/src/schema.js:266
+#: app/src/schema.js:2432
+#: app/src/schema.js:2538
+#: app/src/schema.js:2644
+#: app/src/schema.js:2772
+#: app/src/schema.js:2841
+#: assets/js/backend.js:70602
+#: assets/js/backend.js:72768
+#: assets/js/backend.js:72874
+#: assets/js/backend.js:72980
+#: assets/js/backend.js:73108
+#: assets/js/backend.js:73177
 msgid "Fast"
 msgstr ""
 
-#: app/src/schema.js:227
-#: assets/js/backend.js:70190
+#: app/src/schema.js:284
+#: assets/js/backend.js:70620
 msgid "Amazon CloudFront"
 msgstr ""
 
-#: app/src/schema.js:231
-#: assets/js/backend.js:70194
+#: app/src/schema.js:288
+#: assets/js/backend.js:70624
 msgid "Bunny.net"
 msgstr ""
 
-#: app/src/schema.js:235
-#: assets/js/backend.js:70198
+#: app/src/schema.js:292
+#: assets/js/backend.js:70628
 msgid "Fastly"
 msgstr ""
 
-#: app/src/schema.js:239
-#: assets/js/backend.js:70202
+#: app/src/schema.js:296
+#: assets/js/backend.js:70632
 msgid "Cloudflare CDN"
 msgstr ""
 
-#: app/src/schema.js:243
-#: assets/js/backend.js:70206
+#: app/src/schema.js:300
+#: assets/js/backend.js:70636
 msgid "Akamai"
 msgstr ""
 
-#: app/src/schema.js:247
-#: assets/js/backend.js:70210
+#: app/src/schema.js:304
+#: assets/js/backend.js:70640
 msgid "KeyCDN"
 msgstr ""
 
-#: app/src/schema.js:251
-#: assets/js/backend.js:70214
+#: app/src/schema.js:308
+#: assets/js/backend.js:70644
 msgid "Gcore"
 msgstr ""
 
-#: app/src/schema.js:255
-#: assets/js/backend.js:70218
+#: app/src/schema.js:312
+#: assets/js/backend.js:70648
 msgid "Edgio"
 msgstr ""
 
-#: app/src/schema.js:259
-#: assets/js/backend.js:70222
+#: app/src/schema.js:316
+#: assets/js/backend.js:70652
 msgid "Leaseweb CDN"
 msgstr ""
 
-#: app/src/schema.js:263
-#: assets/js/backend.js:70226
+#: app/src/schema.js:320
+#: assets/js/backend.js:70656
 msgid "CDNetworks"
 msgstr ""
 
-#: app/src/schema.js:281
-#: assets/js/backend.js:70244
+#: app/src/schema.js:338
+#: assets/js/backend.js:70674
 msgid "Configure Media Cloud settings"
 msgstr ""
 
-#: app/src/schema.js:293
-#: assets/js/backend.js:70256
+#: app/src/schema.js:350
+#: assets/js/backend.js:70686
 msgid "Sync Media To Cloud"
 msgstr ""
 
-#: app/src/schema.js:297
-#: assets/js/backend.js:70260
+#: app/src/schema.js:354
+#: assets/js/backend.js:70690
 msgid "Sync your existing medias from server to cloud"
 msgstr ""
 
-#: app/src/schema.js:310
-#: assets/js/backend.js:70273
+#: app/src/schema.js:367
+#: assets/js/backend.js:70703
 msgid "View the Media Cloud Sync Documentation here"
 msgstr ""
 
-#: app/src/schema.js:324
-#: assets/js/backend.js:70287
+#: app/src/schema.js:381
+#: assets/js/backend.js:70717
 msgid "Restore Media To Server"
 msgstr ""
 
-#: app/src/schema.js:328
-#: assets/js/backend.js:70291
+#: app/src/schema.js:385
+#: assets/js/backend.js:70721
 msgid "Restore your deleted media from cloud to server"
 msgstr ""
 
-#: app/src/schema.js:340
-#: assets/js/backend.js:70303
+#: app/src/schema.js:397
+#: assets/js/backend.js:70733
 msgid "Move Media To New Path"
 msgstr ""
 
-#: app/src/schema.js:344
-#: assets/js/backend.js:70307
+#: app/src/schema.js:401
+#: assets/js/backend.js:70737
 msgid "Move your existing media from old path to newly configured path"
 msgstr ""
 
-#: app/src/schema.js:357
-#: assets/js/backend.js:70320
+#: app/src/schema.js:414
+#: assets/js/backend.js:70750
 msgid "Manage your cloud files directly from here"
 msgstr ""
 
-#: app/src/schema.js:369
-#: app/src/schema.js:2829
-#: assets/js/backend.js:70332
-#: assets/js/backend.js:72792
+#: app/src/schema.js:426
+#: app/src/schema.js:2930
+#: assets/js/backend.js:70762
+#: assets/js/backend.js:73266
 msgid "Migrate Bucket to Bucket"
 msgstr ""
 
-#: app/src/schema.js:373
-#: assets/js/backend.js:70336
+#: app/src/schema.js:430
+#: assets/js/backend.js:70766
 msgid "Copy your synced media to a new provider or account"
 msgstr ""
 
-#: app/src/schema.js:388
-#: assets/js/backend.js:70351
+#: app/src/schema.js:442
+#: app/src/schema.js:2941
+#: assets/js/backend.js:70778
+#: assets/js/backend.js:73277
+msgid "Remove Media from Cloud"
+msgstr ""
+
+#: app/src/schema.js:446
+#: assets/js/backend.js:70782
+msgid "Restore your synced media to server and remove it from the cloud"
+msgstr ""
+
+#: app/src/schema.js:461
+#: assets/js/backend.js:70797
 msgid "Welcome"
 msgstr ""
 
-#: app/src/schema.js:397
-#: assets/js/backend.js:70360
+#: app/src/schema.js:470
+#: assets/js/backend.js:70806
 msgid "Select Provider"
 msgstr ""
 
-#: app/src/schema.js:407
-#: assets/js/backend.js:70370
+#: app/src/schema.js:480
+#: assets/js/backend.js:70816
 msgid "Configure credentials"
 msgstr ""
 
-#: app/src/schema.js:415
-#: app/src/schema.js:445
-#: app/src/schema.js:449
-#: assets/js/backend.js:70378
-#: assets/js/backend.js:70408
-#: assets/js/backend.js:70412
+#: app/src/schema.js:488
+#: app/src/schema.js:518
+#: app/src/schema.js:522
+#: assets/js/backend.js:70824
+#: assets/js/backend.js:70854
+#: assets/js/backend.js:70858
 msgid "Verify"
 msgstr ""
 
-#: app/src/schema.js:417
-#: assets/js/backend.js:70380
+#: app/src/schema.js:490
+#: assets/js/backend.js:70826
 msgid "Verifying Permissions"
 msgstr ""
 
-#: app/src/schema.js:471
-#: assets/js/backend.js:70434
+#: app/src/schema.js:544
+#: assets/js/backend.js:70880
 msgid "Click Next once added — we’ll verify the constant on the server."
 msgstr ""
 
-#: app/src/schema.js:475
-#: assets/js/backend.js:70438
+#: app/src/schema.js:548
+#: assets/js/backend.js:70884
 msgid "Pick a region and copy its value for wp-config.php."
 msgstr ""
 
-#: app/src/schema.js:482
-#: app/src/schema.js:483
-#: app/src/schema.js:2292
-#: app/src/schema.js:2293
-#: assets/js/backend.js:70445
-#: assets/js/backend.js:70446
-#: assets/js/backend.js:72255
-#: assets/js/backend.js:72256
+#: app/src/schema.js:555
+#: app/src/schema.js:556
+#: app/src/schema.js:2390
+#: app/src/schema.js:2391
+#: assets/js/backend.js:70891
+#: assets/js/backend.js:70892
+#: assets/js/backend.js:72726
+#: assets/js/backend.js:72727
 msgid "Amazon S3"
 msgstr ""
 
-#: app/src/schema.js:486
-#: assets/js/backend.js:70449
+#: app/src/schema.js:559
+#: assets/js/backend.js:70895
 msgid "Amazon S3 is an object storage service that offers high scalability, durability, and security for data storage and retrieval across the web."
 msgstr ""
 
-#: app/src/schema.js:499
-#: app/src/schema.js:1407
-#: app/src/schema.js:1722
-#: app/src/schema.js:1964
-#: assets/js/backend.js:70462
-#: assets/js/backend.js:71370
-#: assets/js/backend.js:71685
-#: assets/js/backend.js:71927
+#: app/src/schema.js:572
+#: app/src/schema.js:1499
+#: app/src/schema.js:1814
+#: app/src/schema.js:2056
+#: assets/js/backend.js:70908
+#: assets/js/backend.js:71835
+#: assets/js/backend.js:72150
+#: assets/js/backend.js:72392
 msgid "Access Key"
 msgstr ""
 
-#: app/src/schema.js:501
-#: app/src/schema.js:1409
-#: app/src/schema.js:1966
-#: assets/js/backend.js:70464
-#: assets/js/backend.js:71372
-#: assets/js/backend.js:71929
+#: app/src/schema.js:574
+#: app/src/schema.js:1501
+#: app/src/schema.js:2058
+#: assets/js/backend.js:70910
+#: assets/js/backend.js:71837
+#: assets/js/backend.js:72394
 msgid "Enter access key"
 msgstr ""
 
-#: app/src/schema.js:516
-#: app/src/schema.js:1424
-#: app/src/schema.js:1739
-#: app/src/schema.js:1981
-#: assets/js/backend.js:70479
-#: assets/js/backend.js:71387
-#: assets/js/backend.js:71702
-#: assets/js/backend.js:71944
+#: app/src/schema.js:589
+#: app/src/schema.js:1516
+#: app/src/schema.js:1831
+#: app/src/schema.js:2073
+#: assets/js/backend.js:70925
+#: assets/js/backend.js:71852
+#: assets/js/backend.js:72167
+#: assets/js/backend.js:72409
 msgid "Secret Key"
 msgstr ""
 
-#: app/src/schema.js:518
-#: app/src/schema.js:1426
-#: app/src/schema.js:1983
-#: assets/js/backend.js:70481
-#: assets/js/backend.js:71389
-#: assets/js/backend.js:71946
+#: app/src/schema.js:591
+#: app/src/schema.js:1518
+#: app/src/schema.js:2075
+#: assets/js/backend.js:70927
+#: assets/js/backend.js:71854
+#: assets/js/backend.js:72411
 msgid "Enter secret key"
 msgstr ""
 
-#: app/src/schema.js:533
-#: app/src/schema.js:1037
-#: app/src/schema.js:1441
-#: app/src/schema.js:1998
-#: assets/js/backend.js:70496
-#: assets/js/backend.js:71000
-#: assets/js/backend.js:71404
-#: assets/js/backend.js:71961
+#: app/src/schema.js:606
+#: app/src/schema.js:1110
+#: app/src/schema.js:1533
+#: app/src/schema.js:2090
+#: assets/js/backend.js:70942
+#: assets/js/backend.js:71446
+#: assets/js/backend.js:71869
+#: assets/js/backend.js:72426
 msgid "Region"
 msgstr ""
 
-#: app/src/schema.js:535
-#: app/src/schema.js:1042
-#: app/src/schema.js:1442
-#: app/src/schema.js:1698
-#: assets/js/backend.js:70498
-#: assets/js/backend.js:71005
-#: assets/js/backend.js:71405
-#: assets/js/backend.js:71661
+#: app/src/schema.js:608
+#: app/src/schema.js:1115
+#: app/src/schema.js:1534
+#: app/src/schema.js:1790
+#: assets/js/backend.js:70944
+#: assets/js/backend.js:71451
+#: assets/js/backend.js:71870
+#: assets/js/backend.js:72126
 msgid "Choose region"
 msgstr ""
 
-#: app/src/schema.js:707
-#: app/src/schema.js:712
-#: app/src/schema.js:996
-#: app/src/schema.js:1001
-#: app/src/schema.js:1762
-#: app/src/schema.js:1767
-#: assets/js/backend.js:70670
-#: assets/js/backend.js:70675
-#: assets/js/backend.js:70959
-#: assets/js/backend.js:70964
-#: assets/js/backend.js:71725
-#: assets/js/backend.js:71730
+#: app/src/schema.js:780
+#: app/src/schema.js:785
+#: app/src/schema.js:1069
+#: app/src/schema.js:1074
+#: app/src/schema.js:1854
+#: app/src/schema.js:1859
+#: assets/js/backend.js:71116
+#: assets/js/backend.js:71121
+#: assets/js/backend.js:71405
+#: assets/js/backend.js:71410
+#: assets/js/backend.js:72190
+#: assets/js/backend.js:72195
 msgid "Choose Bucket"
 msgstr ""
 
-#: app/src/schema.js:722
-#: app/src/schema.js:757
-#: assets/js/backend.js:70685
-#: assets/js/backend.js:70720
+#: app/src/schema.js:795
+#: app/src/schema.js:830
+#: assets/js/backend.js:71131
+#: assets/js/backend.js:71166
 msgid "Use Transfer Accilaration"
 msgstr ""
 
-#: app/src/schema.js:736
-#: app/src/schema.js:1016
-#: assets/js/backend.js:70699
-#: assets/js/backend.js:70979
+#: app/src/schema.js:809
+#: app/src/schema.js:1089
+#: assets/js/backend.js:71145
+#: assets/js/backend.js:71425
 msgid "Bucket Name"
 msgstr ""
 
-#: app/src/schema.js:741
-#: app/src/schema.js:1021
-#: app/src/schema.js:1781
-#: app/src/schema.js:1786
-#: app/src/schema.js:2013
-#: assets/js/backend.js:70704
-#: assets/js/backend.js:70984
-#: assets/js/backend.js:71744
-#: assets/js/backend.js:71749
-#: assets/js/backend.js:71976
+#: app/src/schema.js:814
+#: app/src/schema.js:1094
+#: app/src/schema.js:1873
+#: app/src/schema.js:1878
+#: app/src/schema.js:2105
+#: assets/js/backend.js:71150
+#: assets/js/backend.js:71430
+#: assets/js/backend.js:72209
+#: assets/js/backend.js:72214
+#: assets/js/backend.js:72441
 msgid "Enter Bucket Name"
 msgstr ""
 
-#: app/src/schema.js:768
-#: assets/js/backend.js:70731
+#: app/src/schema.js:841
+#: app/src/schema.js:1333
+#: assets/js/backend.js:71177
+#: assets/js/backend.js:71669
 msgid "Security"
 msgstr ""
 
-#: app/src/schema.js:773
-#: assets/js/backend.js:70736
+#: app/src/schema.js:846
+#: assets/js/backend.js:71182
 msgid "Since you are not using Amazon CloundFront for delivery, We recommend you keep Block All Public Access disabled, unless you have a very good reason to enable it."
 msgstr ""
 
-#: app/src/schema.js:782
-#: assets/js/backend.js:70745
+#: app/src/schema.js:855
+#: assets/js/backend.js:71191
 msgid "Enforce Object Ownership"
 msgstr ""
 
-#: app/src/schema.js:786
-#: assets/js/backend.js:70749
+#: app/src/schema.js:859
+#: assets/js/backend.js:71195
 msgid "Since you are not using Amazon CloundFront for delivery, We recommend you do not enforce Object Ownership, unless you have a very good reason to do so."
 msgstr ""
 
-#: app/src/schema.js:803
-#: app/src/schema.js:933
-#: app/src/schema.js:1359
-#: app/src/schema.js:1629
-#: app/src/schema.js:1898
-#: assets/js/backend.js:70766
-#: assets/js/backend.js:70896
-#: assets/js/backend.js:71322
-#: assets/js/backend.js:71592
-#: assets/js/backend.js:71861
+#: app/src/schema.js:876
+#: app/src/schema.js:1006
+#: app/src/schema.js:1451
+#: app/src/schema.js:1721
+#: app/src/schema.js:1990
+#: assets/js/backend.js:71212
+#: assets/js/backend.js:71342
+#: assets/js/backend.js:71787
+#: assets/js/backend.js:72057
+#: assets/js/backend.js:72326
 msgid "Store in Database"
 msgstr ""
 
-#: app/src/schema.js:807
-#: assets/js/backend.js:70770
+#: app/src/schema.js:880
+#: assets/js/backend.js:71216
 msgid "Enter your AWS IAM access key, secret key, and region below."
 msgstr ""
 
-#: app/src/schema.js:813
-#: app/src/schema.js:943
-#: app/src/schema.js:1369
-#: app/src/schema.js:1639
-#: app/src/schema.js:1908
-#: assets/js/backend.js:70776
-#: assets/js/backend.js:70906
-#: assets/js/backend.js:71332
-#: assets/js/backend.js:71602
-#: assets/js/backend.js:71871
+#: app/src/schema.js:886
+#: app/src/schema.js:1016
+#: app/src/schema.js:1461
+#: app/src/schema.js:1731
+#: app/src/schema.js:2000
+#: assets/js/backend.js:71222
+#: assets/js/backend.js:71352
+#: assets/js/backend.js:71797
+#: assets/js/backend.js:72067
+#: assets/js/backend.js:72336
 msgid "Use wp-config.php Constant"
 msgstr ""
 
-#: app/src/schema.js:817
-#: app/src/schema.js:947
-#: app/src/schema.js:1373
-#: app/src/schema.js:1643
-#: app/src/schema.js:1912
-#: assets/js/backend.js:70780
-#: assets/js/backend.js:70910
-#: assets/js/backend.js:71336
-#: assets/js/backend.js:71606
-#: assets/js/backend.js:71875
+#: app/src/schema.js:890
+#: app/src/schema.js:1020
+#: app/src/schema.js:1465
+#: app/src/schema.js:1735
+#: app/src/schema.js:2004
+#: assets/js/backend.js:71226
+#: assets/js/backend.js:71356
+#: assets/js/backend.js:71801
+#: assets/js/backend.js:72071
+#: assets/js/backend.js:72340
 msgid "Keep credentials out of the database by defining a WPMCS_CONFIG constant in wp-config.php. More secure than storing in the database."
 msgstr ""
 
-#: app/src/schema.js:822
-#: assets/js/backend.js:70785
+#: app/src/schema.js:895
+#: assets/js/backend.js:71231
 msgid "Add the following to your wp-config.php (above the “That’s all, stop editing!” line) using your AWS IAM credentials:"
 msgstr ""
 
-#: app/src/schema.js:827
-#: assets/js/backend.js:70790
+#: app/src/schema.js:900
+#: assets/js/backend.js:71236
 msgid "Pick an AWS region and copy its value for the region key in wp-config.php."
 msgstr ""
 
-#: app/src/schema.js:840
-#: app/src/schema.js:1266
-#: app/src/schema.js:1542
-#: app/src/schema.js:1812
-#: app/src/schema.js:2039
-#: assets/js/backend.js:70803
-#: assets/js/backend.js:71229
-#: assets/js/backend.js:71505
-#: assets/js/backend.js:71775
-#: assets/js/backend.js:72002
+#: app/src/schema.js:913
+#: app/src/schema.js:1358
+#: app/src/schema.js:1634
+#: app/src/schema.js:1904
+#: app/src/schema.js:2131
+#: assets/js/backend.js:71249
+#: assets/js/backend.js:71694
+#: assets/js/backend.js:71970
+#: assets/js/backend.js:72240
+#: assets/js/backend.js:72467
 msgid "Copy files to bucket"
 msgstr ""
 
-#: app/src/schema.js:844
-#: app/src/schema.js:1270
-#: app/src/schema.js:1546
-#: app/src/schema.js:2043
-#: assets/js/backend.js:70807
-#: assets/js/backend.js:71233
-#: assets/js/backend.js:71509
-#: assets/js/backend.js:72006
+#: app/src/schema.js:917
+#: app/src/schema.js:1362
+#: app/src/schema.js:1638
+#: app/src/schema.js:2135
+#: assets/js/backend.js:71253
+#: assets/js/backend.js:71698
+#: assets/js/backend.js:71974
+#: assets/js/backend.js:72471
 msgid "Upload to bucket, when ever a file is uploaded to Media Library"
 msgstr ""
 
-#: app/src/schema.js:852
-#: app/src/schema.js:1278
-#: app/src/schema.js:1554
-#: app/src/schema.js:1824
-#: app/src/schema.js:2051
-#: assets/js/backend.js:70815
-#: assets/js/backend.js:71241
-#: assets/js/backend.js:71517
-#: assets/js/backend.js:71787
-#: assets/js/backend.js:72014
+#: app/src/schema.js:925
+#: app/src/schema.js:1370
+#: app/src/schema.js:1646
+#: app/src/schema.js:1916
+#: app/src/schema.js:2143
+#: assets/js/backend.js:71261
+#: assets/js/backend.js:71706
+#: assets/js/backend.js:71982
+#: assets/js/backend.js:72252
+#: assets/js/backend.js:72479
 msgid "Remove files from server"
 msgstr ""
 
-#: app/src/schema.js:856
-#: app/src/schema.js:1282
-#: app/src/schema.js:1558
-#: app/src/schema.js:2055
-#: assets/js/backend.js:70819
-#: assets/js/backend.js:71245
-#: assets/js/backend.js:71521
-#: assets/js/backend.js:72018
+#: app/src/schema.js:929
+#: app/src/schema.js:1374
+#: app/src/schema.js:1650
+#: app/src/schema.js:2147
+#: assets/js/backend.js:71265
+#: assets/js/backend.js:71710
+#: assets/js/backend.js:71986
+#: assets/js/backend.js:72483
 msgid "Use this to remove files from the server once they are uploaded to the bucket."
 msgstr ""
 
-#: app/src/schema.js:868
-#: app/src/schema.js:1294
-#: app/src/schema.js:1570
-#: app/src/schema.js:1840
-#: app/src/schema.js:2067
-#: assets/js/backend.js:70831
-#: assets/js/backend.js:71257
-#: assets/js/backend.js:71533
-#: assets/js/backend.js:71803
-#: assets/js/backend.js:72030
+#: app/src/schema.js:941
+#: app/src/schema.js:1386
+#: app/src/schema.js:1662
+#: app/src/schema.js:1932
+#: app/src/schema.js:2159
+#: assets/js/backend.js:71277
+#: assets/js/backend.js:71722
+#: assets/js/backend.js:71998
+#: assets/js/backend.js:72268
+#: assets/js/backend.js:72495
 msgid "Add Prefix to Bucket Path"
 msgstr ""
 
-#: app/src/schema.js:872
-#: app/src/schema.js:2071
-#: assets/js/backend.js:70835
-#: assets/js/backend.js:72034
+#: app/src/schema.js:945
+#: app/src/schema.js:2163
+#: assets/js/backend.js:71281
+#: assets/js/backend.js:72499
 msgid "Enable this option if you need a custom prefix for your bucket path in Amazon S3"
 msgstr ""
 
-#: app/src/schema.js:885
-#: app/src/schema.js:1311
-#: app/src/schema.js:1587
-#: app/src/schema.js:1856
-#: app/src/schema.js:2084
-#: assets/js/backend.js:70848
-#: assets/js/backend.js:71274
-#: assets/js/backend.js:71550
-#: assets/js/backend.js:71819
-#: assets/js/backend.js:72047
+#: app/src/schema.js:958
+#: app/src/schema.js:1403
+#: app/src/schema.js:1679
+#: app/src/schema.js:1948
+#: app/src/schema.js:2176
+#: assets/js/backend.js:71294
+#: assets/js/backend.js:71739
+#: assets/js/backend.js:72015
+#: assets/js/backend.js:72284
+#: assets/js/backend.js:72512
 msgid "Enter Prefix"
 msgstr ""
 
-#: app/src/schema.js:894
-#: app/src/schema.js:1320
-#: app/src/schema.js:1596
-#: app/src/schema.js:1865
-#: app/src/schema.js:2093
-#: assets/js/backend.js:70857
-#: assets/js/backend.js:71283
-#: assets/js/backend.js:71559
-#: assets/js/backend.js:71828
-#: assets/js/backend.js:72056
+#: app/src/schema.js:967
+#: app/src/schema.js:1412
+#: app/src/schema.js:1688
+#: app/src/schema.js:1957
+#: app/src/schema.js:2185
+#: assets/js/backend.js:71303
+#: assets/js/backend.js:71748
+#: assets/js/backend.js:72024
+#: assets/js/backend.js:72293
+#: assets/js/backend.js:72521
 msgid "Year/Month Structure"
 msgstr ""
 
-#: app/src/schema.js:898
-#: app/src/schema.js:1324
-#: app/src/schema.js:1600
-#: app/src/schema.js:2097
-#: assets/js/backend.js:70861
-#: assets/js/backend.js:71287
-#: assets/js/backend.js:71563
-#: assets/js/backend.js:72060
+#: app/src/schema.js:971
+#: app/src/schema.js:1416
+#: app/src/schema.js:1692
+#: app/src/schema.js:2189
+#: assets/js/backend.js:71307
+#: assets/js/backend.js:71752
+#: assets/js/backend.js:72028
+#: assets/js/backend.js:72525
 msgid "This will enable year/month directories at the end of your base path. Otherwise it will be uploaded in to the base path directly."
 msgstr ""
 
-#: app/src/schema.js:906
-#: app/src/schema.js:1332
-#: app/src/schema.js:1608
-#: app/src/schema.js:1877
-#: app/src/schema.js:2105
-#: assets/js/backend.js:70869
-#: assets/js/backend.js:71295
-#: assets/js/backend.js:71571
-#: assets/js/backend.js:71840
-#: assets/js/backend.js:72068
+#: app/src/schema.js:979
+#: app/src/schema.js:1424
+#: app/src/schema.js:1700
+#: app/src/schema.js:1969
+#: app/src/schema.js:2197
+#: assets/js/backend.js:71315
+#: assets/js/backend.js:71760
+#: assets/js/backend.js:72036
+#: assets/js/backend.js:72305
+#: assets/js/backend.js:72533
 msgid "Object versioning"
 msgstr ""
 
-#: app/src/schema.js:910
-#: app/src/schema.js:1336
-#: app/src/schema.js:1612
-#: app/src/schema.js:2109
-#: assets/js/backend.js:70873
-#: assets/js/backend.js:71299
-#: assets/js/backend.js:71575
-#: assets/js/backend.js:72072
+#: app/src/schema.js:983
+#: app/src/schema.js:1428
+#: app/src/schema.js:1704
+#: app/src/schema.js:2201
+#: assets/js/backend.js:71319
+#: assets/js/backend.js:71764
+#: assets/js/backend.js:72040
+#: assets/js/backend.js:72537
 msgid "Append a timestamp to the bucket path."
 msgstr ""
 
-#: app/src/schema.js:937
-#: assets/js/backend.js:70900
+#: app/src/schema.js:1010
+#: assets/js/backend.js:71346
 msgid "Paste your Google Cloud service account JSON below."
 msgstr ""
 
-#: app/src/schema.js:952
-#: assets/js/backend.js:70915
+#: app/src/schema.js:1025
+#: assets/js/backend.js:71361
 msgid "Add the following to your wp-config.php (above the “That’s all, stop editing!” line). Paste your service account JSON as a single-line string:"
 msgstr ""
 
-#: app/src/schema.js:962
-#: assets/js/backend.js:70925
+#: app/src/schema.js:1035
+#: assets/js/backend.js:71371
 msgid "Google Cloud Storage is a unified object storage service that provides high scalability, durability, and seamless integration with Google Cloud services for efficient data management and access."
 msgstr ""
 
-#: app/src/schema.js:975
-#: assets/js/backend.js:70938
+#: app/src/schema.js:1048
+#: assets/js/backend.js:71384
 msgid "JSON Config File"
 msgstr ""
 
-#: app/src/schema.js:980
-#: assets/js/backend.js:70943
+#: app/src/schema.js:1053
+#: assets/js/backend.js:71389
 msgid "Add JSON Code here"
 msgstr ""
 
-#: app/src/schema.js:1298
-#: assets/js/backend.js:71261
+#: app/src/schema.js:1337
+#: assets/js/backend.js:71673
+msgid "Block All Public Access"
+msgstr ""
+
+#: app/src/schema.js:1341
+#: assets/js/backend.js:71677
+msgid "Enforces Public Access Prevention on this bucket, blocking all public access regardless of any other setting. If Private Media is enabled on this connection, this also breaks the public side of that feature — enabling this and Private Media together is not recommended."
+msgstr ""
+
+#: app/src/schema.js:1390
+#: assets/js/backend.js:71726
 msgid "Enable this option if you need a custom prefix for your bucket path in Google Cloud Storage"
 msgstr ""
 
-#: app/src/schema.js:1363
-#: assets/js/backend.js:71326
+#: app/src/schema.js:1455
+#: assets/js/backend.js:71791
 msgid "Enter your DigitalOcean Spaces access key, secret key, and region below."
 msgstr ""
 
-#: app/src/schema.js:1378
-#: assets/js/backend.js:71341
+#: app/src/schema.js:1470
+#: assets/js/backend.js:71806
 msgid "Add the following to your wp-config.php (above the “That’s all, stop editing!” line) using your Spaces API credentials:"
 msgstr ""
 
-#: app/src/schema.js:1383
-#: assets/js/backend.js:71346
+#: app/src/schema.js:1475
+#: assets/js/backend.js:71811
 msgid "Pick a Spaces region (e.g. nyc3, sfo3) and copy its value for wp-config.php."
 msgstr ""
 
-#: app/src/schema.js:1394
-#: assets/js/backend.js:71357
+#: app/src/schema.js:1486
+#: assets/js/backend.js:71822
 msgid "DigitalOcean Spaces is a cost-effective object storage solution designed for simplicity, scalability, and high availability, ideal for storing and serving large amounts of unstructured data"
 msgstr ""
 
-#: app/src/schema.js:1488
-#: assets/js/backend.js:71451
+#: app/src/schema.js:1580
+#: assets/js/backend.js:71916
 msgid "Space"
 msgstr ""
 
-#: app/src/schema.js:1493
-#: app/src/schema.js:1498
-#: app/src/schema.js:1513
-#: app/src/schema.js:1518
-#: assets/js/backend.js:71456
-#: assets/js/backend.js:71461
-#: assets/js/backend.js:71476
-#: assets/js/backend.js:71481
+#: app/src/schema.js:1585
+#: app/src/schema.js:1590
+#: app/src/schema.js:1605
+#: app/src/schema.js:1610
+#: assets/js/backend.js:71921
+#: assets/js/backend.js:71926
+#: assets/js/backend.js:71941
+#: assets/js/backend.js:71946
 msgid "Enter Space Name"
 msgstr ""
 
-#: app/src/schema.js:1574
-#: assets/js/backend.js:71537
+#: app/src/schema.js:1666
+#: assets/js/backend.js:72002
 msgid "Enable this option if you need a custom prefix for your bucket path in Digital Ocean Spaces."
 msgstr ""
 
-#: app/src/schema.js:1633
-#: assets/js/backend.js:71596
+#: app/src/schema.js:1725
+#: assets/js/backend.js:72061
 msgid "Enter your Cloudflare account ID, R2 access key, secret key, and region below."
 msgstr ""
 
-#: app/src/schema.js:1648
-#: assets/js/backend.js:71611
+#: app/src/schema.js:1740
+#: assets/js/backend.js:72076
 msgid "Add the following to your wp-config.php (above the “That’s all, stop editing!” line) using your Cloudflare R2 API credentials:"
 msgstr ""
 
-#: app/src/schema.js:1653
-#: assets/js/backend.js:71616
+#: app/src/schema.js:1745
+#: assets/js/backend.js:72081
 msgid "Pick a jurisdiction/region and copy its value for wp-config.php."
 msgstr ""
 
-#: app/src/schema.js:1665
-#: assets/js/backend.js:71628
+#: app/src/schema.js:1757
+#: assets/js/backend.js:72093
 msgid "Cloudflare R2 is a globally distributed, zero-egress-fee object storage service designed for high performance, reliability, and massive scalability."
 msgstr ""
 
-#: app/src/schema.js:1677
-#: assets/js/backend.js:71640
+#: app/src/schema.js:1769
+#: assets/js/backend.js:72105
 msgid "Account ID"
 msgstr ""
 
-#: app/src/schema.js:1679
-#: assets/js/backend.js:71642
+#: app/src/schema.js:1771
+#: assets/js/backend.js:72107
 msgid "Enter Account ID"
 msgstr ""
 
-#: app/src/schema.js:1694
-#: assets/js/backend.js:71657
+#: app/src/schema.js:1786
+#: assets/js/backend.js:72122
 msgid "Data Jurisdiction / Region"
 msgstr ""
 
-#: app/src/schema.js:1724
-#: assets/js/backend.js:71687
+#: app/src/schema.js:1816
+#: assets/js/backend.js:72152
 msgid "Enter Access Key"
 msgstr ""
 
-#: app/src/schema.js:1741
-#: assets/js/backend.js:71704
+#: app/src/schema.js:1833
+#: assets/js/backend.js:72169
 msgid "Enter Secret Key"
 msgstr ""
 
-#: app/src/schema.js:1816
-#: assets/js/backend.js:71779
+#: app/src/schema.js:1908
+#: assets/js/backend.js:72244
 msgid "Upload to the bucket whenever a file is uploaded to the Media Library."
 msgstr ""
 
-#: app/src/schema.js:1828
-#: assets/js/backend.js:71791
+#: app/src/schema.js:1920
+#: assets/js/backend.js:72256
 msgid "Remove the server file once it is successfully uploaded to the bucket."
 msgstr ""
 
-#: app/src/schema.js:1844
-#: assets/js/backend.js:71807
+#: app/src/schema.js:1936
+#: assets/js/backend.js:72272
 msgid "Enable this option if you want a custom folder prefix for your uploaded files."
 msgstr ""
 
-#: app/src/schema.js:1869
-#: assets/js/backend.js:71832
+#: app/src/schema.js:1961
+#: assets/js/backend.js:72297
 msgid "Automatically create year/month folders inside your base path."
 msgstr ""
 
-#: app/src/schema.js:1881
-#: assets/js/backend.js:71844
+#: app/src/schema.js:1973
+#: assets/js/backend.js:72309
 msgid "Append a timestamp to the file path for versioning."
 msgstr ""
 
-#: app/src/schema.js:1902
-#: assets/js/backend.js:71865
+#: app/src/schema.js:1994
+#: assets/js/backend.js:72330
 msgid "Enter your S3-compatible storage endpoint, access key, secret key, and region below."
 msgstr ""
 
-#: app/src/schema.js:1917
-#: assets/js/backend.js:71880
+#: app/src/schema.js:2009
+#: assets/js/backend.js:72345
 msgid "Add the following to your wp-config.php (above the “That’s all, stop editing!” line). Replace YOUR_STORAGE_ENDPOINT with your provider’s S3-compatible endpoint URL:"
 msgstr ""
 
-#: app/src/schema.js:1931
-#: assets/js/backend.js:71894
+#: app/src/schema.js:2023
+#: assets/js/backend.js:72359
 msgid "An S3-compatible storage service provides scalable, durable, and secure object storage with an interface and functionality similar to Amazon S3, enabling seamless integration with existing S3-based tools and applications."
 msgstr ""
 
-#: app/src/schema.js:1943
-#: assets/js/backend.js:71906
+#: app/src/schema.js:2035
+#: assets/js/backend.js:72371
 msgid "Storage Endpoint"
 msgstr ""
 
-#: app/src/schema.js:1948
-#: assets/js/backend.js:71911
+#: app/src/schema.js:2040
+#: assets/js/backend.js:72376
 msgid "Enter storage endpoint URL"
 msgstr ""
 
-#: app/src/schema.js:2000
-#: assets/js/backend.js:71963
+#: app/src/schema.js:2092
+#: assets/js/backend.js:72428
 msgid "Enter region"
 msgstr ""
 
-#: app/src/schema.js:2018
-#: assets/js/backend.js:71981
+#: app/src/schema.js:2110
+#: assets/js/backend.js:72446
 msgid "Enter bucket name"
 msgstr ""
 
-#: app/src/schema.js:2297
-#: app/src/schema.js:2403
-#: app/src/schema.js:2508
-#: app/src/schema.js:2609
-#: assets/js/backend.js:72260
-#: assets/js/backend.js:72366
-#: assets/js/backend.js:72471
-#: assets/js/backend.js:72572
+#: app/src/schema.js:2395
+#: app/src/schema.js:2502
+#: app/src/schema.js:2608
+#: app/src/schema.js:2710
+#: assets/js/backend.js:72731
+#: assets/js/backend.js:72838
+#: assets/js/backend.js:72944
+#: assets/js/backend.js:73046
 msgid "Provider Console"
 msgstr ""
 
-#: app/src/schema.js:2303
-#: app/src/schema.js:2408
-#: app/src/schema.js:2513
-#: app/src/schema.js:2614
-#: assets/js/backend.js:72266
-#: assets/js/backend.js:72371
-#: assets/js/backend.js:72476
-#: assets/js/backend.js:72577
+#: app/src/schema.js:2401
+#: app/src/schema.js:2507
+#: app/src/schema.js:2613
+#: app/src/schema.js:2715
+#: assets/js/backend.js:72737
+#: assets/js/backend.js:72843
+#: assets/js/backend.js:72949
+#: assets/js/backend.js:73051
 msgid "Slow"
 msgstr ""
 
-#: app/src/schema.js:2324
-#: app/src/schema.js:2429
-#: app/src/schema.js:2534
-#: app/src/schema.js:2662
-#: app/src/schema.js:2731
-#: assets/js/backend.js:72287
-#: assets/js/backend.js:72392
-#: assets/js/backend.js:72497
-#: assets/js/backend.js:72625
-#: assets/js/backend.js:72694
+#: app/src/schema.js:2423
+#: app/src/schema.js:2529
+#: app/src/schema.js:2635
+#: app/src/schema.js:2763
+#: app/src/schema.js:2832
+#: assets/js/backend.js:72759
+#: assets/js/backend.js:72865
+#: assets/js/backend.js:72971
+#: assets/js/backend.js:73099
+#: assets/js/backend.js:73168
 msgid "Other"
 msgstr ""
 
-#: app/src/schema.js:2347
-#: app/src/schema.js:2452
-#: app/src/schema.js:2557
-#: app/src/schema.js:2685
-#: app/src/schema.js:2754
-#: assets/js/backend.js:72310
-#: assets/js/backend.js:72415
-#: assets/js/backend.js:72520
-#: assets/js/backend.js:72648
-#: assets/js/backend.js:72717
+#: app/src/schema.js:2446
+#: app/src/schema.js:2552
+#: app/src/schema.js:2658
+#: app/src/schema.js:2786
+#: app/src/schema.js:2855
+#: assets/js/backend.js:72782
+#: assets/js/backend.js:72888
+#: assets/js/backend.js:72994
+#: assets/js/backend.js:73122
+#: assets/js/backend.js:73191
 msgid "How URL rewriting works"
 msgstr ""
 
-#: app/src/schema.js:2364
-#: app/src/schema.js:2469
-#: app/src/schema.js:2574
-#: app/src/schema.js:2702
-#: app/src/schema.js:2771
-#: assets/js/backend.js:72327
-#: assets/js/backend.js:72432
-#: assets/js/backend.js:72537
-#: assets/js/backend.js:72665
-#: assets/js/backend.js:72734
+#: app/src/schema.js:2463
+#: app/src/schema.js:2569
+#: app/src/schema.js:2675
+#: app/src/schema.js:2803
+#: app/src/schema.js:2872
+#: assets/js/backend.js:72799
+#: assets/js/backend.js:72905
+#: assets/js/backend.js:73011
+#: assets/js/backend.js:73139
+#: assets/js/backend.js:73208
 msgid "How to set a custom domain name"
 msgstr ""
 
-#: app/src/schema.js:2417
-#: app/src/schema.js:2623
-#: assets/js/backend.js:72380
-#: assets/js/backend.js:72586
+#: app/src/schema.js:2516
+#: app/src/schema.js:2724
+#: assets/js/backend.js:72852
+#: assets/js/backend.js:73060
 msgid "For media library files that have been copied to the bucket, Enable this option to serve media from provider, so that they are served from the storage instead of your server."
 msgstr ""
 
-#: app/src/schema.js:2522
-#: assets/js/backend.js:72485
+#: app/src/schema.js:2622
+#: assets/js/backend.js:72958
 msgid "For media library files that have been copied to the bucket, Enable this option to serve media from provider, so that they are served from the space instead of your server."
 msgstr ""
 
-#: app/src/schema.js:2635
-#: assets/js/backend.js:72598
+#: app/src/schema.js:2736
+#: assets/js/backend.js:73072
 msgid "Serves media from a custom domain that has been pointed to your media storage. Or public endpoint provided by Cloudflare R2."
 msgstr ""
 
-#: app/src/schema.js:2800
-#: assets/js/backend.js:72763
+#: app/src/schema.js:2901
+#: assets/js/backend.js:73237
 msgid "Sync Media to Cloud Storage"
 msgstr ""
 
-#: app/src/schema.js:2807
-#: assets/js/backend.js:72770
+#: app/src/schema.js:2908
+#: assets/js/backend.js:73244
 msgid "Restore Media to Server"
 msgstr ""
 
-#: app/src/schema.js:2811
-#: assets/js/backend.js:72774
+#: app/src/schema.js:2912
+#: assets/js/backend.js:73248
 msgid "We will check all the media files that are synced to the cloud and restore any missing files to your server."
 msgstr ""
 
-#: app/src/schema.js:2818
-#: assets/js/backend.js:72781
+#: app/src/schema.js:2919
+#: assets/js/backend.js:73255
 msgid "Move Media to New Path"
 msgstr ""
 
-#: app/src/schema.js:2822
-#: assets/js/backend.js:72785
+#: app/src/schema.js:2923
+#: assets/js/backend.js:73259
 msgid "If you have changed the base path or enabled/disables year/month structure, Use this tool to move all your existing files to the new path in the cloud storage. We will check all the media files that are synced to the cloud and move them to the new path if required."
 msgstr ""
 
-#: app/src/schema.js:2833
-#: assets/js/backend.js:72796
+#: app/src/schema.js:2934
+#: assets/js/backend.js:73270
 msgid "Copies your synced media from the currently connected bucket to the destination bucket you configured — enable \"include untracked files\" on the destination to also copy objects with no synced media record. Doesn't modify the source bucket unless you enabled the delete-source-files option."
 msgstr ""
 
-#: assets/js/backend.js:59427
-#: assets/js/backend.js:59432
-msgid "Donate"
+#: app/src/schema.js:2945
+#: assets/js/backend.js:73281
+msgid "This will restore your synced media to the server and permanently delete the cloud copies."
 msgstr ""

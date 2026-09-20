@@ -123,7 +123,7 @@ class Autoloader {
 			'Upgrade' 		=> 'includes/upgrade/upgrade.php',
 
 			// Base Files
-			'Service'		=> 'includes/base/service.php',
+			'Service'		=> 'includes/base/services/service.php',
 			'Item'			=> 'includes/base/item.php',
             'Db' 			=> 'includes/base/db.php',
             'Cdn' 			=> 'includes/base/cdn.php',

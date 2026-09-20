@@ -122,7 +122,7 @@ class Utils {
      * @return array|boolean|string|integer|float|double
      */
     public static function get_user_meta($post_id, $key, $default = false, $meta_name = false, $expire = false){
-        $data = Cache::get_object_cache( $key, $post_id, $meta_name, $expire, true );
+        $data = Cache::get_object_cache( $key, $post_id, $meta_name, $expire, 'user' );
         return $data === false ? $default : $data;
     }
 
@@ -132,7 +132,7 @@ class Utils {
      * @return boolean
      */
     public static function update_user_meta($post_id, $key, $options, $meta_name = false, $expire = false){
-        return Cache::set_object_cache( $key, $options, $post_id, $meta_name, $expire, true );
+        return Cache::set_object_cache( $key, $options, $post_id, $meta_name, $expire, 'user' );
     }
 
     /**
@@ -141,7 +141,41 @@ class Utils {
      * @return boolean
      */
     public static function delete_user_meta($post_id, $key, $meta_name = false){
-        return Cache::delete_object_cache( $key, $post_id, $meta_name, true );
+        return Cache::delete_object_cache( $key, $post_id, $meta_name, 'user' );
+    }
+
+    /**
+     * Function To get Plugin Specific meta via a caller-supplied storage backend
+     * — for a meta table that isn't 'posts'/'users' and doesn't follow WP's
+     * standard get_metadata() column conventions (e.g. BuddyBoss's groupmeta,
+     * which uses its own get/update/delete functions internally).
+     * @param array $backend ['get'=>callable, 'update'=>callable, 'delete'=>callable, 'prefix'=>string]
+     *                        Each callable is shaped like get_post_meta($id,$key,true)/
+     *                        update_post_meta($id,$key,$value)/delete_post_meta($id,$key).
+     * @since 1.4.0.3
+     * @return array|boolean|string|integer|float|double
+     */
+    public static function get_custom_meta($post_id, $key, $default = false, $meta_name = false, $expire = false, $backend = []){
+        $data = Cache::get_object_cache( $key, $post_id, $meta_name, $expire, $backend );
+        return $data === false ? $default : $data;
+    }
+
+    /**
+     * Function To update Plugin Specific meta via a caller-supplied storage backend. See get_custom_meta().
+     * @since 1.4.0.3
+     * @return boolean
+     */
+    public static function update_custom_meta($post_id, $key, $options, $meta_name = false, $expire = false, $backend = []){
+        return Cache::set_object_cache( $key, $options, $post_id, $meta_name, $expire, $backend );
+    }
+
+    /**
+     * Function To delete Plugin Specific meta via a caller-supplied storage backend. See get_custom_meta().
+     * @since 1.4.0.3
+     * @return boolean
+     */
+    public static function delete_custom_meta($post_id, $key, $meta_name = false, $backend = []){
+        return Cache::delete_object_cache( $key, $post_id, $meta_name, $backend );
     }
 
 
@@ -172,7 +206,7 @@ class Utils {
             // Clear user meta
             $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key = %s", $meta_name ) );
         }
-       
+
         if( in_array('options', $meta_tables) ) {
             // Clear options
             $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name = %s", $meta_name ) );
@@ -439,8 +473,22 @@ class Utils {
         return (
             self::is_service_enabled() &&
             self::get_settings('rewrite_url') &&
-            ( $check_id ? isset($attachment_id) && !empty($attachment_id) : true )    
+            ( $check_id ? isset($attachment_id) && !empty($attachment_id) : true )
         );
+    }
+
+    /**
+     * Whether a specific attachment's URL should resolve to the cloud copy — same as
+     * is_ok_to_serve() plus a per-item override point (e.g. Pro's "Use Server URL").
+     * Only for genuine URL-building call sites; is_ok_to_serve() is also reused elsewhere
+     * as a plain "is this item managed" check and must keep its original meaning.
+     * @since 1.4.1
+     */
+    public static function should_serve_from_cloud($attachment_id, $source_type = 'media_library') {
+        if (!self::is_ok_to_serve($attachment_id)) {
+            return false;
+        }
+        return (bool) apply_filters('wpmcs_should_serve_from_cloud', true, $attachment_id, $source_type);
     }
 
     /**
@@ -576,6 +624,12 @@ class Utils {
         // Normalize slashes early
         $file = str_replace( '\\', '/', $file );
 
+        // filter_var(..., FILTER_VALIDATE_URL) requires a scheme, but callers like
+        // FilterContent::get_item_sources_from_urls() intentionally pass scheme-relative
+        // URLs (Utils::remove_scheme()/reduce_url() strip it) — wp_parse_url() handles
+        // "//host/path" correctly, so treat that as URL-like too.
+        $is_url = filter_var( $file, FILTER_VALIDATE_URL ) || 0 === strpos( $file, '//' );
+
         /**
          * -------------------------------------------------
          * TYPE: SOURCE (WordPress local paths / URLs)
@@ -591,17 +645,24 @@ class Utils {
             $basedir = str_replace( '\\', '/', $uploads['basedir'] );
             $baseurl = str_replace( '\\', '/', $uploads['baseurl'] );
 
-            // If URL → extract path
-            if ( filter_var( $file, FILTER_VALIDATE_URL ) ) {
+            // If URL → extract path, then strip using baseurl's own path component —
+            // once scheme+host are gone, comparing against the full $baseurl string
+            // (which still has them) never matches.
+            if ( $is_url ) {
                 $parsed = wp_parse_url( $file );
                 $file   = $parsed['path'] ?? '';
-            }
 
-            // Strip WordPress upload root
-            if ( 0 === strpos( $file, $basedir ) ) {
-                $file = substr( $file, strlen( $basedir ) );
-            } elseif ( 0 === strpos( $file, $baseurl ) ) {
-                $file = substr( $file, strlen( $baseurl ) );
+                $baseurl_path = (string) wp_parse_url( $baseurl, PHP_URL_PATH );
+                if ( $baseurl_path !== '' && 0 === strpos( $file, $baseurl_path ) ) {
+                    $file = substr( $file, strlen( $baseurl_path ) );
+                }
+            } else {
+                // Strip WordPress upload root
+                if ( 0 === strpos( $file, $basedir ) ) {
+                    $file = substr( $file, strlen( $basedir ) );
+                } elseif ( 0 === strpos( $file, $baseurl ) ) {
+                    $file = substr( $file, strlen( $baseurl ) );
+                }
             }
         }
 
@@ -613,7 +674,7 @@ class Utils {
         elseif ( $type === 'key' ) {
 
             // URL → extract path only
-            if ( filter_var( $file, FILTER_VALIDATE_URL ) ) {
+            if ( $is_url ) {
                 $parsed = wp_parse_url( $file );
                 $file   = $parsed['path'] ?? '';
             }
@@ -646,11 +707,44 @@ class Utils {
             return false;
         }
 
+        // Reject a literal ".." path segment — callers resolve this against the uploads
+        // basedir and pass it straight to file_exists()/upload, so an untrimmed "../../wp-config.php"
+        // would otherwise let a crafted source URL read/upload a file outside the uploads directory.
+        if ( in_array( '..', explode( '/', $file ), true ) ) {
+            return false;
+        }
+
         return apply_filters(
             'wpmcs_get_relative_file_path_from_upload_directory',
             $file,
             $type
         );
+    }
+
+    /**
+     * Resolve a relative path (from get_attachment_source_path()) to an absolute path,
+     * only if it genuinely stays within the uploads basedir — a defense-in-depth check
+     * for callers about to file_exists()/read the result, alongside get_attachment_source_path()'s
+     * own "..".
+     * @since 1.4.1
+     * @return string|false
+     */
+    public static function resolve_within_uploads( $relative_path ) {
+        if ( empty( $relative_path ) || ! is_string( $relative_path ) ) {
+            return false;
+        }
+
+        $basedir = trailingslashit( wp_get_upload_dir()['basedir'] );
+        $absolute_path = $basedir . ltrim( $relative_path, '/' );
+
+        $real_basedir = realpath( $basedir );
+        $real_path    = realpath( $absolute_path );
+
+        if ( $real_basedir === false || $real_path === false || 0 !== strpos( $real_path, $real_basedir ) ) {
+            return false;
+        }
+
+        return $absolute_path;
     }
 
 
@@ -739,7 +833,7 @@ class Utils {
      * Generate Key for Objects
      * @since 1.0.0
      */
-    public static function generate_object_key($relative_source_path, $prefix) {
+    public static function generate_object_key($relative_source_path, $prefix, $is_private = false) {
         $upload_path            = '';
         $enable_base_path       = self::get_settings('enable_base_path', true);
         $base_path              = self::get_settings('base_path', 'wp-content/uploads');
@@ -747,19 +841,37 @@ class Utils {
         $relative_source_path   = ltrim( $relative_source_path, '/' );
         $file_name              = wp_basename( $relative_source_path );
 
-        if(!$enable_base_path) { // If base path is not enabled
-            $base_path = '';
+        if($is_private) {
+            // Private media is a Pro feature — Pro hooks this filter to supply the
+            // actual base_path+private_path root (see ProItem/ProPrivateMedia). An
+            // item can carry is_private=1 from when Pro *was* active and later have
+            // this filter go unanswered — Pro deactivated/uninstalled, or its license
+            // simply lapsing (ProPrivateMedia::register_hooks() itself requires an
+            // active license) — so this is a real, reachable state, not a hypothetical.
+            // Falling back to an empty root would silently place the file outside
+            // whatever path the bucket policy actually carves out — publicly
+            // readable, while is_private stays 1 and Item::get_url() keeps serving it
+            // as if it were still protected. Refuse instead: no key at all is safer
+            // than a wrong one for a file that's supposed to stay private.
+            if ( ! has_filter( 'wpmcs_private_object_key_root' ) ) {
+                return false;
+            }
+            $upload_path = apply_filters( 'wpmcs_private_object_key_root', '', $relative_source_path, $prefix );
+        } else {
+            if(!$enable_base_path) { // If base path is not enabled
+                $base_path = '';
+            }
+
+            if(isset($base_path) && !empty($base_path)) {
+                $upload_path.= preg_replace('~/+~', '/',
+                                        str_replace('\\', '/',
+                                            trim($base_path," \n\r\t\v\x00\/ ")
+                                        )
+                                    );
+            }
         }
 
         $keep_original_folder_structure = apply_filters( 'wpmcs_keep_original_folder_structure', false );
-
-        if(isset($base_path) && !empty($base_path)) {
-            $upload_path.= preg_replace('~/+~', '/', 
-                                    str_replace('\\', '/', 
-                                        trim($base_path," \n\r\t\v\x00\/ ")
-                                    )
-                                );
-        }
 
         if($keep_original_folder_structure) {
             $object_key = ltrim($upload_path . '/' . dirname( $relative_source_path ) . '/' . $prefix . $file_name, '/');

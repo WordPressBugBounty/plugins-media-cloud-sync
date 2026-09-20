@@ -722,44 +722,59 @@ class S3 {
 
     /**
      * Add Bucket Policy
+     *
+     * $private_prefix, when non-empty, carves that path out of the public
+     * grant entirely — every action in the list, not just reads, so an
+     * anonymous caller can't read, write, or delete anything under it. Kept
+     * as one statement with NotResource rather than split into "reads
+     * excluded, everything else still public" — that split would still let
+     * anonymous PutObject/DeleteObject reach a "private" file.
+     * @since 1.4.1 $private_prefix param added.
      */
-    private function putBucketPolicy($bucket, $s3Client = false) {
+    private function putBucketPolicy($bucket, $s3Client = false, $private_prefix = '') {
         if($s3Client == false) {
             $s3Client = $this->s3Client;
         }
 
         if(empty($bucket)) return false;
 
+        $actions = [
+            "s3:DeleteObjectTagging",
+            "s3:ListBucketMultipartUploads",
+            "s3:DeleteObjectVersion",
+            "s3:ListBucket",
+            "s3:DeleteObjectVersionTagging",
+            "s3:GetBucketAcl",
+            "s3:ListMultipartUploadParts",
+            "s3:PutObject",
+            "s3:GetObjectAcl",
+            "s3:GetObject",
+            "s3:AbortMultipartUpload",
+            "s3:DeleteObject",
+            "s3:GetBucketLocation",
+            "s3:PutObjectAcl",
+            "s3:putBucketOwnershipControls",
+            "s3:putBucketPolicy"
+        ];
+
+        $statement = [
+            "Effect"    => "Allow",
+            "Principal" => "*",
+            "Action"    => $actions,
+        ];
+
+        if (!empty($private_prefix)) {
+            $statement["NotResource"] = ["arn:aws:s3:::$bucket/$private_prefix/*"];
+        } else {
+            $statement["Resource"] = [
+                "arn:aws:s3:::$bucket/*",
+                "arn:aws:s3:::$bucket"
+            ];
+        }
+
         $policy = json_encode([
-            "Version" => "2012-10-17",
-            "Statement" => [
-                [
-                    "Effect" => "Allow",
-                    "Principal" => "*",
-                    "Action" => [
-                        "s3:DeleteObjectTagging",
-                        "s3:ListBucketMultipartUploads",
-                        "s3:DeleteObjectVersion",
-                        "s3:ListBucket",
-                        "s3:DeleteObjectVersionTagging",
-                        "s3:GetBucketAcl",
-                        "s3:ListMultipartUploadParts",
-                        "s3:PutObject",
-                        "s3:GetObjectAcl",
-                        "s3:GetObject",
-                        "s3:AbortMultipartUpload",
-                        "s3:DeleteObject",
-                        "s3:GetBucketLocation",
-                        "s3:PutObjectAcl",
-                        "s3:putBucketOwnershipControls",
-                        "s3:putBucketPolicy"
-                    ],
-                    "Resource" => [
-                        "arn:aws:s3:::$bucket/*",
-                        "arn:aws:s3:::$bucket"
-                    ]
-                ]
-            ]
+            "Version"   => "2012-10-17",
+            "Statement" => [$statement]
         ]);
 
         try {
@@ -774,6 +789,23 @@ class S3 {
         } catch (Exception $ex) {
             return false;
         }
+    }
+
+    /**
+     * Apply (or, with an empty $private_prefix, un-apply) the private-path
+     * bucket policy carve-out.
+     * @since 1.4.1
+     */
+    public function applyPrivatePathPolicy($private_prefix) {
+        if (!$this->s3Client || empty($this->bucket_name)) {
+            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+        }
+
+        $ok = $this->putBucketPolicy($this->bucket_name, $this->s3Client, $private_prefix);
+
+        return $ok
+            ? ['success' => true, 'code' => 200, 'message' => esc_html__('Policy applied successfully', 'media-cloud-sync')]
+            : ['success' => false, 'code' => 200, 'message' => esc_html__('Failed to apply bucket policy', 'media-cloud-sync')];
     }
 
     /**
@@ -997,14 +1029,24 @@ class S3 {
      * @since 1.0.0
      * @return boolean
      */
-    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='') {
+    public function uploadSingle($absolute_source_path, $relative_source_path, $prefix='', $is_private = false) {
         if (
             isset($absolute_source_path) && !empty($absolute_source_path) &&
             isset($relative_source_path) && !empty($relative_source_path)
         ) {
             $file_name = wp_basename( $relative_source_path );
             if ($file_name) {
-                $upload_path = Utils::generate_object_key($relative_source_path, $prefix);
+                $upload_path = Utils::generate_object_key($relative_source_path, $prefix, $is_private);
+                if ($upload_path === false) {
+                    // Only happens for a private reupload with no private-path provider
+                    // available (Pro inactive/unlicensed) — refuse rather than upload
+                    // an already-private file to an unprotected path.
+                    return [
+                        'success' => false,
+                        'code'    => 200,
+                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                    ];
+                }
                 return $this->execute_upload($absolute_source_path, $upload_path);
             }
             return [

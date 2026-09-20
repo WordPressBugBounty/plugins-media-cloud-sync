@@ -469,13 +469,19 @@ class Compatibility {
      *
      * @return string|bool File if downloaded, false on failure
      */
-    private function copy_provider_file_to_server($attachment_id, $file) {
+    public function copy_provider_file_to_server($attachment_id, $file) {
         // Download files
         if (!Item::instance()->moveToServerBySourcePath($attachment_id, $file, 'media_library')) {
             return false;
-        } 
+        }
 
         $this->restored_files[] = $file;
+
+        // Shared with woocommerce.php — feeds the same pre_update_item pipeline as
+        // below when a save happens this request, with a shutdown fallback for the
+        // other three callers here (image editor, legacy copy-back, Regenerate
+        // Thumbnails pre-v3), which otherwise have no cleanup at all.
+        Item::instance()->track_restored_for_cleanup( [ $file ] );
 
         return $file;
     }

@@ -19,6 +19,15 @@ class Item {
     protected $region = '';
 
     /**
+     * Absolute paths restored from cloud (by any integration) pending removal
+     * again — fed into the pre-update pipeline if a save happens this request,
+     * with a shutdown fallback otherwise. See track_restored_for_cleanup().
+     * @since 1.4.0
+     */
+    protected $pending_restored_files = [];
+    protected $pending_cleanup_hooked = false;
+
+    /**
      * Admin constructor.
      * @since 1.0.0
      */
@@ -47,12 +56,8 @@ class Item {
                                 ? $this->credentials['service']
                                 : '';
 
-        if (isset($this->bucketConfig['bucket_name'])) {
-            $this->bucket_name = $this->bucketConfig['bucket_name'];
-        }
-        if (isset($this->config['region'])) {
-            $this->region = $this->config['region'];
-        }
+        $this->bucket_name = isset($this->bucketConfig['bucket_name']) ? $this->bucketConfig['bucket_name'] : '';
+        $this->region      = isset($this->config['region']) ? $this->config['region'] : '';
     }
 
     /**
@@ -378,8 +383,11 @@ class Item {
                 ($check_rewrite && (isset($this->settings['rewrite_url']) && $this->settings['rewrite_url'])) ||
                 !$check_rewrite
             ) {
+                if ($check_rewrite) {
+                    return (bool) apply_filters('wpmcs_is_available_from_provider', true, $attachment_id, $source_type);
+                }
                 return true;
-            } 
+            }
         }
         return false;
     }
@@ -614,7 +622,10 @@ class Item {
                         $new_url = Service::instance()->get_private_url($key);
 
                         if (!Utils::is_empty($new_url)) {
-                            $privateUrl   = Cdn::may_generate_cdn_url($new_url, $key);
+                            // No hook (Pro inactive, or the current delivery provider hasn't
+                            // implemented one) means passthrough — same URL, unmodified. Real
+                            // per-CDN rewriting (e.g. CloudFront signed URLs) is a Pro concern.
+                            $privateUrl   = apply_filters( 'wpmcs_generate_private_url', $new_url, $key );
                             $expireMinutes  = (int)(isset($this->settings['private_url_expire']) && !empty($this->settings['private_url_expire']))
                                             ? $this->settings['private_url_expire']
                                             : 20;
@@ -646,19 +657,23 @@ class Item {
      * @param string $source_type source type of item, default is media_library
      * @param bool $all if true, it will move all files to server
      * @param bool $backup if true, it will move backup file to server
+     * @param string $log_type error-log bucket to write to on failure — lets a caller other
+     *                          than the "Restore to Server" job (e.g. "Remove from Cloud",
+     *                          which also restores as a safety step) attribute failures to
+     *                          its own error list instead of Restore to Server's.
      * @return array an array of server file paths
      */
-    public function moveToServer($source_id, $size = 'full', $source_type = 'media_library', $all = false, $backup = false){
+    public function moveToServer($source_id, $size = 'full', $source_type = 'media_library', $all = false, $backup = false, $log_type = 'restore_to_server'){
         $server_files   = [];
         $server_file    = false;
         $source_id      = (int)$source_id;
         $item           = $this->get($source_id, $source_type);
 
         // Remove log if exists before move to server
-        Logger::instance()->remove_log('restore_to_server', $source_id, $source_type);
+        Logger::instance()->remove_log($log_type, $source_id, $source_type);
 
         if ( isset($item) && !empty($item) ) {
-            $files = $this->moveToServerByItem($item, $size, $all);
+            $files = $this->moveToServerByItem($item, $size, $all, $log_type);
             if (isset($files) && !empty($files)) {
                 $server_files = $all ? array_merge($server_files, $files) : $files;
             }
@@ -666,7 +681,7 @@ class Item {
         if( $all && $backup ) {
             $backupItem = $this->get_backup($source_id, $source_type);
             if (isset($backupItem) && !empty($backupItem)) {
-                $files = $this->moveToServerByItem($backupItem, $size, $all);
+                $files = $this->moveToServerByItem($backupItem, $size, $all, $log_type);
                 if (isset($files) && !empty($files)) {
                     $server_files['backup'] = $files;
                 }
@@ -683,9 +698,10 @@ class Item {
      * @param array $item
      * @param string $size
      * @param bool $all
+     * @param string $log_type error-log bucket to write to on failure
      * @return array|string
      */
-    public function moveToServerByItem( $item = [], $size = 'full', $all = false ) {
+    public function moveToServerByItem( $item = [], $size = 'full', $all = false, $log_type = 'restore_to_server' ) {
         $source_id   = (int) ( $item['source_id'] ?? 0 );
         // Validate source ID
         if( $source_id <= 0 ) {
@@ -725,7 +741,8 @@ class Item {
                     $data['key'],
                     $data['path'],
                     $source_id,
-                    $source_type
+                    $source_type,
+                    $log_type
                 ) ) {
                     $results[ $label ] = $file;
                 }
@@ -740,11 +757,59 @@ class Item {
                 $files[ $size ]['key'],
                 $files[ $size ]['path'],
                 $source_id,
-                $source_type
+                $source_type,
+                $log_type
             );
         }
 
         return false;
+    }
+
+    /**
+     * Whether a moveToServer(..., $all=true, $backup=true) result actually restored
+     * everything this item is expected to have (every size, the original if present, and
+     * the backup entry if one exists) — moveToServer()'s return silently drops any single
+     * file that failed, so a plain non-empty check on it isn't enough to safely delete the
+     * cloud copies afterward.
+     * @since 1.4.1
+     */
+    public function verify_full_restore( $source_id, $source_type, $moved ) {
+        $row = $this->get( $source_id, $source_type );
+        if ( empty( $row ) ) {
+            return false;
+        }
+
+        $expected = $this->expected_restore_labels( $row );
+        $restored = array_diff( array_keys( (array) $moved ), [ 'backup' ] );
+        if ( ! empty( array_diff( $expected, $restored ) ) ) {
+            return false;
+        }
+
+        $backup_item = $this->get_backup( $source_id, $source_type );
+        if ( empty( $backup_item ) ) {
+            return true;
+        }
+
+        $expected_backup = $this->expected_restore_labels( $backup_item );
+        $restored_backup = ! empty( $moved['backup'] ) ? array_keys( $moved['backup'] ) : [];
+        return empty( array_diff( $expected_backup, $restored_backup ) );
+    }
+
+    /**
+     * File labels (full, original, each named size) a given item row is expected to have.
+     */
+    private function expected_restore_labels( $item_row ) {
+        $expected = [ 'full' ];
+        if ( ! empty( $item_row['original_key'] ) || ! empty( $item_row['original_source_path'] ) ) {
+            $expected[] = 'original';
+        }
+
+        $extras = ! empty( $item_row['extra'] ) ? Utils::maybe_unserialize( $item_row['extra'] ) : [];
+        if ( ! empty( $extras['sizes'] ) ) {
+            $expected = array_merge( $expected, array_keys( $extras['sizes'] ) );
+        }
+
+        return $expected;
     }
 
 
@@ -831,10 +896,11 @@ class Item {
      * @param string $relative_path
      * @param int    $source_id
      * @param string $source_type
+     * @param string $log_type error-log bucket to write to on failure
      *
      * @return string|false
      */
-    protected function move_to_server_by_key_and_path( $key, $relative_path, $source_id = 0, $source_type = 'media_library' ) {
+    protected function move_to_server_by_key_and_path( $key, $relative_path, $source_id = 0, $source_type = 'media_library', $log_type = 'restore_to_server' ) {
         if ( empty( $key ) || empty( $relative_path ) ) {
             return false;
         }
@@ -846,11 +912,16 @@ class Item {
             return $file;
         }
 
-        if ( Service::instance()->object_to_server( $key, $file ) ) {
+        // Checked on disk rather than trusting the return value alone — at least one
+        // provider (Cloudflare R2) has been observed writing the file successfully while
+        // still reporting failure (an SDK-level error thrown after the save completes).
+        Service::instance()->object_to_server( $key, $file );
+
+        if ( file_exists( $file ) ) {
             return $file;
         }
 
-        Logger::instance()->add_log( 'restore_to_server', $source_id, $source_type, [
+        Logger::instance()->add_log( $log_type, $source_id, $source_type, [
             'message' => __( 'The file could not be copied to the server. Please try again.', 'media-cloud-sync' ),
             'file'    => $key,
             'code'    => 404,
@@ -887,6 +958,11 @@ class Item {
      * Delete media item
      */
     public function delete_attachments_by_item($item, $delete_backup = true) {
+        // Lets an integration veto the delete when another row still relies on the same key.
+        if (!apply_filters('wpmcs_should_delete_cloud_files', true, $item)) {
+            return;
+        }
+
         $upload_dir = wp_get_upload_dir();
 
         if (isset($item['extra']) && !empty($item['extra'])) {
@@ -987,6 +1063,54 @@ class Item {
 
         // May be delete server files
         $this->may_be_delete_server_files_by_id($source_id, $source_type, true, true);
+    }
+
+    /**
+     * Track paths restored from cloud (by any integration) so they get removed
+     * again later, honoring "Remove from server" the way the normal sync pipeline
+     * would. Fed into the pre-update pipeline if a save happens this request (fast
+     * path — matches how the item's own pending removals already work), with a
+     * shutdown fallback (priority 1, ahead of most other plugins' shutdown hooks)
+     * for requests where nothing ever triggers a save.
+     *
+     * @param string[] $paths Absolute paths of the restored files.
+     * @return void
+     * @since 1.4.0
+     */
+    public function track_restored_for_cleanup(array $paths) {
+        foreach ($paths as $path) {
+            if (!in_array($path, $this->pending_restored_files, true)) {
+                $this->pending_restored_files[] = $path;
+            }
+        }
+
+        if ($this->pending_cleanup_hooked) {
+            return;
+        }
+        $this->pending_cleanup_hooked = true;
+
+        add_filter('wpmcs_pre_update_item_additional_files_to_remove_from_server', function ($files_to_remove) {
+            $files_to_remove = array_merge((array) $files_to_remove, $this->pending_restored_files);
+            $this->pending_restored_files = [];
+            return $files_to_remove;
+        });
+
+        add_action('shutdown', array($this, 'flush_pending_restored_files'), 1);
+    }
+
+    /**
+     * Shutdown fallback for track_restored_for_cleanup() — removes anything the
+     * pre-update pipeline didn't already pick up this request.
+     *
+     * @return void
+     * @since 1.4.0
+     */
+    public function flush_pending_restored_files() {
+        if (empty($this->pending_restored_files)) {
+            return;
+        }
+        $this->may_be_delete_server_files_by_source_paths($this->pending_restored_files);
+        $this->pending_restored_files = [];
     }
 
 

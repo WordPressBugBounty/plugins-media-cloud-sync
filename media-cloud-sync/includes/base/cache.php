@@ -79,11 +79,96 @@ class Cache {
     /**
      * Build a consistent object cache key for get/set/delete.
      */
-    private static function build_cache_key($key, $post_id, $meta_name, $is_user_meta = false) {
-        return ($is_user_meta ? 'user_' : '')
+    private static function build_cache_key($key, $post_id, $meta_name, $meta_type = 'post') {
+        $prefix = is_array($meta_type)
+            ? (isset($meta_type['prefix']) ? $meta_type['prefix'] : 'custom')
+            : $meta_type;
+
+        return ('post' === $prefix ? '' : $prefix . '_')
             . ($post_id == false ? '' : $post_id . '_')
             . $meta_name
             . (!Utils::is_empty($key) ? '_' . $key : '');
+    }
+
+    /**
+     * Read the raw meta array for a given storage backend.
+     *
+     * $meta_type is 'post' (default) or 'user' for WP's own dedicated helpers
+     * (options table when $post_id is false); a plain string is passed straight
+     * to WP's generic get_metadata() — correct for any standard WP object type
+     * whose meta table uses WP's usual 'meta_id' primary key (post/user/comment/
+     * term). Third-party meta tables that don't follow that convention (e.g.
+     * BuddyBoss's groupmeta, which uses 'id') aren't safe to read/write via
+     * get_metadata() directly — pass an array of ['get'=>, 'update'=>, 'delete'=>]
+     * callables (each shaped like get_post_meta($id,$key,true)/update_post_meta(
+     * $id,$key,$value)/delete_post_meta($id,$key)) so the caller's own,
+     * already-correct meta functions are used instead.
+     */
+    private static function read_meta($post_id, $meta_name, $meta_type) {
+        if (is_array($meta_type)) {
+            // Callability is already verified by is_backend_available() before
+            // any of get/set/delete_object_cache() reach this point.
+            return call_user_func($meta_type['get'], $post_id, $meta_name, true);
+        }
+        if ('post' === $meta_type) {
+            return $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
+        }
+        if ('user' === $meta_type) {
+            return get_user_meta($post_id, $meta_name, true);
+        }
+        return get_metadata($meta_type, $post_id, $meta_name, true);
+    }
+
+    /**
+     * Write the raw meta array for a given storage backend. See read_meta().
+     */
+    private static function write_meta($post_id, $meta_name, $meta_data, $meta_type) {
+        if (is_array($meta_type)) {
+            return call_user_func($meta_type['update'], $post_id, $meta_name, $meta_data);
+        }
+        if ('post' === $meta_type) {
+            return $post_id == false ? update_option($meta_name, $meta_data) : update_post_meta($post_id, $meta_name, $meta_data);
+        }
+        if ('user' === $meta_type) {
+            return update_user_meta($post_id, $meta_name, $meta_data);
+        }
+        return update_metadata($meta_type, $post_id, $meta_name, $meta_data);
+    }
+
+    /**
+     * Whether $meta_type can actually be used right now. A custom backend's
+     * callables may not be defined yet (e.g. the plugin/component that owns
+     * them is currently inactive) — in that case the whole Cache layer must
+     * be skipped entirely (no wp_cache_* writes either), so the caller falls
+     * through to its own non-cached path exactly as it would for 'table' =>
+     * false. Partially engaging the cache here (writing the intended value to
+     * wp_cache_* while the real read/update/delete silently no-ops) would
+     * leave a phantom entry that get/delete can never find to invalidate.
+     */
+    private static function is_backend_available($meta_type) {
+        if (!is_array($meta_type)) {
+            return true;
+        }
+        return isset($meta_type['get'], $meta_type['update'], $meta_type['delete'])
+            && is_callable($meta_type['get'])
+            && is_callable($meta_type['update'])
+            && is_callable($meta_type['delete']);
+    }
+
+    /**
+     * Delete the entire meta entry for a given storage backend. See read_meta().
+     */
+    private static function delete_meta_entirely($post_id, $meta_name, $meta_type) {
+        if (is_array($meta_type)) {
+            return call_user_func($meta_type['delete'], $post_id, $meta_name);
+        }
+        if ('post' === $meta_type) {
+            return $post_id == false ? delete_option($meta_name) : delete_post_meta($post_id, $meta_name);
+        }
+        if ('user' === $meta_type) {
+            return delete_user_meta($post_id, $meta_name);
+        }
+        return delete_metadata($meta_type, $post_id, $meta_name);
     }
 
     /**
@@ -111,13 +196,13 @@ class Cache {
     /**
      * Write a value to the plugin object cache group.
      */
-    private static function sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $is_user_meta = false) {
+    private static function sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $meta_type = 'post') {
         if (!function_exists('wp_cache_set') || !function_exists('wp_cache_delete')) {
             return;
         }
 
         $group     = Schema::getConstant('CACHE_GROUP');
-        $cache_key = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
+        $cache_key = self::build_cache_key($key, $post_id, $meta_name, $meta_type);
 
         wp_cache_delete($cache_key, $group);
         wp_cache_set($cache_key, $data, $group, $cache_expire);
@@ -125,11 +210,19 @@ class Cache {
 
     /**
      * Get Object Cache
+     *
+     * @param string $meta_type 'post' (default; uses options table when $post_id is false),
+     *                          'user', or any object type WP's generic get_metadata() recognizes
+     *                          (e.g. 'group', registered by BuddyBoss).
      */
-    public static function get_object_cache($key = '', $post_id = false, $meta_name = false, $cache_expire = false, $is_user_meta = false) {
+    public static function get_object_cache($key = '', $post_id = false, $meta_name = false, $cache_expire = false, $meta_type = 'post') {
+        if (!self::is_backend_available($meta_type)) {
+            return false;
+        }
+
         $meta_name      = $meta_name == false ? Schema::getConstant('META_KEY') : $meta_name;
         $cache_expire   = $cache_expire == false ? Schema::getConstant('CACHE_EXPIRE') : $cache_expire;
-        $cache_key      = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
+        $cache_key      = self::build_cache_key($key, $post_id, $meta_name, $meta_type);
         $found          = false;
 
         $data = self::get_cached_value($cache_key, $found);
@@ -137,12 +230,8 @@ class Cache {
             return $data;
         }
 
-        if ($is_user_meta) {
-            $meta_data = get_user_meta($post_id, $meta_name, true);
-        } else {
-            $meta_data = $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
-        }
-        
+        $meta_data = self::read_meta($post_id, $meta_name, $meta_type);
+
         if( !Utils::is_empty($key) && is_array($meta_data) && array_key_exists($key, $meta_data) ) {
             // If key exists in meta data, return it
             $data = $meta_data[$key];
@@ -154,7 +243,7 @@ class Cache {
             $data = false;
         }
 
-        self::sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $is_user_meta);
+        self::sync_object_cache($key, $data, $post_id, $meta_name, $cache_expire, $meta_type);
 
         return $data;
     }
@@ -162,15 +251,15 @@ class Cache {
     /**
      * Set Object Cache
      */
-    public static function set_object_cache($key, $data, $post_id = false, $meta_name = false, $cache_expire = false, $is_user_meta = false) {
+    public static function set_object_cache($key, $data, $post_id = false, $meta_name = false, $cache_expire = false, $meta_type = 'post') {
+        if (!self::is_backend_available($meta_type)) {
+            return false;
+        }
+
         $meta_name      = $meta_name == false ? Schema::getConstant('META_KEY') : $meta_name;
         $cache_expire   = $cache_expire == false ? Schema::getConstant('CACHE_EXPIRE') : $cache_expire;
 
-        if( $is_user_meta) {
-            $meta_data = get_user_meta($post_id, $meta_name, true);
-        } else {
-            $meta_data = $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
-        }
+        $meta_data = self::read_meta($post_id, $meta_name, $meta_type);
 
         // If data is not an array, convert it to an array
         if (!is_array($meta_data)) {
@@ -187,61 +276,46 @@ class Cache {
         }
 
         // Update the meta data
-        if ($is_user_meta) {
-            $update_result = update_user_meta($post_id, $meta_name, $meta_data);
-        } else {
-            $update_result = $post_id == false ? update_option($meta_name, $meta_data) : update_post_meta($post_id, $meta_name, $meta_data);
-        }
+        $update_result = self::write_meta($post_id, $meta_name, $meta_data, $meta_type);
 
         // Always sync object cache so Redis and default WP cache stay current.
-        self::sync_object_cache($key, $cache_value, $post_id, $meta_name, $cache_expire, $is_user_meta);
+        self::sync_object_cache($key, $cache_value, $post_id, $meta_name, $cache_expire, $meta_type);
 
         if ($update_result) {
             return true;
         }
 
         // update_option/update_meta return false when the value is unchanged — treat as success once cache is synced.
-        if ($is_user_meta) {
-            $stored = get_user_meta($post_id, $meta_name, true);
-        } else {
-            $stored = $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
-        }
+        $stored = self::read_meta($post_id, $meta_name, $meta_type);
 
         return maybe_serialize($stored) === maybe_serialize($meta_data);
     }
 
-    
+
 
     /**
      * Delete object cache
      */
-    public static function delete_object_cache($key = false, $post_id = false, $meta_name = false, $is_user_meta = false) {
+    public static function delete_object_cache($key = false, $post_id = false, $meta_name = false, $meta_type = 'post') {
+        if (!self::is_backend_available($meta_type)) {
+            return false;
+        }
+
         $meta_name = $meta_name == false ? Schema::getConstant('META_KEY') : $meta_name;
         $update_result = false;
-        if ($is_user_meta) {
-            $meta_data = get_user_meta($post_id, $meta_name, true);
-            if (is_array($meta_data) && array_key_exists($key, $meta_data)) {
-                unset($meta_data[$key]);
-                if (empty($meta_data)) {
-                    $update_result = delete_user_meta($post_id, $meta_name);
-                } else {
-                    $update_result = update_user_meta($post_id, $meta_name, $meta_data);
-                }
-            }
-        } else {
-            $meta_data = $post_id == false ? get_option($meta_name, []) : get_post_meta($post_id, $meta_name, true);
-            if (is_array($meta_data) && array_key_exists($key, $meta_data)) {
-                unset($meta_data[$key]);
-                if (empty($meta_data)) {
-                    $update_result = $post_id == false ? delete_option($meta_name) : delete_post_meta($post_id, $meta_name);
-                } else {
-                    $update_result = $post_id == false ? update_option($meta_name, $meta_data) : update_post_meta($post_id, $meta_name, $meta_data);
-                }
+
+        $meta_data = self::read_meta($post_id, $meta_name, $meta_type);
+        if (is_array($meta_data) && array_key_exists($key, $meta_data)) {
+            unset($meta_data[$key]);
+            if (empty($meta_data)) {
+                $update_result = self::delete_meta_entirely($post_id, $meta_name, $meta_type);
+            } else {
+                $update_result = self::write_meta($post_id, $meta_name, $meta_data, $meta_type);
             }
         }
 
         if ($update_result && !Utils::is_empty($key) && function_exists('wp_cache_delete')) {
-            $cache_key = self::build_cache_key($key, $post_id, $meta_name, $is_user_meta);
+            $cache_key = self::build_cache_key($key, $post_id, $meta_name, $meta_type);
             wp_cache_delete($cache_key, Schema::getConstant('CACHE_GROUP'));
         }
 

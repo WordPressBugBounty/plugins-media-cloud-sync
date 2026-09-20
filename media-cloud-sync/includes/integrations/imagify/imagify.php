@@ -72,7 +72,7 @@ class Imagify {
 	/**
 	 * Copy file from cloud storage before optimization when it is missing locally.
 	 *
-	 * Mirrors Imagify's official AS3CF integration hook handler.
+	 * Mirrors Imagify's official offload-plugin integration hook handler.
 	 *
 	 * @param null|\WP_Error   $response The response.
 	 * @param object           $process The optimization process instance.
@@ -180,8 +180,9 @@ class Imagify {
 		}
 
 		if ( $files_to_upload ) {
+			$is_private = !empty( $new_item['is_private'] );
 			foreach ( $files_to_upload as $relative_source_path => $path ) {
-				$uploaded = Service::instance()->uploadSingle( $path, $relative_source_path, $prefix );
+				$uploaded = Service::instance()->uploadSingle( $path, $relative_source_path, $prefix, $is_private );
 				if ( $uploaded['success'] ) {
 					$files_to_remove[] = $path;
 				}
@@ -505,6 +506,14 @@ class Imagify {
 			$url = Item::instance()->get_url( $attachment_id, 'full', 'media_library' );
 
 			return $url ? $url : (string) wp_get_attachment_url( $attachment_id );
+		}
+
+		// Splicing $file_name onto the full URL's directory only works for a plain public
+		// URL — the full URL is a presigned request when the item is private, and its
+		// signature is tied to that exact key. Fail closed rather than hand back a URL
+		// that looks valid but isn't (garbled signature, or unsigned and unreadable).
+		if ( Item::instance()->get_field( $attachment_id, 'is_private', 'media_library' ) ) {
+			return '';
 		}
 
 		$filesystem = \Imagify_Filesystem::get_instance();

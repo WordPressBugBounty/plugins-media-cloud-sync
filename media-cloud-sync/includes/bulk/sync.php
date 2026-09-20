@@ -70,7 +70,7 @@ class Sync {
      * Starts the sync process.
      * 
      */
-    public function start( $action ) {
+    public function start( $action, $options = [] ) {
         $action_class = $this->get_class_by_action($action);
 
         if($action_class) {
@@ -84,7 +84,7 @@ class Sync {
                 ];
             }
 
-            $start_result = $action_class->start();
+            $start_result = $action_class->start( $options );
             // A job's start() can signal a precondition failure (e.g. no destination
             // configured) by returning ['success' => false, ...] instead of the usual
             // void/true — short-circuit and pass that straight through instead of masking

@@ -7,7 +7,7 @@ License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -75,6 +75,7 @@ Here are the key features of the Media Cloud Sync plugin:
 🔹 **Ajax/Mixed Sync Method** — run bulk sync live in the browser (Ajax) or with automatic WP-Cron fallback (Mixed), instead of Cron-only.
 🔹 **Delivery Settings: Cache-Control duration** — set a custom Cache-Control max-age (or explicit no-cache) per storage/CDN choice for newly uploaded files.
 🔹 **Include/Exclude Extensions** — control exactly which file types get uploaded to the bucket.
+🔹 **Third-party compatibility** — WooCommerce and Easy Digital Downloads downloadable files, BuddyBoss Platform, WPML, Elementor, Divi, and Enable Media Replace all stay in sync with cloud storage.
 🔹 And more...
 
 == Other Useful Links ==
@@ -152,6 +153,26 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.4.1 =
+* Feature: Added private media support (Pro) — mark individual Media Library items private, served through short-lived signed URLs.
+* Feature: Added a "Remove from Cloud" bulk sync job (Pro).
+* Feature: Added a per-item cloud-delivery override (Pro) — "Use Server URL" / "Use Cloud URL" in the Media Library.
+* Bug Fix: WooCommerce could leave restored files on the server and skip re-uploading a regenerated thumbnail crop.
+* Bug Fix: Customizer crop, image editor, and Regenerate Thumbnails could leave restored files on the server without cleaning up.
+* Bug Fix: A successful Cloudflare R2 restore could be treated as failed, skipping cleanup.
+* Bug Fix: A failed image size re-upload could wipe that size's cloud reference from the database.
+* Bug Fix: Private media on Google Cloud Storage always failed to apply; now uses GCS Managed Folders instead.
+* Feature: Added a Security step (Block All Public Access) to the Google Cloud Storage setup wizard.
+* Feature: Added a generic integration extension point so Pro add-ons can register new source types.
+* Bug Fix: A source type with no meta table configured could break signed URL generation.
+* Bug Fix: Resolving a file's relative path from a full URL produced an incorrect local path.
+* Feature: Source types can now declare a translatable admin-UI label and use a custom meta caching backend.
+* Bug Fix: A WooCommerce compatibility hook could force local file paths for the rest of a request after any image rendered.
+* Feature: Added a generic hook (Pro) letting an integration veto a cloud-storage delete when another item shares the file.
+* Bug Fix: An attachment deleted without going through wp_delete_attachment() could leave its cloud-tracking row orphaned.
+* Feature: Added generic bulk sync job lifecycle hooks so Pro add-ons can react when a job finishes.
+* Security Fix: A crafted file path in a Pro downloadable-file field (WooCommerce/EDD) could use "../" to escape the uploads directory.
+* Bug Fix: Resolving a bare cloud/local URL (e.g. in page builder data) to its attachment could silently fail to match.
 = 1.4.0 =
 * Compatibility: WordPress 7.1
 * Bug Fix: WooCommerce image regeneration restored offloaded files to the server to resize them but never removed them again, even with "Remove from server" enabled, and could leave stale, un-regenerated images on the cloud since the plugin's "unchanged, skip reupload" check couldn't tell a regenerated file at the same size apart from a real no-op. Regenerated files are now always re-uploaded, and restored copies are cleaned up once WooCommerce is done with them.
