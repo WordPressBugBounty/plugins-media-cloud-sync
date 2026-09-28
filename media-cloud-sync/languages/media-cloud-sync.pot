@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Media Cloud Sync 1.4.1\n"
+"Project-Id-Version: Media Cloud Sync 1.4.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/media-cloud-sync\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-20T19:36:57+00:00\n"
+"POT-Creation-Date: 2026-09-28T18:18:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: media-cloud-sync\n"
@@ -103,12 +103,12 @@ msgid "Access: "
 msgstr ""
 
 #: includes/admin.php:396
-#: includes/integrations/media-library.php:1554
+#: includes/integrations/media-library.php:1627
 msgid "Private"
 msgstr ""
 
 #: includes/admin.php:397
-#: includes/integrations/media-library.php:1554
+#: includes/integrations/media-library.php:1627
 msgid "Public"
 msgstr ""
 
@@ -200,7 +200,7 @@ msgstr ""
 msgid "Media sync failed"
 msgstr ""
 
-#: includes/base/item.php:925
+#: includes/base/item.php:956
 msgid "The file could not be copied to the server. Please try again."
 msgstr ""
 
@@ -770,12 +770,12 @@ msgstr ""
 #: includes/base/services/service.php:592
 #: includes/base/services/service.php:600
 #: includes/base/services/service.php:615
-#: includes/base/services/service.php:656
-#: includes/base/services/service.php:680
+#: includes/base/services/service.php:669
+#: includes/base/services/service.php:693
 msgid "No storage service configured"
 msgstr ""
 
-#: includes/base/services/service.php:664
+#: includes/base/services/service.php:677
 msgid "Not supported for this service"
 msgstr ""
 
@@ -888,48 +888,56 @@ msgstr[1] ""
 msgid "Media Library"
 msgstr ""
 
-#: includes/integrations/media-library.php:1107
+#: includes/integrations/media-library.php:1117
 msgid "File upload failed"
 msgstr ""
 
-#: includes/integrations/media-library.php:1228
+#: includes/integrations/media-library.php:1235
 msgid "File not found"
 msgstr ""
 
-#: includes/integrations/media-library.php:1271
-msgid "Original File upload failed"
-msgstr ""
-
-#: includes/integrations/media-library.php:1278
+#: includes/integrations/media-library.php:1260
 msgid "Original File not found"
 msgstr ""
 
-#. translators: %1$s: Image size name (e.g., thumbnail, medium, large).
+#: includes/integrations/media-library.php:1334
+msgid "HEIC source file not found"
+msgstr ""
+
+#: includes/integrations/media-library.php:1335
+msgid "Animated video file not found"
+msgstr ""
+
 #: includes/integrations/media-library.php:1336
+msgid "Animated video poster file not found"
+msgstr ""
+
+#. translators: %1$s: Image size name (e.g., thumbnail, medium, large).
+#: includes/integrations/media-library.php:1409
 #, php-format
 msgid "Image size %1$s not found"
 msgstr ""
 
 #. translators: %1$s: Image size name (e.g., thumbnail, medium, large).
-#: includes/integrations/media-library.php:1352
+#: includes/integrations/media-library.php:1425
 #, php-format
 msgid "Image size %1$s upload failed"
 msgstr ""
 
-#: includes/integrations/media-library.php:1539
+#: includes/integrations/media-library.php:1612
 msgid "Provider :"
 msgstr ""
 
-#: includes/integrations/media-library.php:1547
+#: includes/integrations/media-library.php:1620
 msgid "Region :"
 msgstr ""
 
-#: includes/integrations/media-library.php:1554
+#: includes/integrations/media-library.php:1627
 msgid "Access :"
 msgstr ""
 
-#: includes/main.php:163
-#: includes/main.php:176
+#: includes/main.php:164
+#: includes/main.php:177
 msgid "Something went wrong."
 msgstr ""
 

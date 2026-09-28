@@ -1075,4 +1075,9 @@ class S3Compatible {
         return $this->config['endpoint'];
     }
 
+    /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */
+    public function get_client() {
+        return $this->S3CompatibleClient;
+    }
+
 }

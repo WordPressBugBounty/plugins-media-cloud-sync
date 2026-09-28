@@ -1186,4 +1186,9 @@ class DOcean {
         return "https://{$region}.digitaloceanspaces.com";
     }
 
+    /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */
+    public function get_client() {
+        return $this->DOClient;
+    }
+
 }

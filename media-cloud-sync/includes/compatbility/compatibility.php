@@ -51,6 +51,7 @@ class Compatibility {
 		add_filter( 'wpmcs_get_attached_file', array( $this, 'image_editor_download_file' ), 10, 4 );
         add_filter( 'wpmcs_get_attached_file', array( $this, 'customizer_crop_download_file' ), 10, 4 );
         add_filter( 'wpmcs_pre_update_item_additional_files_to_remove_from_server', [ $this, 'customizer_crop_remove_restored_files' ], 10, 5 );
+        add_filter( 'wpmcs_do_reupload_media', [ $this, 'force_reupload_on_image_editor_save' ], 10, 3 );
 
         /*
          * WP_Customize_Control
@@ -201,6 +202,27 @@ class Compatibility {
 
         return $url;
 }
+
+    /**
+     * A flip or 180° rotation changes pixel content without changing any
+     * declared width/height, which shouldForceReupload() can't detect —
+     * force it explicitly for any image-editor commit (save or restore).
+     * @since 1.4.3
+     */
+    public function force_reupload_on_image_editor_save($do_reupload, $attachment_id, $source_type) {
+        if ($do_reupload) {
+            return $do_reupload;
+        }
+
+        $action = Utils::filter_input('action', INPUT_GET) ?: Utils::filter_input('action', INPUT_POST);
+        $do     = Utils::filter_input('do', INPUT_POST);
+
+        if (in_array($do, ['save', 'restore'], true) && in_array($action, ['image-editor', 'imgedit-preview'], true)) {
+            return true;
+        }
+
+        return $do_reupload;
+    }
 
 
 

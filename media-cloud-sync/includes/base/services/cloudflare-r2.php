@@ -1070,4 +1070,9 @@ class CloudflareR2 {
         // fallback
         return "https://r2.cloudflarestorage.com";
     }
+
+    /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */
+    public function get_client() {
+        return $this->cloudflareClient;
+    }
 }

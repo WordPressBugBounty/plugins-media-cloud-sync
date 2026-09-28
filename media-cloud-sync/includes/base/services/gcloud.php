@@ -1399,7 +1399,12 @@ class GCloud {
      */
     public function get_domain() {
         $url_base = 'https://storage.googleapis.com';
-        
+
         return $url_base;
+    }
+
+    /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */
+    public function get_client() {
+        return $this->gcloudClient;
     }
 }

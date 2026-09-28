@@ -54,11 +54,13 @@ class Acf {
 		add_filter( 'acf/load_value/type=textarea', array( $this->content_filter, 'filter_post' ) );
 		add_filter( 'acf/load_value/type=wysiwyg', array( $this->content_filter, 'filter_post' ) );
 		add_filter( 'acf/load_value/type=url', array( $this->content_filter, 'filter_post' ) );
+		add_filter( 'acf/load_value/type=oembed', array( $this->content_filter, 'filter_post' ) );
 		add_filter( 'acf/load_value/type=link', array( $this, 'filter_link_server' ) );
 		add_filter( 'acf/update_value/type=text', array( $this->content_filter, 'filter_post_backward' ) );
 		add_filter( 'acf/update_value/type=textarea', array( $this->content_filter, 'filter_post_backward' ) );
 		add_filter( 'acf/update_value/type=wysiwyg', array( $this->content_filter, 'filter_post_backward' ) );
 		add_filter( 'acf/update_value/type=url', array( $this->content_filter, 'filter_post_backward' ) );
+		add_filter( 'acf/update_value/type=oembed', array( $this->content_filter, 'filter_post_backward' ) );
 		add_filter( 'acf/update_value/type=link', array( $this, 'filter_link_provider' ) );
 
 		/*
@@ -68,6 +70,7 @@ class Acf {
 		if ( class_exists( 'acf_field_image_crop' ) ) {
 			add_filter( 'wp_get_attachment_metadata', array( $this, 'download_image' ), 10, 2 );
 			add_filter( 'sanitize_file_name', array( $this, 'remove_original_after_download' ) );
+			add_filter( 'wpmcs_do_reupload_media', array( $this, 'force_reupload_during_crop' ), 10, 3 );
 		}
 
 		/*
@@ -147,7 +150,20 @@ class Acf {
 
 		return true;
 	}
-    
+
+	/**
+	 * ACF Image Crop Add-on always crops to the field's one fixed configured
+	 * size, so declared dimensions never change between crops — the same blind
+	 * spot shouldForceReupload() has for a flip/180° rotate. Force it explicitly.
+	 * @since 1.4.3
+	 */
+	public function force_reupload_during_crop( $do_reupload, $attachment_id, $source_type ) {
+		if ( $do_reupload ) {
+			return $do_reupload;
+		}
+		return $this->compatibility->maybe_process_on_action( 'acf_image_crop_perform_crop', true ) ? true : $do_reupload;
+	}
+
 
 
     /**

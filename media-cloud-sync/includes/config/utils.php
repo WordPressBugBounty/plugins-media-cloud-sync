@@ -1164,20 +1164,24 @@ class Utils {
     }
 
     /**
-     * Check whether a specific class::method exists in the current call stack.
+     * Check whether a specific class::method, or a plain function, exists in
+     * the current call stack.
      *
      * Useful for detecting callers like WooCommerce image regeneration
      * without hard dependencies.
      *
      * @since 1.3.7
-     * @param string      $class    Fully qualified class name.
-     * @param string|null $function Method name (optional).
+     * @since 1.4.2 $class made nullable; when null, matches on $function alone
+     *              against frames with no class (plain procedural functions).
+     * @param string|null $class    Fully qualified class name, or null to match
+     *                              a plain function by name instead.
+     * @param string|null $function Method (or, with $class null, function) name.
      * @param int         $depth    Backtrace depth limit.
      *
      * @return bool
      */
     public static function is_called_from(
-        string $class,
+        ?string $class,
         ?string $function = null,
         int $depth = 15
     ) : bool {
@@ -1185,6 +1189,19 @@ class Utils {
         $trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, $depth );
 
         foreach ( $trace as $frame ) {
+
+            if ( $class === null ) {
+                // Match a plain function call — these frames have no 'class' key.
+                if ( ! empty( $frame['class'] ) ) {
+                    continue;
+                }
+
+                if ( isset( $frame['function'] ) && $frame['function'] === $function ) {
+                    return true;
+                }
+
+                continue;
+            }
 
             if ( empty( $frame['class'] ) ) {
                 continue;

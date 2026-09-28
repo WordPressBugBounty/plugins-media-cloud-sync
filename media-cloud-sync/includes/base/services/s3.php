@@ -1459,4 +1459,9 @@ class S3 {
         return "https://{$this->bucket_name}.s3.{$region}.amazonaws.com";
     }
 
+    /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */
+    public function get_client() {
+        return $this->s3Client;
+    }
+
 }

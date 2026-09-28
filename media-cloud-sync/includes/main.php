@@ -129,7 +129,8 @@ class Main {
         Cdn::instance();
         Cache::instance();
         Compatibility::instance();
-        
+        StreamWrapper::instance();
+
         // Integrations
         Integration::instance();
         FilterContent::instance();

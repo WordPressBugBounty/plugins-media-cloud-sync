@@ -30,6 +30,8 @@ class Counter {
     public static function add(  $property = 'uploaded', $source_type = 'media_library' ){
         $settings_key       = Schema::getConstant('COUNTER_KEY');
         $data               = Utils::get_option( $source_type, [], $settings_key );
+        // Self-heal a legacy/corrupted non-array row instead of crashing on it.
+        $data               = is_array($data) ? $data : [];
         $data[$property]    = isset($data[$property]) ? (int)$data[$property] + 1 : 1;
         return Utils::update_option( $source_type, $data, $settings_key );
     }
@@ -43,6 +45,8 @@ class Counter {
     public static function remove(  $property = 'uploaded', $source_type = 'media_library' ){
         $settings_key       = Schema::getConstant('COUNTER_KEY');
         $data               = Utils::get_option( $source_type, [], $settings_key );
+        // Self-heal a legacy/corrupted non-array row instead of crashing on it.
+        $data               = is_array($data) ? $data : [];
         $data[$property]    = isset($data[$property]) ? (int)$data[$property] - 1 : -1;
 
         return Utils::update_option( $source_type, $data, $settings_key );
@@ -66,6 +70,8 @@ class Counter {
         $key = Schema::getConstant('COUNTER_KEY');
         // Update the count by source type
         $data = Utils::get_option( $source_type, [], $key );
+        // Self-heal a legacy/corrupted non-array row instead of crashing on it.
+        $data = is_array($data) ? $data : [];
         $data[$property] = $value;
         return Utils::update_option( $source_type, $data, $key );
     }

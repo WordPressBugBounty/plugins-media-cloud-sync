@@ -617,6 +617,19 @@ class Service {
         return $this->service->purge_all_versions($key);
     }
 
+    /**
+     * Exposes the active provider's already-constructed SDK client, for callers
+     * (e.g. StreamWrapper) that need it directly rather than going through this
+     * class's own upload/delete methods.
+     * @since 1.4.3
+     */
+    public function get_active_client() {
+        if (!$this->service || !method_exists($this->service, 'get_client')) {
+            return null;
+        }
+        return $this->service->get_client();
+    }
+
 
     /**
      * Move object to server from cloud

@@ -732,6 +732,15 @@ class Item {
             }
         }
 
+        if ( ! empty( $extras['additional_files'] ) ) {
+            foreach ( $extras['additional_files'] as $name => $data ) {
+                $files[ $name ] = [
+                    'key'  => $data['key'] ?? null,
+                    'path' => $data['source_path'] ?? null,
+                ];
+            }
+        }
+
         // ALL files
         if ( $all ) {
             $results = [];
@@ -796,7 +805,7 @@ class Item {
     }
 
     /**
-     * File labels (full, original, each named size) a given item row is expected to have.
+     * File labels (full, original, each named size, each additional file) a given item row is expected to have.
      */
     private function expected_restore_labels( $item_row ) {
         $expected = [ 'full' ];
@@ -807,6 +816,9 @@ class Item {
         $extras = ! empty( $item_row['extra'] ) ? Utils::maybe_unserialize( $item_row['extra'] ) : [];
         if ( ! empty( $extras['sizes'] ) ) {
             $expected = array_merge( $expected, array_keys( $extras['sizes'] ) );
+        }
+        if ( ! empty( $extras['additional_files'] ) ) {
+            $expected = array_merge( $expected, array_keys( $extras['additional_files'] ) );
         }
 
         return $expected;
@@ -866,7 +878,7 @@ class Item {
         }
 
         $extras = $this->get_extras( $source_id, false, $source_type ) ?: [];
-        
+
         // 3. Check sizes
         if ( ! empty( $extras['sizes'] ) ) {
             foreach ( $extras['sizes'] as $size ) {
@@ -877,6 +889,25 @@ class Item {
                     $this->move_to_server_by_key_and_path(
                         $size['key'] ?? null,
                         $size['source_path'],
+                        $source_id,
+                        $source_type
+                    )
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        // 4. Check additional files (HEIC source, animated-GIF video/poster)
+        if ( ! empty( $extras['additional_files'] ) ) {
+            foreach ( $extras['additional_files'] as $additional_file ) {
+                if (
+                    isset( $additional_file['source_path'] ) &&
+                    ! empty( $additional_file['source_path'] ) &&
+                    $additional_file['source_path'] === $source_path &&
+                    $this->move_to_server_by_key_and_path(
+                        $additional_file['key'] ?? null,
+                        $additional_file['source_path'],
                         $source_id,
                         $source_type
                     )
@@ -974,6 +1005,17 @@ class Item {
                 foreach ($extras['sizes'] as $sub_image) {
                     if (isset($sub_image['key']) && !empty($sub_image['key'])) {
                         Service::instance()->deleteSingle($sub_image['key']);
+                    }
+                }
+            }
+
+            if (
+                isset($extras) && !empty($extras) &&
+                isset($extras['additional_files']) && !empty($extras['additional_files'])
+            ) {
+                foreach ($extras['additional_files'] as $file) {
+                    if (isset($file['key']) && !empty($file['key'])) {
+                        Service::instance()->deleteSingle($file['key']);
                     }
                 }
             }
@@ -1221,6 +1263,30 @@ class Item {
                 foreach ($extras['sizes'] as $sub_image) {
                     if (isset($sub_image['source_path']) && !empty($sub_image['source_path'])) {
                         $file = trailingslashit($upload_dir['basedir']) . $sub_image['source_path'];
+                        if(file_exists($file)) {
+                            $files_to_remove[] = $file;
+                        }
+                    }
+                }
+            }
+            if (
+                isset($extras) && !empty($extras) &&
+                isset($extras['additional_files']) && !empty($extras['additional_files'])
+            ) {
+                // animated_video/animated_video_poster are resolved client-side by slicing
+                // the main image's own (possibly presigned) source_url down to its directory
+                // and appending the file's filename — verified in WP core's shipped JS
+                // (block-library.js). That trick drops any presigned-URL query string, so for
+                // a private item it produces an unsigned request to a private S3 key, which
+                // fails once the local copy is gone. Keep these two local for private items;
+                // source_image is unaffected (never fetched by any client, private or not).
+                $unsafe_when_private = ['animated_video', 'animated_video_poster'];
+                foreach ($extras['additional_files'] as $name => $additional_file) {
+                    if (!empty($item['is_private']) && in_array($name, $unsafe_when_private, true)) {
+                        continue;
+                    }
+                    if (isset($additional_file['source_path']) && !empty($additional_file['source_path'])) {
+                        $file = trailingslashit($upload_dir['basedir']) . $additional_file['source_path'];
                         if(file_exists($file)) {
                             $files_to_remove[] = $file;
                         }

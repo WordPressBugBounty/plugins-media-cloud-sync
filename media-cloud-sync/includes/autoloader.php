@@ -154,6 +154,12 @@ class Autoloader {
 			'CloudflareR2'	=> 'includes/base/services/cloudflare-r2.php',
 			'S3Compatible'	=> 'includes/base/services/s3compatible.php',
 
+			// Stream wrappers
+			'StreamWrapper'              => 'includes/base/stream-wrappers/stream-wrapper.php',
+			'ReadOnlyStreamWrapperTrait' => 'includes/base/stream-wrappers/readonly-trait.php',
+			'ReadOnlyS3StreamWrapper'    => 'includes/base/stream-wrappers/s3.php',
+			'ReadOnlyGcsStreamWrapper'   => 'includes/base/stream-wrappers/gcloud.php',
+
 			// Sync
 			'SyncToCloud'	=> 'includes/bulk/sync-to-cloud.php',
 			'Sync'			=> 'includes/bulk/sync.php',

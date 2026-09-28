@@ -1033,8 +1033,9 @@ class MediaLibrary {
 
         // Force reupload when sizes/dimensions changed
         if (!$do_reupload && $has_existing) {
-            if($this->shouldForceReupload($attachment_meta, $attachment_id, $existing_extras)) {
-                $do_reupload = true; 
+            $force_reupload = $this->shouldForceReupload($attachment_meta, $attachment_id, $existing_extras);
+            if ($force_reupload !== false) {
+                $do_reupload = $force_reupload;
             }
         }
 
@@ -1063,6 +1064,7 @@ class MediaLibrary {
         if ($uploaded && isset($uploaded['success']) && $uploaded['success']) {
             // Attempt to upload original file if present. Not critical if this fails so we don't check the result before proceeding.
             $original = $this->uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private);
+            $additional_files = [];
 
             if ($is_image && isset($file_dir) && !empty($file_dir)) {
                 $sizes_to_upload = $this->get_attachment_image_sizes_for_upload($attachment_meta, $attachment_id);
@@ -1070,6 +1072,7 @@ class MediaLibrary {
                     // Upload image sizes. Again, not critical if this fails so we don't check the result before proceeding.
                     $sizes = $this->uploadImageSizes($sizes_to_upload, $file_dir, $do_reupload, $existing_extras, $prefix, $attachment_id, $is_private);
                 }
+                $additional_files = $this->uploadAdditionalFiles($attachment_meta, $file_dir, $do_reupload, $has_existing, $existing_extras, $prefix, $attachment_id, $is_private);
             }
 
             if (!empty($sizes)) {
@@ -1087,6 +1090,13 @@ class MediaLibrary {
                 }
 
                 $extras['sizes'] = array_merge($existing_sizes, $sizes);
+            }
+
+            if (!empty($additional_files)) {
+                $existing_additional_files = isset($existing_extras['additional_files']) && is_array($existing_extras['additional_files'])
+                    ? $existing_extras['additional_files']
+                    : [];
+                $extras['additional_files'] = array_merge($existing_additional_files, $additional_files);
             }
 
             return [
@@ -1144,6 +1154,8 @@ class MediaLibrary {
      * @param array $attachment_meta
      * @param int   $attachment_id
      * @param array $existing_extras
+     * @return bool|array True forces a full reupload (main file changed); an array of
+     *                     size names forces only those sizes; false means nothing changed.
      */
     private function shouldForceReupload($attachment_meta, $attachment_id, $existing_extras) {
         $existing_extras = $existing_extras ?? Item::instance()->get_extras($attachment_id, false, 'media_library');
@@ -1172,29 +1184,24 @@ class MediaLibrary {
             ];
         }
 
-        $existing_relevant = [];
-        foreach (array_keys($current_sizes) as $sname) {
-            if (isset($existing_sizes[$sname])) {
-                $existing_relevant[$sname] = $existing_sizes[$sname];
-            }
-        }
-
-        if (array_keys($existing_relevant) !== array_keys($current_sizes)) {
-            return true;
-        }
-
+        // The main file is unchanged (already ruled out above) — a mismatch here is
+        // limited to specific sizes, so re-send only those instead of forcing a
+        // blanket reupload that would also re-fetch the main file from local disk
+        // (which "Remove from server" may have already, correctly, deleted).
+        $changed_sizes = [];
         foreach ($current_sizes as $sname => $dims) {
             if (!isset($existing_sizes[$sname])) {
-                return true;
+                $changed_sizes[] = $sname;
+                continue;
             }
             $ex_w = isset($existing_sizes[$sname]['width']) ? (int)$existing_sizes[$sname]['width'] : 0;
             $ex_h = isset($existing_sizes[$sname]['height']) ? (int)$existing_sizes[$sname]['height'] : 0;
             if ($ex_w !== $dims['width'] || $ex_h !== $dims['height']) {
-                return true;
+                $changed_sizes[] = $sname;
             }
         }
 
-        return false;
+        return empty($changed_sizes) ? false : $changed_sizes;
     }
 
     /**
@@ -1246,42 +1253,108 @@ class MediaLibrary {
      * @param bool   $is_private Keeps a reupload of an already-private item under the private path.
      */
     private function uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private = false) {
-        $original = [];
-        if (empty($original_file)) {
-            return $original;
+        return $this->uploadNamedFile(
+            $original_file, $file_dir,
+            $existing['original_source_path'] ?? '', $existing['original_key'] ?? '',
+            $do_reupload, $has_existing, $prefix, $attachment_id, $is_private,
+            __('Original File not found', 'media-cloud-sync')
+        );
+    }
+
+    /**
+     * Upload one optional named additional file (original image, HEIC source,
+     * animated-GIF video/poster) that lives alongside the main file.
+     * @since 1.4.3
+     * @param string     $filename Relative filename within $file_dir, or empty if absent.
+     * @param string     $file_dir
+     * @param string     $existing_source_path Previously recorded source_path, if any.
+     * @param string     $existing_key Previously recorded cloud key, if any.
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
+     * @param bool       $has_existing
+     * @param string     $prefix
+     * @param int        $attachment_id
+     * @param bool       $is_private Keeps a reupload of an already-private item under the private path.
+     * @param string     $not_found_message
+     * @return array{source_path?: string, key?: string} Empty when absent or upload failed.
+     */
+    private function uploadNamedFile($filename, $file_dir, $existing_source_path, $existing_key, $do_reupload, $has_existing, $prefix, $attachment_id, $is_private, $not_found_message) {
+        if (empty($filename)) {
+            return [];
         }
 
-        $original_file_path = trailingslashit($file_dir) . $original_file;
-        $original_file_source_path = Utils::get_attachment_source_path($original_file_path);
+        $file_path   = trailingslashit($file_dir) . $filename;
+        $source_path = Utils::get_attachment_source_path($file_path);
 
         // $do_reupload may be an array of size names (force just those sizes) — that
-        // shouldn't force the original file too, only a literal true does.
-        if ($do_reupload !== true && $has_existing && isset($existing['original_source_path']) && !Utils::is_empty($existing['original_source_path']) && $existing['original_source_path'] === $original_file_source_path) {
-            return [ 'source_path' => $original_file_source_path, 'key' => $existing['original_key'] ];
+        // shouldn't force this file too, only a literal true does.
+        if ($do_reupload !== true && $has_existing && !Utils::is_empty($existing_source_path) && $existing_source_path === $source_path) {
+            return [ 'source_path' => $source_path, 'key' => $existing_key ];
         }
 
-        if (file_exists($original_file_path)) {
-            $uploaded_original = Service::instance()->uploadSingle($original_file_path, $original_file_source_path, $prefix, $is_private);
-            if (isset($uploaded_original['success']) && $uploaded_original['success']) {
-                return [ 'source_path' => $original_file_source_path, 'key' => $uploaded_original['key'] ];
+        if (file_exists($file_path)) {
+            $uploaded = Service::instance()->uploadSingle($file_path, $source_path, $prefix, $is_private);
+            if (isset($uploaded['success']) && $uploaded['success']) {
+                return [ 'source_path' => $source_path, 'key' => $uploaded['key'] ];
             }
 
-            if (isset($uploaded_original['success']) && !$uploaded_original['success']) {
+            if (isset($uploaded['success']) && !$uploaded['success']) {
                 Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
-                    'message' => $uploaded_original['message'] ?? __('Original File upload failed', 'media-cloud-sync'),
-                    'file'    => $original_file_path,
-                    'code'    => $uploaded_original['code'] ?? 500
+                    'message' => $uploaded['message'] ?? $not_found_message,
+                    'file'    => $file_path,
+                    'code'    => $uploaded['code'] ?? 500
                 ]);
             }
         } else {
             Logger::instance()->add_log('sync_to_cloud', $attachment_id, 'media_library', [
-                'message' => __('Original File not found', 'media-cloud-sync'),
-                'file'    => $original_file_path,
+                'message' => $not_found_message,
+                'file'    => $file_path,
                 'code'    => 404
             ]);
         }
 
-        return $original;
+        return [];
+    }
+
+    /**
+     * Upload the WP 7.1 client-side-processing additional files (HEIC source,
+     * animated-GIF video/poster) that uploadMedia() otherwise has no idea exist.
+     * @since 1.4.3
+     * @param array      $attachment_meta
+     * @param string     $file_dir
+     * @param bool|array $do_reupload
+     * @param bool       $has_existing
+     * @param array      $existing_extras
+     * @param string     $prefix
+     * @param int        $attachment_id
+     * @param bool       $is_private
+     * @return array Keyed by meta key ('source_image', 'animated_video', 'animated_video_poster').
+     */
+    private function uploadAdditionalFiles($attachment_meta, $file_dir, $do_reupload, $has_existing, $existing_extras, $prefix, $attachment_id, $is_private) {
+        $additional_file_keys = [
+            'source_image'          => __('HEIC source file not found', 'media-cloud-sync'),
+            'animated_video'        => __('Animated video file not found', 'media-cloud-sync'),
+            'animated_video_poster' => __('Animated video poster file not found', 'media-cloud-sync'),
+        ];
+        $existing_additional_files = isset($existing_extras['additional_files']) && is_array($existing_extras['additional_files'])
+            ? $existing_extras['additional_files']
+            : [];
+
+        $additional_files = [];
+        foreach ($additional_file_keys as $meta_key => $not_found_message) {
+            if (empty($attachment_meta[$meta_key])) {
+                continue;
+            }
+            $existing_file = $existing_additional_files[$meta_key] ?? [];
+            $result = $this->uploadNamedFile(
+                $attachment_meta[$meta_key], $file_dir,
+                $existing_file['source_path'] ?? '', $existing_file['key'] ?? '',
+                $do_reupload, $has_existing, $prefix, $attachment_id, $is_private, $not_found_message
+            );
+            if (!empty($result)) {
+                $additional_files[$meta_key] = $result;
+            }
+        }
+        return $additional_files;
     }
 
     /**

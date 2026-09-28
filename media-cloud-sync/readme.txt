@@ -7,7 +7,7 @@ License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -75,7 +75,7 @@ Here are the key features of the Media Cloud Sync plugin:
 🔹 **Ajax/Mixed Sync Method** — run bulk sync live in the browser (Ajax) or with automatic WP-Cron fallback (Mixed), instead of Cron-only.
 🔹 **Delivery Settings: Cache-Control duration** — set a custom Cache-Control max-age (or explicit no-cache) per storage/CDN choice for newly uploaded files.
 🔹 **Include/Exclude Extensions** — control exactly which file types get uploaded to the bucket.
-🔹 **Third-party compatibility** — WooCommerce and Easy Digital Downloads downloadable files, BuddyBoss Platform, WPML, Elementor, Divi, and Enable Media Replace all stay in sync with cloud storage.
+🔹 **Third-party compatibility** — WooCommerce and Easy Digital Downloads downloadable files, BuddyBoss Platform, WPML, Elementor, Divi, Enable Media Replace, EWWW Image Optimizer, Meta Slider, and WP Smush all stay in sync with cloud storage.
 🔹 And more...
 
 == Other Useful Links ==
@@ -153,6 +153,14 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.4.2 =
+* Tweak: Internal groundwork for an upcoming Pro integration.
+* Feature: Added a read-only stream-wrapper fallback so plugins without a dedicated integration can read offloaded files straight from cloud storage.
+* Bug Fix: A local media URL pasted into an ACF oEmbed field wasn't rewritten to the cloud URL like other ACF text-like fields already are.
+* Bug Fix: A corrupted/legacy media count entry could crash the admin page with "Cannot access offset of type string" instead of self-healing.
+* Bug Fix: With "Remove from server" enabled, images uploaded via WordPress 7.1's client-side (block editor) sub-size generation reached the bucket with the original file only — sub-sizes stayed on the server and never synced.
+* Bug Fix: Flipping or rotating an image 180° in place (native Image Editor, or the ACF Image Crop Add-on) wasn't detected as a change, so the bucket kept serving the pre-edit version.
+* Feature: Added offloading support for the HEIC source file and animated-GIF video/poster files WordPress 7.1's client-side media processing can attach to an upload.
 = 1.4.1 =
 * Feature: Added private media support (Pro) — mark individual Media Library items private, served through short-lived signed URLs.
 * Feature: Added a "Remove from Cloud" bulk sync job (Pro).
