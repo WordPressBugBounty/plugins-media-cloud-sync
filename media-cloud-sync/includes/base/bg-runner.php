@@ -295,6 +295,11 @@ class BGRunner {
      * it's read again.
      */
     private function bust_transient_cache(string $key) {
+        // Ext object cache holds transients only in the 'transient' group — deleting would destroy them.
+        if (wp_using_ext_object_cache()) {
+            wp_cache_get($key, 'transient', true);
+            return;
+        }
         wp_cache_delete($key, 'transient');
         wp_cache_delete('_transient_' . $key, 'options');
     }

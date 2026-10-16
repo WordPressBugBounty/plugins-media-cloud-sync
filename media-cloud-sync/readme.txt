@@ -7,7 +7,7 @@ License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -68,8 +68,10 @@ Here are the key features of the Media Cloud Sync plugin:
 [Media Cloud Sync Pro](https://dudlewebs.com/product/media-cloud-sync/) extends the free plugin with cloud-side management tools, faster bulk operations, and per-item control directly from the Media Library:
 
 🔹 **Media Library actions** — Sync to Cloud, Force Re-upload, Remove from Server, Restore from Cloud, Remove from Cloud, and View on Cloud, directly on the single-attachment popup and as bulk dropdowns in both grid and list view, with a cloud-offload status badge/column and a Synced/Not Synced filter.
+🔹 **Private Media** — mark individual Media Library items private so they're served only through short-lived signed URLs.
 🔹 **File Manager** — browse your connected cloud bucket, download as zip, restore to server, move, and delete files, with per-item and bulk actions.
 🔹 **Restore Media to Server** — bulk-restore previously offloaded media from the cloud back to your server.
+🔹 **Remove Media from Cloud** — bulk-delete synced media from the bucket, with an optional restore-to-server step first.
 🔹 **Move Media to New Path** — bulk-move already-synced media to a newly configured base path.
 🔹 **Bucket-to-Bucket Migration** — copy synced media to a new provider, bucket, or account, including reusing an already-connected credential source as the migration destination.
 🔹 **Ajax/Mixed Sync Method** — run bulk sync live in the browser (Ajax) or with automatic WP-Cron fallback (Mixed), instead of Cron-only.
@@ -153,6 +155,8 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.4.3 =
+* Bug Fix: On sites using a persistent object cache (e.g. Redis), bulk sync progress stayed at 0 and never completed, and Pause/Stop had no effect.
 = 1.4.2 =
 * Tweak: Internal groundwork for an upcoming Pro integration.
 * Feature: Added a read-only stream-wrapper fallback so plugins without a dedicated integration can read offloaded files straight from cloud storage.
