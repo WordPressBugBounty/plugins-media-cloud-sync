@@ -5,12 +5,14 @@ defined('ABSPATH') || exit;
 
 // Libraries
 use Dudlewebs\WPMCS\s3\Aws\S3\S3Client;
+use Dudlewebs\WPMCS\s3\GuzzleHttp\Psr7\MimeType;
 use Dudlewebs\WPMCS\s3\Aws\Exception\AwsException;
 use Dudlewebs\WPMCS\s3\Aws\S3\Exception\S3Exception;
 use Dudlewebs\WPMCS\s3\Aws\S3\MultipartUploader;
 use Dudlewebs\WPMCS\s3\Aws\Exception\MultipartUploadException;
 use Dudlewebs\WPMCS\s3\Aws\Command;
 use Dudlewebs\WPMCS\s3\Aws\S3\ObjectUploader;
+use Dudlewebs\WPMCS\s3\GuzzleHttp\Promise\Each;
 use Exception;
 
 class CloudflareR2 {
@@ -117,7 +119,7 @@ class CloudflareR2 {
                 $result = [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('Please check the authorization details', 'media-cloud-sync'),
+                    'message' => __('Please check the authorization details', 'media-cloud-sync'),
                 ];
 
                 try {
@@ -129,7 +131,7 @@ class CloudflareR2 {
                     $result = [
                         'success' => true,
                         'code'    => 200,
-                        'message' => esc_html__('Credentials are valid', 'media-cloud-sync'),
+                        'message' => __('Credentials are valid', 'media-cloud-sync'),
                     ];
                 } catch (AwsException $e) {
                     $code = $e->getAwsErrorCode();
@@ -148,7 +150,7 @@ class CloudflareR2 {
                         $result = [
                             'success' => true,
                             'code'    => 200,
-                            'message' => esc_html__('Credentials are valid', 'media-cloud-sync'),
+                            'message' => __('Credentials are valid', 'media-cloud-sync'),
                         ];
                     }
                 }
@@ -168,25 +170,25 @@ class CloudflareR2 {
                         }
                     }
                     $result['buckets_data']['buckets'] = $newBucketFormat;
-                    $result['buckets_data']['message'] = esc_html__('Buckets listed successfully', 'media-cloud-sync');
+                    $result['buckets_data']['message'] = __('Buckets listed successfully', 'media-cloud-sync');
                     $result['buckets_data']['status'] = true;
                 } catch (S3Exception $e) {
                     $result ['buckets_data']['buckets'] = [];
-                    $result ['buckets_data']['message'] = esc_html__('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
+                    $result ['buckets_data']['message'] = __('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
                     $result ['buckets_data']['status'] = false;
                 } catch (Exception $e) {
                     $result ['buckets_data']['buckets'] = [];
-                    $result ['buckets_data']['message'] = esc_html__('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
+                    $result ['buckets_data']['message'] = __('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
                     $result ['buckets_data']['status'] = false;
                 }
                 return $result;
             } catch (S3Exception $ex) {
-                return array('message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+                return array('message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
             } catch (Exception $ex) {
-                return array('message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+                return array('message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
             }
         }
-        return array('message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+        return array('message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
     }
 
     /**
@@ -202,7 +204,7 @@ class CloudflareR2 {
         $region     = isset($config['region']) ? $config['region'] : '';
 
         if ( Service::has_missing_fields([$account_id, $access_key, $secret_key, $bucket_name]) ) {
-            return array('message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+            return array('message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
         }
 
         try {
@@ -236,14 +238,14 @@ class CloudflareR2 {
             }
             
             if($bucket_found) {
-                return array('message' => esc_html__('Bucket exist', 'media-cloud-sync'), 'code' => 200, 'success' => true);
+                return array('message' => __('Bucket exist', 'media-cloud-sync'), 'code' => 200, 'success' => true);
             } else {
-                return array('message' => esc_html__("Bucket choosen does not exist or you don't have permission", 'media-cloud-sync'), 'code' => 200, 'success' => false);
+                return array('message' => __("Bucket chosen does not exist or you don't have permission", 'media-cloud-sync'), 'code' => 200, 'success' => false);
             }
         } catch (S3Exception $ex) {
-            return array('message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+            return array('message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
         } catch (Exception $ex) {
-            return array('message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+            return array('message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
         }
     }
 
@@ -259,7 +261,7 @@ class CloudflareR2 {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
         if ( Service::has_missing_fields([$account_id, $access_key, $secret_key, $bucket_name]) ) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
@@ -281,7 +283,7 @@ class CloudflareR2 {
             $cloudflareClient->createBucket(['Bucket' => $bucket_name]);
             
             return [
-                'message' => esc_html__('Bucket created successfully.', 'media-cloud-sync'),
+                'message' => __('Bucket created successfully.', 'media-cloud-sync'),
                 'data'    => [
                     'Name'         => $bucket_name,
                     'CreationDate' => date('Y-m-d\TH:i:s\Z'),
@@ -292,9 +294,9 @@ class CloudflareR2 {
         } catch (AwsException $ex) {
             return ['message' => $ex->getAwsErrorMessage(), 'code' => 200, 'success' => false];
         } catch (S3Exception $ex) {
-            return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -310,7 +312,7 @@ class CloudflareR2 {
         $region     = isset($config['region']) ? $config['region'] : '';
 
         if (Service::has_missing_fields([$access_key, $secret_key, $bucket_name, $account_id])) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
@@ -339,17 +341,17 @@ class CloudflareR2 {
 
             // Check if the object was created successfully
             if ($this->exists( $object_key, $bucket_name, $cloudflareClient )) {
-                return ['message' => esc_html__('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
+                return ['message' => __('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
             } else {
-                return ['message' => esc_html__('Bucket write permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                return ['message' => __('Bucket write permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
            
         } catch (AwsException $ex) {
             return ['message' => $ex->getAwsErrorMessage(), 'code' => 200, 'success' => false];
         } catch (S3Exception $ex) {
-            return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -365,7 +367,7 @@ class CloudflareR2 {
         $region     = isset($config['region']) ? $config['region'] : '';
 
         if (Service::has_missing_fields([$access_key, $secret_key, $bucket_name, $account_id])) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
@@ -393,17 +395,17 @@ class CloudflareR2 {
           
             // Check if the object was created successfully
             if (!$this->exists($object_key, $bucket_name, $cloudflareClient)) {
-                return ['message' => esc_html__('Bucket delete permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
+                return ['message' => __('Bucket delete permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
             } else {
-                return ['message' => esc_html__('Bucket delete permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                return ['message' => __('Bucket delete permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
            
         } catch (AwsException $ex) {
             return ['message' => $ex->getAwsErrorMessage(), 'code' => 200, 'success' => false];
         } catch (S3Exception $ex) {
-            return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -419,12 +421,16 @@ class CloudflareR2 {
         ];
         
         if (Service::has_missing_fields([$this->cloudflareClient, $this->bucket_name])) {
-            $result['message'] = esc_html__('Invalid Request', 'media-cloud-sync');
-            return ['message' => esc_html__('Invalid Request', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
+            $result['message'] = __('Invalid Request', 'media-cloud-sync');
+            return ['message' => __('Invalid Request', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
+        }
+
+        if (Utils::delivery_needs_domain(Utils::get_settings())) {
+            return ['message' => Utils::delivery_domain_message(), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         }
 
         try {
-            $object_key = Utils::get_permission_check_object_key();
+            $object_key = Utils::get_read_check_object_key();
 
             // Check if the object was created successfully
             if (!$this->exists($object_key)) {
@@ -450,23 +456,23 @@ class CloudflareR2 {
 
             if ($status_code === 200) {
                 $result['status'] = true;
-                $result['message'] = esc_html__('Objects are accessible to Read', 'media-cloud-sync');
+                $result['message'] = __('Objects are accessible to Read', 'media-cloud-sync');
             } else if ($status_code === 403) {
                 $result['status'] = false;
                 if(isset($this->cdnConfig['service']) && $this->cdnConfig['service'] == $this->service) {
-                    $result['message'] = esc_html__('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
+                    $result['message'] = __('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
                 } else {
-                    $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
+                    $result['message'] = __('Access Denied. Please check your bucket policy', 'media-cloud-sync');
                 }
             } else if ($status_code === 404) {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Object not found. Please check your bucket policy', 'media-cloud-sync');
+                $result['message'] = __('Object not found. Please check your bucket policy', 'media-cloud-sync');
             } else if ($status_code === 500) {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
+                $result['message'] = __('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
             } else {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Objects are not accessible to read', 'media-cloud-sync');
+                $result['message'] = __('Objects are not accessible to read', 'media-cloud-sync');
             }
 
             $this->deleteSingle($object_key);
@@ -477,14 +483,14 @@ class CloudflareR2 {
                 'lastChecked' => $result['lastChecked'],
             ];
         } catch (AwsException $ex) {
-            $result['message'] = $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
+            $result['message'] = $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync');
+            return ['message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
         } catch (S3Exception $ex) {
-            $result['message'] = $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            return ['message' => $ex->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
+            $result['message'] = $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync');
+            return ['message' => $ex->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
         } catch (Exception $ex) {
-            $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
+            $result['message'] = $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync');
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false , 'lastChecked' => time()];
         }
     }
 
@@ -557,7 +563,7 @@ class CloudflareR2 {
      */
     public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
         if (!$this->cloudflareClient) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
         }
         try {
             $params = ['Bucket' => $this->bucket_name, 'MaxKeys' => $maxKeys];
@@ -621,7 +627,7 @@ class CloudflareR2 {
                     return [
                         'success' => false,
                         'code'    => 200,
-                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                        'message' => __('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
                     ];
                 }
                 return $this->execute_upload($absolute_source_path, $upload_path);
@@ -631,7 +637,7 @@ class CloudflareR2 {
         return [
             'success' => false,
             'code'    => 200,
-            'message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync')
+            'message' => __('Insufficient Data. Please try again', 'media-cloud-sync')
         ];
     }
 
@@ -695,7 +701,7 @@ class CloudflareR2 {
                     'code'     => 200,
                     'file_url' => $this->generate_file_url($key),
                     'key'      => $key,
-                    'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync')
+                    'message'  => __('File Uploaded Successfully', 'media-cloud-sync')
                 ];
             } catch (MultipartUploadException $e) {
                 if ($attempt >= $max_attempts) {
@@ -795,7 +801,7 @@ class CloudflareR2 {
      */
     public function purge_all_versions($key) {
         if (!$this->cloudflareClient) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
         }
 
         try {
@@ -839,7 +845,7 @@ class CloudflareR2 {
             // Version history cleanup unsupported/failed — not fatal, live object is gone.
         }
 
-        return ['success' => true, 'code' => 200, 'message' => esc_html__('Purged Successfully', 'media-cloud-sync')];
+        return ['success' => true, 'code' => 200, 'message' => __('Purged Successfully', 'media-cloud-sync')];
     }
 
     /**
@@ -854,7 +860,7 @@ class CloudflareR2 {
     public function copy_to_new_path($key, $new_path) {
         if (!$this->cloudflareClient) {
             return [
-                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'message' => __('Client not configured', 'media-cloud-sync'),
                 'code'    => 200,
                 'success' => false
             ];
@@ -869,7 +875,7 @@ class CloudflareR2 {
             return [
                 'success' => true,
                 'code'    => 200,
-                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+                'message' => __('File copied successfully', 'media-cloud-sync')
             ];
         } catch (AwsException $e) {
             return [
@@ -885,7 +891,7 @@ class CloudflareR2 {
     public function copy_to_bucket($key, $new_key, $dest_bucket) {
         if (!$this->cloudflareClient) {
             return [
-                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'message' => __('Client not configured', 'media-cloud-sync'),
                 'code'    => 200,
                 'success' => false
             ];
@@ -900,7 +906,7 @@ class CloudflareR2 {
             return [
                 'success' => true,
                 'code'    => 200,
-                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+                'message' => __('File copied successfully', 'media-cloud-sync')
             ];
         } catch (AwsException $e) {
             return [
@@ -921,7 +927,7 @@ class CloudflareR2 {
             return array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+                'message' => __('Client not configured', 'media-cloud-sync')
             );
         }
         if (isset($key) && !empty($key)) {
@@ -935,13 +941,13 @@ class CloudflareR2 {
                     $result = array(
                         'success' => true,
                         'code'    => 200,
-                        'message' => esc_html__('Deleted Successfully', 'media-cloud-sync')
+                        'message' => __('Deleted Successfully', 'media-cloud-sync')
                     );
                 } else {
                     $result = array(
                         'success' => false,
                         'code'    => 200,
-                        'message' => esc_html__('File not deleted', 'media-cloud-sync')
+                        'message' => __('File not deleted', 'media-cloud-sync')
                     );
                 }
             } catch (AwsException $e) {
@@ -955,7 +961,7 @@ class CloudflareR2 {
             $result = array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync')
+                'message' => __('Insufficient Data. Please try again', 'media-cloud-sync')
             );
         }
         return $result;
@@ -971,7 +977,7 @@ class CloudflareR2 {
             return array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+                'message' => __('Client not configured', 'media-cloud-sync')
             );
         }
         if (isset($key) && !empty($key)) {
@@ -990,13 +996,13 @@ class CloudflareR2 {
                         'success'   => true,
                         'code'      => 200,
                         'file_url'  => $privateUrl,
-                        'message'   => esc_html__('Got Private URL Successfully', 'media-cloud-sync')
+                        'message'   => __('Got Private URL Successfully', 'media-cloud-sync')
                     );
                 } else {
                     $result = array(
                         'success' => false,
                         'code'    => 200,
-                        'message' => esc_html__('Error getting Private URL', 'media-cloud-sync')
+                        'message' => __('Error getting Private URL', 'media-cloud-sync')
                     );
                 }
             } catch (AwsException $e) {
@@ -1009,20 +1015,20 @@ class CloudflareR2 {
                 $result = array(
                     'success' => false,
                     'code'    => 200,
-                    'message' => $e->getAwsErrorMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync')
+                    'message' => $e->getAwsErrorMessage() ?? __('Please check the authorization details', 'media-cloud-sync')
                 );
             } catch (Exception $e) {
                 $result = array(
                     'success' => false,
                     'code'    => 200,
-                    'message' => $e->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync')
+                    'message' => $e->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync')
                 );
             }
         } else {
             $result = array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync')
+                'message' => __('Insufficient Data. Please try again', 'media-cloud-sync')
             );
         }
         return $result;
@@ -1069,6 +1075,306 @@ class CloudflareR2 {
         }
         // fallback
         return "https://r2.cloudflarestorage.com";
+    }
+
+    /**
+     * Sets Cache-Control and the extension's Content-Type on an existing object, by copying it onto itself.
+     * @return array {success, code, message, changed}
+     * @since 1.5.0
+     */
+    public function update_object_headers($key, $cache_control) {
+        $client = $this->get_client();
+        if (!$client || !$key) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $head    = $client->headObject(['Bucket' => $this->bucket_name, 'Key' => $key]);
+            $current = [(string) $head['CacheControl'], (string) $head['ContentType']];
+            $type    = Utils::content_type_for($current[1], MimeType::fromFilename($key));
+            if ($current === [(string) $cache_control, $type]) {
+                return ['success' => true, 'code' => 200, 'changed' => false, 'message' => __('Headers already up to date', 'media-cloud-sync')];
+            }
+            if ((int) $head['ContentLength'] > 5 * GB_IN_BYTES) {
+                return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Files over 5 GB can\'t be updated in place.', 'media-cloud-sync')];
+            }
+            // REPLACE drops whatever isn't sent again, so carry over the rest of the object's settings.
+            $params = [
+                'Bucket'            => $this->bucket_name,
+                'Key'               => $key,
+                'CopySource'        => $this->bucket_name . '/' . S3Client::encodeKey($key),
+                'MetadataDirective' => 'REPLACE',
+                'Metadata'          => $head['Metadata'] ?: [],
+                'ContentType'       => $type,
+            ];
+            if ($cache_control) {
+                $params['CacheControl'] = $cache_control;
+            }
+            if ($type === '') {
+                unset($params['ContentType']);
+            }
+            foreach (['ContentDisposition', 'ContentEncoding', 'ContentLanguage', 'StorageClass', 'ServerSideEncryption', 'SSEKMSKeyId'] as $field) {
+                if (!empty($head[$field])) {
+                    $params[$field] = $head[$field];
+                }
+            }
+            $client->copyObject($params);
+            return ['success' => true, 'code' => 200, 'changed' => true, 'message' => __('Headers updated', 'media-cloud-sync')];
+        } catch (AwsException $e) {
+            $message = $e->getStatusCode() == 404 ? __('Not found in the bucket', 'media-cloud-sync') : ($e->getAwsErrorMessage() ?: $e->getMessage());
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $message];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    // Storage classes files can be moved to, value => label.
+    public function get_storage_classes() {
+        return [
+            'STANDARD'    => __('Standard', 'media-cloud-sync'),
+            'STANDARD_IA' => __('Infrequent Access', 'media-cloud-sync'),
+        ];
+    }
+
+    // Moves an existing object to another storage class in place; 'changed' is false when it already had it.
+    public function change_storage_class($key, $class) {
+        if (!$this->get_client() || !$key) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        return $this->change_storage_classes([$key], $class)[$key];
+    }
+
+    // change_storage_class() for several objects, a few requests at a time; results keyed by object key.
+    public function change_storage_classes($keys, $class) {
+        $client = $this->get_client();
+        $keys   = array_values(array_unique(array_filter((array) $keys)));
+        if (!$client) {
+            return array_fill_keys($keys, ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Client not configured', 'media-cloud-sync')]);
+        }
+        $results  = [];
+        $promises = function () use ($client, $keys, $class, &$results) {
+            foreach ($keys as $key) {
+                yield $client->headObjectAsync(['Bucket' => $this->bucket_name, 'Key' => $key])
+                    ->then(function ($head) use ($client, $key, $class, &$results) {
+                        $skip = $this->storage_class_skip($head, $class);
+                        if ($skip) {
+                            $results[$key] = $skip;
+                            return null;
+                        }
+                        return $client->copyObjectAsync($this->storage_class_copy_params($key, $class, $head))->then(function () use ($key, &$results) {
+                            $results[$key] = ['success' => true, 'code' => 200, 'changed' => true, 'message' => __('Storage class changed', 'media-cloud-sync')];
+                        });
+                    })
+                    ->otherwise(function ($e) use ($key, &$results) {
+                        $results[$key] = $this->storage_class_error($e);
+                    });
+            }
+        };
+        Each::ofLimit($promises(), 5)->wait();
+        return $results;
+    }
+
+    // The result when an object can't or needn't change class, else null.
+    private function storage_class_skip($head, $class) {
+        $current = (string) ($head['StorageClass'] ?: 'STANDARD');
+        if ($current === $class) {
+            return ['success' => true, 'code' => 200, 'changed' => false, 'message' => __('Already in this storage class', 'media-cloud-sync')];
+        }
+        if (in_array($current, ['GLACIER', 'DEEP_ARCHIVE'], true)) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Archived in Glacier: restore it in your storage console first.', 'media-cloud-sync')];
+        }
+        if ((int) $head['ContentLength'] > 5 * GB_IN_BYTES) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Files over 5 GB can\'t be changed in place.', 'media-cloud-sync')];
+        }
+        return null;
+    }
+
+    private function storage_class_copy_params($key, $class, $head) {
+        $params = [
+            'Bucket'            => $this->bucket_name,
+            'Key'               => $key,
+            'CopySource'        => $this->bucket_name . '/' . S3Client::encodeKey($key),
+            'MetadataDirective' => 'COPY',
+            'StorageClass'      => $class,
+        ];
+        foreach (['ServerSideEncryption', 'SSEKMSKeyId'] as $field) {
+            if (!empty($head[$field])) {
+                $params[$field] = $head[$field];
+            }
+        }
+        return $params;
+    }
+
+    private function storage_class_error($e) {
+        if ($e instanceof AwsException) {
+            $message = $e->getStatusCode() == 404 ? __('Not found in the bucket', 'media-cloud-sync') : ($e->getAwsErrorMessage() ?: $e->getMessage());
+        } else {
+            $message = $e instanceof Exception ? $e->getMessage() : (string) $e;
+        }
+        return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $message];
+    }
+
+    // The plugin's lifecycle rule as ['class' => ..., 'days' => ...], or null when there is none.
+    public function get_storage_class_rule() {
+        $client = $this->get_client();
+        if (!$client) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $rules = (array) ($client->getBucketLifecycleConfiguration(['Bucket' => $this->bucket_name])['Rules'] ?? []);
+        } catch (AwsException $e) {
+            if ($e->getAwsErrorCode() === 'NoSuchLifecycleConfiguration') {
+                return ['success' => true, 'code' => 200, 'rule' => null];
+            }
+            if ($e->getAwsErrorCode() === 'AccessDenied') {
+                return ['success' => false, 'code' => 200, 'message' => $this->lifecycle_denied_message()];
+            }
+            return ['success' => false, 'code' => 200, 'message' => $e->getAwsErrorMessage() ?: $e->getMessage()];
+        }
+        foreach ($rules as $rule) {
+            if (strpos((string) ($rule['ID'] ?? ''), 'media-cloud-sync-storage-class') === 0 && !empty($rule['Transitions'][0]['StorageClass'])) {
+                return ['success' => true, 'code' => 200, 'rule' => ['class' => $rule['Transitions'][0]['StorageClass'], 'days' => (int) ($rule['Transitions'][0]['Days'] ?? 0)]];
+            }
+        }
+        return ['success' => true, 'code' => 200, 'rule' => null];
+    }
+
+    // Sets the plugin's lifecycle rules moving files under $prefixes to $class after $days (an empty $class removes them); other rules are kept.
+    public function set_storage_class_rule($prefixes, $class = '', $days = 0) {
+        $client = $this->get_client();
+        if (!$client) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        $rule_id = 'media-cloud-sync-storage-class';
+        try {
+            $rules = [];
+            try {
+                $rules = (array) ($client->getBucketLifecycleConfiguration(['Bucket' => $this->bucket_name])['Rules'] ?? []);
+            } catch (AwsException $e) {
+                if ($e->getAwsErrorCode() !== 'NoSuchLifecycleConfiguration') {
+                    throw $e;
+                }
+            }
+            $rules = array_values(array_filter($rules, function ($rule) use ($rule_id) {
+                return strpos((string) ($rule['ID'] ?? ''), $rule_id) !== 0;
+            }));
+            if ($class !== '') {
+                foreach (array_values($prefixes) as $i => $prefix) {
+                    $rules[] = [
+                        'ID'          => $rule_id . '-' . ($i + 1),
+                        'Status'      => 'Enabled',
+                        'Filter'      => ['Prefix' => $prefix],
+                        'Transitions' => [['Days' => (int) $days, 'StorageClass' => $class]],
+                    ];
+                }
+            }
+            if (empty($rules)) {
+                $client->deleteBucketLifecycle(['Bucket' => $this->bucket_name]);
+            } else {
+                $client->putBucketLifecycleConfiguration(['Bucket' => $this->bucket_name, 'LifecycleConfiguration' => ['Rules' => $rules]]);
+            }
+            return ['success' => true, 'code' => 200, 'message' => $class !== '' ? __('Automatic storage class rule saved', 'media-cloud-sync') : __('Automatic storage class rule removed', 'media-cloud-sync')];
+        } catch (AwsException $e) {
+            if ($e->getAwsErrorCode() === 'AccessDenied') {
+                return ['success' => false, 'code' => 200, 'message' => $this->lifecycle_denied_message()];
+            }
+            return ['success' => false, 'code' => 200, 'message' => $e->getAwsErrorMessage() ?: $e->getMessage()];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        }
+    }
+
+    private function lifecycle_denied_message() {
+        return sprintf(
+            /* translators: %s: bucket name */
+            __('Your storage keys are not allowed to read or change the bucket\'s lifecycle rules. Use an API token with Admin Read & Write permission, or add the rule in the Cloudflare dashboard under R2 › %s › Settings › Object lifecycle rules.', 'media-cloud-sync'),
+            $this->bucket_name
+        );
+    }
+
+    // Allowed origins of the plugin's CORS rule, or null when the bucket has none.
+    public function get_cors_rule() {
+        $client = $this->get_client();
+        if (!$client) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $rules = (array) ($client->getBucketCors(['Bucket' => $this->bucket_name])['CORSRules'] ?? []);
+        } catch (AwsException $e) {
+            if ($e->getAwsErrorCode() === 'NoSuchCORSConfiguration') {
+                return ['success' => true, 'code' => 200, 'rule' => null];
+            }
+            if ($e->getAwsErrorCode() === 'AccessDenied') {
+                return ['success' => false, 'code' => 200, 'message' => $this->cors_denied_message()];
+            }
+            return ['success' => false, 'code' => 200, 'message' => $e->getAwsErrorMessage() ?: $e->getMessage()];
+        }
+        foreach ($rules as $rule) {
+            if ($this->is_plugin_cors_rule($rule)) {
+                return ['success' => true, 'code' => 200, 'rule' => ['origins' => array_values((array) ($rule['AllowedOrigins'] ?? []))]];
+            }
+        }
+        return ['success' => true, 'code' => 200, 'rule' => null];
+    }
+
+    // Sets the plugin's CORS rule (GET/HEAD from $origins; none removes it); other rules are kept.
+    public function set_cors_rule($origins) {
+        $client = $this->get_client();
+        if (!$client) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $rules = [];
+            try {
+                $rules = (array) ($client->getBucketCors(['Bucket' => $this->bucket_name])['CORSRules'] ?? []);
+            } catch (AwsException $e) {
+                if ($e->getAwsErrorCode() !== 'NoSuchCORSConfiguration') {
+                    throw $e;
+                }
+            }
+            $rules = array_values(array_filter($rules, function ($rule) {
+                return !$this->is_plugin_cors_rule($rule);
+            }));
+            if (!empty($origins)) {
+                $rules[] = [
+                    'ID'             => 'media-cloud-sync',
+                    'AllowedOrigins' => array_values($origins),
+                    'AllowedMethods' => ['GET', 'HEAD'],
+                    'AllowedHeaders' => ['*'],
+                    'MaxAgeSeconds'  => 86400,
+                ];
+            }
+            if (empty($rules)) {
+                $client->deleteBucketCors(['Bucket' => $this->bucket_name]);
+            } else {
+                $client->putBucketCors(['Bucket' => $this->bucket_name, 'CORSConfiguration' => ['CORSRules' => $rules]]);
+            }
+            return ['success' => true, 'code' => 200, 'message' => !empty($origins) ? __('CORS rule saved', 'media-cloud-sync') : __('CORS rule removed', 'media-cloud-sync')];
+        } catch (AwsException $e) {
+            if ($e->getAwsErrorCode() === 'AccessDenied') {
+                return ['success' => false, 'code' => 200, 'message' => $this->cors_denied_message()];
+            }
+            return ['success' => false, 'code' => 200, 'message' => $e->getAwsErrorMessage() ?: $e->getMessage()];
+        } catch (Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
+        }
+    }
+
+    // Ours by ID; without IDs, by its exact read-only shape (a hand-made rule of that shape counts as ours).
+    private function is_plugin_cors_rule($rule) {
+        if (isset($rule['ID'])) {
+            return $rule['ID'] === 'media-cloud-sync';
+        }
+        $methods = (array) ($rule['AllowedMethods'] ?? []);
+        sort($methods);
+        return $methods === ['GET', 'HEAD'] && (int) ($rule['MaxAgeSeconds'] ?? 0) === 86400 && (array) ($rule['AllowedHeaders'] ?? []) === ['*'];
+    }
+
+    private function cors_denied_message() {
+        return sprintf(
+            /* translators: %s: bucket name */
+            __('Your storage keys are not allowed to read or change the bucket\'s CORS policy. Use an API token with Admin Read & Write permission, or add the policy in the Cloudflare dashboard under R2 › %s › Settings › CORS Policy.', 'media-cloud-sync'),
+            $this->bucket_name
+        );
     }
 
     /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */

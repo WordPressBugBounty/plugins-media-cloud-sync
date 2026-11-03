@@ -5,6 +5,7 @@ defined('ABSPATH') || exit;
 
 // Libraries
 use Dudlewebs\WPMCS\GCP\Google\Cloud\Storage\StorageClient;
+use Dudlewebs\WPMCS\GCP\GuzzleHttp\Psr7\MimeType;
 use Dudlewebs\WPMCS\GCP\Google\Cloud\Core\Exception\ServiceException;
 use Dudlewebs\WPMCS\GCP\Google\Auth\CredentialsLoader;
 
@@ -80,12 +81,12 @@ class GCloud {
                 }
             } else {
                 add_action('admin_notices', function (){
-                    echo wp_kses_post(sprintf( "<div class='error'><p><strong>%s: </strong><br>Google Cloud Storage configuration is invalid.
+                    Notices::dismissible('gcloud_config', (string) $this->bucket_name, 'error', sprintf( "<p><strong>%s: </strong><br>Google Cloud Storage configuration is invalid.
                         It may break the media url's as well as media uploads.<br>
                         <a href='%s'>Re-configure</a> plugin to fix the issue.
-                        </p></div>", 
+                        </p>", 
                         esc_html__('Media Cloud Sync', 'media-cloud-sync'),
-                        admin_url('admin.php?page='.$this->token . '-admin-ui#/configure')
+                        esc_url(admin_url('admin.php?page='.$this->token . '-admin-ui#/configure'))
                     ));
                 });
 
@@ -105,7 +106,7 @@ class GCloud {
                 return [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('Invalid JSON configuration, please try again', 'media-cloud-sync'),
+                    'message' => __('Invalid JSON configuration, please try again', 'media-cloud-sync'),
                 ];
             }
 
@@ -119,14 +120,14 @@ class GCloud {
                     return [
                         'success' => false,
                         'code'    => 200,
-                        'message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'),
+                        'message' => __('JSON Configuration is invalid', 'media-cloud-sync'),
                     ];
                 }
 
                 $result = [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('Please check the authorization details', 'media-cloud-sync'),
+                    'message' => __('Please check the authorization details', 'media-cloud-sync'),
                 ];
 
                 try {
@@ -137,7 +138,7 @@ class GCloud {
                     $result = [
                         'success' => true,
                         'code'    => 200,
-                        'message' => esc_html__('Credentials are valid', 'media-cloud-sync'),
+                        'message' => __('Credentials are valid', 'media-cloud-sync'),
                     ];
                 } catch (ServiceException $e) {
                     $statusCode = $e->getCode();
@@ -149,7 +150,7 @@ class GCloud {
                         $result = [
                             'success' => true,
                             'code'    => 200,
-                            'message' => esc_html__('Credentials are valid', 'media-cloud-sync'),
+                            'message' => __('Credentials are valid', 'media-cloud-sync'),
                         ];
                     }
                 }
@@ -173,19 +174,19 @@ class GCloud {
                         }
                     }
                     $result['buckets_data']['buckets'] = $newBucketFormat;
-                    $result['buckets_data']['message'] = esc_html__('Buckets listed successfully', 'media-cloud-sync');
+                    $result['buckets_data']['message'] = __('Buckets listed successfully', 'media-cloud-sync');
                     $result['buckets_data']['status'] = true;
                 } catch (Exception $e) {
                     $result ['buckets_data']['buckets'] = [];
-                    $result ['buckets_data']['message'] = esc_html__('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
+                    $result ['buckets_data']['message'] = __('Unable to list buckets, Please check the bucket listing permission', 'media-cloud-sync');
                     $result ['buckets_data']['status'] = false;
                 }
                 return $result;
             } catch (Exception $ex) {
-                return array('message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+                return array('message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false);
             }
         }
-        return array('message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
+        return array('message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false);
     }
 
 
@@ -198,11 +199,11 @@ class GCloud {
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
         if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         if ( !Utils::is_json( $config_json ) ) {
-            return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
+            return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
         }
 
         try {
@@ -215,7 +216,7 @@ class GCloud {
                 return [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'),
+                    'message' => __('JSON Configuration is invalid', 'media-cloud-sync'),
                 ];
             }
 
@@ -224,26 +225,26 @@ class GCloud {
 
                 if ($bucket->exists()) {
                     return [
-                        'message' => esc_html__('Bucket exists', 'media-cloud-sync'),
+                        'message' => __('Bucket exists', 'media-cloud-sync'),
                         'code'    => 200,
                         'success' => true,
                     ];
                 } else {
                     return [
-                        'message' => esc_html__('Bucket does not exist', 'media-cloud-sync'),
+                        'message' => __('Bucket does not exist', 'media-cloud-sync'),
                         'code'    => 200,
                         'success' => false,
                     ];
                 }
             } catch (ServiceException $e) {
                 return [
-                    'message' => esc_html__('Bucket does not exist or credentials are invalid: ', 'media-cloud-sync') . $e->getMessage(),
+                    'message' => __('Bucket does not exist or credentials are invalid: ', 'media-cloud-sync') . $e->getMessage(),
                     'code'    => 200,
                     'success' => false,
                 ];
             }
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -258,11 +259,11 @@ class GCloud {
         $region = isset($bucketConfig['region']) ? $bucketConfig['region'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
         if ( Service::has_missing_fields([$config_json, $region, $bucket_name]) ) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         if ( !Utils::is_json( $config_json ) ) {
-            return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
+            return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
         }
 
         try {
@@ -275,7 +276,7 @@ class GCloud {
                 return [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'),
+                    'message' => __('JSON Configuration is invalid', 'media-cloud-sync'),
                 ];
             }
 
@@ -306,7 +307,7 @@ class GCloud {
 
             } catch (ServiceException $e) {
                 return [
-                    'message' => esc_html__('Bucket created successfully. But failed to set IAM policy.', 'media-cloud-sync'),
+                    'message' => __('Bucket created successfully. But failed to set IAM policy.', 'media-cloud-sync'),
                     'data'    => [
                         'Name'         => $bucket_name,
                         'CreationDate' => date('Y-m-d\TH:i:s\Z'),
@@ -316,7 +317,7 @@ class GCloud {
                 ];
             } catch (Exception $e) {
                 return [
-                    'message' => esc_html__('Bucket created successfully. But failed to set IAM policy.', 'media-cloud-sync'),
+                    'message' => __('Bucket created successfully. But failed to set IAM policy.', 'media-cloud-sync'),
                     'data'    => [
                         'Name'         => $bucket_name,
                         'CreationDate' => date('Y-m-d\TH:i:s\Z'),
@@ -327,7 +328,7 @@ class GCloud {
             }
             
             return [
-                'message' => esc_html__('Bucket created successfully.', 'media-cloud-sync'),
+                'message' => __('Bucket created successfully.', 'media-cloud-sync'),
                 'data'    => [
                     'Name'         => $bucket_name,
                     'CreationDate' => date('Y-m-d\TH:i:s\Z'),
@@ -337,7 +338,7 @@ class GCloud {
             ];
                
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -349,11 +350,11 @@ class GCloud {
         $config_json = isset($config['config_json']) ? $config['config_json'] : '';
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
         if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         if ( !Utils::is_json( $config_json ) ) {
-            return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
+            return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];   
         }
 
         try {
@@ -366,14 +367,14 @@ class GCloud {
                 return [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'),
+                    'message' => __('JSON Configuration is invalid', 'media-cloud-sync'),
                 ];
             }
             $bucket = $googleClient->bucket($bucket_name);
             if ($bucket->exists()) {
                 $bucket_found = true;
             } else {
-                return ['message' => esc_html__('No Buckets found', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                return ['message' => __('No Buckets found', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
             if ($bucket_found) {
                 $object_key = Utils::get_permission_check_object_key();
@@ -392,13 +393,13 @@ class GCloud {
                 );
 
                 if ($object->exists()) {
-                    return ['message' => esc_html__('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
+                    return ['message' => __('Bucket write permission verified successfully', 'media-cloud-sync'), 'code' => 200, 'success' => true];
                 } else {
-                    return ['message' => esc_html__('Bucket write permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                    return ['message' => __('Bucket write permission not verified', 'media-cloud-sync'), 'code' => 200, 'success' => false];
                 }
             }
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } finally {
             if (isset($stream) && is_resource($stream)) {
                 fclose($stream);
@@ -415,10 +416,10 @@ class GCloud {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
         if ( Service::has_missing_fields([$config_json, $bucket_name]) ) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
         if( !Utils::is_json( $config_json ) ) {
-            return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
@@ -431,7 +432,7 @@ class GCloud {
                 return [
                     'success' => false,
                     'code'    => 200,
-                    'message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'),
+                    'message' => __('JSON Configuration is invalid', 'media-cloud-sync'),
                 ];
             }
 
@@ -445,34 +446,34 @@ class GCloud {
                     $object->delete();  
                     if (!$object->exists()) {
                         return [
-                            'message' => esc_html__('Bucket exists', 'media-cloud-sync'),
+                            'message' => __('Bucket exists', 'media-cloud-sync'),
                             'code'    => 200,
                             'success' => true,
                         ];
                     } else {
                         return [
-                            'message' => esc_html__('You do not have permission to delete object', 'media-cloud-sync'),
+                            'message' => __('You do not have permission to delete object', 'media-cloud-sync'),
                             'code'    => 200,
                             'success' => false,
                         ];
                     }
                 } else {
                     return [
-                        'message' => esc_html__('Object does not exist', 'media-cloud-sync'),
+                        'message' => __('Object does not exist', 'media-cloud-sync'),
                         'code'    => 200,
                         'success' => false,
                     ];
                 }
             } catch (Exception $ex) {
                 return [
-                    'message' => esc_html__('Object does not exist or credentials are invalid: ', 'media-cloud-sync') . $ex->getMessage(),
+                    'message' => __('Object does not exist or credentials are invalid: ', 'media-cloud-sync') . $ex->getMessage(),
                     'code'    => 200,
                     'success' => false,
                 ];
             }
            
         } catch (Exception $ex) {
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -487,7 +488,7 @@ class GCloud {
             'lastChecked' => time(),
         ];
         if (Service::has_missing_fields([$this->gcloudClient, $this->bucket_name])) {
-            $result['message'] = esc_html__('Please check the authorization details', 'media-cloud-sync');
+            $result['message'] = __('Please check the authorization details', 'media-cloud-sync');
             return [
                 'message' => $result['message'],
                 'code'    => 200,
@@ -497,7 +498,7 @@ class GCloud {
         }
 
         try {   
-            $object_key = Utils::get_permission_check_object_key();
+            $object_key = Utils::get_read_check_object_key();
 
             // Check if the object was created successfully
             if (!$this->exists($object_key)) {
@@ -515,7 +516,7 @@ class GCloud {
                 // Re-check if the object was created successfully
                 if (!$this->exists($object_key)) {
                     $result['status'] = false;
-                    $result['message'] = esc_html__('Failed to create an object for read permission check, please check service configuration', 'media-cloud-sync');
+                    $result['message'] = __('Failed to create an object for read permission check, please check service configuration', 'media-cloud-sync');
                     return [
                         'message' => $result['message'],
                         'code'    => 200,
@@ -538,23 +539,23 @@ class GCloud {
 
             if ($status_code === 200) {
                 $result['status'] = true;
-                $result['message'] = esc_html__('Objects are accessible to Read', 'media-cloud-sync');
+                $result['message'] = __('Objects are accessible to Read', 'media-cloud-sync');
             } else if ($status_code === 403) {
                 $result['status'] = false;
                 if(isset($this->cdnConfig['service']) && $this->cdnConfig['service'] == $this->service) {
-                    $result['message'] = esc_html__('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
+                    $result['message'] = __('Access Denied. Please check your bucket policy. Public Read Access is required.', 'media-cloud-sync');
                 } else {
-                    $result['message'] = esc_html__('Access Denied. Please check your bucket policy', 'media-cloud-sync');
+                    $result['message'] = __('Access Denied. Please check your bucket policy', 'media-cloud-sync');
                 }
             } else if ($status_code === 404) {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Object not found. Please check your bucket policy', 'media-cloud-sync');
+                $result['message'] = __('Object not found. Please check your bucket policy', 'media-cloud-sync');
             } else if ($status_code === 500) {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
+                $result['message'] = __('Internal Server error. Please check your bucket policy', 'media-cloud-sync');
             } else {
                 $result['status'] = false;
-                $result['message'] = esc_html__('Objects are not accessible to read', 'media-cloud-sync');
+                $result['message'] = __('Objects are not accessible to read', 'media-cloud-sync');
             }
             $this->deleteSingle($object_key);
             return [
@@ -564,11 +565,11 @@ class GCloud {
                 'lastChecked' => $result['lastChecked'],
             ];
         } catch (ServiceException $ex) {
-            $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
+            $result['message'] = $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync');
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         } catch (Exception $ex) {
-            $result['message'] = $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync');
-            return ['message' => $ex->getMessage() ?? esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
+            $result['message'] = $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync');
+            return ['message' => $ex->getMessage() ?? __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false, 'lastChecked' => time()];
         } finally {
             if (isset($stream) && is_resource($stream)) {
                 fclose($stream);
@@ -778,7 +779,7 @@ class GCloud {
      */
     public function applyPrivatePathPolicy($private_prefix) {
         if (!$this->bucket || empty($this->bucket_name)) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
         }
 
         $base_path   = isset($this->settings['base_path']) ? trim($this->settings['base_path'], " \n\r\t\v\x00\/ ") : '';
@@ -805,11 +806,11 @@ class GCloud {
                     }
                 }
 
-                return ['success' => true, 'code' => 200, 'message' => esc_html__('Policy removed successfully', 'media-cloud-sync')];
+                return ['success' => true, 'code' => 200, 'message' => __('Policy removed successfully', 'media-cloud-sync')];
             }
 
             if (empty($base_path)) {
-                return ['success' => false, 'code' => 200, 'message' => esc_html__('Google Cloud Storage private media requires a base path — enable it in Storage Settings first.', 'media-cloud-sync')];
+                return ['success' => false, 'code' => 200, 'message' => __('Google Cloud Storage private media requires a base path — enable it in Storage Settings first.', 'media-cloud-sync')];
             }
 
             // Uniform Bucket-Level Access and Public Access Prevention need a live
@@ -823,10 +824,10 @@ class GCloud {
             $pap         = isset($iamConfig['publicAccessPrevention']) ? $iamConfig['publicAccessPrevention'] : 'inherited';
 
             if (!$ublaEnabled) {
-                return ['success' => false, 'code' => 200, 'message' => esc_html__("This bucket doesn't have Uniform Bucket-Level Access enabled — enable it in your Google Cloud Storage bucket settings first.", 'media-cloud-sync')];
+                return ['success' => false, 'code' => 200, 'message' => __("This bucket doesn't have Uniform Bucket-Level Access enabled — enable it in your Google Cloud Storage bucket settings first.", 'media-cloud-sync')];
             }
             if ($pap === 'enforced') {
-                return ['success' => false, 'code' => 200, 'message' => esc_html__('Public Access Prevention is enabled for this bucket — disable it first in Bucket Security, since it blocks the public side of this feature too.', 'media-cloud-sync')];
+                return ['success' => false, 'code' => 200, 'message' => __('Public Access Prevention is enabled for this bucket — disable it first in Bucket Security, since it blocks the public side of this feature too.', 'media-cloud-sync')];
             }
 
             // Enable, in an order that never leaves a window with no public access:
@@ -835,7 +836,7 @@ class GCloud {
             // then drop the bucket-wide grant.
             $insert = $this->managed_folder_iam_request('POST', '', ['name' => $folder_name]);
             if ($insert['status'] >= 300 && $insert['status'] !== 409) {
-                $message = isset($insert['body']['error']['message']) ? $insert['body']['error']['message'] : esc_html__('Failed to create the Managed Folder for your base path.', 'media-cloud-sync');
+                $message = isset($insert['body']['error']['message']) ? $insert['body']['error']['message'] : __('Failed to create the Managed Folder for your base path.', 'media-cloud-sync');
                 return ['success' => false, 'code' => 200, 'message' => $message];
             }
 
@@ -848,7 +849,7 @@ class GCloud {
                 ],
             ]);
             if ($setIam['status'] >= 300) {
-                $message = isset($setIam['body']['error']['message']) ? $setIam['body']['error']['message'] : esc_html__('Failed to grant public access on the Managed Folder.', 'media-cloud-sync');
+                $message = isset($setIam['body']['error']['message']) ? $setIam['body']['error']['message'] : __('Failed to grant public access on the Managed Folder.', 'media-cloud-sync');
                 return ['success' => false, 'code' => 200, 'message' => $message];
             }
 
@@ -860,7 +861,7 @@ class GCloud {
             // policy was never successfully set), a safe, easily-retried state.
             $this->drop_bucket_level_grant();
 
-            return ['success' => true, 'code' => 200, 'message' => esc_html__('Policy applied successfully', 'media-cloud-sync')];
+            return ['success' => true, 'code' => 200, 'message' => __('Policy applied successfully', 'media-cloud-sync')];
         } catch (ServiceException $e) {
             return ['success' => false, 'code' => 200, 'message' => $e->getMessage()];
         } catch (Exception $e) {
@@ -882,13 +883,13 @@ class GCloud {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
         if (empty($config_json) || empty($bucket_name) || !Utils::is_json($config_json)) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
             $keyArray = json_decode($config_json, true);
             if (!is_array($keyArray)) {
-                return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
 
             $client = new StorageClient(['keyFile' => $keyArray]);
@@ -900,9 +901,9 @@ class GCloud {
 
             return ['message' => '', 'code' => 200, 'success' => true, 'security' => $security];
         } catch (ServiceException $e) {
-            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $e->getMessage() ?: __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } catch (Exception $e) {
-            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $e->getMessage() ?: __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -919,13 +920,13 @@ class GCloud {
         $bucket_name = isset($bucketConfig['bucket_name']) ? $bucketConfig['bucket_name'] : '';
 
         if (empty($config_json) || empty($bucket_name) || !Utils::is_json($config_json)) {
-            return ['message' => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => __('Insufficient Data. Please try again', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
 
         try {
             $keyArray = json_decode($config_json, true);
             if (!is_array($keyArray)) {
-                return ['message' => esc_html__('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+                return ['message' => __('JSON Configuration is invalid', 'media-cloud-sync'), 'code' => 200, 'success' => false];
             }
 
             $client = new StorageClient(['keyFile' => $keyArray]);
@@ -938,9 +939,9 @@ class GCloud {
 
             return ['message' => '', 'code' => 200, 'success' => true];
         } catch (ServiceException $e) {
-            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $e->getMessage() ?: __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         } catch (Exception $e) {
-            return ['message' => $e->getMessage() ?: esc_html__('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
+            return ['message' => $e->getMessage() ?: __('Please check the authorization details', 'media-cloud-sync'), 'code' => 200, 'success' => false];
         }
     }
 
@@ -979,7 +980,7 @@ class GCloud {
      */
     public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
         if (!$this->bucket) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
         }
         try {
             $options = [
@@ -1044,7 +1045,7 @@ class GCloud {
                     return [
                         'success' => false,
                         'code'    => 200,
-                        'message' => esc_html__('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
+                        'message' => __('This file is marked private, but the private-media add-on is not currently active — reupload skipped to avoid exposing it.', 'media-cloud-sync')
                     ];
                 }
                 return $this->execute_upload($absolute_source_path, $upload_path);
@@ -1052,13 +1053,13 @@ class GCloud {
             return [
                 'success'   => false,
                 'code'      => 200,
-                'message'   => esc_html__('Check the file you are trying to upload. Please try again', 'media-cloud-sync'),
+                'message'   => __('Check the file you are trying to upload. Please try again', 'media-cloud-sync'),
             ];
         }
         return [
             'success'   => false,
             'code'      => 200,
-            'message'   => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'),
+            'message'   => __('Insufficient Data. Please try again', 'media-cloud-sync'),
         ];
     }
 
@@ -1092,13 +1093,13 @@ class GCloud {
                     'code'     => 200,
                     'file_url' => $this->generate_file_url($key),
                     'key'      => $key,
-                    'message'  => esc_html__('File Uploaded Successfully', 'media-cloud-sync'),
+                    'message'  => __('File Uploaded Successfully', 'media-cloud-sync'),
                 ];
             }
             return [
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Object not found at server.', 'media-cloud-sync'),
+                'message' => __('Object not found at server.', 'media-cloud-sync'),
             ];
         } catch (Exception $e) {
             return [
@@ -1161,7 +1162,7 @@ class GCloud {
      */
     public function purge_all_versions($key) {
         if (!$this->bucket) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Client not configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
         }
 
         try {
@@ -1186,7 +1187,7 @@ class GCloud {
             // Generation history cleanup failed — not fatal, live object is gone.
         }
 
-        return ['success' => true, 'code' => 200, 'message' => esc_html__('Purged Successfully', 'media-cloud-sync')];
+        return ['success' => true, 'code' => 200, 'message' => __('Purged Successfully', 'media-cloud-sync')];
     }
 
 
@@ -1206,18 +1207,27 @@ class GCloud {
     public function copy_to_new_path($key, $new_path) {
         if (!$this->bucket) {
             return [
-                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'message' => __('Client not configured', 'media-cloud-sync'),
                 'code'    => 200,
                 'success' => false
             ];
         }
         try {
             $sourceObject = $this->bucket->object($key);
-            $sourceObject->copy($this->bucket, ['name' => $new_path]);
+            if ($this->object_is_public_read($sourceObject)) {
+                try {
+                    $sourceObject->copy($this->bucket, ['name' => $new_path, 'predefinedAcl' => 'publicRead']);
+                } catch (ServiceException $e) {
+                    // Public access prevention or uniform access refuses it; the ACL would do nothing there anyway.
+                    $sourceObject->copy($this->bucket, ['name' => $new_path]);
+                }
+            } else {
+                $sourceObject->copy($this->bucket, ['name' => $new_path]);
+            }
             return [
                 'success' => true,
                 'code' => 200,
-                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+                'message' => __('File copied successfully', 'media-cloud-sync')
             ];
         } catch (ServiceException $e) {
             return [
@@ -1234,12 +1244,191 @@ class GCloud {
         }
     }
 
+    /**
+     * Sets Cache-Control and the extension's Content-Type on an existing object (metadata patch, no copy).
+     * @return array {success, code, message, changed}
+     * @since 1.5.0
+     */
+    public function update_object_headers($key, $cache_control) {
+        if (!$this->bucket || !$key) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $object  = $this->bucket->object($key);
+            $info    = $object->info();
+            $current = [(string) ($info['cacheControl'] ?? ''), (string) ($info['contentType'] ?? '')];
+            $type    = Utils::content_type_for($current[1], MimeType::fromFilename($key));
+            if ($current === [(string) $cache_control, $type]) {
+                return ['success' => true, 'code' => 200, 'changed' => false, 'message' => __('Headers already up to date', 'media-cloud-sync')];
+            }
+            $object->update(['cacheControl' => $cache_control ?: null, 'contentType' => $type ?: null]);
+            return ['success' => true, 'code' => 200, 'changed' => true, 'message' => __('Headers updated', 'media-cloud-sync')];
+        } catch (ServiceException $e) {
+            $message = $e->getCode() == 404 ? __('Not found in the bucket', 'media-cloud-sync') : $e->getMessage();
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $message];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    // Storage classes files can be moved to, value => label.
+    public function get_storage_classes() {
+        return [
+            'STANDARD' => __('Standard', 'media-cloud-sync'),
+            'NEARLINE' => __('Nearline', 'media-cloud-sync'),
+            'COLDLINE' => __('Coldline', 'media-cloud-sync'),
+            'ARCHIVE'  => __('Archive', 'media-cloud-sync'),
+        ];
+    }
+
+    // Moves an existing object to another storage class in place; 'changed' is false when it already had it.
+    public function change_storage_class($key, $class) {
+        if (!$this->bucket || !$key) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $object = $this->bucket->object($key);
+            if ((string) ($object->info()['storageClass'] ?? 'STANDARD') === $class) {
+                return ['success' => true, 'code' => 200, 'changed' => false, 'message' => __('Already in this storage class', 'media-cloud-sync')];
+            }
+            $options = ['name' => $key, 'storageClass' => $class];
+            if ($this->object_is_public_read($object)) {
+                try {
+                    $object->rewrite($this->bucket, $options + ['predefinedAcl' => 'publicRead']);
+                } catch (ServiceException $e) {
+                    $object->rewrite($this->bucket, $options);
+                }
+            } else {
+                $object->rewrite($this->bucket, $options);
+            }
+            return ['success' => true, 'code' => 200, 'changed' => true, 'message' => __('Storage class changed', 'media-cloud-sync')];
+        } catch (ServiceException $e) {
+            $message = $e->getCode() == 404 ? __('Not found in the bucket', 'media-cloud-sync') : $e->getMessage();
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $message];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    // The plugin's lifecycle rule for $prefixes as ['class' => ..., 'days' => ...], or null when there is none.
+    public function get_storage_class_rule($prefixes = []) {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        $prefixes = array_values($prefixes);
+        sort($prefixes);
+        try {
+            foreach ((array) ($this->bucket->info()['lifecycle']['rule'] ?? []) as $rule) {
+                $matches = (array) ($rule['condition']['matchesPrefix'] ?? []);
+                sort($matches);
+                if (($rule['action']['type'] ?? '') === 'SetStorageClass' && $matches === $prefixes) {
+                    return ['success' => true, 'code' => 200, 'rule' => ['class' => $rule['action']['storageClass'], 'days' => (int) ($rule['condition']['age'] ?? 0)]];
+                }
+            }
+            return ['success' => true, 'code' => 200, 'rule' => null];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getCode() == 403 ? $this->lifecycle_denied_message() : $e->getMessage()];
+        }
+    }
+
+    // Sets the plugin's lifecycle rule moving files under $prefixes to $class after $days (an empty $class removes it); other rules are kept.
+    public function set_storage_class_rule($prefixes, $class = '', $days = 0) {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        $prefixes = array_values($prefixes);
+        sort($prefixes);
+        try {
+            $rules = (array) ($this->bucket->info()['lifecycle']['rule'] ?? []);
+            // GCS rules have no ID: ours is the SetStorageClass rule for exactly these folders.
+            $rules = array_values(array_filter($rules, function ($rule) use ($prefixes) {
+                $matches = (array) ($rule['condition']['matchesPrefix'] ?? []);
+                sort($matches);
+                return !(($rule['action']['type'] ?? '') === 'SetStorageClass' && $matches === $prefixes);
+            }));
+            if ($class !== '') {
+                $rules[] = [
+                    'action'    => ['type' => 'SetStorageClass', 'storageClass' => $class],
+                    'condition' => ['age' => (int) $days, 'matchesPrefix' => $prefixes],
+                ];
+            }
+            $this->bucket->update(['lifecycle' => empty($rules) ? null : ['rule' => $rules]]);
+            return ['success' => true, 'code' => 200, 'message' => $class !== '' ? __('Automatic storage class rule saved', 'media-cloud-sync') : __('Automatic storage class rule removed', 'media-cloud-sync')];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getCode() == 403 ? $this->lifecycle_denied_message() : $e->getMessage()];
+        }
+    }
+
+    // Allowed origins of the plugin's CORS entry, or null when the bucket has none.
+    public function get_cors_rule() {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            foreach ((array) ($this->bucket->info()['cors'] ?? []) as $entry) {
+                if ($this->is_plugin_cors_entry($entry)) {
+                    return ['success' => true, 'code' => 200, 'rule' => ['origins' => array_values((array) ($entry['origin'] ?? []))]];
+                }
+            }
+            return ['success' => true, 'code' => 200, 'rule' => null];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getCode() == 403 ? $this->cors_denied_message() : $e->getMessage()];
+        }
+    }
+
+    // Sets the plugin's CORS entry (GET/HEAD from $origins; none removes it); other entries are kept.
+    public function set_cors_rule($origins) {
+        if (!$this->bucket) {
+            return ['success' => false, 'code' => 200, 'message' => __('Client not configured', 'media-cloud-sync')];
+        }
+        try {
+            $entries = array_values(array_filter((array) ($this->bucket->info()['cors'] ?? []), function ($entry) {
+                return !$this->is_plugin_cors_entry($entry);
+            }));
+            if (!empty($origins)) {
+                $entries[] = [
+                    'origin'         => array_values($origins),
+                    'method'         => ['GET', 'HEAD'],
+                    'responseHeader' => ['Content-Type', 'Content-Length', 'Range'],
+                    'maxAgeSeconds'  => 86400,
+                ];
+            }
+            $this->bucket->update(['cors' => $entries]);
+            return ['success' => true, 'code' => 200, 'message' => !empty($origins) ? __('CORS rule saved', 'media-cloud-sync') : __('CORS rule removed', 'media-cloud-sync')];
+        } catch (\Exception $e) {
+            return ['success' => false, 'code' => 200, 'message' => $e->getCode() == 403 ? $this->cors_denied_message() : $e->getMessage()];
+        }
+    }
+
+    // GCS entries have no ID: ours is the GET/HEAD entry with a one-day cache (a hand-made one counts as ours).
+    private function is_plugin_cors_entry($entry) {
+        $methods = (array) ($entry['method'] ?? []);
+        sort($methods);
+        return $methods === ['GET', 'HEAD'] && (int) ($entry['maxAgeSeconds'] ?? 0) === 86400;
+    }
+
+    private function cors_denied_message() {
+        return sprintf(
+            /* translators: %s: bucket name */
+            __('Your service account is not allowed to read or change the bucket\'s CORS configuration. Give it the storage.buckets.get and storage.buckets.update permissions, or set CORS with gcloud for %s.', 'media-cloud-sync'),
+            $this->bucket_name
+        );
+    }
+
+    private function lifecycle_denied_message() {
+        return sprintf(
+            /* translators: %s: bucket name */
+            __('Your service account is not allowed to read or change the bucket\'s lifecycle rules. Give it the storage.buckets.get and storage.buckets.update permissions, or add the rule in the Google Cloud console under %s › Lifecycle.', 'media-cloud-sync'),
+            $this->bucket_name
+        );
+    }
+
     // Like copy_to_new_path() but into an explicit (possibly different) bucket — needs write
     // access there too, so callers should fall back to download+upload on failure.
     public function copy_to_bucket($key, $new_key, $dest_bucket) {
         if (!$this->bucket || !$this->gcloudClient) {
             return [
-                'message' => esc_html__('Client not configured', 'media-cloud-sync'),
+                'message' => __('Client not configured', 'media-cloud-sync'),
                 'code'    => 200,
                 'success' => false
             ];
@@ -1250,7 +1439,7 @@ class GCloud {
             return [
                 'success' => true,
                 'code' => 200,
-                'message' => esc_html__('File copied successfully', 'media-cloud-sync')
+                'message' => __('File copied successfully', 'media-cloud-sync')
             ];
         } catch (ServiceException $e) {
             return [
@@ -1279,7 +1468,7 @@ class GCloud {
             return array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+                'message' => __('Client not configured', 'media-cloud-sync')
             );
         }
         if (isset($key) && !empty($key)) {
@@ -1291,13 +1480,13 @@ class GCloud {
                     $result = array(
                         'success'   => true,
                         'code'      => 200,
-                        'message'   => esc_html__('Deleted Successfully', 'media-cloud-sync'),
+                        'message'   => __('Deleted Successfully', 'media-cloud-sync'),
                     );
                 } else {
                     $result = array(
                         'success'   => false,
                         'code'      => 200,
-                        'message'   => esc_html__('File not deleted', 'media-cloud-sync'),
+                        'message'   => __('File not deleted', 'media-cloud-sync'),
                     );
                 }
             } catch (Exception $e) {
@@ -1311,7 +1500,7 @@ class GCloud {
             $result = array(
                 'success'   => false,
                 'code'      => 200,
-                'message'   => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'),
+                'message'   => __('Insufficient Data. Please try again', 'media-cloud-sync'),
             );
         }
         return $result;
@@ -1329,7 +1518,7 @@ class GCloud {
             return array(
                 'success' => false,
                 'code'    => 200,
-                'message' => esc_html__('Client not configured', 'media-cloud-sync')
+                'message' => __('Client not configured', 'media-cloud-sync')
             );
         }
         if (isset($key) && !empty($key)) {
@@ -1345,13 +1534,13 @@ class GCloud {
                         'success'   => true,
                         'code'      => 200,
                         'file_url'  => $privateUrl,
-                        'message'   => esc_html__('Got Private URL Successfully', 'media-cloud-sync'),
+                        'message'   => __('Got Private URL Successfully', 'media-cloud-sync'),
                     );
                 } else {
                     $result = array(
                         'success'   => false,
                         'code'      => 200,
-                        'message'   => esc_html__('Error getting private URL', 'media-cloud-sync'),
+                        'message'   => __('Error getting private URL', 'media-cloud-sync'),
                     );
                 }
             } catch (Exception $e) {
@@ -1365,7 +1554,7 @@ class GCloud {
             $result = array(
                 'success'   => false,
                 'code'      => 200,
-                'message'   => esc_html__('Insufficient Data. Please try again', 'media-cloud-sync'),
+                'message'   => __('Insufficient Data. Please try again', 'media-cloud-sync'),
             );
         }
         return $result;
@@ -1401,6 +1590,20 @@ class GCloud {
         $url_base = 'https://storage.googleapis.com';
 
         return $url_base;
+    }
+
+    // Whether the object itself grants public read (older versions uploaded with it); a copy doesn't keep it.
+    private function object_is_public_read($object) {
+        try {
+            foreach ($object->acl()->get() as $entry) {
+                if (($entry['entity'] ?? '') === 'allUsers' && in_array($entry['role'] ?? '', ['READER', 'OWNER'], true)) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+        return false;
     }
 
     /** Exposes the already-constructed SDK client for StreamWrapper's registration — avoids reconstructing one from credentials. */

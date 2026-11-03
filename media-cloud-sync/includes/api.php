@@ -44,6 +44,8 @@ class Api {
 
 		$this->add_route( '/getSettings', 'getSettings' );
 		$this->add_route( '/saveConfig', 'saveConfig', 'POST' );
+		$this->add_route( '/settings/export', 'exportSettings' );
+		$this->add_route( '/settings/import', 'importSettings', 'POST' );
 		$this->add_route( '/refreshCounts', 'refreshCounts', 'POST' );
 		$this->add_route( '/getErrorLogs', 'getErrorLogs', 'POST' );
 		$this->add_route( '/clearErrorLogs', 'clearErrorLogs', 'POST' );
@@ -157,7 +159,8 @@ class Api {
 			'serviceEnabled'	=> Utils::is_service_enabled(),
 			'serviceError'		=> Utils::get_service_configuration_error(),
 			'common'			=> [
-				'version'	=> defined('WPMCS_PRO_VERSION') ? WPMCS_PRO_VERSION : WPMCS_VERSION,
+				'version'	=> WPMCS_VERSION,
+				'pro_version'	=> defined('WPMCS_PRO_VERSION') ? WPMCS_PRO_VERSION : '',
 				'counts'	=> [
 					'all'		=> Counter::get_count(),
 					'categorized' => $this->getSortedMediaCounts()
@@ -177,13 +180,30 @@ class Api {
 	}
 
 	/**
+	 * Import / Export page: this site's settings as an export file (no secrets).
+	 */
+	public function exportSettings() {
+		return new WP_REST_Response( [ 'success' => true, 'data' => SettingsTransfer::instance()->export() ], 200 );
+	}
+
+	/**
+	 * Import / Export page: previews an export file's changes, or applies them with `apply`.
+	 */
+	public function importSettings( $request ) {
+		return new WP_REST_Response( SettingsTransfer::instance()->import(
+			$request->get_param( 'data' ),
+			rest_sanitize_boolean( $request->get_param( 'apply' ) )
+		), 200 );
+	}
+
+	/**
 	 * Save the Configurations
 	 */
 	public function saveConfig( $data ) {
 		$saveData 		= $data->get_params();
 		$result			= [
 			'success'	=> false,
-			'message'	=> esc_html__('Something went wrong. Invalid data recieved', 'media-cloud-sync')
+			'message'	=> __('Something went wrong. Invalid data recieved', 'media-cloud-sync')
 		];
 
 		$action 		= isset($saveData['action']) ? $saveData['action'] : false;
@@ -200,6 +220,17 @@ class Api {
 
 		$serviceOk 		= true;
 		$settingsOk 	= true;
+
+		// Delivery through an entry with a CNAME field can't serve media without its domain.
+		// The admin's page-load autofill save (only adds missing default keys) is exempt.
+		if ( in_array( $action, [ 'all', 'cdn', 'settings' ], true ) && empty( $saveData['background'] ) ) {
+			$current  = Utils::get_credentials();
+			$storage  = $action === 'all' ? $service : ( $current['service'] ?? '' );
+			$delivery = $action === 'settings' ? ( $current['cdn']['service'] ?? '' ) : ( $cdn['service'] ?? '' );
+			if ( Utils::delivery_needs_domain( $settings, $storage, $delivery ) ) {
+				return new WP_REST_Response( [ 'success' => false, 'message' => Utils::delivery_domain_message( $storage, $delivery ) ], 200 );
+			}
+		}
 		
 		if( $action === 'cdn' ){
 			// Switching delivery provider resets the previously selected one's own fields
@@ -210,7 +241,7 @@ class Api {
 			if ( empty( $validation['ok'] ) ) {
 				return new WP_REST_Response( [
 					'success' => false,
-					'message' => !empty($validation['message']) ? $validation['message'] : esc_html__('Settings could not be saved.', 'media-cloud-sync')
+					'message' => !empty($validation['message']) ? $validation['message'] : __('Settings could not be saved.', 'media-cloud-sync')
 				], 200 );
 			}
 
@@ -275,7 +306,7 @@ class Api {
 			if ( empty( $validation['ok'] ) ) {
 				return new WP_REST_Response( [
 					'success' => false,
-					'message' => !empty($validation['message']) ? $validation['message'] : esc_html__('Settings could not be saved.', 'media-cloud-sync')
+					'message' => !empty($validation['message']) ? $validation['message'] : __('Settings could not be saved.', 'media-cloud-sync')
 				], 200 );
 			}
 
@@ -308,7 +339,9 @@ class Api {
 		if($serviceOk && $settingsOk) {
 			$result = [
 				'success'	=> true,
-				'message'	=> esc_html__('Configuration saved successfully', 'media-cloud-sync')
+				'message'	=> __('Configuration saved successfully', 'media-cloud-sync'),
+				// Save-time hooks can change statuses (e.g. a policy marked Not Applied); the UI refreshes from this.
+				'status'	=> Utils::get_status('', false),
 			];
 		}
 
@@ -331,7 +364,7 @@ class Api {
 				'all'		=> Counter::get_count(),
 				'categorized' => $this->getSortedMediaCounts()
 			],
-			'message'	=> esc_html__('Media counts refreshed successfully', 'media-cloud-sync')
+			'message'	=> __('Media counts refreshed successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -375,7 +408,7 @@ class Api {
 		$result = [
 			'success'	=> true,
 			'logs'		=> $logs,
-			'message'	=> esc_html__('Error logs fetched successfully', 'media-cloud-sync')
+			'message'	=> __('Error logs fetched successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -391,7 +424,7 @@ class Api {
 		if (empty($type) || !Sync::instance()->get_class_by_action($type)) {
 			return new WP_REST_Response( [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			], 200 );
 		}
 
@@ -399,7 +432,7 @@ class Api {
 
 		$result = [
 			'success'	=> true,
-			'message'	=> esc_html__('Error logs cleared', 'media-cloud-sync')
+			'message'	=> __('Error logs cleared', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -425,7 +458,7 @@ class Api {
 				'all'		=> Counter::get_count(),
 				'categorized' => $this->getSortedMediaCounts()
 			],
-			'message'	=> esc_html__('Status fetched successfully', 'media-cloud-sync')
+			'message'	=> __('Status fetched successfully', 'media-cloud-sync')
 		];
 		
 		return new WP_REST_Response( $result, 200 );
@@ -441,14 +474,14 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
 		if(!Utils::is_service_enabled()) {
 			$result = [
 				'success'	=> false,
-				'message'	=> Utils::get_service_configuration_error() ?: esc_html__('Storage is not configured correctly.', 'media-cloud-sync')
+				'message'	=> Utils::get_service_configuration_error() ?: __('Storage is not configured correctly.', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -461,10 +494,13 @@ class Api {
 			return new WP_REST_Response( $status, 200 );
 		}
 
+		$notice = is_array($status) ? ($status['notice'] ?? '') : '';
+		unset($status['notice']);
 		$result = [
 			'success'	=> true,
 			'status'	=> $status,
-			'message'	=> esc_html__('Sync started successfully', 'media-cloud-sync')
+			'notice'	=> $notice,
+			'message'	=> __('Sync started successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -479,7 +515,7 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -488,7 +524,7 @@ class Api {
 		$result = [
 			'success'	=> true,
 			'status'	=> $status,
-			'message'	=> esc_html__('Sync paused successfully', 'media-cloud-sync')
+			'message'	=> __('Sync paused successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -506,7 +542,7 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			return new WP_REST_Response( [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			], 200 );
 		}
 
@@ -514,7 +550,7 @@ class Api {
 		if(!$saved) {
 			return new WP_REST_Response( [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid sync method', 'media-cloud-sync')
+				'message'	=> __('Invalid sync method', 'media-cloud-sync')
 			], 200 );
 		}
 
@@ -535,7 +571,7 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -544,7 +580,7 @@ class Api {
 		$result = [
 			'success'	=> true,
 			'status'	=> $status,
-			'message'	=> esc_html__('Sync resumed successfully', 'media-cloud-sync')
+			'message'	=> __('Sync resumed successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -559,7 +595,7 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -572,7 +608,7 @@ class Api {
 				'all'		=> Counter::get_count(),
 				'categorized' => $this->getSortedMediaCounts()
 			],
-			'message'	=> esc_html__('Sync stopped successfully', 'media-cloud-sync')
+			'message'	=> __('Sync stopped successfully', 'media-cloud-sync')
 		];
 		return new WP_REST_Response( $result, 200 );
 	}
@@ -589,7 +625,7 @@ class Api {
 		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -600,7 +636,7 @@ class Api {
 		if ( ! Utils::is_pro_licensed() ) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Ajax sync requires an active Pro license', 'media-cloud-sync')
+				'message'	=> __('Ajax sync requires an active Pro license', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -616,7 +652,7 @@ class Api {
 		$result = [
 			'success'	=> true,
 			'status'	=> $status,
-			'message'	=> esc_html__('Sync ticked successfully', 'media-cloud-sync')
+			'message'	=> __('Sync ticked successfully', 'media-cloud-sync')
 		];
 
 		// Deliberately omitted on every tick (this endpoint may be hit ~once/second while a
@@ -649,7 +685,7 @@ class Api {
 		if(empty($id) || empty($source_type) || empty($type)) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid parameters', 'media-cloud-sync')
+				'message'	=> __('Invalid parameters', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
@@ -658,25 +694,29 @@ class Api {
 		if(!$handler) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Invalid action', 'media-cloud-sync')
+				'message'	=> __('Invalid action', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
 		if(!method_exists($handler, 'retry_single')) {
 			$result = [
 				'success'	=> false,
-				'message'	=> esc_html__('Retry is not available for this sync type.', 'media-cloud-sync')
+				'message'	=> __('Retry is not available for this sync type.', 'media-cloud-sync')
 			];
 			return new WP_REST_Response( $result, 200 );
 		}
-		$handler->retry_single($id, $source_type);
+		$retried = $handler->retry_single($id, $source_type);
 
 		$status = Utils::is_empty(Logger::instance()->get_log($type, $id, $source_type)) ? true : false;
 
 		$result = [
 			'success'	=> $status,
-			'message'	=> $status ? esc_html__('Media synced successfully', 'media-cloud-sync') : esc_html__('Media sync failed', 'media-cloud-sync')
+			'message'	=> $status ? __('Media synced successfully', 'media-cloud-sync') : __('Media sync failed', 'media-cloud-sync')
 		];
+		// A job can word its own result, e.g. a delete instead of a sync.
+		if (is_array($retried) && isset($retried['message'])) {
+			$result['message'] = $retried['message'];
+		}
 		return new WP_REST_Response( $result, 200 );
 	}
 

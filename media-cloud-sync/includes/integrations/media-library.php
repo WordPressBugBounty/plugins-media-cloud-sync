@@ -218,8 +218,7 @@ class MediaLibrary {
                 return $attachment_meta;
             }
 
-            $file = $this->get_attachment_file($attachment_meta, $attachment_id);
-            $source_path = Utils::get_attachment_source_path($file);
+            $source_path = $this->get_source_path($attachment_meta, $attachment_id);
 
             if (empty($source_path) || !is_string($source_path)) {
                 return $attachment_meta;
@@ -304,6 +303,14 @@ class MediaLibrary {
         remove_filter('get_post_metadata', $handle_post_meta);
 
         return !empty(array_intersect_key($missing_sizes, $image_sizes));
+    }
+
+    /**
+     * Uploads-relative path of the attachment's main file, as the sync records it (also used by PRO's bulk tools).
+     * @since 1.5.0
+     */
+    public function get_source_path($attachment_meta, $attachment_id) {
+        return Utils::get_attachment_source_path($this->get_attachment_file((array) $attachment_meta, $attachment_id));
     }
 
     /**
@@ -1023,7 +1030,10 @@ class MediaLibrary {
         $is_private         = $has_existing && !empty($existing['is_private']);
         $sizes              = [];
         $uploaded           = [];
-        $extras             = [];
+        // Keep record data this upload doesn't recompute (e.g. PRO's per-item delivery choice); backups are set by the callers.
+        $extras             = $has_existing && is_array($existing_extras)
+                                ? array_diff_key($existing_extras, array_flip(['prefix', 'width', 'height', 'sizes', 'additional_files', 'backup']))
+                                : [];
         $prefix             = '';
         $file_path          = trailingslashit($upload_dir['basedir']) . $source_path;
         $file_dir           = isset(pathinfo($file_path)['dirname']) ? pathinfo($file_path)['dirname'] : '';
@@ -1099,6 +1109,11 @@ class MediaLibrary {
                 $extras['additional_files'] = array_merge($existing_additional_files, $additional_files);
             }
 
+            // Files uploaded again under the keys they already had (e.g. so PRO can purge CDN caches).
+            if ($has_existing && $do_reupload !== false && $existing['source_path'] === $source_path) {
+                do_action('wpmcs_files_replaced', $attachment_id, 'media_library');
+            }
+
             return [
                 'file' => [
                     'source_path'          => $source_path,
@@ -1124,6 +1139,24 @@ class MediaLibrary {
     }
 
     /**
+     * Attachment metadata keys of the files WordPress keeps next to the main one, synced with it.
+     * @since 1.5.0
+     * @return string[]
+     */
+    public static function get_additional_file_names() {
+        return array_keys(self::additional_files());
+    }
+
+    /** Additional files as metadata key => "not found" message. */
+    private static function additional_files() {
+        return [
+            'source_image'          => __('HEIC source file not found', 'media-cloud-sync'),
+            'animated_video'        => __('Animated video file not found', 'media-cloud-sync'),
+            'animated_video_poster' => __('Animated video poster file not found', 'media-cloud-sync'),
+        ];
+    }
+
+    /**
      * Image subsizes to sync to cloud (after filters). Empty means no subsizes are uploaded.
      *
      * `wpmcs_skip_upload_image_sizes` — (bool) When true, no subsizes are uploaded.
@@ -1133,7 +1166,7 @@ class MediaLibrary {
      * @param int   $attachment_id   Attachment post ID.
      * @return array Same shape as attachment meta `sizes` entries.
      */
-    private function get_attachment_image_sizes_for_upload($attachment_meta, $attachment_id) {
+    public function get_attachment_image_sizes_for_upload($attachment_meta, $attachment_id) {
         $sizes = [];
         if (isset($attachment_meta['sizes']) && is_array($attachment_meta['sizes'])) {
             $sizes = $attachment_meta['sizes'];
@@ -1209,7 +1242,7 @@ class MediaLibrary {
      * @since 1.3.6
      * @param string $file_path
      * @param string $source_path
-     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these files (array of size names, "full", "original", additional file names).
      * @param bool   $has_existing
      * @param array  $existing
      * @param string $prefix
@@ -1217,9 +1250,9 @@ class MediaLibrary {
      * @param bool   $is_private Keeps a reupload of an already-private item under the private path.
      */
     private function uploadFullFile($file_path, $source_path, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private = false) {
-        // $do_reupload may be an array of size names (force just those sizes) — that
-        // shouldn't force the full file too, only a literal true does.
-        if ($do_reupload !== true && $has_existing && ($existing['source_path'] == $source_path)) {
+        // $do_reupload may be an array of file names (force just those) — the main file is forced by true or "full".
+        $force = $do_reupload === true || (is_array($do_reupload) && in_array('full', $do_reupload, true));
+        if (!$force && $has_existing && ($existing['source_path'] == $source_path)) {
             return [
                 'success'  => true,
                 'file_url' => $existing['url'],
@@ -1245,7 +1278,7 @@ class MediaLibrary {
      * @since 1.3.6
      * @param string $original_file
      * @param string $file_dir
-     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these files (array of size names, "full", "original", additional file names).
      * @param bool   $has_existing
      * @param array  $existing
      * @param string $prefix
@@ -1254,7 +1287,7 @@ class MediaLibrary {
      */
     private function uploadOriginalFile($original_file, $file_dir, $do_reupload, $has_existing, $existing, $prefix, $attachment_id, $is_private = false) {
         return $this->uploadNamedFile(
-            $original_file, $file_dir,
+            'original', $original_file, $file_dir,
             $existing['original_source_path'] ?? '', $existing['original_key'] ?? '',
             $do_reupload, $has_existing, $prefix, $attachment_id, $is_private,
             __('Original File not found', 'media-cloud-sync')
@@ -1265,11 +1298,12 @@ class MediaLibrary {
      * Upload one optional named additional file (original image, HEIC source,
      * animated-GIF video/poster) that lives alongside the main file.
      * @since 1.4.3
+     * @param string     $name     The file's name in $do_reupload ("original", "source_image", ...).
      * @param string     $filename Relative filename within $file_dir, or empty if absent.
      * @param string     $file_dir
      * @param string     $existing_source_path Previously recorded source_path, if any.
      * @param string     $existing_key Previously recorded cloud key, if any.
-     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these files (array of size names, "full", "original", additional file names).
      * @param bool       $has_existing
      * @param string     $prefix
      * @param int        $attachment_id
@@ -1277,7 +1311,7 @@ class MediaLibrary {
      * @param string     $not_found_message
      * @return array{source_path?: string, key?: string} Empty when absent or upload failed.
      */
-    private function uploadNamedFile($filename, $file_dir, $existing_source_path, $existing_key, $do_reupload, $has_existing, $prefix, $attachment_id, $is_private, $not_found_message) {
+    private function uploadNamedFile($name, $filename, $file_dir, $existing_source_path, $existing_key, $do_reupload, $has_existing, $prefix, $attachment_id, $is_private, $not_found_message) {
         if (empty($filename)) {
             return [];
         }
@@ -1285,9 +1319,9 @@ class MediaLibrary {
         $file_path   = trailingslashit($file_dir) . $filename;
         $source_path = Utils::get_attachment_source_path($file_path);
 
-        // $do_reupload may be an array of size names (force just those sizes) — that
-        // shouldn't force this file too, only a literal true does.
-        if ($do_reupload !== true && $has_existing && !Utils::is_empty($existing_source_path) && $existing_source_path === $source_path) {
+        // $do_reupload may be an array of file names (force just those) — this file is forced by true or its own name.
+        $force = $do_reupload === true || (is_array($do_reupload) && in_array($name, $do_reupload, true));
+        if (!$force && $has_existing && !Utils::is_empty($existing_source_path) && $existing_source_path === $source_path) {
             return [ 'source_path' => $source_path, 'key' => $existing_key ];
         }
 
@@ -1330,11 +1364,7 @@ class MediaLibrary {
      * @return array Keyed by meta key ('source_image', 'animated_video', 'animated_video_poster').
      */
     private function uploadAdditionalFiles($attachment_meta, $file_dir, $do_reupload, $has_existing, $existing_extras, $prefix, $attachment_id, $is_private) {
-        $additional_file_keys = [
-            'source_image'          => __('HEIC source file not found', 'media-cloud-sync'),
-            'animated_video'        => __('Animated video file not found', 'media-cloud-sync'),
-            'animated_video_poster' => __('Animated video poster file not found', 'media-cloud-sync'),
-        ];
+        $additional_file_keys = self::additional_files();
         $existing_additional_files = isset($existing_extras['additional_files']) && is_array($existing_extras['additional_files'])
             ? $existing_extras['additional_files']
             : [];
@@ -1346,7 +1376,7 @@ class MediaLibrary {
             }
             $existing_file = $existing_additional_files[$meta_key] ?? [];
             $result = $this->uploadNamedFile(
-                $attachment_meta[$meta_key], $file_dir,
+                $meta_key, $attachment_meta[$meta_key], $file_dir,
                 $existing_file['source_path'] ?? '', $existing_file['key'] ?? '',
                 $do_reupload, $has_existing, $prefix, $attachment_id, $is_private, $not_found_message
             );
@@ -1362,7 +1392,7 @@ class MediaLibrary {
      * @since 1.3.6
      * @param array  $attachment_sizes
      * @param string $file_dir
-     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these sizes (array of size names).
+     * @param bool|array $do_reupload Reupload everything (true), nothing (false), or only these files (array of size names, "full", "original", additional file names).
      * @param array  $existing_extras
      * @param string $prefix
      * @param int    $attachment_id
@@ -1496,14 +1526,37 @@ class MediaLibrary {
      * @param int $after_id Only consider attachments with ID greater than this cursor. Default is 0.
      * @return array      Status array with success, failed count, and the last attachment ID considered.
      */
-    public function upload_pending_media( $source_type, $limit = 50, $after_id = 0 ) {
+    /**
+     * Attachments of a source type with no record for the connected bucket (pending), after $after_id, oldest first.
+     * @since 1.5.0
+     * @return int[]
+     */
+    public function get_pending_ids( $source_type, $limit = 50, $after_id = 0 ) {
         global $wpdb;
+        $query = $this->pending_query( $source_type, 'posts.ID', $after_id );
+        if ( ! $query ) {
+            return [];
+        }
+        $query['params'][] = (int) $limit;
+        return array_map( 'intval', (array) $wpdb->get_col( $wpdb->prepare( $query['sql'] . ' ORDER BY posts.ID ASC LIMIT %d', $query['params'] ) ) );
+    }
 
-        $failed = 0;
+    /**
+     * Number of pending attachments of a source type (see get_pending_ids()).
+     * @since 1.5.0
+     */
+    public function count_pending( $source_type ) {
+        global $wpdb;
+        $query = $this->pending_query( $source_type, 'COUNT(*)' );
+        return $query ? (int) $wpdb->get_var( $wpdb->prepare( $query['sql'], $query['params'] ) ) : 0;
+    }
 
+    /** The pending-attachments query (no item row for this provider/bucket/region), as [sql, params]; null for an unknown source type. */
+    private function pending_query( $source_type, $select, $after_id = 0 ) {
+        global $wpdb;
         $source_type_data = self::$source_types[ $source_type ] ?? false;
         if ( ! $source_type_data ) {
-            return [ 'success' => true, 'failed' => $limit, 'last_id' => $after_id ];
+            return null;
         }
 
         $posts = $wpdb->prefix . $source_type_data['table'];
@@ -1534,29 +1587,33 @@ class MediaLibrary {
         }
 
         $sql = "
-            SELECT posts.ID
+            SELECT {$select}
             FROM {$posts} AS posts
             LEFT JOIN {$items} AS items USE INDEX (idx_item_lookup)
                 ON {$join}
             WHERE posts.post_type = 'attachment'
             AND items.source_id IS NULL
             {$after_id_sql}
-            ORDER BY posts.ID ASC
-            LIMIT %d
         ";
 
-        $params[] = (int) $limit;
+        return [ 'sql' => $sql, 'params' => $params ];
+    }
 
-        $rows = $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+    public function upload_pending_media( $source_type, $limit = 50, $after_id = 0 ) {
+        $failed = 0;
 
-        if ( empty( $rows ) ) {
+        if ( ! ( self::$source_types[ $source_type ] ?? false ) ) {
+            return [ 'success' => true, 'failed' => $limit, 'last_id' => $after_id ];
+        }
+
+        $ids = $this->get_pending_ids( $source_type, $limit, $after_id );
+
+        if ( empty( $ids ) ) {
             return [ 'success' => true, 'failed' => 0, 'last_id' => $after_id ];
         }
 
         $last_id = $after_id;
-        foreach ( $rows as $row ) {
-            $attachment_id = (int) $row->ID;
-
+        foreach ( $ids as $attachment_id ) {
             // Still waiting on WordPress to finish generating subsizes — not a failure,
             // just not ready yet. Leave $last_id alone so it's reconsidered next tick.
             if ( $this->is_attachment_not_yet_ready( $attachment_id ) ) {

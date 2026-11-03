@@ -443,6 +443,24 @@ class Utils {
     }
 
     /**
+     * Connected bucket name, or '' when none is set.
+     * @since 1.5.0
+     * @return string
+     */
+    public static function get_bucket_name() {
+        return (string) (self::get_credentials('bucketConfig', [])['bucket_name'] ?? '');
+    }
+
+    /**
+     * Connected region, or '' when the provider has none; part of an item's identity when set.
+     * @since 1.5.0
+     * @return string
+     */
+    public static function get_region() {
+        return (string) (self::get_credentials('config', [])['region'] ?? '');
+    }
+
+    /**
      * Function To get Current config
      * @since 1.0.0
      * @return array|boolean|string|integer|float|double
@@ -465,6 +483,62 @@ class Utils {
     }
 
     /**
+     * Whether delivery is on through an entry that has a custom-domain (CNAME) field but no domain set.
+     * Entries with that field (CDNs, R2's own) can't serve media without it; plain bucket delivery has none.
+     * @since 1.5.0
+     * @return boolean
+     */
+    public static function delivery_needs_domain($settings, $storage = null, $delivery = null) {
+        $credentials = self::get_credentials();
+        $storage     = $storage ?? ($credentials['service'] ?? '');
+        $delivery    = $delivery ?? ($credentials['cdn']['service'] ?? '');
+        $settings    = (array) $settings;
+
+        // No provider chosen: media stays local (see has_delivery_provider()), so nothing can break.
+        if ('' === (string) $delivery || empty($settings['rewrite_url']) || ('' !== trim((string) ($settings['cdn_url'] ?? '')) && !empty($settings['enable_cdn']))) {
+            return false;
+        }
+
+        // An empty/unknown provider falls back to the storage's own delivery entry (R2's needs a domain).
+        $entries = UISchema::instance()->get_all(false)['cdnServers'][$storage] ?? [];
+        $entry   = $entries[$delivery] ?? $entries[$storage] ?? [];
+        foreach ((array) ($entry['fields'] ?? []) as $field) {
+            foreach ((array) ($field['childrens'] ?? []) as $child) {
+                if (($child['name'] ?? '') === 'cdn_url') {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Message shown when delivery needs a domain that isn't set.
+     * @since 1.5.0
+     */
+    public static function delivery_domain_message($storage = null, $delivery = null) {
+        $credentials = self::get_credentials();
+        $storage     = $storage ?? ($credentials['service'] ?? '');
+        $delivery    = $delivery ?? ($credentials['cdn']['service'] ?? '');
+
+        if ('cloudflareR2' === $storage && 'cloudflareR2' === $delivery) {
+            return __('Cloudflare R2\'s storage endpoint isn\'t public, so media delivered from it would not load. Turn on "Use Custom Domain Name (CNAME)" and enter your bucket\'s public r2.dev URL or a custom domain.', 'media-cloud-sync');
+        }
+        return __('This delivery provider needs its domain to serve media. Turn on "Use Custom Domain Name (CNAME)" and enter the domain it gives you.', 'media-cloud-sync');
+    }
+
+    /**
+     * Whether a delivery provider is chosen; a cleared one (empty service) means delivery isn't set up yet.
+     * Legacy credentials without a `cdn` entry count as chosen so existing sites keep serving.
+     * @since 1.5.0
+     * @return boolean
+     */
+    public static function has_delivery_provider() {
+        $credentials = self::get_credentials();
+        return !isset($credentials['cdn']) || !empty($credentials['cdn']['service']);
+    }
+
+    /**
      * Function to check serving media environment is ok
      * @since 1.0.0
      * @return boolean
@@ -472,6 +546,7 @@ class Utils {
     public static function is_ok_to_serve($attachment_id = false, $check_id = true){
         return (
             self::is_service_enabled() &&
+            self::has_delivery_provider() &&
             self::get_settings('rewrite_url') &&
             ( $check_id ? isset($attachment_id) && !empty($attachment_id) : true )
         );
@@ -528,14 +603,14 @@ class Utils {
         $bucketConfig = isset($credentials['bucketConfig']) ? $credentials['bucketConfig'] : [];
 
         if(empty($bucketConfig['bucket_name'])) {
-            return esc_html__('Bucket name is not configured.', 'media-cloud-sync');
+            return __('Bucket name is not configured.', 'media-cloud-sync');
         }
 
         $configSource = self::get_credentials_source();
 
         if($configSource === 'config') {
             if(!self::is_wp_config_credentials_defined()) {
-                return esc_html__('WPMCS_CONFIG is not defined in wp-config.php', 'media-cloud-sync');
+                return __('WPMCS_CONFIG is not defined in wp-config.php', 'media-cloud-sync');
             }
 
             $config  = self::get_wp_config_credentials();
@@ -547,7 +622,7 @@ class Utils {
             }
             if(!empty($missing)) {
                 /* translators: %s: comma separated list of missing configuration keys */
-                return sprintf(esc_html__('WPMCS_CONFIG is missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
+                return sprintf(__('WPMCS_CONFIG is missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
             }
         } else {
             $config  = isset($credentials['config']) ? $credentials['config'] : [];
@@ -559,7 +634,7 @@ class Utils {
             }
             if(!empty($missing)) {
                 /* translators: %s: comma separated list of missing configuration keys */
-                return sprintf(esc_html__('Storage credentials are incomplete. Missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
+                return sprintf(__('Storage credentials are incomplete. Missing key(s): %s', 'media-cloud-sync'), implode(', ', $missing));
             }
         }
 
@@ -827,6 +902,15 @@ class Utils {
      */
     public static function get_permission_check_object_key() {
         return self::generate_object_key(WPMCS_TOKEN . '_dummy-object-for-bucket-permission-check.txt', '');
+    }
+
+    /**
+     * Object key used for the delivery read check, separate from the write/delete probe so concurrent checks don't clash.
+     * @since 1.5.0
+     * @return string
+     */
+    public static function get_read_check_object_key() {
+        return self::generate_object_key(WPMCS_TOKEN . '_dummy-object-for-read-check.txt', '');
     }
 
     /**
@@ -1306,6 +1390,13 @@ class Utils {
 		return ($license['status'] ?? '') === 'active'
 			&& ($license['is_domain_activated'] ?? false) === true
 			&& empty($license['is_expired']);
+	}
+
+	// Content-Type an object should have: the guessed one, unless it only differs from the current one by parameters like charset.
+	// @since 1.5.0
+	public static function content_type_for($current, $guessed) {
+		$current_base = strtolower(trim(explode(';', (string) $current)[0]));
+		return (!$guessed || strtolower($guessed) === $current_base) ? (string) $current : (string) $guessed;
 	}
 
 	// Cache-Control for newly uploaded objects; 1 month by default, custom duration is Pro-only, no-cache only when duration is explicitly 0.

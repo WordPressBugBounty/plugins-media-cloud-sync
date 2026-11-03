@@ -112,6 +112,7 @@ class Autoloader {
 			// Config Files
             'Utils' 		=> 'includes/config/utils.php',
             'Schema' 		=> 'includes/config/schema.php',
+            'UISchema' 		=> 'includes/config/ui-schema.php',
 
 			'Api'   		=> 'includes/api.php',
 			'Main'  		=> 'includes/main.php',
@@ -121,6 +122,7 @@ class Autoloader {
 			
 			// Upgrade
 			'Upgrade' 		=> 'includes/upgrade/upgrade.php',
+			'BucketPolicyPatch' => 'includes/patches/bucket-policy.php',
 
 			// Base Files
 			'Service'		=> 'includes/base/services/service.php',
@@ -142,6 +144,9 @@ class Autoloader {
 
 			// Compatibility
 			'Compatibility' => 'includes/compatbility/compatibility.php',
+			'SiteHealth'    => 'includes/tools/site-health.php',
+			'CLI'           => 'includes/tools/cli.php',
+			'SettingsTransfer' => 'includes/tools/settings-transfer.php',
 
 			// Filters
             'Filter' 		=> 'includes/filters/filters.php',

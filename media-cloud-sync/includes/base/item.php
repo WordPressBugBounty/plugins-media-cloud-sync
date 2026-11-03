@@ -188,6 +188,34 @@ class Item {
     }
 
     /**
+     * Media Library records in any bucket whose attachment no longer exists.
+     * @since 1.5.0
+     */
+    public function count_orphaned_records() {
+        global $wpdb;
+        return (int) $wpdb->get_var("SELECT COUNT(*) FROM " . Db::get_table_name() . " i LEFT JOIN {$wpdb->posts} p ON p.ID = i.source_id AND p.post_type = 'attachment' WHERE i.source_type = 'media_library' AND p.ID IS NULL");
+    }
+
+    /** Up to $limit of those records (id, source_id, key). */
+    public function get_orphaned_records($limit = 5) {
+        global $wpdb;
+        return (array) $wpdb->get_results($wpdb->prepare("SELECT i.id, i.source_id, i.`key` FROM " . Db::get_table_name() . " i LEFT JOIN {$wpdb->posts} p ON p.ID = i.source_id AND p.post_type = 'attachment' WHERE i.source_type = 'media_library' AND p.ID IS NULL ORDER BY i.id LIMIT %d", (int) $limit), ARRAY_A);
+    }
+
+    /** Removes one such record and what's stored with it; unlike delete(), its files stay where they are. */
+    public function delete_orphaned_record($record) {
+        global $wpdb;
+        $rows = $wpdb->delete(Db::get_table_name(), ['id' => (int) $record['id'], 'source_type' => 'media_library']);
+        if ($wpdb->last_error || false === $rows) {
+            return false;
+        }
+        Integration::delete_meta((int) $record['source_id'], 'item', false, 'media_library');
+        Cache::delete_item_cache((int) $record['source_id'] . '_item_media_library');
+        Logger::instance()->remove_log_by_media_id((int) $record['source_id'], 'media_library');
+        return true;
+    }
+
+    /**
      * Function to delete item from data base
      * @since 1.0.0
      */
@@ -994,53 +1022,51 @@ class Item {
             return;
         }
 
-        $upload_dir = wp_get_upload_dir();
+        foreach ($this->get_cloud_keys($item, false) as $key) {
+            Service::instance()->deleteSingle($key);
+        }
 
-        if (isset($item['extra']) && !empty($item['extra'])) {
-            $extras = Utils::maybe_unserialize($item['extra']);
-            if (
-                isset($extras) && !empty($extras) &&
-                isset($extras['sizes']) && !empty($extras['sizes'])
-            ) {
-                foreach ($extras['sizes'] as $sub_image) {
-                    if (isset($sub_image['key']) && !empty($sub_image['key'])) {
-                        Service::instance()->deleteSingle($sub_image['key']);
+        // The backup goes through here again, so the veto applies to it too.
+        $backup = $delete_backup ? $this->get_backup_item($item) : [];
+        if (!empty($backup)) {
+            $this->delete_attachments_by_item($backup, false);
+        }
+    }
+
+    /**
+     * Every bucket key an item record holds: sizes, additional files, original, main file and, optionally, the backup's.
+     * @since 1.5.0
+     */
+    public function get_cloud_keys($item, $with_backup = true) {
+        $keys   = [];
+        $extras = !empty($item['extra']) ? Utils::maybe_unserialize($item['extra']) : [];
+        foreach (['sizes', 'additional_files'] as $group) {
+            if (!empty($extras[$group]) && is_array($extras[$group])) {
+                foreach ($extras[$group] as $file) {
+                    if (!empty($file['key'])) {
+                        $keys[] = $file['key'];
                     }
                 }
             }
-
-            if (
-                isset($extras) && !empty($extras) &&
-                isset($extras['additional_files']) && !empty($extras['additional_files'])
-            ) {
-                foreach ($extras['additional_files'] as $file) {
-                    if (isset($file['key']) && !empty($file['key'])) {
-                        Service::instance()->deleteSingle($file['key']);
-                    }
-                }
-            }
-
-            if (
-                isset($extras) && !empty($extras) &&
-                isset($extras['backup']) && !empty($extras['backup']) &&
-                $delete_backup
-            ) {
-                $backup = Utils::maybe_unserialize($extras['backup']);
-                if (isset($backup) && !empty($backup)) {
-                    $this->delete_attachments_by_item($backup, false);
-                }
-            }
         }
-
-        if (
-            isset($item['original_key']) && !empty($item['original_key'])
-        ) {
-            Service::instance()->deleteSingle($item['original_key']);
+        if (!empty($item['original_key'])) {
+            $keys[] = $item['original_key'];
         }
-
-        if (isset($item['key']) && !empty($item['key'])) {
-            Service::instance()->deleteSingle($item['key']);
+        if (!empty($item['key'])) {
+            $keys[] = $item['key'];
         }
+        $backup = $with_backup ? $this->get_backup_item($item) : [];
+        if (!empty($backup)) {
+            $keys = array_merge($keys, $this->get_cloud_keys($backup, false));
+        }
+        return array_values(array_unique($keys));
+    }
+
+    // The backup record kept in an item's extras, or [].
+    private function get_backup_item($item) {
+        $extras = !empty($item['extra']) ? Utils::maybe_unserialize($item['extra']) : [];
+        $backup = !empty($extras['backup']) ? Utils::maybe_unserialize($extras['backup']) : [];
+        return is_array($backup) ? $backup : [];
     }
 
 
@@ -1103,8 +1129,10 @@ class Item {
         // Hook for post-update actions
         do_action('wpmcs_post_update_item', $source_id, $data, $source_type);
 
-        // May be delete server files
-        $this->may_be_delete_server_files_by_id($source_id, $source_type, true, true);
+        // May be delete server files; a job can return false here to keep them.
+        if (apply_filters('wpmcs_remove_server_files_after_item_update', true, $source_id, $source_type)) {
+            $this->may_be_delete_server_files_by_id($source_id, $source_type, true, true);
+        }
     }
 
     /**

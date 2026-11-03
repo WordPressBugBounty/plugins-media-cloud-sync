@@ -92,7 +92,12 @@ class Sync {
             if (is_array($start_result) && isset($start_result['success']) && $start_result['success'] === false) {
                 return $start_result;
             }
-            return $action_class->get_status();
+            $status = $action_class->get_status();
+            // A job can report what it did besides (or instead of) starting a run.
+            if (is_array($start_result) && !empty($start_result['notice'])) {
+                $status['notice'] = $start_result['notice'];
+            }
+            return $status;
         } else {
             /* translators: %s: action name */
             throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));

@@ -8,6 +8,7 @@ class Integration {
 
     private $integrations = [];
     public static $source_types = [];
+    private static $extra_handlers = [];
     public static $source_labels = [];
 
     /**
@@ -98,6 +99,42 @@ class Integration {
                     : null;
     }
 
+
+    /**
+     * Adds classes that also handle source types, mirroring add_integrations() — e.g. PRO's
+     * ['media_library' => ['ProMediaLibrary']]. Checked before the registered class by get_job_handler().
+     *
+     * @param array $handlers source_type => unqualified class name(s).
+     * @since 1.5.0
+     */
+    public function add_handlers($handlers = []) {
+        foreach ($handlers as $source_type => $classes) {
+            $current = self::$extra_handlers[$source_type] ?? [];
+            self::$extra_handlers[$source_type] = array_values(array_unique(array_merge($current, (array) $classes)));
+        }
+    }
+
+    /**
+     * The object a bulk job calls $method on for a source type: the first added handler that has it,
+     * else the registered class. Lets one job use free and PRO methods of the same source type.
+     * @param string $source_type
+     * @param string $method
+     * @return object|null
+     * @since 1.5.0
+     */
+    public static function get_job_handler($source_type, $method) {
+        if (!isset(self::$source_types[$source_type])) {
+            return null;
+        }
+        $classes = array_merge(self::$extra_handlers[$source_type] ?? [], [self::$source_types[$source_type]['class']]);
+        foreach ($classes as $class) {
+            $class = __NAMESPACE__ . '\\' . $class;
+            if (class_exists($class) && method_exists($class, $method) && method_exists($class, 'instance')) {
+                return $class::instance();
+            }
+        }
+        return null;
+    }
 
     /**
      * Get Item Meta According to Integration

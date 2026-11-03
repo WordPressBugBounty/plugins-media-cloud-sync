@@ -3,18 +3,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/Main.js:47
+#: src/Main.js:49
 msgid ""
 "Unable to load plugin settings. Please refresh the page or check your "
 "connection."
 msgstr ""
 
-#: src/components/Buttons/index.jsx:143
-msgid "Button"
+#: src/components/BackLink/index.jsx:11
+msgid "Back to Dashboard"
 msgstr ""
 
-#: src/components/Buttons/index.jsx:205
+#: src/components/Buttons/index.jsx:139
 msgid "PURCHASE PREMIUM"
+msgstr ""
+
+#: src/components/Buttons/index.jsx:81
+msgid "Button"
 msgstr ""
 
 #: src/components/ConfirmDialog/index.jsx:12
@@ -22,110 +26,113 @@ msgid "Confirm"
 msgstr ""
 
 #: src/components/ConfirmDialog/index.jsx:13
-#: src/pages/ChooseCDN.jsx:341
-#: src/pages/FileManager/SettingsPanel.jsx:89
-#: src/pages/sync/DestinationConfigForm.jsx:473
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:529
+#: src/pages/ChooseCDN/index.jsx:255
+#: src/pages/FileManager/SettingsPanel.jsx:130
+#: src/pages/MediaSettings/index.jsx:655
 msgid "Cancel"
 msgstr ""
 
 #: src/components/ConfirmDialog/index.jsx:47
 #: src/components/ImagePreview/index.jsx:235
-#: src/pages/FileManager/SettingsPanel.jsx:37
+#: src/pages/FileManager/SettingsPanel.jsx:54
 msgid "Close"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:119
+#: src/components/ConnectionCard/index.jsx:103
+msgid "Remove files from server"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:108
+#: src/pages/ChooseCDN/index.jsx:319
+msgid "Private media"
+msgstr ""
+
+#: src/components/ConnectionCard/index.jsx:124
 msgid "Storage is not fully configured"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:129
+#: src/components/ConnectionCard/index.jsx:128
 msgid "Review your storage credentials and bucket configuration."
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:138
-#: src/pages/Configure.jsx:94
-#: src/schema.js:478
+#: src/components/ConnectionCard/index.jsx:135
 msgid "Configure"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:38
-#: src/schema.js:2100
-msgid "Bucket"
+#: src/components/ConnectionCard/index.jsx:28
+msgid "On"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:61
-msgid "Connect to cloud"
+#: src/components/ConnectionCard/index.jsx:29
+msgid "Off"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:67
-msgid "Get started with syncing your media files to the cloud."
+#: src/components/ConnectionCard/index.jsx:39
+msgid "Storage"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:80
-#: src/pages/sync/DestinationConfigForm.jsx:463
+#: src/components/ConnectionCard/index.jsx:44
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:493
 msgid "Connected"
 msgstr ""
 
-#: src/components/ConnectionCard/index.jsx:95
+#: src/components/ConnectionCard/index.jsx:45
 msgid "Needs attention"
 msgstr ""
 
-#: src/components/ConnectionStatusCheck/index.jsx:30
-msgid "Check Status"
+#: src/components/ConnectionCard/index.jsx:74
+msgid "Connect to cloud"
 msgstr ""
 
-#: src/components/ConnectionStatusCheck/index.jsx:37
-msgid "Fetching..."
+#: src/components/ConnectionCard/index.jsx:76
+msgid "Get started with syncing your media files to the cloud."
 msgstr ""
 
-#: src/components/ConnectionStatusCheck/index.jsx:46
-#: src/components/Statistics/index.jsx:55
-#: src/pages/FileManager/FileManager.jsx:1217
-msgid "Refresh"
+#: src/components/ConnectionCard/index.jsx:95
+msgid "Delivery"
 msgstr ""
 
-#: src/components/ConnectionStatusCheck/index.jsx:54
-msgid "Last checked"
+#: src/components/ConnectionStatusCheck/index.jsx:17
+msgid "Not checked yet"
 msgstr ""
 
-#: src/components/Header/index.jsx:24
-msgid "Dashboard"
+#: src/components/ConnectionStatusCheck/index.jsx:33
+#: src/pages/Configure/verifyPermissions.jsx:324
+msgid "Checking"
 msgstr ""
 
-#: src/components/Header/index.jsx:30
-#: src/schema.js:337
-msgid "Settings"
+#: src/components/ConnectionStatusCheck/index.jsx:50
+msgid "Recheck"
 msgstr ""
 
-#: src/components/Header/index.jsx:36
-#: src/schema.js:2836
-msgid "Documentation"
+#: src/components/ConnectionStatusCheck/index.jsx:51
+msgid "Run check"
 msgstr ""
 
-#: src/components/Header/index.jsx:44
-#: src/pages/License.jsx:139
-msgid "License"
+#: src/components/Header/index.jsx:104
+msgid "Media Cloud Sync"
 msgstr ""
 
-#: src/components/Header/index.jsx:67
-msgid "Upgrade to Pro"
+#: src/components/Header/index.jsx:106
+msgid "by"
 msgstr ""
 
-#: src/components/HeaderPrgressIndicator/index.jsx:124
-msgid "View Details"
+#: src/components/HeaderPrgressIndicator/index.jsx:45
+msgid "Job in progress"
 msgstr ""
 
-#: src/components/HeaderPrgressIndicator/index.jsx:46
-msgid "Progress indicator"
+#: src/components/HeaderPrgressIndicator/index.jsx:52
+msgid "View details"
 msgstr ""
 
-#: src/components/HeaderPrgressIndicator/index.jsx:87
-#: src/pages/sync/SyncScreen.jsx:402
-msgid "Syncing"
+#: src/components/HeaderPrgressIndicator/index.jsx:57
+#: src/pages/SyncScreen/index.jsx:502
+msgid "Paused"
 msgstr ""
 
 #: src/components/ImagePreview/index.jsx:117
-#: src/pages/FileManager/FileManager.jsx:297
+#: src/pages/FileManager/index.jsx:310
 msgid "Copied to clipboard"
 msgstr ""
 
@@ -150,22 +157,23 @@ msgid "Reset"
 msgstr ""
 
 #: src/components/ImagePreview/index.jsx:181
-#: src/pages/FileManager/FileManager.jsx:402
+#: src/pages/FileManager/index.jsx:415
 msgid "Open in new tab"
 msgstr ""
 
 #: src/components/ImagePreview/index.jsx:189
-#: src/pages/FileManager/FileManager.jsx:410
+#: src/pages/FileManager/index.jsx:423
 msgid "Copy URL"
 msgstr ""
 
 #: src/components/ImagePreview/index.jsx:199
-#: src/pages/FileManager/FileManager.jsx:418
+#: src/pages/FileManager/index.jsx:431
+#: src/pages/SyncScreen/index.jsx:766
 msgid "Download"
 msgstr ""
 
 #: src/components/ImagePreview/index.jsx:212
-#: src/pages/FileManager/FileManager.jsx:428
+#: src/pages/FileManager/index.jsx:441
 msgid "View in Media Library"
 msgstr ""
 
@@ -177,181 +185,209 @@ msgstr ""
 msgid "Read JSON from file"
 msgstr ""
 
-#: src/components/LicenseCard/index.jsx:14
-msgid "Active"
+#: src/components/LibrarySync/index.jsx:113
+msgid "By source"
 msgstr ""
 
-#: src/components/LicenseCard/index.jsx:16
-msgid "Expired"
+#: src/components/LibrarySync/index.jsx:115
+#: src/pages/SyncScreen/index.jsx:699
+msgid "Progress"
 msgstr ""
 
-#: src/components/LicenseCard/index.jsx:18
-msgid "Revoked"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:20
-msgid "Inactive"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:22
-msgid "Limit Reached"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:24
-msgid "Not Found"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:25
-msgid "Unknown"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:31
-msgid "Just now"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:34
-msgid "min ago"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:37
-msgid "hours ago"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:39
-msgid "days ago"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:53
-msgid "License Details"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:65
-msgid "License Key"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:74
-msgid "Expiry"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:78
-#: src/helper/index.js:178
-msgid "Never"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:84
-msgid "Last Checked"
-msgstr ""
-
-#: src/components/LicenseCard/index.jsx:93
-msgid "Status Message"
-msgstr ""
-
-#: src/components/LicenseExpiredNotice/index.jsx:11
-msgid "Renew your license to continue using PRO features."
-msgstr ""
-
-#: src/components/LicenseExpiredNotice/index.jsx:22
-msgid "Renew Now"
-msgstr ""
-
-#: src/components/LicenseExpiredNotice/index.jsx:9
-msgid "License Expired:"
-msgstr ""
-
-#: src/components/Loading/index.jsx:13
-msgid "Failed to load Media Cloud Sync"
-msgstr ""
-
-#: src/components/Loading/index.jsx:25
-msgid "Try again"
-msgstr ""
-
-#: src/components/Loading/index.jsx:35
-msgid "Media Cloud Sync is loading please wait..."
-msgstr ""
-
-#: src/components/PremiumBanner/index.jsx:15
-msgid "Premium version is now available. Upgrade to unlock all features."
-msgstr ""
-
-#: src/components/PremiumBanner/index.jsx:21
-msgid "UPGRADE TO PRO"
-msgstr ""
-
-#: src/components/PremiumBanner/index.jsx:9
-msgid "Unlock the full power of Media Cloud Sync!"
-msgstr ""
-
-#: src/components/Statistics/index.jsx:110
+#: src/components/LibrarySync/index.jsx:117
 msgid "Synced"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:111
+#: src/components/LibrarySync/index.jsx:118
 msgid "Total"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:112
-msgid "Pending"
+#: src/components/LibrarySync/index.jsx:119
+msgid "Not synced"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:35
+#: src/components/LibrarySync/index.jsx:168
+#. %s: number of files not synced yet
+msgid "%s file is waiting to be uploaded."
+msgid_plural "%s files are waiting to be uploaded."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/LibrarySync/index.jsx:178
+msgid "Sync now"
+msgstr ""
+
+#: src/components/LibrarySync/index.jsx:183
+msgid "All your media is in the cloud."
+msgstr ""
+
+#: src/components/LibrarySync/index.jsx:43
 msgid "Refreshing Counts"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:66
-msgid "Progress Graph"
+#: src/components/LibrarySync/index.jsx:53
+msgid "Library sync"
 msgstr ""
 
-#: src/components/Statistics/index.jsx:98
-msgid "out of"
+#: src/components/LibrarySync/index.jsx:70
+#: src/pages/FileManager/index.jsx:1205
+#: src/pages/ToolPage/index.jsx:130
+msgid "Refresh"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:125
-msgid "Clearing…"
+#: src/components/LibrarySync/index.jsx:79
+#. 1: synced count, 2: total count
+msgid "%1$s of %2$s media files are in the cloud"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:126
-msgid "Clear Logs"
+#: src/components/LicenseCard/index.jsx:102
+msgid "Expiry"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:134
-msgid "ID"
+#: src/components/LicenseCard/index.jsx:105
+#: src/helper/index.js:232
+msgid "Never"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:135
-msgid "Errors"
+#: src/components/LicenseCard/index.jsx:110
+msgid "Last Checked"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:138
-msgid "Actions"
+#: src/components/LicenseCard/index.jsx:115
+msgid "Status Message"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:204
-msgid "No errors"
+#: src/components/LicenseCard/index.jsx:15
+msgid "Active"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:227
-msgid "Retry"
+#: src/components/LicenseCard/index.jsx:17
+msgid "Expired"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:236
-#: src/pages/FileManager/FileManager.jsx:1304
-#: src/pages/configure/verifyPermissions.jsx:264
+#: src/components/LicenseCard/index.jsx:19
+msgid "Revoked"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:21
+#: src/pages/ImportFromOffload/index.jsx:193
+msgid "Inactive"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:23
+msgid "Limit Reached"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:25
+msgid "Not Found"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:26
+msgid "Unknown"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:32
+msgid "Just now"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:35
+msgid "min ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:38
+msgid "hours ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:40
+msgid "days ago"
+msgstr ""
+
+#: src/components/LicenseCard/index.jsx:97
+msgid "License Key"
+msgstr ""
+
+#: src/components/ListInput/index.jsx:38
+#. %s: the list item
+msgid "Remove %s"
+msgstr ""
+
+#: src/components/ListInput/index.jsx:65
+msgid "Add"
+msgstr ""
+
+#: src/components/Loading/index.jsx:20
+msgid "Media Cloud Sync could not load"
+msgstr ""
+
+#: src/components/Loading/index.jsx:24
+msgid "Try again"
+msgstr ""
+
+#: src/components/Loading/index.jsx:38
+msgid "Loading Media Cloud Sync"
+msgstr ""
+
+#: src/components/Loading/index.jsx:39
+msgid "Getting your storage and settings ready."
+msgstr ""
+
+#: src/components/Spinner/index.jsx:14
+#: src/components/SyncScreen/ErrorListing/index.jsx:251
+#: src/pages/FileManager/index.jsx:1260
 msgid "Loading"
 msgstr ""
 
-#: src/components/SyncScreen/ErrorListing/index.jsx:250
+#: src/components/SyncScreen/ErrorListing/index.jsx:100
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:292
+#: src/pages/BucketToBucket/index.jsx:144
+#: src/pages/Configure/index.jsx:420
+#: src/pages/ImportExport/index.jsx:13
+#: src/pages/SyncScreen/index.jsx:480
+#: src/pages/ToolPage/index.jsx:72
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:135
+msgid "Clearing…"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:136
+msgid "Clear Logs"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:144
+msgid "ID"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:145
+msgid "Errors"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:148
+msgid "Actions"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:218
+msgid "No errors"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:242
+#: src/pages/Configure/verifyPermissions.jsx:312
+msgid "Retry"
+msgstr ""
+
+#: src/components/SyncScreen/ErrorListing/index.jsx:266
 msgid "No errors found"
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:106
+#: src/components/SyncScreen/InfoBox/index.jsx:109
 msgid ""
 "Your sync is running live in this browser. Stay in the Media Cloud Sync "
 "admin — closing this tab or navigating away will pause it, and it picks "
 "back up automatically when you return."
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:110
+#: src/components/SyncScreen/InfoBox/index.jsx:113
 msgid ""
 "Your sync is running in the background. It may take some time, and regular "
 "site visits help it complete. Your site will stay online, and you can "
@@ -364,106 +400,40 @@ msgid ""
 "enabled and Copy files to bucket is enabled."
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:52
-msgid "All your existing media are synced successfully."
+#: src/components/SyncScreen/InfoBox/index.jsx:37
+#: src/pages/SyncScreen/index.jsx:682
+msgid "Nothing to process right now."
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:65
+#: src/components/SyncScreen/InfoBox/index.jsx:55
+msgid "Finished. See the results below."
+msgstr ""
+
+#: src/components/SyncScreen/InfoBox/index.jsx:68
 msgid ""
 "Sync is paused. You can resume it by clicking the \"Resume\" button or stop "
 "it by clicking the \"Stop\" button."
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:82
+#: src/components/SyncScreen/InfoBox/index.jsx:85
 msgid ""
 "Stopping your sync — it will stop as soon as the item currently in progress "
 "finishes."
 msgstr ""
 
-#: src/components/SyncScreen/InfoBox/index.jsx:86
+#: src/components/SyncScreen/InfoBox/index.jsx:89
 msgid ""
 "Pausing your sync — it will pause as soon as the item currently in progress "
 "finishes."
 msgstr ""
 
-#: src/components/SyncScreen/PremiumCard/index.jsx:11
-msgid "Manage synced media from the Media Library"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:17
-msgid "File Manager to browse and manage your cloud bucket"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:23
-msgid "Restore media back to your server"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:29
-msgid "Move media to a new path"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:35
-msgid "Bucket-to-bucket migration"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:41
-msgid "Faster Ajax/Mixed bulk sync"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:47
-msgid "Works with WooCommerce, EDD, Elementor, Divi, WPML, and more"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:52
-msgid "And much more"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:60
-msgid "View All Features"
-msgstr ""
-
-#: src/components/SyncScreen/PremiumCard/index.jsx:8
-msgid "Upgrade To Premium"
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:11
-msgid ""
-"Fastest. Runs live in your browser — stay in the plugin admin while it "
-"syncs."
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:18
-msgid "Cron"
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:20
-msgid "Runs entirely in the background via WP-Cron. No need to keep this page open."
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:27
-msgid "Mixed"
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:29
-msgid ""
-"Fastest while you stay here, and automatically falls back to WP-Cron if you "
-"leave."
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:51
+#: src/components/SyncScreen/SyncMethodToggle/index.jsx:44
 msgid "Sync Method"
 msgstr ""
 
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:79
-msgid "Available in Pro"
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:9
-msgid "Ajax"
-msgstr ""
-
-#: src/components/SyncScreen/SyncMethodToggle/index.jsx:93
-msgid "PRO"
+#: src/components/SyncScreen/SyncMethodToggle/index.jsx:81
+#: src/pages/Configure/setCredentials.jsx:164
+msgid "Recommended"
 msgstr ""
 
 #: src/components/UpgradeNotice/index.jsx:100
@@ -508,818 +478,124 @@ msgstr ""
 msgid "Database Upgrade Required"
 msgstr ""
 
-#: src/components/WelcomeContent/index.jsx:7
-msgid "Hey There,"
-msgstr ""
-
-#: src/components/WelcomeContent/index.jsx:9
-msgid "Welcome to Media Cloud Sync Dashboard"
+#: src/components/WelcomeContent/index.jsx:11
+msgid "Dashboard"
 msgstr ""
 
 #: src/helper/connectionStatus.js:12
+msgid "Storage check failed"
+msgstr ""
+
+#: src/helper/connectionStatus.js:13
 msgid "Click the button to verify storage credentials and write access."
 msgstr ""
 
-#: src/helper/connectionStatus.js:21
+#: src/helper/connectionStatus.js:22
+msgid "Delivery check failed"
+msgstr ""
+
+#: src/helper/connectionStatus.js:23
 msgid "Click the button to check the read status of your Provider."
 msgstr ""
 
-#: src/helper/index.js:114
+#: src/helper/index.js:159
 msgid "This field is required"
 msgstr ""
 
-#: src/helper/index.js:126
+#: src/helper/index.js:171
 msgid "Maximum length exceeded"
 msgstr ""
 
-#: src/helper/index.js:143
+#: src/helper/index.js:188
 msgid "Invalid Format"
 msgstr ""
 
-#: src/hooks/useSyncTicking.js:159
+#: src/hooks/useSyncTicking.js:154
 msgid ""
 "Ajax sync stopped due to a network error. It will continue at normal speed "
 "via WP-Cron."
 msgstr ""
 
-#: src/pages/ChooseCDN.jsx:132
-msgid "Failed to save provider. Please try again."
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:143
-msgid "Saving Provider"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:167
-msgid "Configure storage before choosing a delivery provider."
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:176
-msgid "Configure Storage"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:191
-#: src/pages/Configure.jsx:605
-msgid "Back to Settings"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:198
-msgid "Choose your Media Delivery Provider"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:204
-msgid "Choose your media delivery provider from here"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:283
-msgid "Private Media Supported"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:287
-msgid "Private Media Not Supported"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:303
-msgid "Provider Name"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:308
-msgid "Enter Provider Name"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:324
-msgid "Please enter a provider name"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:342
-#: src/pages/Configure.jsx:104
-#: src/pages/FileManager/SettingsPanel.jsx:94
-#: src/schema.js:538
-msgid "Save"
-msgstr ""
-
-#: src/pages/ChooseCDN.jsx:67
-#: src/pages/MediaSettings.jsx:325
-msgid "Please fix the highlighted errors before proceeding"
-msgstr ""
-
-#: src/pages/Configure.jsx:107
-msgid "Configuration"
-msgstr ""
-
-#: src/pages/Configure.jsx:111
-msgid "Save the credentials."
-msgstr ""
-
-#: src/pages/Configure.jsx:129
-msgid "Please enter a service name"
-msgstr ""
-
-#: src/pages/Configure.jsx:228
-msgid "Credentials"
-msgstr ""
-
-#: src/pages/Configure.jsx:455
-#: src/pages/sync/BucketToBucket.jsx:143
-#: src/pages/sync/DestinationConfigForm.jsx:292
-#: src/pages/sync/SyncScreen.jsx:329
-msgid "Something went wrong. Please try again."
-msgstr ""
-
-#: src/pages/Configure.jsx:609
-msgid "Exit to Dashboard"
-msgstr ""
-
-#: src/pages/Configure.jsx:643
-msgid "documentation"
-msgstr ""
-
-#: src/pages/Configure.jsx:655
-msgid "Verifying"
-msgstr ""
-
-#: src/pages/Configure.jsx:659
-msgid "Verifying your"
-msgstr ""
-
-#: src/pages/Configure.jsx:83
-msgid "Hey, There"
-msgstr ""
-
-#: src/pages/Configure.jsx:84
-msgid "Welcome to Media Cloud Sync"
-msgstr ""
-
-#: src/pages/Configure.jsx:87
-msgid "Configure Cloud Service"
-msgstr ""
-
-#: src/pages/Configure.jsx:88
-msgid "Choose your cloud service to connect to cloud."
-msgstr ""
-
-#: src/pages/Configure.jsx:98
-msgid "Trouble finding the credentials? View our <documentation_link>"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1003
-msgid "1 file"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1004
-msgid "files"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1019
-msgid "Deleting"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1024
-msgid "Deleting…"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1027
-msgid ""
-"Folders are deleted recursively — everything inside them (including nested "
-"subfolders and any WordPress media) is permanently removed. This cannot be "
-"undone."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1033
-msgid ""
-"Some of these files are WordPress media with no local copy on this server — "
-"deleting the cloud copy will orphan them in your Media Library."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1038
-msgid "This cannot be undone."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1044
-#: src/pages/MediaSettings.jsx:475
-#: src/pages/sync/BucketToBucket.jsx:251
-#: src/pages/sync/SyncScreen.jsx:343
-msgid "Back to Dashboard"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1049
-#: src/schema.js:413
-msgid "File Manager"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1110
-msgid "selected"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1115
-msgid "Clear selection"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1167
-msgid "Download as zip"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1185
-msgid "Restore to server"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1205
-msgid "Delete selected"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1228
-msgid "Advanced settings"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1285
-#: src/pages/configure/setBucket.jsx:199
-msgid "Name"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1287
-msgid "Size"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1290
-msgid "Last Modified"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1318
-msgid "This folder is empty"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1342
-msgid "Double-click to open"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:140
-msgid "Unable to load files"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1451
-#: src/pages/sync/BucketToBucket.jsx:176
-msgid "Loading…"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1455
-msgid "Load more"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1542
-msgid "Delete"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1553
-msgid "Restore to server first (recommended)"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1564
-msgid "Enable file deletion?"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1565
-msgid ""
-"This permanently removes files from cloud storage and cannot be undone. And "
-"If any media linked to the deleting cloud file will be orphaned. Delete "
-"actions will become available from the row context menu."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1569
-#: src/pages/MediaSettings.jsx:831
-msgid "Enable"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1583
-msgid "Move to new path"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1584
-msgid ""
-"Enter the destination folder to move this folder into (its own name is "
-"kept). Use \"/\" for the bucket root."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1588
-msgid "Move"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1597
-msgid "Destination folder"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:1610
-msgid "Moving"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:206
-msgid "Root"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:323
-msgid "Unable to open this file — no URL is available."
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:359
-msgid "Copy path"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:393
-msgid "Open"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:527
-#: src/pages/FileManager/api.js:79
-msgid "Unable to build zip"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:541
-msgid "Unable to download zip"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:557
-msgid "Unable to download files"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:641
-msgid "restored"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:648
-msgid "media restored to server"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:658
-#: src/pages/FileManager/api.js:138
-msgid "Unable to restore media"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:703
-msgid "Enter a destination path"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:755
-msgid "moved"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:758
-msgid "failed"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:762
-msgid "file(s) moved"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:772
-#: src/pages/FileManager/api.js:164
-msgid "Unable to move folder"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:864
-msgid "Nothing to delete"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:903
-msgid "item(s) deleted"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:912
-#: src/pages/FileManager/api.js:115
-msgid "Unable to delete files"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:935
-msgid "Settings saved"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:944
-msgid "Unable to save settings"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:962
-msgid "Zipping"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:967
-msgid "Restoring"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:980
-msgid "Delete file?"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:984
-msgid "files?"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:993
-msgid "1 folder"
-msgstr ""
-
-#: src/pages/FileManager/FileManager.jsx:994
-msgid "folders"
-msgstr ""
-
-#: src/pages/FileManager/SettingsPanel.jsx:31
-msgid "Advanced Settings"
-msgstr ""
-
-#: src/pages/FileManager/SettingsPanel.jsx:46
-msgid "Enable file deletion"
-msgstr ""
-
-#: src/pages/FileManager/SettingsPanel.jsx:66
-msgid "Root folder"
-msgstr ""
-
-#: src/pages/FileManager/SettingsPanel.jsx:72
-msgid "Defaults to your configured upload folder"
-msgstr ""
-
-#: src/pages/License.jsx:110
-msgid "License status refreshed."
-msgstr ""
-
-#: src/pages/License.jsx:125
-msgid "Failed to refresh status."
-msgstr ""
-
-#: src/pages/License.jsx:142
-msgid "Activate your license to unlock PRO features."
-msgstr ""
-
-#: src/pages/License.jsx:158
-msgid "Enter License Key"
-msgstr ""
-
-#: src/pages/License.jsx:168
-msgid "e.g. MCS-XXXX-XXXX-XXXX-XXXX-XXXX"
-msgstr ""
-
-#: src/pages/License.jsx:182
-msgid "Activate License"
-msgstr ""
-
-#: src/pages/License.jsx:199
-msgid "Refresh Status"
-msgstr ""
-
-#: src/pages/License.jsx:209
-msgid "Deactivate License"
-msgstr ""
-
-#: src/pages/License.jsx:33
-msgid "Please enter a license key."
-msgstr ""
-
-#: src/pages/License.jsx:48
-msgid "License activated!"
-msgstr ""
-
-#: src/pages/License.jsx:68
-msgid "Activation failed."
-msgstr ""
-
-#: src/pages/License.jsx:83
-msgid "License deactivated."
-msgstr ""
-
-#: src/pages/License.jsx:92
-msgid "Deactivation failed."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:356
-msgid "Failed to save settings. Please try again."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:367
-msgid "Saving configuration"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:394
-msgid "Failed to remove the policy. Please try again."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:398
-msgid "Failed to apply the policy. Please try again."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:480
-msgid "Storage Settings"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:556
-msgid "Delivery Settings"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:581
-msgid "Change"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:631
-msgid "Apply Bucket Policy"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:655
-msgid "Applied"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:659
-msgid "Not Applied"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:680
-msgid "Private files are currently excluded from public access on your bucket."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:684
-msgid ""
-"Saving the settings above does not change anything on your bucket by "
-"itself. Click Apply Policy for private files to actually be excluded from "
-"public access."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:698
-msgid ""
-"Google Cloud Storage: enabling this removes public access from anything in "
-"the bucket outside the configured base path, including content this plugin "
-"did not upload."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:713
-msgid "Apply Policy"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:740
-msgid "Remove Policy"
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:771
-msgid ""
-"Save your settings above first — Apply Policy acts on what is saved, not on "
-"unsaved changes."
-msgstr ""
-
-#: src/pages/MediaSettings.jsx:794
-msgid "Sync in progress. Please wait until it completes before saving changes."
-msgstr ""
-
-#: src/pages/configure/Footer/index.jsx:13
-#: src/pages/sync/DestinationConfigForm.jsx:560
-#: src/schema.js:537
-msgid "Back"
-msgstr ""
-
-#: src/pages/configure/Footer/index.jsx:14
-#: src/pages/sync/DestinationConfigForm.jsx:362
-#: src/schema.js:530
-msgid "Next"
-msgstr ""
-
-#: src/pages/configure/provider.jsx:147
-msgid "Enter Provider label"
-msgstr ""
-
-#: src/pages/configure/provider.jsx:151
-msgid "Enter label"
-msgstr ""
-
-#: src/pages/configure/saveSettings.jsx:17
-msgid "Successfully connected to"
-msgstr ""
-
-#: src/pages/configure/saveSettings.jsx:22
-msgid "Click Save button to save the configuration"
-msgstr ""
-
-#: src/pages/configure/setBucket.jsx:138
-msgid "Create New"
-msgstr ""
-
-#: src/pages/configure/setBucket.jsx:173
-msgid "Choose"
-msgstr ""
-
-#: src/pages/configure/setBucket.jsx:194
-msgid "Enter"
-msgstr ""
-
-#: src/pages/configure/setBucket.jsx:69
-msgid "Choose a"
-msgstr ""
-
-#: src/pages/configure/setBucket.jsx:99
-msgid "Choose Existing"
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:157
-msgid "Use Existing"
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:158
-msgid ""
-"Reuse the credentials from your currently connected account — no need to "
-"re-enter them. Pick a different bucket in the next step."
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:201
-msgid "Recommended"
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:227
-msgid ""
-"No credentials to enter — this destination will reuse your currently "
-"connected account."
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:252
-msgid "Copy"
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:288
-msgid "Copy region value"
-msgstr ""
-
-#: src/pages/configure/setCredentials.jsx:297
-msgid "Copied!"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:102
-msgid "Permission check failed. Please try again."
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:299
-msgid "Skipped"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:30
-msgid "Adding new"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:33
-msgid "Checking"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:35
-msgid "exists"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:46
-msgid "Checking write permissions"
-msgstr ""
-
-#: src/pages/configure/verifyPermissions.jsx:60
-msgid "Checking delete permissions"
-msgstr ""
-
-#: src/pages/configure/welcome.jsx:10
-msgid "Media Cloud Sync"
-msgstr ""
-
-#: src/pages/configure/welcome.jsx:12
-msgid ""
-"Media Cloud Sync helps to sync the Wordpress media to cloud services like "
-"Amazon S3, Google  Cloud Storage and Digital Ocean Services "
-msgstr ""
-
-#: src/pages/configure/welcome.jsx:18
-msgid ""
-"Configure your cloud storage by  following steps, click Next to start "
-"configuring"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:197
-msgid "Destination"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:210
-msgid "Edit Destination"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:215
-msgid "Stop or finish the current run before editing the destination."
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:230
-msgid "Stop or finish the current run before resetting the destination."
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:258
-msgid "Confirm source cleanup"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:259
-msgid ""
-"\"Delete source files\" is enabled for this destination — each file will be "
-"permanently removed from the source bucket once verified copied. Type the "
-"destination bucket name below to confirm this run."
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:263
-msgid "Start Migration"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:280
-msgid "That doesn't match the destination bucket name."
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:292
-msgid "Reset destination"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:293
-msgid ""
-"This forgets the saved destination connection — files already migrated are "
-"not affected. You can configure a new destination afterward."
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:297
-msgid "Reset Destination"
-msgstr ""
-
-#: src/pages/sync/BucketToBucket.jsx:48
-msgid "Unable to load the saved destination. Please refresh and try again."
-msgstr ""
-
-#: src/pages/sync/DestinationConfigForm.jsx:187
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:187
 msgid "Connection verified."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:227
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:227
 msgid "Bucket created."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:237
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:237
 msgid "Something went wrong creating the bucket. Please try again."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:315
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:315
 msgid "Choose a destination provider to continue."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:356
-#: src/schema.js:468
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:356
 msgid "Choose Provider"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:357
-msgid "Connect"
-msgstr ""
-
-#: src/pages/sync/DestinationConfigForm.jsx:358
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:358
 msgid "Select Bucket"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:359
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:359
 msgid "Options"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:364
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:362
+#: src/pages/Configure/Footer/index.jsx:15
+msgid "Next"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:364
 msgid "Verify Connection"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:366
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:366
 msgid "Create Bucket"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:368
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:368
 msgid "Save & Verify"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:377
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:377
 msgid "Requires \"Update database records\" above."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:383
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:384
 msgid "Update database records"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:384
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:385
 msgid ""
 "On by default: each migrated item's record is repointed to the destination. "
 "Turn this off to copy files only, leaving your database untouched."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:392
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:394
 msgid ""
 "Also copy untracked files (objects in the bucket with no synced media "
 "record)"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:396
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:398
 msgid ""
 "Off by default: only your synced media is migrated. Turn this on for a full "
 "copy of everything in the bucket, tracked or not."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:404
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:407
 msgid "Automatically switch to the new connection when migration completes"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:414
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:418
 msgid "Delete source files after they are copied"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:416
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:420
 msgid ""
 "Each file is permanently deleted from the source bucket once it's confirmed "
 "copied to the destination — this turns the migration into a move, not a "
@@ -1327,57 +603,943 @@ msgid ""
 "time you start a run with this enabled."
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:480
-msgid "Choose Destination Provider"
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:436
+msgid "Where media is copied to"
 msgstr ""
 
-#: src/pages/sync/DestinationConfigForm.jsx:506
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:442
+msgid "Destination account"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:448
+msgid "Where files land"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:454
+msgid "How the copy runs"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:460
+msgid "Choose the destination provider"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:461
+msgid "Media is copied from your current bucket to a bucket on this provider."
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:467
+msgid "Connect"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:468
+msgid "Credentials for the destination account."
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:471
+msgid "Choose the destination bucket"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:472
+msgid "Use a bucket you already have, or create a new one."
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:478
+msgid "Migration options"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:479
+msgid "Decide what happens during and after the copy."
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:530
+#: src/pages/Configure/Footer/index.jsx:14
+msgid "Back"
+msgstr ""
+
+#: src/pages/BucketToBucket/DestinationConfigForm.jsx:590
 msgid ""
 "Leave the secret key / JSON credential field blank to keep your current "
 "destination credentials."
 msgstr ""
 
-#: src/pages/sync/RemoveFromCloud.jsx:39
-msgid "This will permanently delete the selected media from your cloud storage."
+#: src/pages/BucketToBucket/index.jsx:198
+msgid "Destination"
 msgstr ""
 
-#: src/pages/sync/RemoveFromCloud.jsx:43
-msgid "Remove from Cloud"
+#: src/pages/BucketToBucket/index.jsx:211
+msgid "Edit Destination"
 msgstr ""
 
-#: src/pages/sync/RemoveFromCloud.jsx:48
-msgid "Restore files to the server before removing them from the cloud"
+#: src/pages/BucketToBucket/index.jsx:216
+msgid "Stop or finish the current run before editing the destination."
 msgstr ""
 
-#: src/pages/sync/RemoveFromCloud.jsx:82
+#: src/pages/BucketToBucket/index.jsx:231
+msgid "Stop or finish the current run before resetting the destination."
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:257
+msgid "Confirm source cleanup"
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:258
 msgid ""
-"Unchecked: files will be deleted from the cloud without restoring a local "
-"copy first. Only do this if the local files already exist on your server."
+"\"Delete source files\" is enabled for this destination — each file will be "
+"permanently removed from the source bucket once verified copied. Type the "
+"destination bucket name below to confirm this run."
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:178
+#: src/pages/BucketToBucket/index.jsx:262
+msgid "Start Migration"
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:279
+msgid "That doesn't match the destination bucket name."
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:291
+msgid "Reset destination"
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:292
+msgid ""
+"This forgets the saved destination connection — files already migrated are "
+"not affected. You can configure a new destination afterward."
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:296
+msgid "Reset Destination"
+msgstr ""
+
+#: src/pages/BucketToBucket/index.jsx:49
+msgid "Unable to load the saved destination. Please refresh and try again."
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:139
+#: src/pages/MediaSettings/index.jsx:359
+msgid "Please fix the highlighted errors before proceeding"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:183
+msgid "Failed to save provider. Please try again."
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:194
+msgid "Saving Provider"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:217
+#: src/pages/Configure/index.jsx:625
+msgid "Exit to Dashboard"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:218
+#: src/pages/Configure/index.jsx:621
+msgid "Back to Settings"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:225
+msgid "Configure storage before choosing a delivery provider."
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:231
+msgid "Configure Storage"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:250
+msgid "Skip for now"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:251
+msgid "Finish setup"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:256
+#: src/pages/FileManager/SettingsPanel.jsx:135
+msgid "Save"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:331
+msgid "Provider Name"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:334
+msgid "Enter Provider Name"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:342
+msgid "Please enter a provider name"
+msgstr ""
+
+#: src/pages/ChooseCDN/index.jsx:76
+msgid "Enter the domain to deliver media from this provider."
+msgstr ""
+
+#: src/pages/Configure/index.jsx:193
+#: src/pages/Configure/saveSettings.jsx:37
+msgid "Credentials"
+msgstr ""
+
+#: src/pages/Configure/index.jsx:575
+msgid "documentation"
+msgstr ""
+
+#: src/pages/Configure/index.jsx:654
+msgid "Verifying"
+msgstr ""
+
+#: src/pages/Configure/index.jsx:657
+msgid "This only takes a few seconds."
+msgstr ""
+
+#: src/pages/Configure/index.jsx:94
+msgid "Please enter a service name"
+msgstr ""
+
+#: src/pages/Configure/provider.jsx:157
+msgid "Enter Provider label"
+msgstr ""
+
+#: src/pages/Configure/provider.jsx:161
+msgid "Enter label"
+msgstr ""
+
+#: src/pages/Configure/saveSettings.jsx:27
+msgid "Provider"
+msgstr ""
+
+#: src/pages/Configure/saveSettings.jsx:40
+msgid "wp-config.php constant"
+msgstr ""
+
+#: src/pages/Configure/saveSettings.jsx:41
+msgid "Stored in database"
+msgstr ""
+
+#: src/pages/Configure/saveSettings.jsx:46
+msgid "Region"
+msgstr ""
+
+#: src/pages/Configure/saveSettings.jsx:55
+msgid "new"
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:120
+msgid "Select from list"
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:133
+msgid "Enter manually"
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:74
+msgid "Use existing"
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:75
+msgid "Pick one from your account or type its name."
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:84
+msgid "Create new"
+msgstr ""
+
+#: src/pages/Configure/setBucket.jsx:85
+msgid "We’ll create it with your credentials."
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:128
+msgid "Use Existing"
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:129
+msgid ""
+"Reuse the credentials from your currently connected account — no need to "
+"re-enter them. Pick a different bucket in the next step."
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:185
+msgid ""
+"No credentials to enter — this destination will reuse your currently "
+"connected account."
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:254
+msgid "Copy region value"
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:266
+msgid "Copied!"
+msgstr ""
+
+#: src/pages/Configure/setCredentials.jsx:267
+#: src/pages/FileManager/parts.jsx:204
+msgid "Copy"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:109
+msgid "Permission check failed. Please try again."
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:261
+msgid "Waiting"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:303
+msgid "Skip"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:319
+msgid "Passed"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:329
+msgid "Skipped"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:338
+msgid "If you skip this, deleting media won’t remove its files from the cloud."
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:37
+msgid "Adding new"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:42
+msgid "exists"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:53
+msgid "Checking write permissions"
+msgstr ""
+
+#: src/pages/Configure/verifyPermissions.jsx:67
+msgid "Checking delete permissions"
+msgstr ""
+
+#: src/pages/Dashboard/index.jsx:45
+msgid "Bulk tools"
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:102
+msgid "The folder the File Manager opens at. Use / for the whole bucket."
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:112
+msgid "Defaults to your configured upload folder"
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:41
+msgid "Advanced Settings"
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:44
+msgid "Options for how the File Manager works."
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:71
+msgid "Enable file deletion"
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:74
+msgid ""
+"Adds Delete and Move to the File Manager. Deleted files are removed from "
+"the cloud permanently."
+msgstr ""
+
+#: src/pages/FileManager/SettingsPanel.jsx:99
+msgid "Root folder"
+msgstr ""
+
+#: src/pages/FileManager/api.js:115
+#: src/pages/FileManager/index.jsx:925
+msgid "Unable to delete files"
+msgstr ""
+
+#: src/pages/FileManager/api.js:138
+#: src/pages/FileManager/index.jsx:671
+msgid "Unable to restore media"
+msgstr ""
+
+#: src/pages/FileManager/api.js:164
+#: src/pages/FileManager/index.jsx:785
+msgid "Unable to move folder"
+msgstr ""
+
+#: src/pages/FileManager/api.js:79
+#: src/pages/FileManager/index.jsx:540
+msgid "Unable to build zip"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1006
+msgid "1 folder"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1007
+msgid "folders"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1016
+msgid "1 file"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1017
+msgid "files"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1032
+msgid "Deleting"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1037
+msgid "Deleting…"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1040
+msgid ""
+"Folders are deleted recursively — everything inside them (including nested "
+"subfolders and any WordPress media) is permanently removed. This cannot be "
+"undone."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1046
+msgid ""
+"Some of these files are WordPress media with no local copy on this server — "
+"deleting the cloud copy will orphan them in your Media Library."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1051
+msgid "This cannot be undone."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1083
+msgid "File Manager"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1085
+msgid "Browse, download and manage the files in your bucket."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1105
+msgid "selected"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1109
+msgid "Download zip"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1117
+msgid "Restore to server"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1135
+msgid "Clear"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1139
+msgid "Folder path"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1179
+msgid "View"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1186
+msgid "List view"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1196
+msgid "Tile view"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1216
+msgid "Advanced settings"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1268
+msgid "This folder is empty"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1285
+msgid "Name"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1286
+msgid "Size"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1288
+msgid "Last Modified"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1305
+msgid "Double-click to open"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1333
+msgid "More actions"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1368
+#: src/pages/FileManager/parts.jsx:162
+msgid "Folder"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1386
+msgid "Select all"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1392
+#. %d: number of folders
+msgid "%d folder"
+msgid_plural "%d folders"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/FileManager/index.jsx:1398
+#. %d: number of files
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/FileManager/index.jsx:1405
+msgid "Load more"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1511
+#: src/pages/FileManager/parts.jsx:230
+msgid "Delete"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1522
+msgid "Restore to server first (recommended)"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:153
+msgid "Unable to load files"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1533
+msgid "Enable file deletion?"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1534
+msgid ""
+"This permanently removes files from cloud storage and cannot be undone. And "
+"If any media linked to the deleting cloud file will be orphaned. Delete "
+"actions will become available from the row context menu."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1538
+#: src/pages/MediaSettings/index.jsx:689
+msgid "Enable"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1552
+msgid "Move to new path"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1553
+msgid ""
+"Enter the destination folder to move this folder into (its own name is "
+"kept). Use \"/\" for the bucket root."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1557
+msgid "Move"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1566
+msgid "Destination folder"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:1579
+msgid "Moving"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:219
+msgid "Root"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:336
+msgid "Unable to open this file — no URL is available."
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:372
+msgid "Copy path"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:378
+msgid "Download as zip"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:406
+msgid "Open"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:554
+msgid "Unable to download zip"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:570
+msgid "Unable to download files"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:654
+msgid "restored"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:661
+msgid "media restored to server"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:716
+msgid "Enter a destination path"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:768
+msgid "moved"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:771
+msgid "failed"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:775
+msgid "file(s) moved"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:877
+msgid "Nothing to delete"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:916
+msgid "item(s) deleted"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:948
+msgid "Settings saved"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:957
+msgid "Unable to save settings"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:975
+msgid "Zipping"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:980
+msgid "Restoring"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:993
+msgid "Delete file?"
+msgstr ""
+
+#: src/pages/FileManager/index.jsx:997
+msgid "files?"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:128
+msgid "items selected"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:134
+msgid "Select a file or folder to see its details."
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:169
+msgid "Modified"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:174
+msgid "Media Library"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:183
+msgid "Synced media"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:186
+msgid "Yes"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:187
+msgid "No"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:196
+msgid "Path"
+msgstr ""
+
+#: src/pages/FileManager/parts.jsx:197
+msgid "URL"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:125
+msgid "Detected plugins"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:128
+msgid "Importing into"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:144
+msgid "Recount"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:150
+msgid "Looking for other offload plugins…"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:154
+msgid "Nothing to import"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:155
+msgid ""
+"No media offloaded by a supported plugin (WP Offload Media, Media Cloud, "
+"Offload Media – Cloud Storage, WP-Stateless or Advanced Media Offloader) "
+"was found on this site."
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:192
+msgid "Still active"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:203
+#. 1: number of files, 2: bucket name
+msgid "%1$s files found, none of them in %2$s."
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:212
+msgid "ready to import"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:221
+#. %s: number of files
+msgid "%s found"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:229
+#. %s: number of files
+msgid "%s in other buckets"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:247
+#. %s: plugin names
+msgid ""
+"%s is still active. Deactivate it after importing: two offload plugins "
+"rewriting media URLs at the same time conflict."
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:261
+#. 1: number of files, 2: number of plugins
+msgid "%1$s files from %2$s plugins"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:267
+msgid ""
+"Files in other buckets are skipped. Each file is checked in the bucket "
+"before it is imported."
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:275
+msgid "Continue"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:287
+msgid "Importing from"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:309
+msgid "Change sources"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:47
+msgid "Unable to look for other offload plugins. Please try again."
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:79
+msgid "Choose sources"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:80
+msgid "Import"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:85
+msgid "Back to Tools"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:95
+msgid "Import from Other Plugins"
+msgstr ""
+
+#: src/pages/ImportFromOffload/index.jsx:97
+msgid ""
+"Take over media another offload plugin already moved to the cloud. Only the "
+"records are imported: nothing is uploaded again and the other plugin's data "
+"is not changed."
+msgstr ""
+
+#: src/pages/License/index.jsx:113
+msgid "License status refreshed."
+msgstr ""
+
+#: src/pages/License/index.jsx:128
+msgid "Failed to refresh status."
+msgstr ""
+
+#: src/pages/License/index.jsx:141
+msgid "License"
+msgstr ""
+
+#: src/pages/License/index.jsx:168
+msgid "e.g. MCS-XXXX-XXXX-XXXX-XXXX-XXXX"
+msgstr ""
+
+#: src/pages/License/index.jsx:182
+msgid "Activate License"
+msgstr ""
+
+#: src/pages/License/index.jsx:227
+msgid "Refresh Status"
+msgstr ""
+
+#: src/pages/License/index.jsx:234
+msgid "Deactivate License"
+msgstr ""
+
+#: src/pages/License/index.jsx:37
+msgid "Please enter a license key."
+msgstr ""
+
+#: src/pages/License/index.jsx:52
+msgid "License activated!"
+msgstr ""
+
+#: src/pages/License/index.jsx:71
+msgid "Activation failed."
+msgstr ""
+
+#: src/pages/License/index.jsx:86
+msgid "License deactivated."
+msgstr ""
+
+#: src/pages/License/index.jsx:95
+msgid "Deactivation failed."
+msgstr ""
+
+#: src/pages/MediaSettings/index.jsx:393
+msgid "Failed to save settings. Please try again."
+msgstr ""
+
+#: src/pages/MediaSettings/index.jsx:404
+msgid "Saving configuration"
+msgstr ""
+
+#: src/pages/MediaSettings/index.jsx:514
+msgid "Settings"
+msgstr ""
+
+#: src/pages/MediaSettings/index.jsx:669
+msgid "Save Changes"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:294
 msgid "Failed to save the sync method. Please try again."
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:421
-msgid "Total Medias"
+#: src/pages/SyncScreen/index.jsx:443
+msgid "Unable to download the file."
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:434
+#: src/pages/SyncScreen/index.jsx:496
+msgid "Stopped"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:499
+msgid "Stopping…"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:499
+msgid "Pausing…"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:501
+msgid "Running"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:503
 msgid "Completed"
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:449
-msgid "Failed"
+#: src/pages/SyncScreen/index.jsx:504
+msgid "Ready"
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:468
+#: src/pages/SyncScreen/index.jsx:509
+#. 1: succeeded items, 2: failed items
+msgid "%1$s succeeded, %2$s failed"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:516
+#. 1: synced media, 2: total media
+msgid "%1$s of %2$s media synced"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:525
+#. %s: number of items
+msgid "%s items ready to process"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:530
+#. 1: processed items, 2: items in this run
+msgid "%1$s of %2$s processed"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:535
+msgid "Run again"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:536
+msgid "Resume"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:537
+msgid "Pause"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:538
+msgid "Stop"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:580
+msgid "Syncing"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:616
+msgid "Choose how it runs"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:634
+msgid "Control the run"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:635
+msgid "Start"
+msgstr ""
+
+#: src/pages/SyncScreen/index.jsx:641
 msgid ""
 "Another sync process is currently in progress. Please make sure that is "
 "finished or stop it before starting a new one."
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:483
+#: src/pages/SyncScreen/index.jsx:649
 msgid ""
 "WP-Cron is not enabled on your site. Please enable WP-Cron or configure a "
 "server-level cron job to ensure the sync feature operates correctly. "
@@ -1385,700 +1547,18 @@ msgid ""
 "initiated."
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:518
-msgid "START"
+#: src/pages/SyncScreen/index.jsx:803
+msgid "Counting matching media"
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:553
-msgid "STOP"
+#: src/pages/ToolPage/index.jsx:193
+msgid "Check again"
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:588
-msgid "PAUSE"
+#: src/pages/Tools/index.jsx:32
+msgid "Tools"
 msgstr ""
 
-#: src/pages/sync/SyncScreen.jsx:623
-msgid "RESUME"
-msgstr ""
-
-#: src/schema.js:1010
-msgid "Paste your Google Cloud service account JSON below."
-msgstr ""
-
-#: src/schema.js:102
-msgid "Duration"
-msgstr ""
-
-#: src/schema.js:1025
-msgid ""
-"Add the following to your wp-config.php (above the “That’s all, stop "
-"editing!” line). Paste your service account JSON as a single-line string:"
-msgstr ""
-
-#: src/schema.js:1035
-msgid ""
-"Google Cloud Storage is a unified object storage service that provides high "
-"scalability, durability, and seamless integration with Google Cloud "
-"services for efficient data management and access."
-msgstr ""
-
-#: src/schema.js:1048
-msgid "JSON Config File"
-msgstr ""
-
-#: src/schema.js:1053
-msgid "Add JSON Code here"
-msgstr ""
-
-#: src/schema.js:1089
-msgid "Bucket Name"
-msgstr ""
-
-#: src/schema.js:116
-msgid "Seconds"
-msgstr ""
-
-#: src/schema.js:124
-msgid "Hours"
-msgstr ""
-
-#: src/schema.js:128
-msgid "Days"
-msgstr ""
-
-#: src/schema.js:132
-msgid "Weeks"
-msgstr ""
-
-#: src/schema.js:1333
-msgid "Security"
-msgstr ""
-
-#: src/schema.js:1337
-msgid "Block All Public Access"
-msgstr ""
-
-#: src/schema.js:1341
-msgid ""
-"Enforces Public Access Prevention on this bucket, blocking all public "
-"access regardless of any other setting. If Private Media is enabled on this "
-"connection, this also breaks the public side of that feature — enabling "
-"this and Private Media together is not recommended."
-msgstr ""
-
-#: src/schema.js:136
-msgid "Months"
-msgstr ""
-
-#: src/schema.js:1390
-msgid ""
-"Enable this option if you need a custom prefix for your bucket path in "
-"Google Cloud Storage"
-msgstr ""
-
-#: src/schema.js:140
-msgid "Years"
-msgstr ""
-
-#: src/schema.js:1455
-msgid "Enter your DigitalOcean Spaces access key, secret key, and region below."
-msgstr ""
-
-#: src/schema.js:1470
-msgid ""
-"Add the following to your wp-config.php (above the “That’s all, stop "
-"editing!” line) using your Spaces API credentials:"
-msgstr ""
-
-#: src/schema.js:1475
-msgid "Pick a Spaces region (e.g. nyc3, sfo3) and copy its value for wp-config.php."
-msgstr ""
-
-#: src/schema.js:1486
-msgid ""
-"DigitalOcean Spaces is a cost-effective object storage solution designed "
-"for simplicity, scalability, and high availability, ideal for storing and "
-"serving large amounts of unstructured data"
-msgstr ""
-
-#: src/schema.js:157
-msgid "Private Media"
-msgstr ""
-
-#: src/schema.js:158
-msgid ""
-"Let individual media items be marked private — moved under a separate path "
-"and served through short-lived signed URLs instead of a public link."
-msgstr ""
-
-#: src/schema.js:1580
-msgid "Space"
-msgstr ""
-
-#: src/schema.js:1610
-msgid "Enter Space Name"
-msgstr ""
-
-#: src/schema.js:1666
-msgid ""
-"Enable this option if you need a custom prefix for your bucket path in "
-"Digital Ocean Spaces."
-msgstr ""
-
-#: src/schema.js:167
-msgid "Private Path"
-msgstr ""
-
-#: src/schema.js:168
-msgid ""
-"Private files are stored under this path, separate from your bucket path "
-"above (not nested inside it)."
-msgstr ""
-
-#: src/schema.js:1725
-msgid ""
-"Enter your Cloudflare account ID, R2 access key, secret key, and region "
-"below."
-msgstr ""
-
-#: src/schema.js:1740
-msgid ""
-"Add the following to your wp-config.php (above the “That’s all, stop "
-"editing!” line) using your Cloudflare R2 API credentials:"
-msgstr ""
-
-#: src/schema.js:1745
-msgid "Pick a jurisdiction/region and copy its value for wp-config.php."
-msgstr ""
-
-#: src/schema.js:175
-msgid "Enter private path"
-msgstr ""
-
-#: src/schema.js:1757
-msgid ""
-"Cloudflare R2 is a globally distributed, zero-egress-fee object storage "
-"service designed for high performance, reliability, and massive scalability."
-msgstr ""
-
-#: src/schema.js:1769
-msgid "Account ID"
-msgstr ""
-
-#: src/schema.js:1771
-msgid "Enter Account ID"
-msgstr ""
-
-#: src/schema.js:1786
-msgid "Data Jurisdiction / Region"
-msgstr ""
-
-#: src/schema.js:1790
-msgid "Choose region"
-msgstr ""
-
-#: src/schema.js:1816
-msgid "Enter Access Key"
-msgstr ""
-
-#: src/schema.js:182
-msgid "Private URL Lifetime (minutes)"
-msgstr ""
-
-#: src/schema.js:1833
-msgid "Enter Secret Key"
-msgstr ""
-
-#: src/schema.js:1859
-msgid "Choose Bucket"
-msgstr ""
-
-#: src/schema.js:186
-msgid "How long a signed private-file URL stays valid before it expires."
-msgstr ""
-
-#: src/schema.js:1908
-msgid "Upload to the bucket whenever a file is uploaded to the Media Library."
-msgstr ""
-
-#: src/schema.js:1920
-msgid "Remove the server file once it is successfully uploaded to the bucket."
-msgstr ""
-
-#: src/schema.js:193
-msgid "Minutes"
-msgstr ""
-
-#: src/schema.js:1936
-msgid ""
-"Enable this option if you want a custom folder prefix for your uploaded "
-"files."
-msgstr ""
-
-#: src/schema.js:1961
-msgid "Automatically create year/month folders inside your base path."
-msgstr ""
-
-#: src/schema.js:1973
-msgid "Append a timestamp to the file path for versioning."
-msgstr ""
-
-#: src/schema.js:1984
-msgid "S3 Compatible"
-msgstr ""
-
-#: src/schema.js:1990
-msgid "Store in Database"
-msgstr ""
-
-#: src/schema.js:1994
-msgid ""
-"Enter your S3-compatible storage endpoint, access key, secret key, and "
-"region below."
-msgstr ""
-
-#: src/schema.js:2000
-msgid "Use wp-config.php Constant"
-msgstr ""
-
-#: src/schema.js:2004
-msgid ""
-"Keep credentials out of the database by defining a WPMCS_CONFIG constant in "
-"wp-config.php. More secure than storing in the database."
-msgstr ""
-
-#: src/schema.js:2009
-msgid ""
-"Add the following to your wp-config.php (above the “That’s all, stop "
-"editing!” line). Replace YOUR_STORAGE_ENDPOINT with your provider’s "
-"S3-compatible endpoint URL:"
-msgstr ""
-
-#: src/schema.js:2023
-msgid ""
-"An S3-compatible storage service provides scalable, durable, and secure "
-"object storage with an interface and functionality similar to Amazon S3, "
-"enabling seamless integration with existing S3-based tools and applications."
-msgstr ""
-
-#: src/schema.js:2035
-msgid "Storage Endpoint"
-msgstr ""
-
-#: src/schema.js:2040
-msgid "Enter storage endpoint URL"
-msgstr ""
-
-#: src/schema.js:2056
-msgid "Access Key"
-msgstr ""
-
-#: src/schema.js:2058
-msgid "Enter access key"
-msgstr ""
-
-#: src/schema.js:2073
-msgid "Secret Key"
-msgstr ""
-
-#: src/schema.js:2075
-msgid "Enter secret key"
-msgstr ""
-
-#: src/schema.js:2090
-msgid "Region"
-msgstr ""
-
-#: src/schema.js:2092
-msgid "Enter region"
-msgstr ""
-
-#: src/schema.js:210
-msgid "Include Extensions"
-msgstr ""
-
-#: src/schema.js:2105
-msgid "Enter Bucket Name"
-msgstr ""
-
-#: src/schema.js:211
-msgid ""
-"Only upload files with these extensions. Leave empty to allow all (except "
-"any excluded below). Enter without the leading dot, e.g. \"zip\" not "
-"\".zip\"."
-msgstr ""
-
-#: src/schema.js:2110
-msgid "Enter bucket name"
-msgstr ""
-
-#: src/schema.js:2131
-msgid "Copy files to bucket"
-msgstr ""
-
-#: src/schema.js:2135
-msgid "Upload to bucket, when ever a file is uploaded to Media Library"
-msgstr ""
-
-#: src/schema.js:2143
-msgid "Remove files from server"
-msgstr ""
-
-#: src/schema.js:2147
-msgid ""
-"Use this to remove files from the server once they are uploaded to the "
-"bucket."
-msgstr ""
-
-#: src/schema.js:2159
-msgid "Add Prefix to Bucket Path"
-msgstr ""
-
-#: src/schema.js:2163
-msgid ""
-"Enable this option if you need a custom prefix for your bucket path in "
-"Amazon S3"
-msgstr ""
-
-#: src/schema.js:2176
-msgid "Enter Prefix"
-msgstr ""
-
-#: src/schema.js:2185
-msgid "Year/Month Structure"
-msgstr ""
-
-#: src/schema.js:2189
-msgid ""
-"This will enable year/month directories at the end of your base path. "
-"Otherwise it will be uploaded in to the base path directly."
-msgstr ""
-
-#: src/schema.js:2197
-msgid "Object versioning"
-msgstr ""
-
-#: src/schema.js:2201
-msgid "Append a timestamp to the bucket path."
-msgstr ""
-
-#: src/schema.js:233
-msgid "Exclude Extensions"
-msgstr ""
-
-#: src/schema.js:234
-msgid ""
-"Never upload files with these extensions. Enter without the leading dot, "
-"e.g. \"zip\" not \".zip\"."
-msgstr ""
-
-#: src/schema.js:2391
-msgid "Amazon S3"
-msgstr ""
-
-#: src/schema.js:248
-msgid "Enter extension and press Enter"
-msgstr ""
-
-#: src/schema.js:2495
-msgid "Google Cloud Storage"
-msgstr ""
-
-#: src/schema.js:2601
-msgid "Digital Ocean Spaces"
-msgstr ""
-
-#: src/schema.js:2622
-msgid ""
-"For media library files that have been copied to the bucket, Enable this "
-"option to serve media from provider, so that they are served from the space "
-"instead of your server."
-msgstr ""
-
-#: src/schema.js:2704
-msgid "Cloudflare R2"
-msgstr ""
-
-#: src/schema.js:2710
-msgid "Provider Console"
-msgstr ""
-
-#: src/schema.js:2715
-msgid "Slow"
-msgstr ""
-
-#: src/schema.js:2724
-msgid ""
-"For media library files that have been copied to the bucket, Enable this "
-"option to serve media from provider, so that they are served from the "
-"storage instead of your server."
-msgstr ""
-
-#: src/schema.js:2736
-msgid ""
-"Serves media from a custom domain that has been pointed to your media "
-"storage. Or public endpoint provided by Cloudflare R2."
-msgstr ""
-
-#: src/schema.js:2832
-msgid "Other"
-msgstr ""
-
-#: src/schema.js:284
-msgid "Amazon CloudFront"
-msgstr ""
-
-#: src/schema.js:2841
-msgid "Fast"
-msgstr ""
-
-#: src/schema.js:2846
-msgid "Deliver Synced Media"
-msgstr ""
-
-#: src/schema.js:2850
-msgid ""
-"For media library files that have been copied to the bucket, Enable this "
-"option to serve media from provider, so that they are served from the "
-"bucket instead of your server."
-msgstr ""
-
-#: src/schema.js:2855
-msgid "How URL rewriting works"
-msgstr ""
-
-#: src/schema.js:2863
-msgid "Use Custom Domain Name (CNAME)"
-msgstr ""
-
-#: src/schema.js:2867
-msgid ""
-"Serves media from a custom domain that has been pointed to your media "
-"storage."
-msgstr ""
-
-#: src/schema.js:2872
-msgid "How to set a custom domain name"
-msgstr ""
-
-#: src/schema.js:288
-msgid "Bunny.net"
-msgstr ""
-
-#: src/schema.js:2886
-msgid "Enter Domain"
-msgstr ""
-
-#: src/schema.js:2901
-msgid "Sync Media to Cloud Storage"
-msgstr ""
-
-#: src/schema.js:2908
-msgid "Restore Media to Server"
-msgstr ""
-
-#: src/schema.js:2912
-msgid ""
-"We will check all the media files that are synced to the cloud and restore "
-"any missing files to your server."
-msgstr ""
-
-#: src/schema.js:2919
-msgid "Move Media to New Path"
-msgstr ""
-
-#: src/schema.js:292
-msgid "Fastly"
-msgstr ""
-
-#: src/schema.js:2923
-msgid ""
-"If you have changed the base path or enabled/disables year/month structure, "
-"Use this tool to move all your existing files to the new path in the cloud "
-"storage. We will check all the media files that are synced to the cloud and "
-"move them to the new path if required."
-msgstr ""
-
-#: src/schema.js:2930
-msgid "Migrate Bucket to Bucket"
-msgstr ""
-
-#: src/schema.js:2934
-msgid ""
-"Copies your synced media from the currently connected bucket to the "
-"destination bucket you configured — enable \"include untracked files\" on "
-"the destination to also copy objects with no synced media record. Doesn't "
-"modify the source bucket unless you enabled the delete-source-files option."
-msgstr ""
-
-#: src/schema.js:2941
-msgid "Remove Media from Cloud"
-msgstr ""
-
-#: src/schema.js:2945
-msgid ""
-"This will restore your synced media to the server and permanently delete "
-"the cloud copies."
-msgstr ""
-
-#: src/schema.js:296
-msgid "Cloudflare CDN"
-msgstr ""
-
-#: src/schema.js:300
-msgid "Akamai"
-msgstr ""
-
-#: src/schema.js:304
-msgid "KeyCDN"
-msgstr ""
-
-#: src/schema.js:308
-msgid "Gcore"
-msgstr ""
-
-#: src/schema.js:312
-msgid "Edgio"
-msgstr ""
-
-#: src/schema.js:316
-msgid "Leaseweb CDN"
-msgstr ""
-
-#: src/schema.js:320
-msgid "CDNetworks"
-msgstr ""
-
-#: src/schema.js:338
-msgid "Configure Media Cloud settings"
-msgstr ""
-
-#: src/schema.js:35
-msgid ""
-"<p>This setting permanently deletes files from the server once they're "
-"uploaded to your bucket — be careful before enabling it.</p><p>If you stop "
-"using this plugin, you will need to restore these files manually, by "
-"downloading them from the cloud and re-uploading via FTP, or automatically "
-"using our PRO version's restore feature.</p>"
-msgstr ""
-
-#: src/schema.js:350
-msgid "Sync Media To Cloud"
-msgstr ""
-
-#: src/schema.js:354
-msgid "Sync your existing medias from server to cloud"
-msgstr ""
-
-#: src/schema.js:367
-msgid "View the Media Cloud Sync Documentation here"
-msgstr ""
-
-#: src/schema.js:381
-msgid "Restore Media To Server"
-msgstr ""
-
-#: src/schema.js:385
-msgid "Restore your deleted media from cloud to server"
-msgstr ""
-
-#: src/schema.js:397
-msgid "Move Media To New Path"
-msgstr ""
-
-#: src/schema.js:401
-msgid "Move your existing media from old path to newly configured path"
-msgstr ""
-
-#: src/schema.js:414
-msgid "Manage your cloud files directly from here"
-msgstr ""
-
-#: src/schema.js:430
-msgid "Copy your synced media to a new provider or account"
-msgstr ""
-
-#: src/schema.js:446
-msgid "Restore your synced media to server and remove it from the cloud"
-msgstr ""
-
-#: src/schema.js:461
-msgid "Welcome"
-msgstr ""
-
-#: src/schema.js:470
-msgid "Select Provider"
-msgstr ""
-
-#: src/schema.js:480
-msgid "Configure credentials"
-msgstr ""
-
-#: src/schema.js:490
-msgid "Verifying Permissions"
-msgstr ""
-
-#: src/schema.js:522
-msgid "Verify"
-msgstr ""
-
-#: src/schema.js:544
-msgid "Click Next once added — we’ll verify the constant on the server."
-msgstr ""
-
-#: src/schema.js:548
-msgid "Pick a region and copy its value for wp-config.php."
-msgstr ""
-
-#: src/schema.js:559
-msgid ""
-"Amazon S3 is an object storage service that offers high scalability, "
-"durability, and security for data storage and retrieval across the web."
-msgstr ""
-
-#: src/schema.js:830
-msgid "Use Transfer Accilaration"
-msgstr ""
-
-#: src/schema.js:846
-msgid ""
-"Since you are not using Amazon CloundFront for delivery, We recommend you "
-"keep Block All Public Access disabled, unless you have a very good reason "
-"to enable it."
-msgstr ""
-
-#: src/schema.js:855
-msgid "Enforce Object Ownership"
-msgstr ""
-
-#: src/schema.js:859
-msgid ""
-"Since you are not using Amazon CloundFront for delivery, We recommend you "
-"do not enforce Object Ownership, unless you have a very good reason to do "
-"so."
-msgstr ""
-
-#: src/schema.js:86
-msgid "Cache-Control Duration"
-msgstr ""
-
-#: src/schema.js:87
-msgid ""
-"Sets a Cache-Control header on newly uploaded files, telling browsers and "
-"CDNs how long to cache them. Applies to new uploads only — existing files "
-"already on the bucket keep whatever header they were uploaded with."
-msgstr ""
-
-#: src/schema.js:880
-msgid "Enter your AWS IAM access key, secret key, and region below."
-msgstr ""
-
-#: src/schema.js:895
-msgid ""
-"Add the following to your wp-config.php (above the “That’s all, stop "
-"editing!” line) using your AWS IAM credentials:"
-msgstr ""
-
-#: src/schema.js:900
-msgid "Pick an AWS region and copy its value for the region key in wp-config.php."
+#: src/pages/Tools/index.jsx:50
+msgid "Open tool"
 msgstr ""

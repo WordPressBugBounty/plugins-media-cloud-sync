@@ -114,6 +114,7 @@ class Main {
         if (is_admin()) {
             Admin::instance();
             Upgrade::instance();
+            BucketPolicyPatch::instance();
         }
         
         Api::instance();
@@ -129,6 +130,7 @@ class Main {
         Cdn::instance();
         Cache::instance();
         Compatibility::instance();
+        SiteHealth::instance();
         StreamWrapper::instance();
 
         // Integrations
@@ -138,6 +140,10 @@ class Main {
         // Background Processing
         BGRunner::instance();
         Sync::instance();
+
+        if (defined('WP_CLI') && WP_CLI) {
+            \WP_CLI::add_command('mcs', CLI::class);
+        }
     }
 
 

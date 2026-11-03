@@ -45,7 +45,7 @@ class Service {
     public function verifyCredentials($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -54,7 +54,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -69,7 +69,7 @@ class Service {
                 return [
                     'success' => false,
                     /* translators: %s: wp-config.php constant name */
-                    'message' => sprintf(esc_html__('%s is not defined in wp-config.php', 'media-cloud-sync'), $constant)
+                    'message' => sprintf(__('%s is not defined in wp-config.php', 'media-cloud-sync'), $constant)
                 ];
             }
 
@@ -84,7 +84,7 @@ class Service {
                 return [
                     'success' => false,
                     /* translators: 1: wp-config.php constant name, 2: comma separated list of missing configuration keys */
-                    'message' => sprintf(esc_html__('%1$s is missing key(s): %2$s', 'media-cloud-sync'), $constant, implode(', ', $missing))
+                    'message' => sprintf(__('%1$s is missing key(s): %2$s', 'media-cloud-sync'), $constant, implode(', ', $missing))
                 ];
             }
         } else {
@@ -223,7 +223,15 @@ class Service {
         if(!$this->service) {
             return $this->persist_connection_status('cdnRead', [
                 'success'     => false,
-                'message'     => esc_html__('No service selected', 'media-cloud-sync'),
+                'message'     => __('No service selected', 'media-cloud-sync'),
+                'lastChecked' => time(),
+            ]);
+        }
+
+        if(!Utils::has_delivery_provider()) {
+            return $this->persist_connection_status('cdnRead', [
+                'success'     => false,
+                'message'     => __('No delivery provider chosen. Media is served from your server.', 'media-cloud-sync'),
                 'lastChecked' => time(),
             ]);
         }
@@ -266,7 +274,7 @@ class Service {
         if($check !== 'storage') {
             return [
                 'success' => false,
-                'message' => esc_html__('Invalid status check type', 'media-cloud-sync'),
+                'message' => __('Invalid status check type', 'media-cloud-sync'),
             ];
         }
 
@@ -294,7 +302,7 @@ class Service {
     public function verifyBucketExist($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -303,7 +311,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -322,7 +330,7 @@ class Service {
     public function createBucket($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -331,7 +339,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -350,7 +358,7 @@ class Service {
     public function verifyObjectWritePermission($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -359,7 +367,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -383,7 +391,7 @@ class Service {
     public function verifyObjectDeletePermission($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -392,7 +400,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -415,7 +423,7 @@ class Service {
     public function getBucketSecuritySettings($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -424,7 +432,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -432,7 +440,7 @@ class Service {
         if(!method_exists($handler_class, 'getBucketSecuritySettings')) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('Service does not have getBucketSecuritySettings method', 'media-cloud-sync')
+                'message' => __('Service does not have getBucketSecuritySettings method', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -457,7 +465,7 @@ class Service {
     public function changePublicAccess($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -466,7 +474,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -474,7 +482,7 @@ class Service {
         if(method_exists($handler_class, 'changePublicAccess') == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('Method not supported for this service', 'media-cloud-sync')
+                'message' => __('Method not supported for this service', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -497,7 +505,7 @@ class Service {
     public function changeObjectOwnership($data) {
         $result = [
             'success' => false,
-            'message' => esc_html__('Something went wrong', 'media-cloud-sync')
+            'message' => __('Something went wrong', 'media-cloud-sync')
         ];
         
         $service = isset($data['service'])? $data['service'] : false;
@@ -506,7 +514,7 @@ class Service {
         if($service == false || $handler_class == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('No service selected', 'media-cloud-sync')
+                'message' => __('No service selected', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -514,7 +522,7 @@ class Service {
         if(method_exists($handler_class, 'changeObjectOwnership') == false) {
             $result = [
                 'success' => false,
-                'message' => esc_html__('Method not supported for this service', 'media-cloud-sync')
+                'message' => __('Method not supported for this service', 'media-cloud-sync')
             ];
             return $result;
         }
@@ -589,7 +597,7 @@ class Service {
      */
     public function uploadSingle($file_path, $relative_source_path, $prefix = '', $is_private = false) {
         if (!$this->service) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('No storage service configured', 'media-cloud-sync')];
         }
         return $this->service->uploadSingle($file_path, $relative_source_path, $prefix, $is_private);
     }
@@ -597,7 +605,7 @@ class Service {
 
     public function deleteSingle($key) {
         if (!$this->service) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('No storage service configured', 'media-cloud-sync')];
         }
         return $this->service->deleteSingle($key);
     }
@@ -612,7 +620,7 @@ class Service {
      */
     public function purge_all_versions($key) {
         if (!$this->service || !method_exists($this->service, 'purge_all_versions')) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('No storage service configured', 'media-cloud-sync')];
         }
         return $this->service->purge_all_versions($key);
     }
@@ -666,15 +674,80 @@ class Service {
      */
     public function copy_to_new_path($key, $new_path) {
         if (!$this->service) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('No storage service configured', 'media-cloud-sync')];
         }
         return $this->service->copy_to_new_path($key, $new_path);
+    }
+
+    // Cache-Control and Content-Type on an existing object; 'changed' is false when they already matched.
+    public function update_object_headers($key, $cache_control) {
+        if (!$this->service || !method_exists($this->service, 'update_object_headers')) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->update_object_headers($key, $cache_control);
+    }
+
+    // Storage classes the connected provider offers, value => label; empty when it has none.
+    public function get_storage_classes() {
+        return ($this->service && method_exists($this->service, 'get_storage_classes')) ? $this->service->get_storage_classes() : [];
+    }
+
+    // Moves an existing object to another storage class; 'changed' is false when it already had it.
+    public function change_storage_class($key, $class) {
+        if (!$this->service || !method_exists($this->service, 'change_storage_class')) {
+            return ['success' => false, 'code' => 200, 'changed' => false, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->change_storage_class($key, $class);
+    }
+
+    // The plugin's CORS rule on the bucket ('rule' => ['origins' => [...]] or null).
+    public function get_cors_rule() {
+        if (!$this->service || !method_exists($this->service, 'get_cors_rule')) {
+            return ['success' => false, 'code' => 200, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->get_cors_rule();
+    }
+
+    // Sets the plugin's CORS rule for $origins (GET/HEAD); an empty list removes it.
+    public function set_cors_rule($origins) {
+        if (!$this->service || !method_exists($this->service, 'set_cors_rule')) {
+            return ['success' => false, 'code' => 200, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->set_cors_rule((array) $origins);
+    }
+
+    // change_storage_class() for several objects, in parallel where the provider supports it; results keyed by object key.
+    public function change_storage_classes($keys, $class) {
+        if ($this->service && method_exists($this->service, 'change_storage_classes')) {
+            return $this->service->change_storage_classes($keys, $class);
+        }
+        $results = [];
+        foreach (array_unique(array_filter((array) $keys)) as $key) {
+            $results[$key] = $this->change_storage_class($key, $class);
+        }
+        return $results;
+    }
+
+    // The plugin's lifecycle rule on the bucket ('rule' => null when none); GCS identifies it by its folders.
+    public function get_storage_class_rule($prefixes = []) {
+        if (!$this->service || !method_exists($this->service, 'get_storage_class_rule')) {
+            return ['success' => false, 'code' => 200, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->get_storage_class_rule($prefixes);
+    }
+
+    // Bucket lifecycle rule moving files under $prefixes to $class after $days; an empty $class removes it.
+    public function set_storage_class_rule($prefixes, $class = '', $days = 0) {
+        if (!$this->service || !method_exists($this->service, 'set_storage_class_rule')) {
+            return ['success' => false, 'code' => 200, 'message' => __('Not supported for this service', 'media-cloud-sync')];
+        }
+        return $this->service->set_storage_class_rule($prefixes, $class, $days);
     }
 
     // Cross-bucket server-side copy on the singleton's own (source) connection.
     public function copy_to_bucket($key, $new_key, $dest_bucket) {
         if (!$this->service || !method_exists($this->service, 'copy_to_bucket')) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('Not supported for this service', 'media-cloud-sync')];
+            return ['success' => false, 'code' => 200, 'message' => __('Not supported for this service', 'media-cloud-sync')];
         }
         return $this->service->copy_to_bucket($key, $new_key, $dest_bucket);
     }
@@ -690,7 +763,7 @@ class Service {
      */
     public function listObjects($prefix = '', $continuationToken = null, $maxKeys = 1000, $delimiter = '/') {
         if (!$this->service) {
-            return ['success' => false, 'code' => 200, 'message' => esc_html__('No storage service configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
+            return ['success' => false, 'code' => 200, 'message' => __('No storage service configured', 'media-cloud-sync'), 'folders' => [], 'objects' => [], 'next_token' => null];
         }
         return $this->service->listObjects($prefix, $continuationToken, $maxKeys, $delimiter);
     }
