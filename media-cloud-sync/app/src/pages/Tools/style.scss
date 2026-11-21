@@ -1,0 +1,99 @@
+.toolsPage {
+    .toolsHead {
+        margin-bottom: 20px;
+        h2 {
+            margin: 0 0 4px;
+            font-size: 24px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #50575e;
+        }
+    }
+    .toolGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .tool {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 22px;
+        border-radius: 16px;
+        background: $white_color;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        color: $primary_color;
+        text-decoration: none;
+        outline: none;
+        transition: 0.2s ease box-shadow, 0.2s ease transform;
+    }
+    a.tool {
+        &:hover,
+        &:focus-visible {
+            color: $primary_color;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            transform: translateY(-2px);
+            .toolOpen svg {
+                transform: translateX(3px);
+            }
+        }
+    }
+    .toolIcon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background-color: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+    }
+    .toolText {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        strong {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        span {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #646970;
+        }
+    }
+    .toolOpen {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: $secondary_color;
+        svg {
+            transition: 0.2s ease transform;
+        }
+    }
+    .toolDisabled {
+        background-color: #fafbfc;
+        cursor: not-allowed;
+        .toolIcon,
+        .toolText {
+            opacity: 0.6;
+        }
+    }
+    .toolNote {
+        margin-top: auto;
+        font-size: 12px;
+        color: #9a5c00;
+    }
+}

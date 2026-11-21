@@ -1,0 +1,89 @@
+.input {
+
+    // Optional leading icon; --wpmcs-input-pl lets compact overrides keep the room.
+    .field {
+        position: relative;
+    }
+    .icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        z-index: 1;
+        display: flex;
+        color: #8c8f94;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+    .withIcon {
+        --wpmcs-input-pl: 42px;
+    }
+    .withIcon input {
+        padding-left: 44px;
+    }
+    margin-bottom: 15px;
+    position: relative;
+    &.compact {
+        margin-bottom: 15px;
+    }
+    .labelRow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+        label {
+            margin: 0 !important;
+        }
+    }
+    label {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.2;
+        color: #000;
+        display: inline-block;
+    }
+    input {
+        width: 100%;
+        padding: 15px 20px;
+        outline: none;
+        border: 1px solid rgba(#000, 0.25);
+        border-radius: 8px;
+        background-color: transparent;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.2;
+
+        color: #000;
+        transition: 0.3s ease all;
+        box-shadow: none;
+        margin: 0;
+        &:focus {
+            transition: 0.3s ease all;
+            border: 1px solid $secondary_color;
+            outline: none;
+            box-shadow: none;
+        }
+        &.error {
+            transition: 0.3s ease all;
+            border: 1px solid rgb(192, 0, 0);
+        }
+    }
+    p.hint {
+        margin: 6px 0 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #646970;
+    }
+    p.error {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 1.2;
+        color: rgb(192, 0, 0);
+        margin-top: 3px;
+        position: absolute;
+        top: 100%;
+        right: 0;
+    }
+}

@@ -1,0 +1,97 @@
+.listInput {
+    grid-column: 1 / -1;
+    .labelRow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+        label {
+            margin: 0 !important;
+            line-height: 1.2;
+            font-size: 13px;
+            font-weight: 600;
+            color: $primary_color;
+        }
+    }
+    // One bordered list with dividers, so many items stay compact.
+    .rows {
+        margin: 0 0 8px;
+        padding: 0;
+        list-style: none;
+        border: 1px solid #e2e4e9;
+        border-radius: 9px;
+        overflow: hidden;
+        li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding: 5px 6px 5px 12px;
+            background-color: #f8f9fb;
+            font-size: 13px;
+            line-height: 1.4;
+            color: $primary_color;
+            & + li {
+                border-top: 1px solid #e2e4e9;
+            }
+            span {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+    .remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 6px;
+        background: none;
+        color: #8c8f94;
+        cursor: pointer;
+        &:hover,
+        &:focus-visible {
+            background-color: rgba(#d63638, 0.08);
+            color: #b32d2e;
+        }
+    }
+    .addRow {
+        display: flex;
+        gap: 8px;
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 12px;
+            border: 1px solid rgba(#000, 0.25);
+            border-radius: 9px;
+            font-size: 14px;
+            line-height: 1.4;
+            &:focus {
+                border-color: $secondary_color;
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+    .addButton {
+        padding: 0 16px;
+        border: 1.5px solid $secondary_color;
+        border-radius: 9px;
+        background-color: $white_color;
+        font-size: 14px;
+        font-weight: 600;
+        color: $secondary_color;
+        cursor: pointer;
+        &:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+}

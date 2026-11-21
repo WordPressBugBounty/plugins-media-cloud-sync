@@ -68,42 +68,6 @@ class Imagify {
 		add_filter( 'wpmcs_get_item', [ $this, 'add_webp_images_to_attachment' ], 8, 3 );
 		add_filter( 'mime_types', [ $this, 'add_webp_support' ] );
 
-		// PRO "Import from Bucket": the WebP copies Imagify made are looked for too.
-		add_filter( 'wpmcs_import_bucket_expected_files', [ $this, 'import_bucket_webp_files' ], 10, 3 );
-	}
-
-	/**
-	 * WebP copies Imagify reports for an attachment's main file and sizes, as [name => [path, key]].
-	 * No recording needed: add_webp_images_to_attachment() derives them from the item.
-	 * @since 1.5.0
-	 */
-	public function import_bucket_webp_files( $files, $attachment_id, $expected ) {
-		if ( ! $this->is_attachment_image( $attachment_id ) ) {
-			return $files;
-		}
-		$process = imagify_get_optimization_process( $attachment_id, 'wp' );
-		if ( ! $process->is_valid() ) {
-			return $files;
-		}
-		$data = $process->get_data()->get_optimization_data();
-		if ( empty( $data['sizes'] ) ) {
-			return $files;
-		}
-
-		$candidates = [ 'full' => $expected['main'] ] + (array) $expected['sizes'];
-		foreach ( $candidates as $size_name => $file ) {
-			if ( empty( $file['path'] ) || $this->is_webp( $file['path'] ) || $process->is_size_next_gen( $size_name ) ) {
-				continue;
-			}
-			if ( empty( $data['sizes'][ $size_name . $process::WEBP_SUFFIX ]['success'] ) ) {
-				continue;
-			}
-			$files[ 'imagify-webp-' . $size_name ] = [
-				'path' => $this->path_to_webp( $file['path'] ),
-				'key'  => $this->path_to_webp( $file['key'] ),
-			];
-		}
-		return $files;
 	}
 
 	/**
@@ -837,7 +801,7 @@ class Imagify {
 	 * @param int $attachment_id The attachment ID to check.
 	 * @return bool True if the attachment is an image, false otherwise.
 	 */
-	private function is_attachment_image($attachment_id) {
+	public function is_attachment_image($attachment_id) {
 		$post = get_post($attachment_id);
 		if (!$post) return false;
 

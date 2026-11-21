@@ -125,14 +125,14 @@ class Autoloader {
 			'BucketPolicyPatch' => 'includes/patches/bucket-policy.php',
 
 			// Base Files
-			'Service'		=> 'includes/base/services/service.php',
-			'Item'			=> 'includes/base/item.php',
-            'Db' 			=> 'includes/base/db.php',
+			'Service'		=> 'includes/base/storage/services/service.php',
+			'Item'			=> 'includes/base/core/item.php',
+            'Db' 			=> 'includes/base/core/db.php',
             'Cdn' 			=> 'includes/base/cdn.php',
-            'Cache' 		=> 'includes/base/cache.php',
-            'Counter' 		=> 'includes/base/counter.php',
-			'BGRunner' 		=> 'includes/base/bg-runner.php',
-			'Logger' 		=> 'includes/base/logger.php',
+            'Cache' 		=> 'includes/base/core/cache.php',
+            'Counter' 		=> 'includes/base/core/counter.php',
+			'BGRunner' 		=> 'includes/base/core/bg-runner.php',
+			'Logger' 		=> 'includes/base/core/logger.php',
 
 			// Integrations
 			'Integration' 	=> 'includes/integrations/integrations.php',
@@ -143,7 +143,7 @@ class Autoloader {
 			'WooCommerce' 	=> 'includes/integrations/woocommerce.php',
 
 			// Compatibility
-			'Compatibility' => 'includes/compatbility/compatibility.php',
+			'Compatibility' => 'includes/compatibility/compatibility.php',
 			'SiteHealth'    => 'includes/tools/site-health.php',
 			'CLI'           => 'includes/tools/cli.php',
 			'SettingsTransfer' => 'includes/tools/settings-transfer.php',
@@ -153,17 +153,17 @@ class Autoloader {
 			'FilterContent'	=> 'includes/filters/content.php',
 
 			// Services
-			'S3'			=> 'includes/base/services/s3.php',
-			'GCloud'		=> 'includes/base/services/gcloud.php',
-			'DOcean'		=> 'includes/base/services/docean.php',
-			'CloudflareR2'	=> 'includes/base/services/cloudflare-r2.php',
-			'S3Compatible'	=> 'includes/base/services/s3compatible.php',
+			'S3'			=> 'includes/base/storage/services/s3.php',
+			'GCloud'		=> 'includes/base/storage/services/gcloud.php',
+			'DOcean'		=> 'includes/base/storage/services/docean.php',
+			'CloudflareR2'	=> 'includes/base/storage/services/cloudflare-r2.php',
+			'S3Compatible'	=> 'includes/base/storage/services/s3compatible.php',
 
 			// Stream wrappers
-			'StreamWrapper'              => 'includes/base/stream-wrappers/stream-wrapper.php',
-			'ReadOnlyStreamWrapperTrait' => 'includes/base/stream-wrappers/readonly-trait.php',
-			'ReadOnlyS3StreamWrapper'    => 'includes/base/stream-wrappers/s3.php',
-			'ReadOnlyGcsStreamWrapper'   => 'includes/base/stream-wrappers/gcloud.php',
+			'StreamWrapper'              => 'includes/base/storage/stream-wrappers/stream-wrapper.php',
+			'ReadOnlyStreamWrapperTrait' => 'includes/base/storage/stream-wrappers/readonly-trait.php',
+			'ReadOnlyS3StreamWrapper'    => 'includes/base/storage/stream-wrappers/s3.php',
+			'ReadOnlyGcsStreamWrapper'   => 'includes/base/storage/stream-wrappers/gcloud.php',
 
 			// Sync
 			'SyncToCloud'	=> 'includes/bulk/sync-to-cloud.php',

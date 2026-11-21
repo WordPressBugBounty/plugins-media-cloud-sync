@@ -468,6 +468,10 @@ class FilterContent {
 		}
 
 		foreach ( $url_pairs as $find => $replace ) {
+			// A file with no cloud URL (e.g. private while PRO is inactive) keeps its server URL.
+			if ( (string) $find === '' || (string) $replace === '' ) {
+				continue;
+			}
 			$content = apply_filters('wpmcs_before_url_replace', $content, $find, $replace );
 			$content = str_replace( $find, $replace, $content );
 			$content = apply_filters('wpmcs_after_url_replace', $content, $find, $replace );

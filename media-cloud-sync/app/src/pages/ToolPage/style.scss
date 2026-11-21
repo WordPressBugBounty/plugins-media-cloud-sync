@@ -1,0 +1,446 @@
+.toolPage {
+    $border: #f0f1f4;
+    $muted: #646970;
+    $green: #1a7d43;
+    $red: #c62d2f;
+    $amber: #9a5c00;
+
+    .hero {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 4px 0 20px;
+        .heroIcon {
+            flex: 0 0 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            img {
+                width: 30px;
+                height: 22px;
+            }
+        }
+        h2 {
+            margin: 0 0 4px;
+            font-size: 24px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p {
+            margin: 0;
+            max-width: 720px;
+            font-size: 14px;
+            line-height: 1.55;
+            color: #50575e;
+        }
+    }
+
+    .layout {
+        display: grid;
+        gap: 24px;
+        align-items: start;
+        &.withAside {
+            grid-template-columns: minmax(0, 1fr) 340px;
+        }
+        @media (max-width: 960px) {
+            &.withAside {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    }
+    .main {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        min-width: 0;
+    }
+
+    .card,
+    .unavailable,
+    .asideBox {
+        background-color: $white_color;
+        border-radius: 18px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .card {
+        overflow: hidden;
+    }
+    .cardHead {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px 24px;
+        &.divided {
+            border-bottom: 1px solid $border;
+        }
+        > div {
+            flex: 1;
+        }
+        h3 {
+            margin: 0 0 4px;
+            font-size: 17px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: $muted;
+        }
+    }
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        background-color: #f3f4f6;
+        color: #50575e;
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+        &.success {
+            background-color: #e7f6ec;
+            color: $green;
+        }
+        &.warning {
+            background-color: #fdf4e6;
+            color: $amber;
+        }
+        &.danger {
+            background-color: rgba($red, 0.08);
+            color: $red;
+        }
+    }
+    .statusLine {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background-color: #f8f9fb;
+        border-bottom: 1px solid $border;
+        font-size: 13px;
+        color: $muted;
+        .detail {
+            font-weight: 600;
+            color: $primary_color;
+        }
+        .detailText {
+            flex: 1 1 0;
+            min-width: 200px;
+            line-height: 1.5;
+        }
+        .separator {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            margin: 0 9px;
+            border-radius: 50%;
+            background-color: #8c8f94;
+            vertical-align: middle;
+        }
+        .detailMeta {
+            color: #8c8f94;
+        }
+        .detailLink {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 0;
+            max-width: 260px;
+            margin-left: auto;
+            font-weight: 600;
+            color: $secondary_color;
+            text-decoration: none;
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            svg {
+                flex-shrink: 0;
+            }
+            &:hover span {
+                text-decoration: underline;
+            }
+        }
+    }
+    .linkButton {
+        margin-left: auto;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        color: $secondary_color;
+        cursor: pointer;
+    }
+    .notice {
+        margin: 18px 24px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background-color: #fdf4e6;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #7a4a00;
+    }
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 0 24px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background-color: #f8f9fb;
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        span {
+            font-size: 12px;
+            color: $muted;
+        }
+        strong {
+            font-size: 14px;
+            font-weight: 700;
+            color: $primary_color;
+            &.success {
+                color: $green;
+            }
+            &.danger {
+                color: $red;
+            }
+        }
+    }
+    .fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 20px 24px;
+        @media (max-width: 640px) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        // Compact inputs, as on the Settings page.
+        > div {
+            margin-bottom: 0;
+        }
+        label {
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: $primary_color;
+        }
+        input:not([type="checkbox"]):not(:global(.selectInput-__input)) {
+            padding: 10px 12px !important;
+            font-size: 14px !important;
+            border-radius: 9px !important;
+        }
+        input:global(.selectInput-__input) {
+            padding: 0 !important;
+        }
+        :global(.selectInput-__value-container) {
+            padding: 9px 12px !important;
+        }
+        :global(.selectInput-__single-value),
+        :global(.selectInput-__placeholder) {
+            font-size: 14px !important;
+        }
+        :global(.selectInput-__control) {
+            border-radius: 9px !important;
+            min-height: 40px !important;
+        }
+        .note {
+            grid-column: 1 / -1;
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.5;
+            color: $muted;
+        }
+    }
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 24px;
+        background-color: #fafbfc;
+        border-top: 1px solid $border;
+        &.plain {
+            gap: 12px;
+            padding: 18px 24px 22px;
+            background: none;
+            border-top: 0;
+        }
+        .actionsNote {
+            margin-left: auto;
+            font-size: 12px;
+            color: $muted;
+            &.inline {
+                margin-left: 0;
+            }
+        }
+    }
+    .button {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: none;
+        cursor: pointer;
+        &:disabled {
+            opacity: 0.55;
+            cursor: default;
+            box-shadow: none;
+        }
+        &.primary {
+            background-color: $secondary_color;
+            color: $white_color;
+            box-shadow: 0 4px 12px rgba($secondary_color, 0.22);
+        }
+        &.danger {
+            background-color: $white_color;
+            border-color: rgba($red, 0.5);
+            color: $red;
+        }
+        &.outline {
+            border: 1.5px solid $secondary_color;
+            background-color: $white_color;
+            color: $secondary_color;
+            &:focus {
+                box-shadow: none;
+            }
+        }
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: none;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: toolPageSpin 1s linear infinite;
+        }
+        &.loading {
+            color: transparent;
+            .loader {
+                display: block;
+                border-color: $white_color;
+                border-top-color: transparent;
+            }
+            &.danger .loader {
+                border-color: $red;
+                border-top-color: transparent;
+            }
+        }
+    }
+
+    .unavailable {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        max-width: 760px;
+        padding: 22px 24px;
+        .infoIcon {
+            flex: 0 0 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background-color: #eef3ff;
+            color: $secondary_color;
+        }
+        h3 {
+            margin: 0 0 4px;
+            font-size: 17px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.55;
+            color: $muted;
+        }
+    }
+
+    .aside {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .asideBox {
+        padding: 20px;
+        h3 {
+            margin: 0 0 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p,
+        li {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #50575e;
+        }
+        p {
+            margin: 0;
+        }
+        ul {
+            margin: 0;
+            padding-left: 18px;
+            list-style: disc;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .rows {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px 12px;
+            margin: 0;
+            font-size: 13px;
+            dt {
+                color: #50575e;
+            }
+            dd {
+                margin: 0;
+                font-weight: 700;
+                color: $primary_color;
+                text-align: right;
+            }
+        }
+        .footnote {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #8c8f94;
+        }
+    }
+}
+
+@keyframes toolPageSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

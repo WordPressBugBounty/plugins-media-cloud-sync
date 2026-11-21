@@ -1,0 +1,191 @@
+:global(#wpmcs_ui_root) {
+	* {
+		box-sizing: border-box;
+		font-family: $primary_font;
+	}
+}
+:global(.wpmcs_page) {
+	a {
+		outline: none;
+		box-shadow: none;
+		text-decoration: none;
+		&:focus,
+		&:active,
+		&:visited {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+}
+:global(.wpmcs_loader) {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin-top: 15vh;
+	h1 {
+		width: 100%;
+		text-align: center;
+		line-height: 1.5;
+	}
+	p {
+		width: 100%;
+		text-align: center;
+	}
+}
+:global(.toplevel_page_wpmcs-admin-ui #wpbody-content) {
+	padding-top: 136px;
+	@media screen and (max-width: 600px) {
+		padding-top: 0;
+	}
+}
+
+:global(.selectInput-__control) {
+	background-color: transparent !important;
+	border: 1px solid rgba($primary_color, 0.25) !important;
+	border-radius: 8px !important;
+	transition: 0.3s ease all !important;
+}
+:global(.selectError .selectInput-__control) {
+	border: 1px solid rgb(192, 0, 0) !important;
+}
+:global(.selectInput-__single-value) {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.2;
+	color: $primary_color !important;
+	margin: 0px !important;
+}
+:global(.selectInput-__input) {
+	margin: 0 !important;
+	padding: 0 !important;
+	min-height: auto !important;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.2;
+	color: $primary_color !important;
+}
+:global(.selectInput-__input-container) {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+:global(.selectInput-__value-container) {
+	padding: 15px 20px !important;
+}
+:global(.selectInput-__placeholder) {
+	line-height: 17px;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.2;
+	margin: 0px !important;
+	color: rgba($primary_color, 0.25) !important;
+}
+:global(.selectInput-__control--is-focused) {
+	border: 1px solid $secondary_color !important;
+	transition: 0.3s ease all !important;
+	box-shadow: none !important;
+}
+:global(.selectInput-__indicators) {
+	align-self: center !important;
+}
+:global(.selectInput-__dropdown-indicator) {
+	padding: 0 14px 0 6px !important;
+	color: #646970 !important;
+	transition: transform 0.2s ease !important;
+}
+:global(.selectInput-__control--menu-is-open .selectInput-__dropdown-indicator) {
+	transform: rotate(180deg);
+}
+:global(.selectInput-__menu) {
+	max-height: 150px !important;
+}
+:global(.selectInput-__menu-list) {
+	background-color: $white_color !important;
+	border: 1px solid $white_color !important;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.15) !important;
+	border-radius: 4px;
+	max-height: 150px !important;
+}
+:global(.selectInput-__option) {
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+	color: $primary_color !important;
+	&:last-child {
+		border-bottom: 0px;
+	}
+}
+:global(.selectInput-__option--is-focused) {
+	background-color: rgba($secondary_color, 0.1) !important;
+	cursor: pointer !important;
+}
+:global(.selectInput-__option--is-selected) {
+	background-color: $secondary_color !important;
+	color: $white_color !important;
+}
+
+:global(.Toastify__toast-container--top-right) {
+	top: 110px !important;
+	right: 40px !important;
+	z-index: 103 !important;
+}
+
+.innerContent {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p {
+		margin: 0;
+		padding: 0;
+	}
+	p {
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 1.4;
+		color: rgba(0, 0, 0, 0.6);
+	}
+	h1 {
+		font-style: normal;
+		font-weight: 700;
+		font-size: 26px;
+		line-height: 1.3;
+		display: flex;
+		align-items: center;
+
+		color: $primary_color;
+	}
+	h2 {
+		font-family: $primary_font;
+		font-style: normal;
+		font-weight: 700;
+		font-size: 24px;
+		line-height: 1.3;
+		color: $primary_color;
+	}
+	h3 {
+		font-style: normal;
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 1.3;
+		margin-bottom: 25px;
+		color: $primary_color;
+	}
+}
+
+.pageContainer {
+	padding-top: 32px;
+	margin-left: 36px;
+	margin-right: 56px;
+	@media screen and (max-width: 580px) {
+		margin-left: 0px;
+		margin-right: 10px;
+	}
+}
+

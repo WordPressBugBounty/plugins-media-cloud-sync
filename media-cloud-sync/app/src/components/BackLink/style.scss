@@ -1,0 +1,26 @@
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #50575e;
+    text-decoration: none;
+    svg {
+        transition: transform 0.2s ease;
+    }
+    &:hover,
+    &:focus {
+        color: $secondary_color;
+        box-shadow: none;
+        outline: none;
+        svg {
+            transform: translateX(-2px);
+        }
+    }
+    &:focus-visible {
+        border-radius: 4px;
+        box-shadow: 0 0 0 3px rgba($secondary_color, 0.3);
+    }
+}

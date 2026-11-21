@@ -1,0 +1,79 @@
+.proLock {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+	outline: none;
+
+	.badge {
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.5px;
+		line-height: 1.4;
+		padding: 2px 7px;
+		border-radius: 8px;
+		background-color: rgba(#ff9966, 0.15);
+		color: #ff9966;
+		cursor: help;
+	}
+
+	// Top padding bridges the gap so the popover stays open while moving onto it.
+	.popover {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 20;
+		padding-top: 8px;
+		width: 250px;
+		display: none;
+		cursor: default;
+	}
+	&.alignLeft .popover {
+		right: auto;
+		left: 0;
+	}
+
+	// Spacing lives on the panel, not the link, so host link rules can't break it.
+	.panel {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+		padding: 12px 14px;
+		border-radius: 10px;
+		background: #1d2327;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+	}
+	.message {
+		font-size: 12.5px;
+		font-weight: 400;
+		line-height: 1.45;
+		color: #f0f0f1;
+		white-space: normal;
+		text-align: left;
+		text-transform: none;
+		letter-spacing: normal;
+	}
+	.cta {
+		display: inline-block;
+		padding: 6px 12px;
+		border-radius: 6px;
+		background: #3164e4;
+		line-height: 1.3;
+		text-decoration: none;
+		// Host pages style nested links (e.g. settings labels); keep the button readable.
+		color: #fff !important;
+		font-size: 12px !important;
+		font-weight: 600 !important;
+		opacity: 1 !important;
+		&:hover,
+		&:focus {
+			background: #2550c0;
+		}
+	}
+
+	&:hover .popover,
+	&:focus-within .popover {
+		display: block;
+	}
+}

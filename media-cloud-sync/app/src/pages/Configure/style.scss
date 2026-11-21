@@ -1,0 +1,637 @@
+$wiz-border: #eceef2;
+$wiz-muted: #646970;
+
+%wiz-spinner {
+    display: block;
+    border-radius: 50%;
+    border: 3px solid #dbe5ff;
+    border-top-color: $secondary_color;
+    animation: wizardSpin 0.9s linear infinite;
+}
+@keyframes wizardSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+%wiz-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff6e5;
+    color: #7a4b00;
+    font-size: 13px;
+    line-height: 1.5;
+    svg {
+        flex: 0 0 16px;
+        margin-top: 2px;
+    }
+}
+
+// Welcome
+.welcomePage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+    @media screen and (max-width: 1100px) {
+        grid-template-columns: 1fr;
+    }
+    .intro p {
+        margin: 0 0 12px;
+        font-size: 15px;
+        line-height: 1.65;
+        color: #3c434a;
+    }
+    .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        font-size: 12px;
+        font-weight: 600;
+        color: #50575e;
+        &:first-child {
+            background: #eef3ff;
+            color: $secondary_color;
+        }
+    }
+    .worksWith {
+        padding: 20px;
+        border-radius: 16px;
+        background: linear-gradient(160deg, #f5f8ff, #eaf0ff);
+    }
+    .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: #8c8f94;
+    }
+    .providerList {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    .providerItem {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 12px;
+        background: $white_color;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .providerLogo {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        border-radius: 9px;
+        border: 1px solid $wiz-border;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            max-width: 22px;
+            max-height: 22px;
+            object-fit: contain;
+        }
+    }
+}
+
+// Choose provider
+.providerPage {
+    width: 100%;
+    .tileGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+    }
+    .tile {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 16px;
+        border: 1.5px solid #e7e9ef;
+        border-radius: 14px;
+        background: $white_color;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        strong {
+            font-size: 14px;
+            color: $primary_color;
+        }
+        &:hover {
+            border-color: rgba($secondary_color, 0.5);
+        }
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($secondary_color, 0.25);
+        }
+        &.active {
+            border-color: $secondary_color;
+            background: #f5f8ff;
+            box-shadow: 0 0 0 3px rgba($secondary_color, 0.08);
+        }
+    }
+    .tick {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $secondary_color;
+        color: $white_color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .tileLogo {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid $wiz-border;
+        background: $white_color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            max-width: 30px;
+            max-height: 30px;
+            object-fit: contain;
+        }
+    }
+    .tileDesc {
+        font-size: 12.5px;
+        line-height: 1.45;
+        color: $wiz-muted;
+    }
+    .formControl {
+        max-width: 420px;
+        margin-top: 22px;
+    }
+}
+
+// Credentials
+.credentialsPage {
+    width: 100%;
+    .sourceModeDescription {
+        margin: 0 0 18px;
+        font-size: 13.5px;
+        color: $wiz-muted;
+    }
+    .fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 0 16px;
+        > div:has(textarea) {
+            grid-column: 1 / -1;
+        }
+    }
+    .note {
+        margin: 14px 0 0;
+        font-size: 13px;
+        color: $wiz-muted;
+    }
+    .wpConfigSource {
+        .instruction {
+            margin: 0 0 10px;
+            font-size: 13.5px;
+            color: #3c434a;
+        }
+        .codeBlock {
+            position: relative;
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 14px 16px;
+            overflow: auto;
+            pre {
+                margin: 0;
+                white-space: pre;
+                code {
+                    padding: 0;
+                    background: none;
+                    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                    font-size: 12.5px;
+                    line-height: 1.6;
+                    color: #e2e8f0;
+                }
+            }
+            .copyButton {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 5px 10px;
+                border: 0;
+                border-radius: 7px;
+                background: rgba(255, 255, 255, 0.12);
+                color: $white_color;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                &:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+        .regionPicker {
+            margin-top: 18px;
+            .regionPickerLabel {
+                display: block;
+                margin: 0 0 6px;
+                font-size: 13px;
+                font-weight: 600;
+                color: $primary_color;
+            }
+            .regionPickerHint {
+                margin: 0 0 10px;
+                font-size: 12.5px;
+                color: $wiz-muted;
+            }
+            // Select, then the region code, then a Copy button — all 44px tall.
+            .regionPickerRow {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                > div {
+                    flex: 1;
+                    min-width: 0;
+                    margin-bottom: 0;
+                }
+                @media screen and (max-width: 600px) {
+                    flex-wrap: wrap;
+                    > div {
+                        flex-basis: 100%;
+                    }
+                }
+            }
+            .regionValue {
+                display: inline-flex;
+                align-items: center;
+                height: 44px;
+                padding: 0 14px;
+                border: 1px solid #dcdfe6;
+                border-radius: 10px;
+                background: #f6f7f9;
+                color: $primary_color;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            .regionCopy {
+                @include mcs-btn-secondary;
+                height: 44px;
+                padding-top: 0;
+                padding-bottom: 0;
+                gap: 6px;
+                &.copied {
+                    color: #1a7f37;
+                    border-color: #a7dcb5;
+                    background: #f0faf3;
+                }
+            }
+        }
+    }
+}
+
+// Bucket
+.setBucketPage {
+    width: 100%;
+    .segmented {
+        display: inline-flex;
+        gap: 2px;
+        padding: 3px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+        background: #f3f4f6;
+    }
+    .segment {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 600;
+        color: $wiz-muted;
+        cursor: pointer;
+        &.active {
+            background: $white_color;
+            color: $primary_color;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($secondary_color, 0.25);
+        }
+    }
+    .warning {
+        @extend %wiz-warning;
+        max-width: 600px;
+        margin-bottom: 16px;
+    }
+}
+
+// Save
+.saveSettingsPage {
+    width: 100%;
+    .summary {
+        border: 1px solid $wiz-border;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+    .summaryRow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f1f4;
+        font-size: 13.5px;
+        &:last-child {
+            border-bottom: 0;
+        }
+        > svg {
+            color: #8c8f94;
+        }
+        strong {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+            img {
+                width: 18px;
+                height: 18px;
+                object-fit: contain;
+            }
+        }
+    }
+    .summaryLabel {
+        width: 160px;
+        flex: 0 0 160px;
+        color: $wiz-muted;
+        @media screen and (max-width: 600px) {
+            width: 100px;
+            flex-basis: 100px;
+        }
+    }
+    .note {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 16px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #eef3ff;
+        color: #1f3f99;
+        font-size: 13px;
+        line-height: 1.5;
+        svg {
+            flex: 0 0 16px;
+            margin-top: 2px;
+        }
+    }
+}
+
+// Permissions
+.verifyPermissionPage {
+    width: 100%;
+    .check {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        border: 1px solid $wiz-border;
+        border-radius: 14px;
+        &.run {
+            border-color: #c9d7fb;
+            background: #f8faff;
+        }
+        &.bad {
+            border-color: #f3c9c9;
+            background: #fffafa;
+            .checkText span {
+                color: #8a1f21;
+            }
+        }
+        &.skipped {
+            border-color: #f6dfb1;
+            background: #fffcf5;
+        }
+    }
+    .checkIcon {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        border-radius: 11px;
+        background: #f3f4f6;
+        color: #a7aaad;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .ok .checkIcon {
+        background: #e7f6ec;
+        color: #1a7f37;
+    }
+    .run .checkIcon {
+        background: #eef3ff;
+    }
+    .bad .checkIcon {
+        background: #fbeeee;
+        color: #c62d2f;
+    }
+    .skipped .checkIcon {
+        background: #fff3dc;
+        color: #9a6200;
+    }
+    .spinner {
+        @extend %wiz-spinner;
+        width: 20px;
+        height: 20px;
+    }
+    .checkText {
+        flex: 1;
+        min-width: 180px;
+        strong {
+            display: block;
+            font-size: 14px;
+            color: $primary_color;
+        }
+        span {
+            display: block;
+            margin-top: 3px;
+            font-size: 12.5px;
+            color: $wiz-muted;
+            overflow-wrap: anywhere;
+        }
+    }
+    .wait .checkText strong {
+        color: #8c8f94;
+    }
+    .actions {
+        display: flex;
+        gap: 8px;
+    }
+    .skip,
+    .retry {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .actions .skip {
+        border: 1px solid #dcdfe6;
+        background: $white_color;
+        color: $primary_color;
+        &:hover {
+            border-color: #b4b9c2;
+        }
+    }
+    .retry {
+        border: 1px solid $secondary_color;
+        background: $secondary_color;
+        color: $white_color;
+        &:hover {
+            background: #2954c8;
+        }
+    }
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #50575e;
+        font-size: 11.5px;
+        font-weight: 600;
+    }
+    .run .badge {
+        background: #eef3ff;
+        color: $secondary_color;
+    }
+    .badgeOk {
+        background: #e7f6ec;
+        color: #1a7f37;
+    }
+    .warning {
+        @extend %wiz-warning;
+        margin-top: 4px;
+    }
+}
+
+// Security
+.securityPage {
+    position: relative;
+    width: 100%;
+    .securityBlock {
+        padding: 16px 0;
+        border-bottom: 1px solid #f0f1f4;
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+    .toggleRow {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        > div:last-child {
+            flex: 0 0 auto;
+            margin: 6px 0 0;
+        }
+    }
+    .rowIcon {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        border-radius: 10px;
+        background: #f3f4f6;
+        color: #50575e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rowText {
+        flex: 1;
+        min-width: 0;
+        strong {
+            display: block;
+            font-size: 14px;
+            color: $primary_color;
+        }
+        span {
+            display: block;
+            margin-top: 3px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: $wiz-muted;
+        }
+        .rowError {
+            color: #d63638;
+        }
+    }
+    .securityBlockContent {
+        margin-top: 6px;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: $wiz-muted;
+    }
+    .loader {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 12px;
+    }
+    .spinner {
+        @extend %wiz-spinner;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+// Save step logo.
+.successLogo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7f6ec;
+    color: #1a7f37;
+}

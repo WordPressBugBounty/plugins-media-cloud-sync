@@ -1,0 +1,92 @@
+.mainLoader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 40px 16px;
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 440px;
+        padding: 40px 32px 36px;
+        border-radius: 18px;
+        background-color: $white_color;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(19, 38, 61, 0.06);
+        text-align: center;
+    }
+
+    // Logo inside a spinning ring.
+    .logoRing {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 84px;
+        height: 84px;
+        margin-bottom: 22px;
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid rgba($secondary_color, 0.14);
+            border-top-color: $secondary_color;
+            animation: mainLoaderSpin 0.9s linear infinite;
+        }
+    }
+    .logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+    }
+
+    .iconTile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        margin-bottom: 18px;
+        border-radius: 16px;
+    }
+    .errorTile {
+        background-color: rgba(#d63638, 0.1);
+        color: #b32d2e;
+    }
+
+    h2 {
+        margin: 0 0 6px;
+        font-size: 18px;
+        font-weight: 700;
+        color: $primary_color;
+    }
+    p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.55;
+        color: $secondary_text_color;
+    }
+    .errorMessage {
+        max-width: 360px;
+        margin-bottom: 22px;
+        color: #b32d2e;
+    }
+    .retryButton {
+        @include mcs-btn-primary;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .logoRing::before {
+            animation-duration: 2.4s;
+        }
+    }
+}
+
+@keyframes mainLoaderSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,219 @@
+.card {
+    $border: #f0f1f4;
+    $pending: #f5c26b;
+
+    background: $white_color;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+    }
+    .refresh {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border: 0;
+        border-radius: 8px;
+        background: none;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        color: $secondary_color;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba($secondary_color, 0.08);
+        }
+        &.loading svg {
+            animation: refreshSpin 0.9s linear infinite;
+        }
+    }
+
+    .summary {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+    .percent {
+        font-size: 40px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: $primary_color;
+    }
+    .summaryText {
+        font-size: 14px;
+        color: #50575e;
+    }
+
+    .bar {
+        display: flex;
+        height: 12px;
+        border-radius: 999px;
+        overflow: hidden;
+        background-color: #eef0f4;
+        span {
+            transition: width 0.6s ease;
+        }
+        .barSynced {
+            background-color: $secondary_color;
+        }
+        .barPending {
+            background-color: $pending;
+        }
+    }
+
+    .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 24px;
+        font-size: 13px;
+        color: #50575e;
+        span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        strong {
+            color: $primary_color;
+        }
+        i {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .keySynced {
+            background-color: $secondary_color;
+        }
+        .keyPending {
+            background-color: $pending;
+        }
+    }
+
+    .tableWrap {
+        overflow-x: auto;
+    }
+    .sources {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        th,
+        td {
+            padding: 11px 0;
+            border-bottom: 1px solid $border;
+            text-align: left;
+            color: $primary_color;
+        }
+        thead th {
+            padding: 8px 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: #646970;
+        }
+        tbody th {
+            font-weight: 600;
+            padding-right: 16px;
+        }
+        tbody tr:last-child {
+            th,
+            td {
+                border-bottom: 0;
+            }
+        }
+        .progressCol {
+            width: 200px;
+        }
+        .num {
+            width: 90px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .good {
+            color: #1a7d43;
+            font-weight: 600;
+        }
+        .warn {
+            color: #9a5c00;
+            font-weight: 600;
+        }
+        .muted {
+            color: #646970;
+        }
+    }
+    .mini {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .miniTrack {
+        flex: 1;
+        min-width: 60px;
+        height: 6px;
+        border-radius: 999px;
+        background-color: #eef0f4;
+        overflow: hidden;
+        span {
+            display: block;
+            height: 100%;
+            background-color: $secondary_color;
+        }
+    }
+    .miniValue {
+        width: 36px;
+        font-size: 12px;
+        color: #646970;
+    }
+
+    .cta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px 16px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background-color: #f6f8fe;
+        font-size: 13px;
+        color: $primary_color;
+        &.done {
+            background-color: #edf7f1;
+            color: #1a7d43;
+            font-weight: 600;
+        }
+    }
+    .ctaButton {
+        padding: 10px 18px;
+        border-radius: 10px;
+        background-color: $secondary_color;
+        color: $white_color;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(49, 100, 228, 0.25);
+        &:hover,
+        &:focus {
+            color: $white_color;
+            background-color: #2753c8;
+        }
+    }
+}
+
+@keyframes refreshSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

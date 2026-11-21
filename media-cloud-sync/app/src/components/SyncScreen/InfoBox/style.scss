@@ -1,0 +1,48 @@
+.infoBox {
+    width: 100%;
+    .message {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 18px 14px 46px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background-color: $white_color;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        font-size: 14px;
+        line-height: 1.55;
+        // Status dot with a soft halo, coloured by the message tone.
+        &::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 19px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: currentColor;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+        }
+        &.error {
+            color: #b42318;
+            border-color: rgba(#d63638, 0.25);
+            background-color: rgba(#d63638, 0.05);
+        }
+        &.info {
+            color: #1d4ed8;
+            border-color: rgba($secondary_color, 0.25);
+            background-color: rgba($secondary_color, 0.05);
+        }
+        &.success {
+            color: #15803d;
+            border-color: rgba(#1a9d52, 0.25);
+            background-color: rgba(#1a9d52, 0.06);
+        }
+        &.warning {
+            color: #a15c07;
+            border-color: rgba(#f0a020, 0.35);
+            background-color: rgba(#f0a020, 0.07);
+        }
+    }
+}

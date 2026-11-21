@@ -17,7 +17,7 @@ class SyncToCloud {
     public function __construct() {
         $this->state_key = WPMCS_TOKEN . '_' . $this->action . '_state';
         $this->runner = BGRunner::instance();
-        $this->runner->set_callback($this->action, [$this, 'sync_to_cloud'], true);
+        $this->runner->set_callback($this->action, [$this, 'sync_to_cloud']);
     }
 
     /**
@@ -102,15 +102,6 @@ class SyncToCloud {
     }
 
     /**
-     * Tick — process a small batch synchronously (ajax/mixed sync mode).
-     * @since 1.3.13
-     */
-    public function tick($batch = 5) {
-        $this->runner->run_all($this->action, $batch);
-        return $this->get_status();
-    }
-
-    /**
      * Pause the action.
      */
     public function pause() {
@@ -122,13 +113,6 @@ class SyncToCloud {
      */
     public function resume() {
         $this->runner->resume($this->action);
-    }
-
-    /**
-     * Set the sync method preference for this type.
-     */
-    public function set_sync_method($method) {
-        return $this->runner->set_sync_method($this->action, $method);
     }
 
     /**
@@ -146,10 +130,6 @@ class SyncToCloud {
         if($status['total'] <= 0) {
             $status['total'] = $this->get_pending_media_count();
         }
-
-        // Signals to the frontend that this action has ajax/mixed sync mode wired up server-side
-        // (see BGRunner::set_callback()'s $supports_tick arg registered in the constructor above).
-        $status['tick_supported'] = true;
 
         return $status;
     }

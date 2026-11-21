@@ -110,7 +110,13 @@ class Main {
          * All backend API has to initiallize outside is_admin(), as REST URL is not part of wp_admin
          */
         Front::instance();
-       
+
+        // Sites can be created outside wp-admin (WP-CLI, front-end sign-up), so not inside Admin.
+        if (is_multisite()) {
+            add_action('wp_initialize_site', [Admin::class, 'create_multisite_table'], 10, 1);
+            add_action('wpmu_new_blog', [Admin::class, 'create_multisite_table'], 10, 1);
+        }
+
         if (is_admin()) {
             Admin::instance();
             Upgrade::instance();

@@ -1,0 +1,34 @@
+.loadingPopup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px;
+    border: 1px dashed #dcdfe6;
+    border-radius: 14px;
+    background: #fafbfc;
+    .spinner {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        border-radius: 50%;
+        border: 3px solid #dbe5ff;
+        border-top-color: $secondary_color;
+        animation: wpmcsWizardSpin 0.9s linear infinite;
+    }
+    .title {
+        font-size: 15px;
+        font-weight: 600;
+        color: $primary_color;
+    }
+    p {
+        margin: 3px 0 0;
+        font-size: 13px;
+        color: #646970;
+    }
+}
+
+@keyframes wpmcsWizardSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

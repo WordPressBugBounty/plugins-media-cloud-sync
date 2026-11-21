@@ -1,0 +1,30 @@
+.footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    width: 100%;
+    .backButton {
+        @include mcs-btn-secondary;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        color: #8c8f94;
+    }
+    .next {
+        margin-left: auto;
+    }
+    .button {
+        min-width: 120px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+}

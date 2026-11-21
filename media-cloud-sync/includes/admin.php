@@ -45,12 +45,6 @@ class Admin {
 
         // Plugin Deactivation Survey
         add_action('admin_footer', array($this, 'wpmcs_deactivation_form'));
-
-        if (is_multisite()) {
-            // Register multisite site creation hooks
-            add_action('wp_initialize_site', [$this, 'create_multisite_table'], 10, 1);
-            add_action('wpmu_new_blog', [$this, 'create_multisite_table'], 10, 1);
-        }
     }
 
     /**
@@ -154,14 +148,23 @@ class Admin {
     /**
      * Deactivation hook
      */
-    public static function deactivation(){
+    public static function deactivation($network_wide = false){
+        if (is_multisite() && $network_wide) {
+            foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $site_id) {
+                switch_to_blog($site_id);
+                wp_clear_scheduled_hook(WPMCS_TOKEN . '_bg_runner_cron');
+                restore_current_blog();
+            }
+            return;
+        }
+        wp_clear_scheduled_hook(WPMCS_TOKEN . '_bg_runner_cron');
     }
 
 
     /**
      * Handle multisite site creation.
      */
-    public function create_multisite_table($site) {
+    public static function create_multisite_table($site) {
         if (is_numeric($site)) {
             $site_id = (int) $site;
         } elseif ($site instanceof \WP_Site) {
@@ -201,7 +204,8 @@ class Admin {
             }
 
             // Enqueue custom backend script.
-            wp_enqueue_script($this->token . '-backend', esc_url($this->assets_url) . 'js/backend.js', array('wp-i18n'), $this->version, true);
+            // wp-hooks: the admin app's extension API for add-ons.
+            wp_enqueue_script($this->token . '-backend', esc_url($this->assets_url) . 'js/backend.js', array('wp-i18n', 'wp-hooks'), $this->version, true);
 
             // Localize a script.
             wp_localize_script(
@@ -210,15 +214,11 @@ class Admin {
                 array(
                     'api_nonce' => wp_create_nonce('wp_rest'),
                     'root' => rest_url($this->token . '/v1/'),
-                    'pro_root' => rest_url($this->token . '/pro/v1/'),
                     'assets_url' => $this->assets_url,
                     'admin_url' => admin_url(),
                     'is_db_upgrade_required' => Upgrade::instance()->is_upgrade_needed(),
                     'is_cron_disabled' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON,
-                    'is_pro_active' => defined('WPMCS_PRO_VERSION'),
                     'version' => WPMCS_VERSION,
-                    'pro_version' => defined('WPMCS_PRO_VERSION') ? WPMCS_PRO_VERSION : '',
-                    'license_status' => defined('WPMCS_PRO_VERSION') ? Utils::get_safe_license_data() : [],
                 )
             );
 
@@ -276,7 +276,8 @@ class Admin {
             'settings' => '<a href="' . admin_url('admin.php?page=' . $this->token . '-admin-ui/') . '">' . esc_html__('Settings', 'media-cloud-sync') . '</a>',
         );
 
-        if (!Utils::is_pro_licensed()) {
+        // Shown until an add-on reports a valid license.
+        if (!apply_filters('wpmcs_is_pro_licensed', false)) {
             $action_links['upgrade'] = '<a href="https://dudlewebs.com/product/media-cloud-sync/" target="_blank" style="color:#d54e21;font-weight:600;">' . esc_html__('Upgrade', 'media-cloud-sync') . '</a>';
         }
 

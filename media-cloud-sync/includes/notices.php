@@ -17,6 +17,11 @@ class Notices {
      */
     private static $instance = null;
 
+    // Temporary (1.5.1 hard cut): remove PRO_MIN_VERSION, PRO_FILE, guard_outdated_pro() and outdated_pro_notice() once PRO 1.1.0 is no longer in use.
+    // Oldest PRO that works with this version (older ones call code that moved into PRO).
+    const PRO_MIN_VERSION = '1.1.1';
+    const PRO_FILE = 'media-cloud-sync-pro/media-cloud-sync-pro.php';
+
     /**
      * Retrieves the singleton instance of the class.
      *
@@ -33,6 +38,63 @@ class Notices {
 
     public function __construct() {
         add_action('admin_post_' . WPMCS_TOKEN . '_dismiss_notice', [$this, 'dismiss_notice']);
+        // Before PRO's own boot (plugins_loaded, priority 0). Temporary; see PRO_MIN_VERSION.
+        add_action('plugins_loaded', [$this, 'guard_outdated_pro'], -10);
+    }
+
+    /**
+     * Keeps an outdated PRO from running against this version, but leaves its updater working.
+     * Never updates it: the notice links to WordPress's own update screen.
+     * Temporary: remove with PRO_MIN_VERSION in a later version.
+     * @since 1.5.1
+     */
+    public function guard_outdated_pro() {
+        if (!defined('WPMCS_PRO_VERSION') || version_compare(WPMCS_PRO_VERSION, self::PRO_MIN_VERSION, '>=')) {
+            return;
+        }
+
+        if (class_exists(__NAMESPACE__ . '\\ProMain')) {
+            remove_action('plugins_loaded', [ProMain::instance(), 'boot'], 0);
+        }
+        if (class_exists(__NAMESPACE__ . '\\ProLicense')) {
+            ProLicense::instance();
+        }
+
+        // Once per outdated version, so the update offer shows now rather than at the next check.
+        $flag = WPMCS_TOKEN . '_pro_update_check';
+        if (get_site_option($flag) !== WPMCS_PRO_VERSION) {
+            delete_site_transient('update_plugins');
+            update_site_option($flag, WPMCS_PRO_VERSION);
+        }
+
+        add_action('admin_notices', [$this, 'outdated_pro_notice']);
+        add_action('network_admin_notices', [$this, 'outdated_pro_notice']);
+    }
+
+    /**
+     * Outdated PRO notice; goes away once PRO is updated.
+     * Temporary: remove with PRO_MIN_VERSION in a later version.
+     * @since 1.5.1
+     */
+    public function outdated_pro_notice() {
+        if (!current_user_can('update_plugins')) {
+            return;
+        }
+
+        $url = wp_nonce_url(
+            self_admin_url('update.php?action=upgrade-plugin&plugin=' . rawurlencode(self::PRO_FILE)),
+            'upgrade-plugin_' . self::PRO_FILE
+        );
+
+        /* translators: 1: PRO version required, 2: installed PRO version. */
+        $message = esc_html(sprintf(__('Media Cloud Sync PRO is paused: this version of Media Cloud Sync needs PRO %1$s or later (installed: %2$s). Your settings and license are kept.', 'media-cloud-sync'), self::PRO_MIN_VERSION, WPMCS_PRO_VERSION));
+
+        printf(
+            '<div class="notice notice-error"><p>%1$s</p><p><a class="button button-primary" href="%2$s">%3$s</a></p></div>',
+            $message,
+            esc_url($url),
+            esc_html__('Update PRO now', 'media-cloud-sync')
+        );
     }
 
     /**

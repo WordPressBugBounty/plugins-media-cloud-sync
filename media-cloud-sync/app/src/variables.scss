@@ -1,0 +1,140 @@
+$primary_font: "Roboto", sans-serif;
+$secondary_font: "Roboto", sans-serif;
+$primary_color: #000000;
+$secondary_color: #3164e4;
+$white_color: #ffffff;
+$text_color: rgba(0, 0, 0, 0.6);
+$secondary_text_color: rgba(19, 38, 61, 0.65);
+
+// Shared button looks; components/Buttons and one-off buttons use these.
+$btn_hover: #2753c8;
+$btn_border: #dcdfe6;
+$btn_danger: #c62d2f;
+
+@mixin mcs-btn {
+    font-family: $primary_font;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border: 1px solid transparent;
+    border-radius: var(--wpmcs-btn-radius, 10px);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    // Out-ranks WP core's `a:focus { border-radius: 2px }` on link buttons.
+    &:focus {
+        outline: none;
+        border-radius: var(--wpmcs-btn-radius, 10px);
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($secondary_color, 0.3);
+    }
+    &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+    }
+}
+
+@mixin mcs-btn-small {
+    padding: 7px 14px;
+    --wpmcs-btn-radius: 8px;
+    font-size: 13px;
+}
+
+@mixin mcs-btn-primary {
+    @include mcs-btn;
+    color: $white_color;
+    background-color: $secondary_color;
+    border-color: $secondary_color;
+    &:hover,
+    &:focus {
+        color: $white_color;
+        background-color: $btn_hover;
+        border-color: $btn_hover;
+    }
+}
+
+@mixin mcs-btn-secondary {
+    @include mcs-btn;
+    color: #1d2327;
+    background-color: $white_color;
+    border-color: $btn_border;
+    &:hover,
+    &:focus {
+        color: #1d2327;
+        background-color: #f6f7f9;
+        border-color: #c3c8d2;
+    }
+}
+
+@mixin mcs-btn-danger {
+    @include mcs-btn;
+    color: $white_color;
+    background-color: $btn_danger;
+    border-color: $btn_danger;
+    &:hover,
+    &:focus {
+        color: $white_color;
+        background-color: #a82426;
+        border-color: #a82426;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($btn_danger, 0.25);
+    }
+}
+
+// Checkbox in the plugin theme (replaces WP core's look, including its ::before tick).
+@mixin mcs-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin: 0;
+    padding: 0;
+    border: 1.5px solid #c3c4c7;
+    border-radius: 5px;
+    background: $white_color center / 12px no-repeat;
+    box-shadow: none;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    &::before {
+        content: none !important;
+        display: none !important;
+    }
+    &:hover {
+        border-color: $secondary_color;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: $secondary_color;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($secondary_color, 0.25);
+    }
+    &:checked,
+    &:indeterminate {
+        border-color: $secondary_color;
+        background-color: $secondary_color;
+    }
+    &:checked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+    }
+    &:indeterminate {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+    }
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+}

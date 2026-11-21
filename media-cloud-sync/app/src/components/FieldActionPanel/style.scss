@@ -1,0 +1,62 @@
+.panel {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: #f8f9fb;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        strong {
+            flex: 1;
+            font-size: 14px;
+            color: $primary_color;
+        }
+    }
+    .statusBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background-color: #fdf4e6;
+        color: #9a5c00;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+        &.applied {
+            background-color: #edf7f1;
+            color: #1a7d43;
+        }
+    }
+    .message,
+    .note {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #50575e;
+    }
+    .note {
+        color: #7a4a00;
+    }
+    .actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+    }
+    .hint {
+        font-size: 12px;
+        color: #9a5c00;
+    }
+}

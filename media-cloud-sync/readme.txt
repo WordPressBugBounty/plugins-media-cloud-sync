@@ -7,7 +7,7 @@ License: GPLv2 or later
 Requires PHP: 8.1
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 
 Offload media to cloud storage (S3, DigitalOcean, Google Cloud, Cloudflare R2, S3 compatible Services) and rewrite URLs for seamless file delivery.
 
@@ -159,6 +159,9 @@ Yes, the Media Cloud Sync plugin is compatible with Multisite and it will works 
 = Can I use S3-compatible services? =
 Yes, the Media Cloud Sync plugin supports S3-compatible services. You simply need to provide the correct configuration details. Should you encounter any issues, please contact us via our official website. We will investigate the matter and provide an appropriate resolution.
 
+= Where is the source code of the admin screens? =
+The readable source of the minified admin app (assets/js/backend.js) is included in the plugin, in the app folder. app/README.md explains how to install its dependencies and rebuild it.
+
 == External Services ==
 This plugin integrates with third-party services to enhance its functionality. Below is an overview of the external services utilized, the data transmitted, and relevant legal documentation for your reference.
 
@@ -187,6 +190,17 @@ This plugin integrates with third-party services to enhance its functionality. B
   - **Data Sent**: User authentication data, file metadata (name, size, MIME type).
 
 == Changelog ==
+= 1.5.1 =
+* Tweak: PRO features now live entirely in the PRO add-on; this plugin only shows previews of them.
+* Tweak: Saving settings keeps settings this screen doesn't show (e.g. an add-on's) instead of clearing them.
+* Tweak: Opening the plugin admin no longer clears caches unless default settings were actually missing.
+* Tweak: Files marked private are served from your server, and not uploaded again, when PRO isn't active.
+* Tweak: The admin app source (app folder) and its setup guide are now included in the plugin.
+* Tweak: Removed deprecated code: Utils::is_pro_licensed(), Service::verifyWrite()/verifyRead() and the /permissions/read REST route.
+* Bug Fix: Upgrading from a very old version with Google Cloud Storage could stop with a fatal error.
+* Bug Fix: Sites created outside wp-admin on multisite (e.g. WP-CLI) didn't get the plugin's table.
+* Bug Fix: The background job schedule was left behind after deactivating the plugin.
+
 = 1.5.0 =
 * Feature: Import / Export page: copy settings to another site as a JSON file, without secrets, previewing every change before it's applied.
 * Feature: Site Health checks for storage, delivery, stalled jobs, WP-Cron and PHP memory, plus an Info section for support requests.

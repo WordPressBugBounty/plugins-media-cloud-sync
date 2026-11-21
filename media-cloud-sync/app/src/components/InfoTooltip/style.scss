@@ -1,0 +1,50 @@
+.infoTooltip {
+    position: relative;
+    top: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: $secondary_text_color;
+    svg {
+        display: block;
+    }
+    .tooltipText {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(2px);
+        margin-bottom: 6px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        background-color: #1d2327;
+        color: $white_color;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: normal;
+        width: max-content;
+        max-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s ease all;
+        pointer-events: none;
+        z-index: 5;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #1d2327;
+        }
+    }
+    &:hover .tooltipText,
+    &:focus .tooltipText {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-4px);
+    }
+}

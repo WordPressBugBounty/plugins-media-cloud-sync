@@ -1,0 +1,61 @@
+.input {
+    margin-bottom: 15px;
+    label {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: $primary_color;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+    input {
+        visibility: hidden;
+        position: absolute;
+        &:focus {
+            ~ .fileInput {
+                transition: 0.3s ease all;
+                border: 1px solid $secondary_color;
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+    .fileInput {
+        width: 100%;
+        padding: 15px 20px;
+        padding-right: 64px;
+        outline: none;
+        border: 1px solid rgba($primary_color, 0.25);
+        border-radius: 8px;
+        background-color: transparent;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+
+        color: $primary_color;
+        transition: 0.3s ease all;
+        box-shadow: none;
+        position: relative;
+        cursor: pointer;
+        &::after {
+            content: "";
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            right: 20px;
+            top: 12px;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url(../images/icons/plus.svg);
+        }
+        .file {
+            color: rgba($primary_color, 0.25);
+        }
+        .active {
+            color: $primary_color;
+        }
+    }
+}

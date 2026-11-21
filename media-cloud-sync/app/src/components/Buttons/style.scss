@@ -1,0 +1,189 @@
+$btn_ring: 0 0 0 3px rgba($secondary_color, 0.3);
+
+// Shared base for every button type (mixins live in variables.scss).
+%btn {
+    @include mcs-btn;
+    text-align: center;
+    &:active {
+        transform: translateY(1px);
+    }
+    &:disabled {
+        transform: none;
+    }
+    svg {
+        width: 13px;
+        height: 13px;
+        object-fit: contain;
+        transition: 0.2s ease transform;
+        path {
+            transition: 0.2s ease fill;
+        }
+        &.left {
+            transform: rotate(180deg);
+        }
+        &.right {
+            transform: rotate(0deg);
+        }
+        &.down {
+            transform: rotate(90deg);
+        }
+        &.up {
+            transform: rotate(-90deg);
+        }
+    }
+}
+
+.primaryOuter {
+    position: relative;
+    display: inline-flex;
+    img {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+}
+
+// Hides the label while the loader image sits on top.
+.loading {
+    color: transparent !important;
+    svg {
+        visibility: hidden;
+    }
+}
+
+.primary {
+    @extend %btn;
+    color: $white_color;
+    background-color: $secondary_color;
+    border-color: $secondary_color;
+    box-shadow: 0 4px 12px rgba(49, 100, 228, 0.22);
+    &:hover,
+    &:focus {
+        color: $white_color;
+        background-color: $btn_hover;
+        border-color: $btn_hover;
+    }
+    &:hover {
+        box-shadow: 0 6px 16px rgba(49, 100, 228, 0.3);
+    }
+    &:focus-visible {
+        box-shadow: $btn_ring;
+    }
+    &:disabled {
+        color: $white_color;
+        background-color: $secondary_color;
+        box-shadow: none;
+    }
+    svg path {
+        fill: $white_color;
+    }
+}
+
+.primarySmall {
+    font-size: 13px;
+    padding: 7px 14px;
+    --wpmcs-btn-radius: 8px;
+}
+
+// Outline brand button (Storage Settings header actions).
+.primaryCorner {
+    color: $secondary_color;
+    background-color: $white_color;
+    border-color: rgba($secondary_color, 0.35);
+    box-shadow: none;
+    svg path {
+        fill: $secondary_color;
+    }
+    &:hover,
+    &:focus {
+        color: $secondary_color;
+        background-color: rgba($secondary_color, 0.07);
+        border-color: $secondary_color;
+        box-shadow: none;
+    }
+    &:focus-visible {
+        box-shadow: $btn_ring;
+    }
+}
+
+// Compact amber button for connection alert cards.
+.primaryCornerWarning {
+    font-size: 13px;
+    padding: 7px 14px;
+    --wpmcs-btn-radius: 8px;
+    color: $white_color;
+    background-color: #c27c0e;
+    border-color: #c27c0e;
+    box-shadow: none;
+    &:hover,
+    &:focus {
+        color: $white_color;
+        background-color: #a8690a;
+        border-color: #a8690a;
+        box-shadow: none;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba(#c27c0e, 0.3);
+    }
+}
+
+.secondary {
+    @extend %btn;
+    color: #1d2327;
+    background-color: $white_color;
+    border-color: $btn_border;
+    svg path {
+        fill: #50575e;
+    }
+    &:hover,
+    &:focus {
+        color: #1d2327;
+        background-color: #f6f7f9;
+        border-color: #c3c8d2;
+    }
+    &:disabled {
+        color: #1d2327;
+        background-color: $white_color;
+    }
+}
+
+.danger {
+    color: $btn_danger;
+    border-color: rgba($btn_danger, 0.35);
+    svg path {
+        fill: $btn_danger;
+    }
+    &:hover,
+    &:focus {
+        color: $btn_danger;
+        background-color: #fbeeee;
+        border-color: $btn_danger;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($btn_danger, 0.25);
+    }
+    &:disabled {
+        color: $btn_danger;
+        background-color: $white_color;
+    }
+}
+
+// Header "Upgrade to Pro".
+.premium {
+    @extend %btn;
+    padding: 9px 18px;
+    color: $secondary_color;
+    background-color: $white_color;
+    border-color: rgba($secondary_color, 0.4);
+    &:hover,
+    &:focus {
+        color: $white_color;
+        background-color: $secondary_color;
+        border-color: $secondary_color;
+    }
+}
+

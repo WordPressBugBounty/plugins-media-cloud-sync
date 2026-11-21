@@ -1,0 +1,144 @@
+.syncMethodToggle {
+    .label {
+        margin-bottom: 10px;
+        font-family: $primary_font;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: $secondary_text_color;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .option {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #e7e9ef;
+        border-radius: 10px;
+        background-color: $white_color;
+        font-family: $primary_font;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.2s ease all;
+        &:hover:not(:disabled):not(.active) {
+            border-color: rgba($secondary_color, 0.45);
+        }
+        &.active {
+            border-color: $secondary_color;
+            background-color: rgba($secondary_color, 0.05);
+            .icon {
+                background-color: $secondary_color;
+                color: $white_color;
+            }
+            .radio {
+                border-color: $secondary_color;
+                &::after {
+                    transform: scale(1);
+                }
+            }
+        }
+        &:disabled {
+            cursor: default;
+            opacity: 0.65;
+        }
+        &.locked {
+            cursor: default;
+            background-color: #fafbfc;
+            .icon {
+                opacity: 0.5;
+            }
+        }
+    }
+    .icon {
+        flex: 0 0 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background-color: #f0f1f4;
+        color: $text_color;
+        transition: 0.2s ease all;
+        svg {
+            width: 17px;
+            height: 17px;
+        }
+    }
+    .text {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+    .name {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: $primary_color;
+    }
+    .recommended {
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        background-color: rgba($secondary_color, 0.1);
+        color: $secondary_color;
+    }
+    .hint {
+        font-size: 12px;
+        line-height: 1.45;
+        color: $secondary_text_color;
+    }
+    .radio {
+        position: relative;
+        flex: 0 0 18px;
+        height: 18px;
+        margin-top: 7px;
+        border: 2px solid #c9ccd4;
+        border-radius: 50%;
+        transition: 0.2s ease all;
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background-color: $secondary_color;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+    }
+    // Compact side-by-side variant used on the job screen.
+    &.row {
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+        .option {
+            align-items: center;
+            padding: 10px 12px;
+        }
+        .icon {
+            flex-basis: 28px;
+            height: 28px;
+        }
+        .radio {
+            margin-top: 0;
+        }
+    }
+    .rowHint {
+        margin-top: 8px;
+        font-size: 12px;
+        line-height: 1.45;
+        color: $secondary_text_color;
+    }
+}

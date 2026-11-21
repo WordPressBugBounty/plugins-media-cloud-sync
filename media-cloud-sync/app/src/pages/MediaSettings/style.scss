@@ -1,0 +1,348 @@
+.settingsPage {
+    $border: #f3f4f6;
+
+    padding-bottom: 90px;
+
+    .pageHead {
+        margin-bottom: 24px;
+        h2 {
+            margin: 0 0 4px;
+            font-size: 24px;
+            font-weight: 700;
+            color: $primary_color;
+        }
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #50575e;
+        }
+    }
+
+    .columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        align-items: start;
+        @media screen and (max-width: 1100px) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .card {
+        background: $white_color;
+        border-radius: 18px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        // No overflow clipping: dropdown menus and PRO popovers must spill out.
+        position: relative;
+    }
+
+    .banner {
+        padding: 22px 24px;
+        border-radius: 18px 18px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        &.storageBanner {
+            background: linear-gradient(135deg, #eef3ff 0%, $white_color 85%);
+            .eyebrow {
+                color: $secondary_color;
+            }
+        }
+        &.deliveryBanner {
+            background: linear-gradient(135deg, #fff4ec 0%, $white_color 85%);
+            .eyebrow {
+                color: #c2410c;
+            }
+        }
+    }
+    .provider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .logo {
+        width: 56px;
+        height: 56px;
+        flex: 0 0 56px;
+        border-radius: 16px;
+        background: $white_color;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+    }
+    .providerText {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+    }
+    .providerLine {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px 10px;
+        strong {
+            font-size: 17px;
+            line-height: 1.2;
+            color: $primary_color;
+        }
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: $secondary_color;
+            text-decoration: none;
+            word-break: break-all;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    .sep {
+        width: 1px;
+        height: 16px;
+        background-color: #c3c8d2;
+    }
+    .providerNote {
+        margin: 0;
+        font-size: 13px;
+        color: #646970;
+    }
+    .change {
+        flex: 0 0 auto;
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    // Group title band inside a card.
+    .band {
+        padding: 9px 24px;
+        background-color: #f8f9fb;
+        border-top: 1px solid #eef0f3;
+        border-bottom: 1px solid #eef0f3;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #646970;
+    }
+    .group:first-of-type .band {
+        border-top: 1px solid #eef0f3;
+    }
+
+    .row {
+        padding: 18px 24px;
+        & + .row {
+            border-top: 1px solid $border;
+        }
+    }
+    .rowHead {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .rowText {
+        flex: 1;
+        min-width: 0;
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: $primary_color;
+            cursor: pointer;
+        }
+        p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #646970;
+            a {
+                color: $secondary_color;
+            }
+        }
+        &.faded {
+            opacity: 0.6;
+            label {
+                cursor: default;
+            }
+        }
+    }
+    // Switch or PRO badge on the right of a row.
+    .control {
+        flex: 0 0 auto;
+        padding-top: 1px;
+        > div {
+            margin: 0;
+        }
+    }
+
+    // Child fields of a switch that is on.
+    .children {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        align-items: start;
+        > .wide {
+            grid-column: 1 / -1;
+        }
+        // Compact inputs inside a row; other screens keep the large size.
+        > div > div {
+            margin-bottom: 0;
+        }
+        input:not([type="checkbox"]):not(:global(.mcs-tag-entry)):not(:global(.selectInput-__input)),
+        textarea {
+            padding: 10px 12px !important;
+            font-size: 14px !important;
+            border-radius: 9px !important;
+        }
+        :global(.selectInput-__value-container) {
+            padding: 9px 12px !important;
+        }
+        :global(.selectInput-__single-value),
+        :global(.selectInput-__placeholder) {
+            font-size: 14px !important;
+        }
+        :global(.selectInput-__control) {
+            border-radius: 9px !important;
+            min-height: 40px !important;
+        }
+        // react-select's own search input must stay unpadded.
+        input:global(.selectInput-__input) {
+            padding: 0 !important;
+        }
+        @media screen and (max-width: 600px) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+    .notice {
+        margin: 14px 0 0;
+        padding: 10px 12px;
+        border-radius: 9px;
+        background-color: #fdf4e6;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #7a4a00;
+    }
+}
+
+// Sticky save bar, shown only while there are unsaved changes.
+.saveBar {
+    position: fixed;
+    z-index: 98;
+    left: 160px;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 32px;
+    background: $white_color;
+    border-top: 1px solid #e7e9ef;
+    box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
+    transform: translateY(110%);
+    transition: transform 0.25s ease;
+    @media only screen and (max-width: 960px) {
+        left: 36px;
+    }
+    @media only screen and (max-width: 782px) {
+        left: 0;
+        padding: 12px 16px;
+    }
+    &.active {
+        transform: translateY(0);
+    }
+    .saveDot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #e0a43a;
+    }
+    .saveText {
+        flex: 1;
+        min-width: 180px;
+        font-size: 14px;
+        font-weight: 600;
+        color: $primary_color;
+    }
+}
+
+// Small screens, down to 360px.
+@media screen and (max-width: 600px) {
+    .settingsPage {
+        padding-bottom: 140px;
+        .pageHead h2 {
+            font-size: 21px;
+        }
+        .columns {
+            gap: 16px;
+        }
+        .card {
+            border-radius: 14px;
+        }
+        .banner {
+            padding: 16px;
+            border-radius: 14px 14px 0 0;
+        }
+        .provider {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo {
+            width: 44px;
+            height: 44px;
+            flex-basis: 44px;
+            border-radius: 12px;
+            img {
+                width: 26px;
+                height: 26px;
+            }
+        }
+        .providerText {
+            flex-basis: calc(100% - 56px);
+        }
+        .providerLine strong {
+            font-size: 16px;
+        }
+        .change {
+            margin-left: 56px;
+        }
+        .band,
+        .row {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        .rowHead {
+            gap: 14px;
+        }
+    }
+    .saveBar {
+        .saveText {
+            flex: 1 1 calc(100% - 20px);
+            min-width: 0;
+        }
+        > div,
+        > a {
+            flex: 1 1 0;
+        }
+        button {
+            width: 100%;
+        }
+    }
+}

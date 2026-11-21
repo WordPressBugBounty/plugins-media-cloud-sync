@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
 /**
  * Manage Media Cloud Sync bulk jobs from the command line.
  *
- * Every registered job works here: the free ones always, PRO ones while PRO is licensed.
+ * Every registered job works here, including those an add-on registers.
  *
  * @since 1.5.0
  */
@@ -107,13 +107,11 @@ class CLI {
      * : Skip the confirmation for jobs that delete files.
      *
      * [--<field>=<value>]
-     * : Job options from its confirmation dialog, e.g. --restore=false for remove_from_cloud.
+     * : Job options from its confirmation dialog.
      *
      * ## EXAMPLES
      *
      *     wp mcs run sync_to_cloud
-     *     wp mcs run remove_from_cloud --restore=false --yes
-     *     wp mcs run import_from_bucket --folder=uploads
      */
     public function run($args, $assoc_args) {
         $action = $this->require_job($args[0] ?? '');
@@ -206,8 +204,8 @@ class CLI {
      */
     public function start($args, $assoc_args) {
         $action = $this->require_job($args[0] ?? '');
-        // Ajax mode only advances while a browser tab ticks it; cron runs on its own.
-        Sync::instance()->set_sync_method($action, 'cron');
+        // Lets an add-on switch the job to a mode that runs without a browser (cron).
+        do_action('wpmcs_cli_before_start', $action);
         $this->start_job($action, $assoc_args);
         WP_CLI::success(__('Started in the background. Check progress with: wp mcs status', 'media-cloud-sync'));
     }

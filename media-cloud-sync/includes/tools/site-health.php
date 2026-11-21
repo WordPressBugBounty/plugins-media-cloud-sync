@@ -139,12 +139,11 @@ class SiteHealth {
             }
             return sprintf('%s: %s (%s)', !empty($status['status']) ? __('OK', 'media-cloud-sync') : __('Failed', 'media-cloud-sync'), (string) ($status['message'] ?? ''), wp_date('Y-m-d H:i', (int) $status['lastChecked']));
         };
-        $policy      = Utils::get_status('privateMediaPolicy', []);
         $logs        = Logger::instance()->get_all_logs();
         $table       = Db::get_table_name();
 
         $fields = [
-            'version'        => [__('Version', 'media-cloud-sync'), WPMCS_VERSION . (defined('WPMCS_PRO_VERSION') ? ' (PRO ' . WPMCS_PRO_VERSION . ')' : '')],
+            'version'        => [__('Version', 'media-cloud-sync'), WPMCS_VERSION],
             /* translators: %s: expected database version */
             'db_version'     => [__('Database version', 'media-cloud-sync'), get_option(WPMCS_TOKEN . '_db_version', '') . ' (' . sprintf(__('expected %s', 'media-cloud-sync'), WPMCS_DB_VERSION) . ')'],
             'storage'        => [__('Storage provider', 'media-cloud-sync'), $credentials['service'] ?? ''],
@@ -162,15 +161,6 @@ class SiteHealth {
             'custom_domain'  => [__('Custom domain', 'media-cloud-sync'), $setting('enable_cdn') ? (string) $setting('cdn_url') : ''],
             'serving_from'   => [__('Serving media from', 'media-cloud-sync'), Utils::is_ok_to_serve(false, false) ? __('Cloud', 'media-cloud-sync') : __('Server', 'media-cloud-sync')],
             'delivery_check' => [__('Last delivery check', 'media-cloud-sync'), $check('cdnRead')],
-            'private_media'  => [__('Private media', 'media-cloud-sync'), $setting('enable_private_media')
-                /* translators: %1$s: "applied" or "not applied", %2$s: private path */
-                ? sprintf(__('On, policy %1$s (path: %2$s)', 'media-cloud-sync'), !empty($policy['status']) ? __('applied', 'media-cloud-sync') : __('not applied', 'media-cloud-sync'), (string) ($policy['prefix'] ?? $setting('private_path')))
-                : __('Off', 'media-cloud-sync')],
-            'cache_control'  => [__('Cache-Control', 'media-cloud-sync'), $setting('cache_control_enabled') ? $setting('cache_control_duration') . ' ' . $setting('cache_control_unit') : __('Off', 'media-cloud-sync')],
-            /* translators: %1$s: included extensions or "off", %2$s: excluded extensions or "off" */
-            'extensions'     => [__('Extension filters', 'media-cloud-sync'), sprintf(__('Include: %1$s; Exclude: %2$s', 'media-cloud-sync'),
-                $setting('extensions_include_enabled') ? implode(', ', (array) $setting('extensions_include')) : __('off', 'media-cloud-sync'),
-                $setting('extensions_exclude_enabled') ? implode(', ', (array) $setting('extensions_exclude')) : __('off', 'media-cloud-sync'))],
             /* translators: %1$d: synced media, %2$d: media not synced, %3$d: total media */
             'media'          => [__('Media', 'media-cloud-sync'), sprintf(__('%1$d synced, %2$d not synced, %3$d total', 'media-cloud-sync'),
                 $synced, max(0, $total_media - $synced), $total_media)],
@@ -195,13 +185,8 @@ class SiteHealth {
             ];
         }
 
-        if (defined('WPMCS_PRO_VERSION')) {
-            $license = Utils::get_safe_license_data();
-            $fields['license'] = [__('PRO license', 'media-cloud-sync'), empty($license)
-                ? __('Not activated', 'media-cloud-sync')
-                /* translators: %1$s: license status, %2$s: expiry date */
-                : sprintf(__('%1$s, expires %2$s', 'media-cloud-sync'), Utils::is_pro_licensed() ? __('valid', 'media-cloud-sync') : (string) ($license['status'] ?? __('invalid', 'media-cloud-sync')), (string) (($license['expiry'] ?? '') ?: __('never', 'media-cloud-sync')))];
-        }
+        // Add-ons append their own rows (e.g. their settings and license).
+        $fields = apply_filters('wpmcs_site_health_info_fields', $fields, $setting, $yes_no);
 
         $fields += [
             'object_cache'   => [__('Persistent object cache', 'media-cloud-sync'), $yes_no(wp_using_ext_object_cache())],

@@ -824,18 +824,13 @@ class Utils {
 
 
     /**
-     * Whether the file may be synced based on plugin extension settings only.
-     *
-     * Uses `extensions_exclude` to block listed extensions and optional `extensions_include` as an allow-list.
-     * When `extensions_include` is empty, no extension is blocked by the allow-list (only exclude applies).
-     * WordPress MIME / `wp_check_filetype` is not used here.
+     * Whether the file may be synced; any file with a name may, unless an add-on filters it out.
      *
      * @since 1.0.0
      * @param string $path Absolute or relative file path.
      * @return bool
      */
     public static function is_extension_available( $path ) {
-        $settings   = self::get_settings();
         $path_parts = pathinfo( $path );
 
         if ( ! isset( $path_parts['basename'] ) || $path_parts['basename'] === '' ) {
@@ -844,35 +839,7 @@ class Utils {
 
         $ext = isset( $path_parts['extension'] ) ? strtolower( $path_parts['extension'] ) : '';
 
-        $allowed     = [];
-        $not_allowed = [];
-
-        // Settings UI for these two fields is Pro-only; the values shouldn't apply without a license.
-        if ( self::is_pro_licensed() ) {
-            if (
-                ! empty( $settings['extensions_include_enabled'] ) &&
-                isset( $settings['extensions_include'] ) && is_array( $settings['extensions_include'] )
-            ) {
-                $allowed = array_map( 'strtolower', array_filter( $settings['extensions_include'], 'strlen' ) );
-            }
-
-            if (
-                ! empty( $settings['extensions_exclude_enabled'] ) &&
-                isset( $settings['extensions_exclude'] ) && is_array( $settings['extensions_exclude'] )
-            ) {
-                $not_allowed = array_map( 'strtolower', array_filter( $settings['extensions_exclude'], 'strlen' ) );
-            }
-        }
-
-        if ( in_array( $ext, $not_allowed, true ) ) {
-            return false;
-        }
-
-        if ( ! empty( $allowed ) && ! in_array( $ext, $allowed, true ) ) {
-            return false;
-        }
-
-        return true;
+        return (bool) apply_filters( 'wpmcs_is_extension_available', true, $ext, $path );
     }
 
     /**
@@ -926,17 +893,7 @@ class Utils {
         $file_name              = wp_basename( $relative_source_path );
 
         if($is_private) {
-            // Private media is a Pro feature — Pro hooks this filter to supply the
-            // actual base_path+private_path root (see ProItem/ProPrivateMedia). An
-            // item can carry is_private=1 from when Pro *was* active and later have
-            // this filter go unanswered — Pro deactivated/uninstalled, or its license
-            // simply lapsing (ProPrivateMedia::register_hooks() itself requires an
-            // active license) — so this is a real, reachable state, not a hypothetical.
-            // Falling back to an empty root would silently place the file outside
-            // whatever path the bucket policy actually carves out — publicly
-            // readable, while is_private stays 1 and Item::get_url() keeps serving it
-            // as if it were still protected. Refuse instead: no key at all is safer
-            // than a wrong one for a file that's supposed to stay private.
+            // An add-on supplies the private root; without one, no key (never a public one for a private file).
             if ( ! has_filter( 'wpmcs_private_object_key_root' ) ) {
                 return false;
             }
@@ -1336,62 +1293,6 @@ class Utils {
 		return filter_input( $type, $variable, $filter, $options );
 	}
 
-	/**
-	 * Get license data safe for frontend exposure (no raw key).
-	 *
-	 * @return array
-	 */
-	public static function get_safe_license_data() {
-		$data = get_option('wpmcs_pro_license', []);
-		if (empty($data)) {
-			return [];
-		}
-		$key = $data['license_key'] ?? '';
-		$masked = '';
-		if (!empty($key)) {
-			$parts = explode('-', $key);
-			if (count($parts) <= 2) {
-				$masked = str_repeat('*', strlen($key));
-			} else {
-				$first = $parts[0];
-				$last = end($parts);
-				$middle_count = count($parts) - 2;
-				$masked_middle = array_fill(0, $middle_count, '****');
-				$masked = $first . '-' . implode('-', $masked_middle) . '-' . $last;
-			}
-		}
-		return [
-			'masked_key'          => $masked,
-			'status'              => $data['status'] ?? '',
-			'expiry'              => $data['expiry'] ?? '',
-			'is_expired'          => $data['is_expired'] ?? false,
-			'is_domain_activated' => $data['is_domain_activated'] ?? false,
-			'can_activate'        => $data['can_activate'] ?? false,
-			'message'             => $data['message'] ?? '',
-			'last_checked'        => $data['last_checked'] ?? 0,
-		];
-	}
-
-	/**
-	 * Whether Pro is installed and currently licensed (active, domain-activated, not expired).
-	 * Single source of truth for this check — must match the frontend's isLicenseValid()
-	 * (app/src/helper/index.js) field-for-field so backend and frontend never disagree about
-	 * whether ajax/mixed sync mode is actually usable.
-	 * @since 1.3.13
-	 * @return bool
-	 */
-	public static function is_pro_licensed() {
-		if (!defined('WPMCS_PRO_VERSION')) {
-			return false;
-		}
-
-		$license = self::get_safe_license_data();
-
-		return ($license['status'] ?? '') === 'active'
-			&& ($license['is_domain_activated'] ?? false) === true
-			&& empty($license['is_expired']);
-	}
-
 	// Content-Type an object should have: the guessed one, unless it only differs from the current one by parameters like charset.
 	// @since 1.5.0
 	public static function content_type_for($current, $guessed) {
@@ -1399,32 +1300,10 @@ class Utils {
 		return (!$guessed || strtolower($guessed) === $current_base) ? (string) $current : (string) $guessed;
 	}
 
-	// Cache-Control for newly uploaded objects; 1 month by default, custom duration is Pro-only, no-cache only when duration is explicitly 0.
+	// Cache-Control for newly uploaded objects: one month, unless an add-on sets another.
 	// @since 1.4.0
 	public static function get_cache_control_header() {
-		$duration = 1;
-		$unit = 'months';
-
-		if (self::is_pro_licensed() && self::get_settings('cache_control_enabled', false)) {
-			$duration = (int) self::get_settings('cache_control_duration', 1);
-			$unit = self::get_settings('cache_control_unit', 'months');
-		}
-
-		if ($duration <= 0) {
-			return 'no-cache, no-store, must-revalidate';
-		}
-
-		$unit_seconds = [
-			'seconds' => 1,
-			'minutes' => MINUTE_IN_SECONDS,
-			'hours'   => HOUR_IN_SECONDS,
-			'days'    => DAY_IN_SECONDS,
-			'weeks'   => WEEK_IN_SECONDS,
-			'months'  => MONTH_IN_SECONDS,
-			'years'   => YEAR_IN_SECONDS,
-		];
-
-		return 'public, max-age=' . ($duration * ($unit_seconds[$unit] ?? MONTH_IN_SECONDS));
+		return (string) apply_filters('wpmcs_cache_control_header', 'public, max-age=' . MONTH_IN_SECONDS);
 	}
 
 }

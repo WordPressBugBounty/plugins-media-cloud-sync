@@ -1,0 +1,127 @@
+.list {
+    $border: #f0f1f4;
+
+    background: $white_color;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    // ProLock's popover must not be clipped.
+    overflow: visible;
+    h2 {
+        margin: 0;
+        padding: 18px 24px;
+        font-size: 16px;
+        font-weight: 700;
+        color: $primary_color;
+        border-bottom: 1px solid $border;
+    }
+    .row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 24px;
+        border-bottom: 1px solid $border;
+        text-decoration: none;
+        color: $primary_color;
+        outline: none;
+        box-shadow: none;
+        transition: 0.2s ease background-color;
+        &:last-child {
+            border-bottom: 0;
+            border-radius: 0 0 16px 16px;
+        }
+        &:first-child {
+            border-radius: 16px 16px 0 0;
+        }
+        &:only-child {
+            border-radius: 16px;
+        }
+    }
+    h2 + .row {
+        border-radius: 0;
+    }
+    h2 + .row:last-child {
+        border-radius: 0 0 16px 16px;
+    }
+    a.row {
+        &:hover,
+        &:focus-visible {
+            background-color: #f8f9fb;
+            color: $primary_color;
+            .arrow {
+                color: $secondary_color;
+                transform: translateX(2px);
+            }
+        }
+    }
+    .icon {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        border-radius: 10px;
+        background-color: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+    }
+    .text {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        strong {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        span {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #646970;
+        }
+    }
+    .arrow {
+        font-size: 16px;
+        color: #8c8f94;
+        transition: 0.2s ease all;
+    }
+    .locked,
+    .disabled {
+        background-color: #fafbfc;
+        .icon,
+        .text {
+            opacity: 0.6;
+        }
+    }
+    .disabled {
+        cursor: not-allowed;
+    }
+    .lock {
+        flex: 0 0 auto;
+    }
+
+    &.compact {
+        padding: 8px;
+        .row {
+            gap: 12px;
+            padding: 10px 12px;
+            border: 0;
+            border-radius: 10px;
+        }
+        .icon {
+            width: 32px;
+            height: 32px;
+            flex-basis: 32px;
+            border-radius: 9px;
+            img {
+                width: 17px;
+                height: 17px;
+            }
+        }
+    }
+}

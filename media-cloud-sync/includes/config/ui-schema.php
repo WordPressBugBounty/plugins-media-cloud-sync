@@ -20,7 +20,7 @@ class UISchema {
 		$sections = [
 			'dashboard'                 => $this->dashboard(),
 			'dashboard_cards'           => $this->dashboard_cards(),
-			'dashboard_pro_cards'       => $this->locked_pro_cards(),
+			'dashboard_pro_cards'       => $this->pro_preview_cards(),
 			'configure_progress_bar'    => $this->configure_progress_bar(),
 			'configure_footer'          => $this->configure_footer(),
 			'services'                  => $this->services_section(),
@@ -37,7 +37,8 @@ class UISchema {
 			'toolsPage'                 => $this->tools_page(),
 			// Tool pages with their own settings cards and job, keyed by slug; PRO fills it.
 			'toolPages'                 => [],
-			'licensePage'               => $this->license_page(),
+			// Add-on screens' copy; empty unless an add-on provides it.
+			'licensePage'               => [],
 			'importExportPage'          => $this->import_export_page(),
 			// Titles for the Settings page groups; a field picks one with its `section` key.
 			'settingsPage'              => $this->settings_page(),
@@ -59,14 +60,14 @@ class UISchema {
 		// Field filters run last so providers/CDN entries added by section filters get them too.
 		foreach ( (array) $sections['services'] as $service => $config ) {
 			if ( is_array( $config ) ) {
-				$fields = array_merge( (array) ( $config['settings'] ?? [] ), $this->locked_settings_fields() );
+				$fields = array_merge( (array) ( $config['settings'] ?? [] ), $this->pro_preview_settings_fields() );
 				$sections['services'][ $service ]['settings'] = $this->with_sections( apply_filters( 'wpmcs_ui_schema_settings_fields', $fields, $service ) );
 			}
 		}
 		foreach ( (array) $sections['cdnServers'] as $service => $entries ) {
 			foreach ( (array) $entries as $key => $entry ) {
 				if ( is_array( $entry ) ) {
-					$fields = array_merge( (array) ( $entry['fields'] ?? [] ), $this->locked_delivery_fields( ! empty( $entry['privateSupport'] ) ) );
+					$fields = array_merge( (array) ( $entry['fields'] ?? [] ), $this->pro_preview_delivery_fields( ! empty( $entry['privateSupport'] ) ) );
 					$sections['cdnServers'][ $service ][ $key ]['fields'] = $this->with_sections( apply_filters( 'wpmcs_ui_schema_delivery_fields', $fields, $service, $key, $entry ) );
 				}
 			}
@@ -87,7 +88,7 @@ class UISchema {
 		return false === $json ? '{}' : $json;
 	}
 
-	/** Upgrade prompts shown when PRO isn't installed, plus the locked-option badge/tooltip. */
+	/** Upgrade prompts shown when PRO isn't installed, plus the PRO-preview badge/tooltip. */
 	private function upsell() {
 		return [
 			'url'           => 'https://dudlewebs.com/product/media-cloud-sync/',
@@ -126,15 +127,13 @@ class UISchema {
 				'button'   => __( 'View All Features', 'media-cloud-sync' ),
 			],
 			'lockedBadge'   => __( 'PRO', 'media-cloud-sync' ),
-			'lockedLicense' => __( 'Activate your PRO license to use this feature.', 'media-cloud-sync' ),
 			'lockedUpgrade' => __( 'This feature is available in Media Cloud Sync PRO.', 'media-cloud-sync' ),
-			'activateButton' => __( 'Activate License', 'media-cloud-sync' ),
 			'upgradeButton' => __( 'Upgrade to Pro', 'media-cloud-sync' ),
 		];
 	}
 
-	/** Locked PRO placeholders, shown until a licensed PRO swaps them for the real entries (same slug/name). */
-	private function locked_pro_cards() {
+	/** PRO previews (no function behind them, they link to the upgrade page); PRO swaps in the real entries (same slug/name). */
+	private function pro_preview_cards() {
 		$card = function ( $slug, $label, $description, $icon, $bg, $group = '' ) {
 			return array_filter( [
 				'label'       => $label,
@@ -145,7 +144,7 @@ class UISchema {
 				'group'       => $group,
 				'external'    => false,
 				'link'        => '/',
-				'locked'      => true,
+				'preview'     => true,
 			], function ( $value ) {
 				return $value !== '';
 			} );
@@ -161,30 +160,30 @@ class UISchema {
 		];
 	}
 
-	private function locked_field( $name, $label, $desc ) {
+	// A preview row only: no stored setting or default, rendered disabled with the PRO badge.
+	private function pro_preview_field( $name, $label, $desc ) {
 		return [
-			'label'  => $label,
-			'desc'   => $desc,
-			'name'   => $name,
-			'type'   => 'toggle',
-			'pro'    => true,
-			'locked' => true,
+			'label'   => $label,
+			'desc'    => $desc,
+			'name'    => $name,
+			'type'    => 'toggle',
+			'preview' => true,
 		];
 	}
 
-	private function locked_settings_fields() {
+	private function pro_preview_settings_fields() {
 		return [
-			$this->locked_field( 'extensions_include_enabled', __( 'Include Extensions', 'media-cloud-sync' ), __( 'Only upload files with the extensions you choose.', 'media-cloud-sync' ) ),
-			$this->locked_field( 'extensions_exclude_enabled', __( 'Exclude Extensions', 'media-cloud-sync' ), __( 'Never upload files with the extensions you choose.', 'media-cloud-sync' ) ),
+			$this->pro_preview_field( 'extensions_include_enabled', __( 'Include Extensions', 'media-cloud-sync' ), __( 'Only upload files with the extensions you choose.', 'media-cloud-sync' ) ),
+			$this->pro_preview_field( 'extensions_exclude_enabled', __( 'Exclude Extensions', 'media-cloud-sync' ), __( 'Never upload files with the extensions you choose.', 'media-cloud-sync' ) ),
 		];
 	}
 
-	private function locked_delivery_fields( $private_support ) {
+	private function pro_preview_delivery_fields( $private_support ) {
 		$fields = [];
 		if ( $private_support ) {
-			$fields[] = $this->locked_field( 'enable_private_media', __( 'Private Media', 'media-cloud-sync' ), __( 'Mark individual media items private and serve them through short-lived signed URLs.', 'media-cloud-sync' ) );
+			$fields[] = $this->pro_preview_field( 'enable_private_media', __( 'Private Media', 'media-cloud-sync' ), __( 'Mark individual media items private and serve them through short-lived signed URLs.', 'media-cloud-sync' ) );
 		}
-		$fields[] = $this->locked_field( 'cache_control_enabled', __( 'Cache-Control Duration', 'media-cloud-sync' ), __( 'Set how long browsers and CDNs cache newly uploaded files.', 'media-cloud-sync' ) );
+		$fields[] = $this->pro_preview_field( 'cache_control_enabled', __( 'Cache-Control Duration', 'media-cloud-sync' ), __( 'Set how long browsers and CDNs cache newly uploaded files.', 'media-cloud-sync' ) );
 		return $fields;
 	}
 
@@ -204,27 +203,26 @@ class UISchema {
 		];
 	}
 
-	/** Bulk sync methods; `locked` ones show but can't be picked, the `default` one is used instead; `recommended` adds a label. */
+	/** Bulk sync methods; `preview` ones show as PRO previews and can't be picked, the `default` one is used instead; `recommended` adds a label. */
 	private function sync_methods() {
 		return [
 			[
 				'value'       => 'ajax',
 				'label'       => __( 'Ajax', 'media-cloud-sync' ),
 				'description' => __( 'Fastest. Runs live in your browser — stay in the plugin admin while it syncs.', 'media-cloud-sync' ),
-				'locked'      => true,
+				'preview'     => true,
 			],
 			[
 				'value'       => 'cron',
 				'label'       => __( 'Cron', 'media-cloud-sync' ),
 				'description' => __( 'Runs entirely in the background via WP-Cron. No need to keep this page open.', 'media-cloud-sync' ),
-				'locked'      => false,
 				'default'     => true,
 			],
 			[
 				'value'       => 'mixed',
 				'label'       => __( 'Mixed', 'media-cloud-sync' ),
 				'description' => __( 'Fastest while you stay here, and automatically falls back to WP-Cron if you leave.', 'media-cloud-sync' ),
-				'locked'      => true,
+				'preview'     => true,
 			],
 		];
 	}
@@ -349,7 +347,7 @@ class UISchema {
 
 	/**
 	 * Settings page group titles, keyed by a field's `section`.
-	 * A field can set: label, desc, type, section, pro, locked, hidden, notice, action, required/validation,
+	 * A field can set: label, desc, type, section, preview, hidden, notice, action, required/validation,
 	 * documentationLink/Label, warning { message, title, confirmLabel }, childrens (each sets width: half|full; full when omitted).
 	 */
 	private function settings_sections() {
@@ -417,22 +415,6 @@ class UISchema {
 	}
 
 	/** License page copy; the page itself is shown only when PRO is installed. */
-	private function license_page() {
-		return [
-			'title'        => __( 'License', 'media-cloud-sync' ),
-			'description'  => __( 'Activate your license to unlock PRO features on this site.', 'media-cloud-sync' ),
-			'formTitle'    => __( 'Enter your license key', 'media-cloud-sync' ),
-			'formHelp'     => __( 'You can find it in your purchase email and in your Dudlewebs account.', 'media-cloud-sync' ),
-			'buyText'      => __( 'Don\'t have a license yet?', 'media-cloud-sync' ),
-			'buyLink'      => __( 'Get Media Cloud Sync PRO', 'media-cloud-sync' ),
-			'unlockTitle'  => __( 'What your license unlocks', 'media-cloud-sync' ),
-			'activeTitle'  => __( 'PRO is active on this site', 'media-cloud-sync' ),
-			'expiredTitle' => __( 'Your license has expired', 'media-cloud-sync' ),
-			'expiredText'  => __( 'Renew it to continue using PRO features.', 'media-cloud-sync' ),
-			'renew'        => __( 'Renew license', 'media-cloud-sync' ),
-		];
-	}
-
 	/** Dashboard page copy. */
 	private function dashboard() {
 		return [
@@ -2004,23 +1986,8 @@ class UISchema {
 				'object_versioning' => false,
 				'enable_cdn' => false,
 				'cdn_url' => '',
-				'enable_private_url' => false,
-				'private_url_expire' => 20,
-				'enable_private_media' => false,
-				'private_path' => 'private',
-				'private_cdn_key_id' => '',
-				'private_cdn_key' => '',
-				'private_cdn_distribution' => '',
-				'private_cdn_domain' => '',
 				'remove_from_server' => false,
 				'rewrite_url' => true,
-				'cache_control_enabled' => false,
-				'cache_control_duration' => 1,
-				'cache_control_unit' => 'months',
-				'extensions_include_enabled' => false,
-				'extensions_include' => [],
-				'extensions_exclude_enabled' => false,
-				'extensions_exclude' => [],
 			],
 			'gcloud' => [
 				'copy_to_bucket' => true,
@@ -2030,23 +1997,8 @@ class UISchema {
 				'object_versioning' => false,
 				'enable_cdn' => false,
 				'cdn_url' => '',
-				'enable_private_url' => false,
-				'private_url_expire' => 20,
-				'enable_private_media' => false,
-				'private_path' => 'private',
-				'private_cdn_key_id' => '',
-				'private_cdn_key' => '',
-				'private_cdn_distribution' => '',
-				'private_cdn_domain' => '',
 				'remove_from_server' => false,
 				'rewrite_url' => true,
-				'cache_control_enabled' => false,
-				'cache_control_duration' => 1,
-				'cache_control_unit' => 'months',
-				'extensions_include_enabled' => false,
-				'extensions_include' => [],
-				'extensions_exclude_enabled' => false,
-				'extensions_exclude' => [],
 			],
 			'docean' => [
 				'copy_to_bucket' => true,
@@ -2056,23 +2008,8 @@ class UISchema {
 				'object_versioning' => false,
 				'enable_cdn' => false,
 				'cdn_url' => '',
-				'enable_private_url' => false,
-				'private_url_expire' => 20,
-				'enable_private_media' => false,
-				'private_path' => 'private',
-				'private_cdn_key_id' => '',
-				'private_cdn_key' => '',
-				'private_cdn_distribution' => '',
-				'private_cdn_domain' => '',
 				'remove_from_server' => false,
 				'rewrite_url' => true,
-				'cache_control_enabled' => false,
-				'cache_control_duration' => 1,
-				'cache_control_unit' => 'months',
-				'extensions_include_enabled' => false,
-				'extensions_include' => [],
-				'extensions_exclude_enabled' => false,
-				'extensions_exclude' => [],
 			],
 			'cloudflareR2' => [
 				'copy_to_bucket' => true,
@@ -2082,17 +2019,8 @@ class UISchema {
 				'object_versioning' => false,
 				'enable_cdn' => false,
 				'cdn_url' => '',
-				'enable_private_url' => false,
-				'private_url_expire' => 20,
 				'remove_from_server' => false,
 				'rewrite_url' => true,
-				'cache_control_enabled' => false,
-				'cache_control_duration' => 1,
-				'cache_control_unit' => 'months',
-				'extensions_include_enabled' => false,
-				'extensions_include' => [],
-				'extensions_exclude_enabled' => false,
-				'extensions_exclude' => [],
 			],
 			's3compatible' => [
 				'copy_to_bucket' => true,
@@ -2102,17 +2030,8 @@ class UISchema {
 				'object_versioning' => false,
 				'enable_cdn' => false,
 				'cdn_url' => '',
-				'enable_private_url' => false,
-				'private_url_expire' => 20,
 				'remove_from_server' => false,
 				'rewrite_url' => true,
-				'cache_control_enabled' => false,
-				'cache_control_duration' => 1,
-				'cache_control_unit' => 'months',
-				'extensions_include_enabled' => false,
-				'extensions_include' => [],
-				'extensions_exclude_enabled' => false,
-				'extensions_exclude' => [],
 			],
 		];
 	}

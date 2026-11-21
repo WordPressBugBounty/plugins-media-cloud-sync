@@ -36,7 +36,6 @@ class Api {
 		$this->add_route( '/permissions/status', 'verifyStatus', 'POST' );
 		$this->add_route( '/permissions/write', 'verifyWrite', 'POST' );
 		$this->add_route( '/permissions/delete', 'verifyObjectDelete', 'POST' );
-		$this->add_route( '/permissions/read', 'verifyRead', 'POST' );
 
 		$this->add_route( '/security/get_security', 'getBucketSecuritySettings', 'POST' );
 		$this->add_route( '/security/block_public_access', 'changePublicAccess', 'POST' );
@@ -60,8 +59,6 @@ class Api {
 		$this->add_route( '/sync/pause', 'pauseSync', 'POST' );
 		$this->add_route( '/sync/resume', 'resumeSync', 'POST' );
 		$this->add_route( '/sync/stop', 'stopSync', 'POST' );
-		$this->add_route( '/sync/tick', 'tickSync', 'POST' );
-		$this->add_route( '/sync/setMethod', 'setSyncMethod', 'POST' );
 
 		$this->add_route( '/sync/retrySingle', 'retrySingle', 'POST' );
 	}
@@ -117,14 +114,6 @@ class Api {
 	}
 
 	/**
-	 * Verify delivery read access (legacy route).
-	 * @since 1.3.11
-	 */
-	public function verifyRead( $data ) {
-		return new WP_REST_Response( Service::instance()->verifyStatus( 'cdn' ), 200 );
-	}
-
-	/**
 	 * Get the Security Settings
 	 */
 	public function getBucketSecuritySettings( $data ) {
@@ -160,7 +149,6 @@ class Api {
 			'serviceError'		=> Utils::get_service_configuration_error(),
 			'common'			=> [
 				'version'	=> WPMCS_VERSION,
-				'pro_version'	=> defined('WPMCS_PRO_VERSION') ? WPMCS_PRO_VERSION : '',
 				'counts'	=> [
 					'all'		=> Counter::get_count(),
 					'categorized' => $this->getSortedMediaCounts()
@@ -169,14 +157,10 @@ class Api {
 				'settings'	=> Utils::get_settings(),
 			],
 			'sync'			=> Sync::instance()->get_status(),
-			'license'		=> defined('WPMCS_PRO_VERSION') ? Utils::get_safe_license_data() : [],
-			'file_manager'	=> defined('WPMCS_PRO_VERSION') ? [
-				'delete_enabled' => (bool) Utils::get_option('delete_enabled', false, Schema::getConstant('FILE_MANAGER_SETTINGS_KEY')),
-				'root_folder'    => Utils::get_option('root_folder', '', Schema::getConstant('FILE_MANAGER_SETTINGS_KEY')),
-			] : [],
 		];
 
-		return new WP_REST_Response( $data, 200 );
+		// Add-ons append their own sections (read by the admin app's wpmcs.settingsLoaded action).
+		return new WP_REST_Response( apply_filters( 'wpmcs_get_settings_response', $data ), 200 );
 	}
 
 	/**
@@ -194,6 +178,24 @@ class Api {
 			$request->get_param( 'data' ),
 			rest_sanitize_boolean( $request->get_param( 'apply' ) )
 		), 200 );
+	}
+
+	/**
+	 * Settings to store for a save: posted keys merged into the stored ones.
+	 * `reset_keys` clears keys; `replace_settings` (a provider switch) starts from the posted ones only.
+	 */
+	private function settings_to_store( $settings, $saveData ) {
+		$settings = is_array( $settings ) ? $settings : [];
+		$stored   = rest_sanitize_boolean( $saveData['replace_settings'] ?? false ) ? [] : Utils::get_settings();
+		$merged   = array_merge( is_array( $stored ) ? $stored : [], $settings );
+
+		foreach ( (array) ( $saveData['reset_keys'] ?? [] ) as $key ) {
+			if ( is_string( $key ) && ! array_key_exists( $key, $settings ) ) {
+				unset( $merged[ $key ] );
+			}
+		}
+
+		return $merged;
 	}
 
 	/**
@@ -249,6 +251,7 @@ class Api {
 			$existing['cdn'] = $cdn;
 
 			$updated = Utils::update_option('credentials', $existing, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
+			$settings = $this->settings_to_store( $settings, $saveData );
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 
 			if(!$updated) $serviceOk = false;
@@ -310,6 +313,7 @@ class Api {
 				], 200 );
 			}
 
+			$settings = $this->settings_to_store( $settings, $saveData );
 			$updatedSettings = Utils::update_option('settings', $settings, Schema::getConstant('GLOBAL_SETTINGS_KEY'));
 			if(!$updatedSettings) $settingsOk = false;
 
@@ -321,7 +325,7 @@ class Api {
 			}
 		}
 
-		// Clear plugin caches and refresh counts after any configuration save.
+		// Clear plugin caches and refresh counts after any configuration save (the page-load fill only saves when defaults were missing).
 		if(in_array($action, ['all', 'service', 'settings', 'cdn'], true)) {
 			if($action === 'all' || $action === 'service' || $action === 'settings') {
 				Integration::instance()->clear_all_meta(false);
@@ -531,38 +535,6 @@ class Api {
 
 
 	/**
-	 * Save the sync method ('ajax'|'cron'|'mixed') preference for a sync type.
-	 * @since 1.3.13
-	 */
-	public function setSyncMethod( $data ) {
-		$params = $data->get_params();
-		$action = isset($params['action']) ? sanitize_text_field($params['action']) : '';
-		$method = isset($params['sync_method']) ? sanitize_text_field($params['sync_method']) : '';
-
-		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
-			return new WP_REST_Response( [
-				'success'	=> false,
-				'message'	=> __('Invalid action', 'media-cloud-sync')
-			], 200 );
-		}
-
-		$saved = Sync::instance()->set_sync_method($action, $method);
-		if(!$saved) {
-			return new WP_REST_Response( [
-				'success'	=> false,
-				'message'	=> __('Invalid sync method', 'media-cloud-sync')
-			], 200 );
-		}
-
-		$result = [
-			'success'		=> true,
-			'sync_method'	=> $method,
-			'status'		=> Sync::instance()->get_class_by_action($action)->get_status(),
-		];
-		return new WP_REST_Response( $result, 200 );
-	}
-
-	/**
 	 * Resume Sync
 	 * @since 1.2.13
 	 */
@@ -610,65 +582,6 @@ class Api {
 			],
 			'message'	=> __('Sync stopped successfully', 'media-cloud-sync')
 		];
-		return new WP_REST_Response( $result, 200 );
-	}
-
-
-	/**
-	 * Tick Sync — process a small batch synchronously, driving Ajax/Mixed sync mode.
-	 * @since 1.3.13
-	 */
-	public function tickSync( $data ) {
-		$params = $data->get_params();
-		$action = isset($params['action']) ? $params['action'] : '';
-
-		if ( ! Sync::instance()->get_class_by_action( $action ) ) {
-			$result = [
-				'success'	=> false,
-				'message'	=> __('Invalid action', 'media-cloud-sync')
-			];
-			return new WP_REST_Response( $result, 200 );
-		}
-
-		// Defense in depth — the frontend should never call this in free/unlicensed mode, but
-		// the endpoint must not trust that, and must not silently no-op: an unlicensed call
-		// needs a clear rejection so the frontend's tick loop stops instead of retrying forever.
-		if ( ! Utils::is_pro_licensed() ) {
-			$result = [
-				'success'	=> false,
-				'message'	=> __('Ajax sync requires an active Pro license', 'media-cloud-sync')
-			];
-			return new WP_REST_Response( $result, 200 );
-		}
-
-		// Clamp regardless of what the frontend sends — the endpoint itself must enforce the
-		// ceiling, since a batch of slow uploads processed sequentially in one request risks
-		// exceeding reverse-proxy/webserver timeouts that process_iterations() can't see.
-		$batch = isset($params['batch']) ? (int) $params['batch'] : 5;
-		$batch = min(10, max(1, $batch));
-
-		$status = Sync::instance()->tick($action, $batch);
-
-		$result = [
-			'success'	=> true,
-			'status'	=> $status,
-			'message'	=> __('Sync ticked successfully', 'media-cloud-sync')
-		];
-
-		// Deliberately omitted on every tick (this endpoint may be hit ~once/second while a
-		// sync runs, and Counter::get_count() is a real query) — but the Dashboard's own
-		// Statistics widget reads a *different* redux slice (common.counts) than the Sync
-		// screen's progress (sync[action]), only refreshed via the slower ~2-3s useSyncPolling
-		// cadence. That's an acceptable few-seconds lag while a sync is actively running, but
-		// right when it finishes it becomes a visibly wrong, stuck-looking number on the
-		// Dashboard until the next poll happens to catch up. Only pay for the query at that
-		// one transition, not on every tick.
-		if ( isset( $status['status'] ) && $status['status'] !== 'running' ) {
-			$result['counts'] = [
-				'all'			=> Counter::get_count(),
-				'categorized'	=> $this->getSortedMediaCounts()
-			];
-		}
 		return new WP_REST_Response( $result, 200 );
 	}
 
@@ -726,7 +639,7 @@ class Api {
 	 * Sorts media counts by source type
 	 * @since 1.2.13
 	 */
-	private function getSortedMediaCounts() {
+	public function getSortedMediaCounts() {
 		$sorted_counts  = [];
         $detailed_counts = Counter::get_count( 'all', false );
         if(!empty($detailed_counts)) {

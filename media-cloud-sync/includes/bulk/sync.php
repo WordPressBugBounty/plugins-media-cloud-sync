@@ -172,42 +172,6 @@ class Sync {
 
 
     /**
-     * Sets the sync method ('ajax'|'cron'|'mixed') preference for the given action's type.
-     */
-    public function set_sync_method( $action, $method ) {
-        $action_class = $this->get_class_by_action($action);
-
-        if($action_class) {
-            return $action_class->set_sync_method($method);
-        } else {
-            throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
-        }
-    }
-
-
-    /**
-     * Ticks the sync process — processes a small batch synchronously (ajax/mixed sync mode).
-     * Gracefully no-ops (returns current status unchanged) for an action whose class hasn't
-     * been updated with a tick() method yet — it's still safely progressing via cron, this
-     * just means ajax ticking isn't wired up for it yet, not a failure.
-     * @since 1.3.13
-     */
-    public function tick( $action, $batch = 5 ) {
-        $action_class = $this->get_class_by_action($action);
-
-        if(!$action_class) {
-            throw new \Exception(sprintf(__('Invalid action: %s', 'media-cloud-sync'), $action));
-        }
-
-        if(method_exists($action_class, 'tick')) {
-            return $action_class->tick($batch);
-        }
-
-        return $action_class->get_status();
-    }
-
-
-    /**
      * Returns the class associated with the given action.
      * 
      * @param string $action The action to search for.

@@ -1,0 +1,160 @@
+.connect {
+    $border: #f0f1f4;
+    $warning: #b45309;
+
+    background: $white_color;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    &.connectHasIssue {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba($warning, 0.35);
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: #646970;
+    }
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background-color: #edf7f1;
+        color: #1a7d43;
+        font-size: 12px;
+        font-weight: 600;
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+        &.statusWarning {
+            background-color: #fdf4e6;
+            color: $warning;
+        }
+    }
+
+    .provider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .imgSec {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        border-radius: 12px;
+        border: 1px solid #e7e9ef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+    }
+    .bucketInfo {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 15px;
+            font-weight: 700;
+            color: $secondary_color;
+            text-decoration: none;
+            word-break: break-all;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    .bucketLabel {
+        font-size: 12px;
+        color: #646970;
+    }
+    .noService {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        strong {
+            font-size: 15px;
+            color: $primary_color;
+        }
+        span {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #646970;
+        }
+    }
+
+    .details {
+        margin: 0;
+        padding-top: 12px;
+        border-top: 1px solid $border;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        font-size: 13px;
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        dt {
+            color: #646970;
+        }
+        dd {
+            margin: 0;
+            font-weight: 600;
+            color: $primary_color;
+            text-align: right;
+        }
+    }
+
+    .connectAlert {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background-color: #fdf4e6;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        p {
+            margin: 0;
+        }
+    }
+    .connectAlertTitle {
+        font-size: 13px;
+        font-weight: 700;
+        color: $warning;
+    }
+    .connectAlertMessage {
+        font-size: 12px;
+        line-height: 1.45;
+        color: #50575e;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
